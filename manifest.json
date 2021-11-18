@@ -1,0 +1,12 @@
+{
+    "short_name": "Magic",
+    "name": "Magic Intelligence",
+    "description": "Vue.js + Firebase sample (VueFire + Vuex)",
+    "version": "1.0",    
+    "background_color": "#2196F3",
+    "display": "standalone",
+    "theme_color": "#2196F3",    
+    "gcm_sender_id": "103953800507",    
+    "start_url": "index.html?launcher=true"
+}
+  
