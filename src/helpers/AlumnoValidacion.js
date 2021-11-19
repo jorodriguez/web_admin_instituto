@@ -33,42 +33,44 @@ export const validacionDatosAlumno = (alumno) => {
 
     if (alumno.co_grupo == 0) {
       //this.mensaje = "Selecciona un grupo";
-      Vue.prototype.$notificacion.error('Selecciona el grupo', 'El grupo es requerido.');
+      Vue.prototype.$notificacion.error('Selecciona una especialidad', 'La especialidad es requerida.');
       return false;
     }
-
-    if (alumno.hora_entrada == null || alumno.hora_salida == null
-      || alumno.hora_entrada == '' || alumno.hora_salida == '') {
-      //this.mensaje = "* Selecciona la hora de entrada y salida";
-      Vue.prototype.$notificacion.error('Selecciona la hora de entrada y salida', 'La hora de entrada y salida son requeridos.');
-      return false;
-    }
-    console.log("alumno.minutos_gracia " + alumno.minutos_gracia);
-    if (alumno.minutos_gracia ===null || alumno.minutos_gracia === '') {
-      //this.mensaje = "* Escribe los minutos de gracia";
-      console.log("alumno.minutos_gracia " + alumno.minutos_gracia);
-      Vue.prototype.$notificacion.error('Escribe los minutos de gracia', 'Los minutos de gracia son requeridos.');
-      return false;
-    }
-
-    if (alumno.costo_inscripcion == null || alumno.costo_inscripcion == '') {
-      //this.mensaje = "* Escribe el costo de incripción";
-      Vue.prototype.$notificacion.error('Escribe el costo de la inscripción', 'El valor de costo de inscripción es requedido.');
-      return false;
-    }
+   
 
     if (alumno.fecha_inscripcion == null || alumno.fecha_inscripcion == '') {
-      //this.mensaje = "* Selecciona la fecha de inscripción";
       Vue.prototype.$notificacion.error('Selecciona la fecha de inscripción', 'Selecciona la fecha de inscripción.');
       return false;
     }
 
-    if (alumno.fecha_limite_pago_mensualidad == null || alumno.fecha_limite_pago_mensualidad == '') {
-      //this.mensaje = "* Selecciona la fecha de inscripción";
+    if (alumno.hora_entrada == null || alumno.hora_salida == null
+      || alumno.hora_entrada == '' || alumno.hora_salida == '') {      
+      Vue.prototype.$notificacion.error('Selecciona la hora de entrada y salida', 'La hora de entrada y salida son requeridos.');
+      return false;
+    }
+       
+    if (alumno.costo_colegiatura == null || alumno.costo_colegiatura == '') {      
+      Vue.prototype.$notificacion.error('Escribe el costo de la colegiatura', 'El valor de costo de colegiatura es requedido.');
+      return false;
+    }
+
+
+    if (alumno.costo_inscripcion == null || alumno.costo_inscripcion == '') {      
+      Vue.prototype.$notificacion.error('Escribe el costo de la inscripción', 'El valor de costo de inscripción es requedido.');
+      return false;
+    }
+
+    /*if (alumno.co_esquema_pago == 0) {     
+      Vue.prototype.$notificacion.error('Selecciona un esquema de pago', 'El esquema de pago es requerido.');
+      return false;
+    }*/
+
+    if (alumno.fecha_limite_pago_mensualidad == null || alumno.fecha_limite_pago_mensualidad == '') {      
       Vue.prototype.$notificacion.error('Selecciona la fecha de pago', 'Selecciona la fecha de pago.');
       return false;
     }
 
+    //--solo valida cuando esta activado mostrar el nombre de cariño
     if (alumno.mostrar_nombre_carino && alumno.nombre_carino.replace(/ /g, "") == '') {     
       Vue.prototype.$notificacion.error('Nombre de cariño', 'Escribe un nombre de cariño.');
       return false;

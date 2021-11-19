@@ -12,7 +12,7 @@
           class="btn btn-primary btn-lg"
           v-on:click="nuevo()"
         >
-          Nuevo
+          Nueva Inscripción
         </button>
       </div>
       <div class="col-auto">
@@ -25,14 +25,7 @@
       </div>
     </div>
 
-    <!--<div class="text-left">
-      <router-link to="/principal" class="btn btn-secondary btn-lg">
-        <i class="fas fa-arrow-circle-left text-gray"></i>
-      </router-link>
-      <button type="button" class="btn btn-primary btn-lg" v-on:click="nuevo()">Nuevo</button>
-    </div>-->
     <br />
-    <!--<form>-->
     <div
       id="modal_alumno"
       class="modal"
@@ -41,7 +34,7 @@
       data-backdrop="static"
       role="dialog"
     >
-      <div class="modal-dialog" role="document">
+      <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
           <div class="modal-header">
             <h5 class="modal-title">Registro de Alumno</h5>
@@ -55,199 +48,236 @@
             </button>
           </div>
           <div class="modal-body text-left">
-            <!--<span class="text-danger text-sm">{{mensaje}}</span>-->
-            <div>
-              <label>
-                Nombre
-                <span class="text-danger">*</span>
-              </label>
-              <input
-                type="text"
-                v-model="input.nombre"
-                class="form-control"
-                placeholder="Nombre"
-                required
-                autofocus
-              />
-              <label>Apellidos</label>
-              <input
-                type="text"
-                v-model="input.apellidos"
-                class="form-control"
-                placeholder="Apellidos"
-                required
-              />
-              <label>
-                Fecha de nacimiento
-                <span class="text-danger">*</span>
-              </label>
-              <!--
+            <div class="form-row">
+              <div class="form-group col-sm-6 col-md-6 col-lg-6 col-xl-6">
+                <label>Alumno<span class="text-danger">*</span></label>
                 <input
-                  type="date"
-                  pattern="yyyy-MM-dd"
-                  v-model="input.fecha_nacimiento"
+                  type="text"
+                  v-model="input.nombre"
                   class="form-control"
-                  placeholder="F. Nacimiento"
+                  placeholder="Nombre"
                   required
-              >-->
-              <datepicker
-                name="fecha_nacmiento"
-                v-model="input.fecha_nacimiento"
-                input-class="form-control"
-                :format="'yyyy-MM-dd'"
-                :bootstrap-styling="true"
-                :language="es"
-                required
-              ></datepicker>
-              <label>
-                Sexo
-                <span class="text-danger">*</span>
-              </label>
-              <select
-                v-model="input.cat_genero"
-                class="form-control"
-                placeholder="Grupo"
-                required
-              >
-                <option
-                  id="selectGeneroAlumno"
-                  v-for="genero in listaGeneroAlumno"
-                  v-bind:value="genero.id"
-                  v-bind:key="genero.id"
-                  >{{ genero.nombre }}</option
-                >
-              </select>
-              <!--
-                <select
-                  id="inputServicioContratar"
-                  v-model="input.sexo"
-                  class="form-control"
-                  placeholder="Servicio"
-                  required
-                >
-                  <option value="Niño" selected>Niño</option>
-                  <option value="Niña">Niña</option>
-                </select>
-              -->
-
-              <label>Alergias</label>
-              <input
-                type="textarea"
-                class="form-control"
-                v-model="input.alergias"
-                placeholder="Alergias"
-              />
-
-              <label>
-                Grupo
-                <span class="text-danger">*</span>
-              </label>
-              <select
-                v-model="input.co_grupo"
-                class="form-control"
-                placeholder="Grupo"
-                required
-              >
-                <option
-                  v-for="grupo in listaGrupos"
-                  v-bind:value="grupo.id"
-                  v-bind:key="grupo.id"
-                  >{{ grupo.nombre }}</option
-                >
-              </select>
-
-              <div class="row">
-                <div class="col-sm-6">
-                  <label>
-                    Hora Entrada
-                    <small class="text-muted">(Pe. 08:00)</small>
-                    <span class="text-danger">*</span>
-                  </label>
-                  <input
-                    type="time"
-                    v-model="input.hora_entrada"
-                    class="form-control"
-                    placeholder="H. Entrada"
-                    required
-                  />
-                </div>
-                <div class="col-sm-6">
-                  <label>
-                    Hora Salida
-                    <small class="text-muted">(Pe. 20:00)</small>
-                    <span class="text-danger">*</span>
-                  </label>
-                  <input
-                    type="time"
-                    v-model="input.hora_salida"
-                    class="form-control"
-                    placeholder="H. Salida"
-                    required
-                  />
-                </div>
+                  autofocus
+                />
               </div>
 
-              <label>
-                Minutos de Gracia
-                <span class="text-danger">*</span>
-              </label>
-              <input
-                type="number"
-                v-model="input.minutos_gracia"
-                class="form-control"
-                placeholder="Min. Gracia"
-                min="0"
-                required
-              />
-
-              <label>
-                F. de Inscripción
-                <span class="text-danger">*</span>
-              </label>
-              <!--<input
-                  type="date"
-                   pattern="yyyy-MM-dd"
-                  v-model="input.fecha_reinscripcion"
+              <div class="form-group col-sm-6 col-md-6 col-lg-6 col-xl-6">
+                <label>Apellidos</label>
+                <input
+                  type="text"
+                  v-model="input.apellidos"
                   class="form-control"
-                  placeholder="F. Reinscripcion"
+                  placeholder="Apellidos"
                   required
-              >-->
-              <datepicker
-                name="fecha_inscripcion"
-                v-model="input.fecha_inscripcion"
-                input-class="form-control"
-                :bootstrap-styling="true"
-                :language="es"
-                required
-              ></datepicker>
-
-              <label>
-                Costo Colegiatura
-                <span class="text-danger">*</span>
-              </label>
+                />
+              </div>
+            </div>
+<!--
+            <div class="form-row">
+              <div class="form-group col-6">
+                <label>Teléfono</label>
+                <input
+                  type="text"
+                  v-model="input.telefono"
+                  class="form-control"
+                  placeholder="Telefono"
+                />
+              </div>
+              <div class="form-group col-6">
+                <label>Correo</label>
+                <input
+                  type="text"
+                  v-model="input.correo"
+                  class="form-control"
+                  placeholder="Correo "
+                />
+              </div>
+            </div>
+            -->
+            <div class="form-group">
+              <label>Dirección</label>
               <input
-                type="number"
-                v-model="input.costo_colegiatura"
+                type="text"
+                v-model="input.direccion"
                 class="form-control"
-                placeholder="Costo Colegiatura"
-                min="0"
-                required
+                placeholder="Dirección "
               />
+            </div>
 
-              <label>
-                Costo Inscripción
-                <span class="text-danger">*</span>
-              </label>
-              <input
-                type="number"
-                v-model="input.costo_inscripcion"
-                class="form-control"
-                placeholder="Costo Inscripcion"
-                min="0"
-                required
-              />
+            <div class="form-row">
+              <div class="form-group col-6">
+                <label>
+                  Fecha de nacimiento
+                  <span class="text-danger">*</span>
+                </label>
+                <datepicker
+                  name="fecha_nacmiento"
+                  v-model="input.fecha_nacimiento"
+                  input-class="form-control"
+                  :format="'yyyy-MM-dd'"
+                  :bootstrap-styling="true"
+                  :language="es"
+                  required
+                ></datepicker>
+              </div>
+              <div class="form-group col-6">
+                <label>Sexo<span class="text-danger">*</span></label>
+                <select
+                  v-model="input.cat_genero"
+                  class="form-control"
+                  placeholder="Grupo"
+                  required
+                >
+                  <option
+                    id="selectGeneroAlumno"
+                    v-for="genero in listaGeneroAlumno"
+                    v-bind:value="genero.id"
+                    v-bind:key="genero.id"
+                    >{{ genero.nombre }}</option
+                  >
+                </select>
+              </div>
+            </div>
 
-              <div class="form-group">
+            <div class="form-row">
+              <div class="form-group col-6">
+                <label>
+                  Especialidad
+                  <span class="text-danger">*</span>
+                </label>
+                <select
+                  v-model="input.co_grupo"
+                  class="form-control"
+                  placeholder="Grupo"
+                  required
+                >
+                  <option
+                    v-for="grupo in listaGrupos"
+                    v-bind:value="grupo.id"
+                    v-bind:key="grupo.id"
+                    >{{ grupo.nombre }}</option
+                  >
+                </select>
+              </div>
+              <div class="form-group col-6">
+                <label>
+                  F. de Inscripción
+                  <span class="text-danger">*</span>
+                </label>
+                <datepicker
+                  name="fecha_inscripcion"
+                  v-model="input.fecha_inscripcion"
+                  input-class="form-control"
+                  :bootstrap-styling="true"
+                  :language="es"
+                  required
+                ></datepicker>
+              </div>
+            </div>
+
+            <!--<label>Alergias</label>
+            <input
+              type="textarea"
+              class="form-control"
+              v-model="input.alergias"
+              placeholder="Alergias"
+            />-->
+
+            <div class="form-row">
+              <div class="form-group form-group col-sm-6 col-md-6 col-lg-6 col-xl-6">
+                <label>
+                  Hora Entrada
+                  <small class="text-muted">(Pe. 08:00)</small>
+                  <span class="text-danger">*</span>
+                </label>
+                <input
+                  type="time"
+                  v-model="input.hora_entrada"
+                  class="form-control"
+                  placeholder="H. Entrada"
+                  required
+                />
+              </div>
+              <div class="form-group form-group col-sm-6 col-md-6 col-lg-6 col-xl-6">
+                <label>
+                  Hora Salida
+                  <small class="text-muted">(Pe. 20:00)</small>
+                  <span class="text-danger">*</span>
+                </label>
+                <input
+                  type="time"
+                  v-model="input.hora_salida"
+                  class="form-control"
+                  placeholder="H. Salida"
+                  required
+                />
+              </div>
+            </div>
+            <!--
+            <label>
+              Minutos de Gracia
+              <span class="text-danger">*</span>
+            </label>
+            <input
+              type="number"
+              v-model="input.minutos_gracia"
+              class="form-control"
+              placeholder="Min. Gracia"
+              min="0"
+              required
+            />-->
+            <div class="form-row">
+              <div class="form-group col-6">
+                <label>
+                  Colegiatura
+                  <span class="text-danger">*</span>
+                </label>
+                <input
+                  type="number"
+                  v-model="input.costo_colegiatura"
+                  class="form-control"
+                  placeholder="Costo Colegiatura"
+                  min="0"
+                  required
+                />
+              </div>
+              <div class="form-group col-6">
+                <label>
+                  Inscripción
+                  <span class="text-danger">*</span>
+                </label>
+                <input
+                  type="number"
+                  v-model="input.costo_inscripcion"
+                  class="form-control"
+                  placeholder="Costo Inscripcion"
+                  min="0"
+                  required
+                />
+              </div>
+            </div>
+
+            <div class="form-row">
+              <!--<div class="form-group col-6">
+                <label for="inputFechaLimitePago">
+                  Esquema de pago
+                  <span class="text-danger">*</span>
+                </label>
+                <select
+                  v-model="input.co_grupo"
+                  class="form-control"
+                  placeholder="Grupo"
+                  required
+                >
+                  <option
+                    v-for="grupo in listaGrupos"
+                    v-bind:value="grupo.id"
+                    v-bind:key="grupo.id"
+                    >{{ grupo.nombre }}</option
+                  >
+                </select>
+              </div>-->
+              <div class="form-group col-6">
                 <label for="inputFechaLimitePago">
                   Fecha Pago
                   <span class="text-danger">*</span>
@@ -261,15 +291,20 @@
                   required
                 ></datepicker>
               </div>
-              <label>Nota</label>
-              <input
-                type="text"
-                v-model="input.nota"
-                class="form-control"
-                placeholder="Nota"
-              />
+              <div class="form-group col-6">
+              <label for="inputFechaLimitePago">Nota
+              </label>
+                  <textarea
+                    rows="1"
+                    v-model="input.nota"
+                    class="form-control"
+                    placeholder="Notas "
+                  />
+              </div>
             </div>
+            
           </div>
+
           <div class="modal-footer">
             <div v-if="operacion == 'INSERT'">
               <button class="btn btn-lg btn-primary" v-on:click="guardar()">
@@ -308,7 +343,9 @@
       <div class="modal-dialog modal-dialog-centered" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLongTitle">Confirmar baja del alumno</h5>
+            <h5 class="modal-title" id="exampleModalLongTitle">
+              Confirmar baja del alumno
+            </h5>
             <button
               type="button"
               class="close"
@@ -318,27 +355,30 @@
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
-          <div class="modal-body">            
-                <h4><strong>{{ input.nombre }} {{ input.apellidos }}</strong></h4>
-                <div class="form-group text-left">
-                    <label for="fecha_baja">Fecha de baja</label>
-                    <datepicker
-                      name="fecha_baja"
-                      v-model="fechaBaja"
-                      input-class="form-control"
-                      :format="'yyyy-MM-dd'"
-                      :bootstrap-styling="true"
-                      :language="es"                      
-                  ></datepicker>
-                </div>             
-                <div class="form-group">
-                  <textarea 
-                        v-model="observacionesBaja"
-                        class="form-control" 
-                        placeholder="Observaciones"
-                        rows="3">
-                  </textarea>            
-               </div>                  
+          <div class="modal-body">
+            <h4>
+              <strong>{{ input.nombre }} {{ input.apellidos }}</strong>
+            </h4>
+            <div class="form-group text-left">
+              <label for="fecha_baja">Fecha de baja</label>
+              <datepicker
+                name="fecha_baja"
+                v-model="fechaBaja"
+                input-class="form-control"
+                :format="'yyyy-MM-dd'"
+                :bootstrap-styling="true"
+                :language="es"
+              ></datepicker>
+            </div>
+            <div class="form-group">
+              <textarea
+                v-model="observacionesBaja"
+                class="form-control"
+                placeholder="Observaciones"
+                rows="3"
+              >
+              </textarea>
+            </div>
           </div>
           <div class="modal-footer">
             <button
@@ -370,12 +410,11 @@
             placeholder="Buscar por nombre.."
             v-model="criterioNombre"
             v-on:keyup.enter="buscarPorNombre()"
-            aria-label="Buscar por nombre.."
-            aria-describedby="basic-addon2"
+            aria-label="Buscar por nombre.."            
           />
-          <div class="input-group-append">
+           <div class="input-group-append">
             <button
-              class="btn btn-outline-secondary"
+              class="btn btn-outline-secondary "
               type="button"
               v-on:click="buscarPorNombre()"
             >
@@ -385,7 +424,89 @@
         </div>
 
         <div class="table-responsive">
-          <table class="table">
+          <div v-if="loader" class="mx-auto">
+            <Loader :loading="loader" :mini="true" />
+          </div>
+          <div
+            class="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-3"
+            v-for="row in lista"
+            :key="row.id"
+          >
+            <div class="card border-light">
+              <div class="d-flex justify-content-end ">
+                <div class="btn-group" role="group">
+                  <button
+                    id="btnGroupDrop1"
+                    type="button"
+                    class="btn btn-link btn-block btn-sm dropdown-toggle"
+                    data-toggle="dropdown"
+                    aria-haspopup="true"
+                    aria-expanded="false"
+                  ></button>
+                  <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
+                    <button
+                      class="dropdown-item"
+                      @click="cambiarSucursal(row)"
+                      href="#"
+                    >
+                      <i class="fas fa-exchange-alt"></i>Cambiar de sucursal
+                    </button>
+                    <button
+                      class="dropdown-item"
+                      @click="select(row, 'DELETE')"
+                      href="#"
+                    >
+                      <i class="fas fa-user-minus"></i> Iniciar Baja
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              <img
+                class="card-img-top pointer rounded-circle mx-auto"
+                style="width:100px"
+                @click="subirFotoPerfil(row.id)"
+                :src="row.foto"
+                alt="Foto"
+                title="Cambiar la foto"
+              />
+              <div class="card-body pointer" @click="verPerfil(row)">
+                <h4 class="card-text">
+                  {{ row.nombre }}
+                  <span v-if="row.mostrar_nombre_carino"
+                    >({{ row.nombre_carino }})</span
+                  >
+                  <span class="text-danger">{{ row.adeuda ? "*" : "" }}</span>
+                </h4>
+                <h5 class="card-text small">
+                  {{ row.apellidos }}
+                </h5>
+                <h6
+                  :style="row.color ? 'background-color:' + row.color : ''"
+                  class="badge badge-info text-wrap"
+                >
+                  {{ row.nombre_grupo }}
+                </h6>
+                <h5><span>de</span> {{ row.hora_entrada }}</h5>
+                <h5><span>a</span> {{ row.hora_salida }}</h5>
+                <!--<div
+                  class="btn-group"
+                  role="group"
+                  aria-label="Button group with nested dropdown"
+                >
+                  <button
+                    type="button"
+                    @click="verPerfil(row)"
+                    class="btn btn-outline-primary btn-block btn-sm"
+                  >
+                    Ver Perfil
+                  </button>
+                </div>-->
+              </div>
+            </div>
+          </div>
+
+          <!--  <table class="table">
             <thead>
               <th></th>
               <th>Nombre</th>
@@ -399,8 +520,7 @@
               <td
                 class="text-right"
                 style="padding-left:2px;padding-right:2px;"
-              >
-                <!--src="row.foto == null ? (row.sexo == 'Niño' ? './../assets/avatar_niño.jpg':'./../assets/avatar_niña.jpg'):row.foto"-->
+              >                
                 <img
                   :src="row.foto"
                   width="50"
@@ -466,8 +586,9 @@
                 </div>
               </td>
             </tr>
-          </table>
-         <!-- Mensajes para la busqueda y carga-->
+          </table>-->
+
+          <!-- Mensajes para la busqueda y carga-->
           <div v-if="criterioNombre != '' && lista.length == 0" class="mx-auto">
             <p class="text-muted ">Ningún resultado</p>
           </div>
