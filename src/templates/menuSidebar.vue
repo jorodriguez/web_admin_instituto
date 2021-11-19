@@ -129,7 +129,7 @@
 
           -->
         <ul class="navbar-nav">
-          <li class="nav-item">
+          <!--<li class="nav-item">
             <router-link to="/Principal" class="nav-link" >
               <i class="fa fa-home text-purple"></i> Asistencias
             </router-link>
@@ -138,7 +138,7 @@
             <router-link to="/Asistencia" class="nav-link"  >
               <i class="fa fa-child text-blue"></i> Entrada de Alumnos
             </router-link>
-          </li>                    
+          </li>-->                    
           <li class="nav-item">
             <router-link to="/CatAlumno" class="nav-link"  >
               <i class="fa fa-list-ul text-purple"></i> Alumnos

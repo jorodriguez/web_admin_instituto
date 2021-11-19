@@ -394,7 +394,29 @@
   </div>
 </template>
 
-<script src="../controller/PrincipalController.js"></script>
+<script>
+import URL from "../helpers/Urls";
+import { operacionesApi } from "../helpers/OperacionesApi";
+import { getUsuarioSesion } from "../helpers/Sesion";
+
+export default {
+  name: "principal",
+  components: {  },
+  mixins: [operacionesApi],
+  data() {
+    return {      
+      usuarioSesion: {}      
+    };
+  },
+  mounted() {
+    console.log("##### pagina principal ####");
+    this.usuarioSesion = getUsuarioSesion();
+  },
+  methods: {
+  
+  }
+};
+</script>
 
 <style scoped>
 .btn-head {
