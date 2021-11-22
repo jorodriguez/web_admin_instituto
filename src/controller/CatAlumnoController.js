@@ -34,7 +34,8 @@ export default {
       es: es,
       disableDaysFechaLimitePago: { days: [6, 0], to: new Date() },
       fechaBaja:new Date(),
-      observacionesBaja:""
+      observacionesBaja:"",
+      loader:false
     };
   },
   mounted() {
@@ -100,12 +101,12 @@ export default {
         co_grupo: 0,
         nombre: "",
         apellidos: "",
+        direccion:"",
         nombre_carino: "",
         cat_genero: -1,
         nombre_grupo: "",
         nombre_sucursal: "",
-        fecha_nacimiento: null,
-        alergias: "",
+        fecha_nacimiento: null,        
         nota: "",
         hora_entrada: "",
         hora_salida: "",
@@ -118,16 +119,15 @@ export default {
         genero: 1
       };
       this.generoAlumno = { id: -1, nombre: "", foto: "" },
-        this.loadFunctionGrupos();
+      this.loadFunctionGrupos();
       this.loadCatalogoGeneroAlumno();
 
       $("#modal_alumno").modal("show");
     },
-    guardar() {
+   async guardar() {
       console.log("Insertar");
 
-      if (!validacionDatosAlumno(this.input)) {
-        //if(!validacionDatosAlumno(this.input)){
+      if (!validacionDatosAlumno(this.input)) {        
         console.log("No paso la validacion");
         return;
       }
@@ -135,21 +135,25 @@ export default {
       this.input.foto = this.getFoto();
 
       this.input.co_sucursal = this.usuarioSesion.co_sucursal;
+      this.input.co_empresa = this.usuarioSesion.id_empresa;
       this.input.genero = this.usuarioSesion.id;
       this.input.fecha_nacimiento = moment(this.input.fecha_nacimiento).format('YYYY-MM-DD');
       this.input.fecha_inscripcion = moment(this.input.fecha_inscripcion).format('YYYY-MM-DD');
       this.input.fecha_limite_pago = moment(this.input.fecha_limite_pago).format('YYYY-MM-DD');  
-      this.post(URL.ALUMNOS_BASE,
-        this.input,
-        (result) => {
-          this.response = result.data;
-          console.log("this.response " + this.response);
-          //this.mensaje = "Se agregó el alumno";
-          this.$notificacion.info('Registro de alumno', 'Se registró el alumno.');
-          this.loadFunction();
-          $("#modal_alumno").modal("hide");
-        }
-      );
+
+      this.loader = true;
+      console.log("inciando");
+      const respuesta = await this.postAsync(URL.ALUMNOS_BASE,this.input);
+      console.log(respuesta);
+      if(respuesta){
+        this.$notificacion.info('Registro de alumno', 'Se registró el alumno.');
+        this.loadFunction();
+        $("#modal_alumno").modal("hide");
+      }else{
+        this.$notificacion.error('Ups!', 'Algo sucedió al intentar guardar el alumno, ponte en contacto con soporte técnico.');
+      }    
+      this.loader = false;
+      
     },
     modificar() {
       console.log("Modificar el id " + this.input.id);
@@ -159,6 +163,7 @@ export default {
         console.log("No paso la validacion");
         return;
       }
+   
 
       this.put(URL.ALUMNOS_BASE + "/" + this.input.id,
         this.input,

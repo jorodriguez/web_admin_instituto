@@ -174,15 +174,7 @@
                 ></datepicker>
               </div>
             </div>
-
-            <!--<label>Alergias</label>
-            <input
-              type="textarea"
-              class="form-control"
-              v-model="input.alergias"
-              placeholder="Alergias"
-            />-->
-
+    
             <div class="form-row">
               <div class="form-group form-group col-sm-6 col-md-6 col-lg-6 col-xl-6">
                 <label>
@@ -257,26 +249,7 @@
               </div>
             </div>
 
-            <div class="form-row">
-              <!--<div class="form-group col-6">
-                <label for="inputFechaLimitePago">
-                  Esquema de pago
-                  <span class="text-danger">*</span>
-                </label>
-                <select
-                  v-model="input.co_grupo"
-                  class="form-control"
-                  placeholder="Grupo"
-                  required
-                >
-                  <option
-                    v-for="grupo in listaGrupos"
-                    v-bind:value="grupo.id"
-                    v-bind:key="grupo.id"
-                    >{{ grupo.nombre }}</option
-                  >
-                </select>
-              </div>-->
+            <div class="form-row">              
               <div class="form-group col-6">
                 <label for="inputFechaLimitePago">
                   Fecha Pago
@@ -284,7 +257,7 @@
                 </label>
                 <datepicker
                   id="inputFechaLimitePagoColegiatura"
-                  v-model="input.fecha_limite_pago_mensualidad"
+                  v-model="input.fecha_limite_pago"
                   input-class="form-control"
                   :bootstrap-styling="true"
                   :language="es"
@@ -307,12 +280,12 @@
 
           <div class="modal-footer">
             <div v-if="operacion == 'INSERT'">
-              <button class="btn btn-lg btn-primary" v-on:click="guardar()">
+              <button class="btn btn-lg btn-primary" :disabled="loader" v-on:click="guardar()">
                 Guardar
               </button>
             </div>
             <div v-else-if="operacion == 'UPDATE'">
-              <button class="btn btn-lg btn-primary" v-on:click="modificar()">
+              <button class="btn btn-lg btn-primary" :disabled="loader" v-on:click="modificar()">
                 Modificar
               </button>
             </div>
@@ -423,12 +396,13 @@
           </div>
         </div>
 
-        <div class="table-responsive">
-          <div v-if="loader" class="mx-auto">
+        <div v-if="loader" class="mx-auto">
             <Loader :loading="loader" :mini="true" />
-          </div>
+        </div>
+
+        <div class="row">                 
           <div
-            class="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-3"
+            class="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-3 mt-2"
             v-for="row in lista"
             :key="row.id"
           >
@@ -470,6 +444,7 @@
                 alt="Foto"
                 title="Cambiar la foto"
               />
+
               <div class="card-body pointer" @click="verPerfil(row)">
                 <h4 class="card-text">
                   {{ row.nombre }}

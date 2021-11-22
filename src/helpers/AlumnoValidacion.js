@@ -65,7 +65,7 @@ export const validacionDatosAlumno = (alumno) => {
       return false;
     }*/
 
-    if (alumno.fecha_limite_pago_mensualidad == null || alumno.fecha_limite_pago_mensualidad == '') {      
+    if (alumno.fecha_limite_pago == null || alumno.fecha_limite_pago == '') {      
       Vue.prototype.$notificacion.error('Selecciona la fecha de pago', 'Selecciona la fecha de pago.');
       return false;
     }

@@ -10,23 +10,19 @@
 
     <Popup id="popup_preview" size="lg" :show_button_close="true">
       <div slot="header">
-        Enviar Estado de cuenta 
+        Estado de cuenta 
         <strong v-if="this.estadoCuenta"
-          >{{ this.estadoCuenta.alumno.nombre }}
-          {{ this.estadoCuenta.alumno.apellidos }}</strong
+          >{{ this.estadoCuenta.alumno.nombre_alumno }}
+          {{ this.estadoCuenta.alumno.apellidos_alumno }}</strong
         >
       </div>    
 
       <div slot="content" v-if="this.estadoCuenta" style="color:#000">        
         <div class="row">
-          <table class="table">
-            <tr align="left">
-              <td>Padres</td>
-              <td>{{ this.estadoCuenta.padres.nombre_padres }}</td>
-            </tr>
+          <table class="table">            
             <tr align="left">
               <td>Correos</td>
-              <td>{{ this.estadoCuenta.padres.correos + "" }}</td>
+              <td>{{ this.estadoCuenta.alumno.correo + "" }}</td>
             </tr>
           </table>
         </div>
@@ -37,7 +33,7 @@
         <button
           class="btn btn-primary"
           v-if="this.estadoCuenta"
-          :disabled="this.loading || !this.estadoCuenta.padres.correos"
+          :disabled="this.loading || !this.estadoCuenta.alumno.correo "
           @click="enviarEstadoCuenta()"
         >
           {{ this.loading ? "Enviando..." : "Enviar" }}
@@ -139,6 +135,7 @@ export default {
         this.get(`${URL.ESTADO_CUENTA}${this.idAlumno}`, result => {
           this.response = result.data;
           if (this.response != null) {
+            console.log(JSON.stringify(this.response));
             this.estadoCuenta = this.response;
             this.loading = false;
           }

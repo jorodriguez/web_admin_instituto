@@ -1,126 +1,149 @@
 <template>
   <div id="id_tabla_cargos">
-    <p
-      v-if="requiere_factura"
-      class="text-right text-success small"
-    >* Este alumno requiere de facturación.</p>
     <div class="row">
-      <div class="col text-left">
+      <div class="col">
         <div class="btn-group">
           <button
             type="button"
             class="btn btn-success"
             v-on:click="iniciarAgregarCargo()"
-          >Agregar Cargo</button>
+          >
+            Agregar Cargo
+          </button>
           <button
             type="button"
             v-on:click="iniciarEliminacionCargo()"
             class="btn btn-danger"
             title="Eliminar cargo(s) selecionado(s)"
-          >Eliminar Cargo</button>
+          >
+            Eliminar Cargo
+          </button>
         </div>
       </div>
-      <div class="col text-right">
+      <div class="col d-flex justify-content-end">
         <div class="btn-group">
           <button
             type="button"
             v-on:click="iniciarAgregarPago()"
             class="btn btn-success"
-          >Efectuar Pago</button>
+          >
+            Efectuar Pago
+          </button>
         </div>
       </div>
     </div>
 
-    <table class="table">
-      <thead>
-        <th>
-          <!--<div class="custom-control custom-checkbox">-->
+    <div class="table-responsive">
+      <table class="table">
+        <thead>
+          <th>
+            <!--<div class="custom-control custom-checkbox">-->
             <input
               type="checkbox"
               id="checkboxSeleccionarTodo"
               v-model="seleccionTodos"
-              v-on:change="seleccionarTodoPagos()"              
+              v-on:change="seleccionarTodoPagos()"
             />
-          <!--</div>-->
-        </th>
-        <th>Fecha</th>
-        <th>Concepto</th>
-        <th>Adeuda</th>
-        <th>Desc.</th>
-        <th>Pagado</th>
-        <!--<th>Nota</th>-->
-        <th></th>
-      </thead>
-      <tbody v-for="row in listaCargosAlumnos" :key="row.id">
-        <tr>
-          <td >
-            <input type="checkbox" id="checkbox" v-model="row.checked" v-if="!row.pagado" />
-            <i v-else class="text-success font-weight-normal">¡Pagado!</i>
-          </td>
-          <td>
-            <span class="font-weight-normal">{{row.fecha_format}}</span>
-          </td>
-          <td>
-            <a v-on:click="verDetalleCargo(row)" class="btn-link text-primary font-weight-normal" style="cursor: pointer;"   >
-              <span
-                v-if="!row.pagado"        
-                class="font-weight-normal"        
-              >{{row.cantidad > 1 ? row.cantidad:""}} {{row.nombre_cargo}}{{row.cantidad > 1 ? "s":""}} {{row.texto_ayuda != null ? row.texto_ayuda:''}}</span>
-              <span
-                v-else-if="row.pagado"
-                class="font-weight-normal tachado"
-              >{{row.cantidad > 1 ? row.cantidad:""}} {{row.nombre_cargo}} {{row.texto_ayuda != null ? row.texto_ayuda:''}}</span>
-               <span class="small text-muted">
-               <div class="text-wrap" style="width: 10rem;">
-                 {{row.nota}}
-               </div>              
-            </span>
-            </a>
-           
-          </td>
-          <td>
-            <strong>
-              <span class="font-weight-bold text-danger">${{row.total}}</span>
-            </strong>
-          </td>
-          <td>
-            <strong>
-              <span class="font-weight-bold text-">${{row.descuento}}</span><br/>
-              <span class="text-orange">{{row.descuento_aplicado ? "("+row.nombre_descuento+")":"" }}</span>             
-                          </strong>
-          </td>
-          <td>
-            <strong>
-              <span class="font-weight-bold text-success">${{row.total_pagado}}</span>
-            </strong>
-          </td>
-          <!--
+            <!--</div>-->
+          </th>
+          <th>Fecha</th>
+          <th>Concepto</th>
+          <th>Adeuda</th>
+          <th>Desc.</th>
+          <th>Pagado</th>
+          <!--<th>Nota</th>-->
+          <th></th>
+        </thead>
+        <tbody v-for="row in listaCargosAlumnos" :key="row.id">
+          <tr>
+            <td>
+              <input
+                type="checkbox"
+                id="checkbox"
+                v-model="row.checked"
+                v-if="!row.pagado"
+              />
+              <i v-else class="text-success font-weight-normal">¡Pagado!</i>
+            </td>
+            <td>
+              <span class="font-weight-normal">{{ row.fecha_format }}</span>
+            </td>
+            <td>
+              <a
+                v-on:click="verDetalleCargo(row)"
+                class="btn-link text-primary font-weight-normal"
+                style="cursor: pointer;"
+              >
+                <span v-if="!row.pagado" class="font-weight-normal"
+                  >{{ row.cantidad > 1 ? row.cantidad : "" }}
+                  {{ row.nombre_cargo }}{{ row.cantidad > 1 ? "s" : "" }}
+                  {{ row.texto_ayuda != null ? row.texto_ayuda : "" }}</span
+                >
+                <span v-else-if="row.pagado" class="font-weight-normal tachado"
+                  >{{ row.cantidad > 1 ? row.cantidad : "" }}
+                  {{ row.nombre_cargo }}
+                  {{ row.texto_ayuda != null ? row.texto_ayuda : "" }}</span
+                >
+                <span class="small text-muted">
+                  <div class="text-wrap" style="width: 10rem;">
+                    {{ row.nota }}
+                  </div>
+                </span>
+              </a>
+            </td>
+            <td>
+              <strong>
+                <span class="font-weight-bold text-danger"
+                  >${{ row.total }}</span
+                >
+              </strong>
+            </td>
+            <td>
+              <strong>
+                <span class="font-weight-bold text-">${{ row.descuento }}</span
+                ><br />
+                <span class="text-orange">{{
+                  row.descuento_aplicado ? "(" + row.nombre_descuento + ")" : ""
+                }}</span>
+              </strong>
+            </td>
+            <td>
+              <strong>
+                <span class="font-weight-bold text-success"
+                  >${{ row.total_pagado }}</span
+                >
+              </strong>
+            </td>
+            <!--
           <td>
             <div class="text-wrap" style="width: 15rem;">{{row.nota}}</div>
           </td>
           -->
-          <td></td>
-        </tr>
-      </tbody>
-    </table>
+            <td></td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="text-center">
+      <div v-if="loaderCargos" class="spinner-border text-info" role="status">
+        <span class="sr-only"></span>
+      </div>
+    </div>
 
-      <div class="text-center">
-              <div v-if="loaderCargos" class="spinner-border text-info"  role="status">
-                <span class="sr-only"></span>
-              </div> 
-          </div>
- 
-          <button        
-            class="btn  btn-link  border btn-block"
-            :disabled="loaderCargos"            
-            @click="cargarTodosCargos()"
-            >Ver todos los cargos</button>
-
+    <button
+      class="btn  btn-link  border btn-block"
+      :disabled="loaderCargos"
+      @click="cargarTodosCargos()"
+    >
+      Ver todos los cargos
+    </button>
 
     <!-- MODAL PARA AGREGAR CARGO -->
 
     <Popup id="modal_cargo" show_button_close="true">
-      <div slot="header">Agregar Cargo para {{alumno ? alumno.nombre :''}}</div>
+      <div slot="header">
+        Agregar Cargo para {{ alumno ? alumno.nombre : "" }}
+      </div>
       <div slot="content">
         <div class="form-group">
           <label for="selectTipoCargo">
@@ -140,7 +163,8 @@
               v-for="p in listaCargos"
               v-bind:value="p"
               v-bind:key="p.id"
-            >{{ p.nombre }}</option>
+              >{{ p.nombre }}</option
+            >
           </select>
         </div>
         <div
@@ -164,14 +188,16 @@
               v-bind:key="p.fecha_mes"
               :disabled="p.cargo_registrado"
             >
-              <span :class="p.cargo_registrado ? 'text-muted':''">{{ p.nombre_mes }}</span>
+              <span :class="p.cargo_registrado ? 'text-muted' : ''">{{
+                p.nombre_mes
+              }}</span>
             </option>
           </select>
         </div>
 
         <div
           class="form-group"
-          v-if="cargo.cat_cargo.id != -1 &&  cargo.cat_cargo.escribir_cantidad"
+          v-if="cargo.cat_cargo.id != -1 && cargo.cat_cargo.escribir_cantidad"
         >
           <label for="inputCargo">
             Cantidad
@@ -219,7 +245,9 @@
         </div>
       </div>
       <div slot="footer">
-        <button class="btn btn-lg btn-primary" v-on:click="guardarCargo()">Guardar</button>
+        <button class="btn btn-lg btn-primary" v-on:click="guardarCargo()">
+          Guardar
+        </button>
       </div>
     </Popup>
 
@@ -243,12 +271,15 @@
             v-for="p in listaFormasPago"
             v-bind:value="p"
             v-bind:key="p.id"
-          >{{ p.nombre }} - ({{p.descripcion}})</option>
+            >{{ p.nombre }} - ({{ p.descripcion }})</option
+          >
         </select>
 
         <div
           class="form-group"
-          v-if="pago.cat_forma_pago.permite_factura && existen_montos_facturables"
+          v-if="
+            pago.cat_forma_pago.permite_factura && existen_montos_facturables
+          "
         >
           <div class="form-check">
             <input
@@ -266,12 +297,16 @@
 
         <div
           class="form-row"
-          v-if="pago.cat_forma_pago.permite_factura && existen_montos_facturables && escribir_folio_factura"
+          v-if="
+            pago.cat_forma_pago.permite_factura &&
+              existen_montos_facturables &&
+              escribir_folio_factura
+          "
         >
-          <span
-            v-if="!requiere_factura"
-            class="text-danger"
-          >* No estan activos los datos de facturación, vaya a la pestaña facturación para habilitarlos ó escribirlos.</span>
+          <span v-if="!requiere_factura" class="text-danger"
+            >* No estan activos los datos de facturación, vaya a la pestaña
+            facturación para habilitarlos ó escribirlos.</span
+          >
           <div class="col-md-6" v-if="requiere_factura">
             <label for="inputIdentificadorFactura">Folio de factura</label>
             <input
@@ -291,10 +326,16 @@
               type="text"
               v-model="pago.identificador_pago"
               class="form-control"
-              :placeholder="'No. '+pago.cat_forma_pago.nombre"
+              :placeholder="'No. ' + pago.cat_forma_pago.nombre"
             />
-          </div>  
-          <div :class="pago.cat_forma_pago.escribir_numero_pago ? 'col-md-10':'col-md-12'">
+          </div>
+          <div
+            :class="
+              pago.cat_forma_pago.escribir_numero_pago
+                ? 'col-md-10'
+                : 'col-md-12'
+            "
+          >
             <label for="inputNotaPago">Nota</label>
             <input
               id="inputNotaPago"
@@ -303,7 +344,7 @@
               class="form-control"
               placeholder="Escribir nota "
             />
-          </div>                  
+          </div>
         </div>
 
         <table class="table">
@@ -316,26 +357,36 @@
             <th>Importe</th>
           </thead>
           <tbody v-for="row in listaCargosAlumnosSeleccionados" :key="row.id">
-            <tr v-if="row.checked" :class="row.es_facturable ? 'bg-info text-white':''">
+            <tr
+              v-if="row.checked"
+              :class="row.es_facturable ? 'bg-info text-white' : ''"
+            >
               <td style="width:25%">
-                <span class="h4">{{row.nombre_cargo}} {{row.texto_ayuda}}</span>
+                <span class="h4"
+                  >{{ row.nombre_cargo }} {{ row.texto_ayuda }}</span
+                >
               </td>
               <td>
                 <strong>
-                  <span class="h3 font-weight-bold">${{row.cargo}}</span>
+                  <span class="h3 font-weight-bold">${{ row.cargo }}</span>
                 </strong>
               </td>
-              <td style="width:15%">                
+              <td style="width:15%">
                 <select
                   v-model="row.cat_descuento"
                   class="form-control h3 font-weight-bold"
                   placeholder="Descuento"
                   @change="reacalcularTotalDescuento(row)"
                   v-if="!row.descuento_aplicado && row.aplica_descuento"
-                  :disabled="(row.total_pagado > 0)"
+                  :disabled="row.total_pagado > 0"
                 >
-                  <option id="noOptionDescuento" v-bind:value="noOptionDescuento">
-                    <span class="h3 font-weight-bold">{{ noOptionDescuento.nombre }}</span>
+                  <option
+                    id="noOptionDescuento"
+                    v-bind:value="noOptionDescuento"
+                  >
+                    <span class="h3 font-weight-bold">{{
+                      noOptionDescuento.nombre
+                    }}</span>
                   </option>
                   <option
                     id="selectDescuento"
@@ -346,9 +397,11 @@
                     <span class="h3 font-weight-bold">{{ d.nombre }}</span>
                   </option>
                 </select>
-                <h3 v-if="row.descuento_aplicado">{{row.nombre_descuento}}  </h3>                
+                <h3 v-if="row.descuento_aplicado">
+                  {{ row.nombre_descuento }}
+                </h3>
               </td>
-              <td style="width:20%">                
+              <td style="width:20%">
                 <input
                   id="inputAbono"
                   type="number"
@@ -358,11 +411,15 @@
                   placeholder="Pago"
                   required
                 />
-                <span v-if="row.total_pagado > 0" > pagado : ${{row.total_pagado}}</span>
+                <span v-if="row.total_pagado > 0">
+                  pagado : ${{ row.total_pagado }}</span
+                >
               </td>
               <td>
                 <strong>
-                  <span class="h3 font-weight-bold text-danger">${{row.total}}</span>
+                  <span class="h3 font-weight-bold text-danger"
+                    >${{ row.total }}</span
+                  >
                 </strong>
               </td>
             </tr>
@@ -375,7 +432,7 @@
                 <strong>Cargos :</strong>
               </td>
               <td class="text-danger">
-                <strong>${{formatPrice(total_cargos)}}</strong>
+                <strong>${{ formatPrice(total_cargos) }}</strong>
               </td>
             </tr>
             <tr>
@@ -383,7 +440,11 @@
                 <strong>Desc.</strong>
               </td>
               <td>
-                <strong>{{pago.descuento_total != 0 ? ("$-"+formatPrice(pago.descuento_total)):"" }}</strong>
+                <strong>{{
+                  pago.descuento_total != 0
+                    ? "$-" + formatPrice(pago.descuento_total)
+                    : ""
+                }}</strong>
               </td>
             </tr>
             <tr>
@@ -391,7 +452,7 @@
                 <strong>Pago :</strong>
               </td>
               <td>
-                <strong>${{formatPrice(pago.pago_total)}}</strong>
+                <strong>${{ formatPrice(pago.pago_total) }}</strong>
               </td>
             </tr>
             <tr>
@@ -402,7 +463,13 @@
               </td>
               <td class="text-danger">
                 <!--<strong>${{total_cargos - pago.pago_total }}</strong>-->
-                <strong>${{formatPrice(total_cargos - (pago.descuento_total + pago.pago_total))}}</strong>
+                <strong
+                  >${{
+                    formatPrice(
+                      total_cargos - (pago.descuento_total + pago.pago_total)
+                    )
+                  }}</strong
+                >
                 <!--<strong>${{total_adeuda}}</strong>                -->
               </td>
             </tr>
@@ -410,14 +477,19 @@
         </div>
       </div>
       <div slot="footer">
-       <!-- <button type="button" 
+        <!-- <button type="button" 
                 class="btn btn-lg btn-secondary" 
                 data-dismiss="modal">Cerrar</button>-->
-      <button type="button" 
-                class="btn btn-lg btn-secondary" 
-                @click="cancelarEfectuarPago()"
-                >Cerrar</button>
-        <button class="btn btn-lg btn-primary" v-on:click="guardarPago()">Pagar</button>
+        <button
+          type="button"
+          class="btn btn-lg btn-secondary"
+          @click="cancelarEfectuarPago()"
+        >
+          Cerrar
+        </button>
+        <button class="btn btn-lg btn-primary" v-on:click="guardarPago()">
+          Pagar
+        </button>
       </div>
     </Popup>
 
@@ -434,32 +506,69 @@
           </thead>
           <tbody>
             <tr>
-              <td>{{cargoSeleccionado.fecha_format}}</td>
+              <td>{{ cargoSeleccionado.fecha_format }}</td>
               <td style="width:25%;">
-                <span
-                  v-if="!cargoSeleccionado.pagado"                  
-                  class="font-weight-bold"
-                >
-                {{cargoSeleccionado.cantidad > 1 ? cargoSeleccionado.cantidad:""}} {{cargoSeleccionado.nombre_cargo}}{{cargoSeleccionado.cantidad > 1 ? "s":""}} {{cargoSeleccionado.texto_ayuda != null ? cargoSeleccionado.texto_ayuda:'' }}
+                <span v-if="!cargoSeleccionado.pagado" class="font-weight-bold">
+                  {{
+                    cargoSeleccionado.cantidad > 1
+                      ? cargoSeleccionado.cantidad
+                      : ""
+                  }}
+                  {{ cargoSeleccionado.nombre_cargo
+                  }}{{ cargoSeleccionado.cantidad > 1 ? "s" : "" }}
+                  {{
+                    cargoSeleccionado.texto_ayuda != null
+                      ? cargoSeleccionado.texto_ayuda
+                      : ""
+                  }}
                 </span>
                 <span
                   v-else-if="cargoSeleccionado.pagado"
                   class="tachado font-weight-bold "
-                >{{cargoSeleccionado.cantidad > 1 ? cargoSeleccionado.cantidad:""}} {{cargoSeleccionado.nombre_cargo}} {{cargoSeleccionado.texto_ayuda != null ? cargoSeleccionado.texto_ayuda:'' }}
+                  >{{
+                    cargoSeleccionado.cantidad > 1
+                      ? cargoSeleccionado.cantidad
+                      : ""
+                  }}
+                  {{ cargoSeleccionado.nombre_cargo }}
+                  {{
+                    cargoSeleccionado.texto_ayuda != null
+                      ? cargoSeleccionado.texto_ayuda
+                      : ""
+                  }}
                 </span>
                 <div class="text-wrap" style="width: 10rem;">
-                  <small :class="cargoSeleccionado.pagado ? 'tachado':''">{{cargoSeleccionado.nota}}</small>
+                  <small :class="cargoSeleccionado.pagado ? 'tachado' : ''">{{
+                    cargoSeleccionado.nota
+                  }}</small>
                 </div>
               </td>
               <td>
-                <label class="font-weight-bold h3">${{ cargoSeleccionado.descuento}} <br/> <span class="h4 text-orange">{{cargoSeleccionado.descuento_aplicado ? "("+cargoSeleccionado.nombre_descuento+")" : "" }} </span></label></td>
-              <td>
-                <label class="font-weight-bold text-danger h3">${{cargoSeleccionado.total}}</label>
+                <label class="font-weight-bold h3"
+                  >${{ cargoSeleccionado.descuento }} <br />
+                  <span class="h4 text-orange"
+                    >{{
+                      cargoSeleccionado.descuento_aplicado
+                        ? "(" + cargoSeleccionado.nombre_descuento + ")"
+                        : ""
+                    }}
+                  </span></label
+                >
               </td>
               <td>
-                <label class="font-weight-bold text-success h3">${{cargoSeleccionado.total_pagado}}</label>
-                <i v-if="cargoSeleccionado.pagado" class="fas fa-check-circle text-success"></i>
-                <i v-else class="fas fa-check-circle text-gray"></i>                
+                <label class="font-weight-bold text-danger h3"
+                  >${{ cargoSeleccionado.total }}</label
+                >
+              </td>
+              <td>
+                <label class="font-weight-bold text-success h3"
+                  >${{ cargoSeleccionado.total_pagado }}</label
+                >
+                <i
+                  v-if="cargoSeleccionado.pagado"
+                  class="fas fa-check-circle text-success"
+                ></i>
+                <i v-else class="fas fa-check-circle text-gray"></i>
               </td>
             </tr>
           </tbody>
@@ -480,28 +589,35 @@
             </thead>
             <tbody v-for="row in listaPagosCargo" :key="row.id">
               <tr>
-                <td>                  
-                  <label>{{row.fecha_format }}</label>
+                <td>
+                  <label>{{ row.fecha_format }}</label>
                 </td>
                 <td>
-                  <label class="font-weight-bold text-success">${{row.pago}}</label>
+                  <label class="font-weight-bold text-success"
+                    >${{ row.pago }}</label
+                  >
                 </td>
                 <td>
-                  <label class="font-weight-bold text-info">{{row.nombre_forma_pago}}</label>
+                  <label class="font-weight-bold text-info">{{
+                    row.nombre_forma_pago
+                  }}</label>
                 </td>
-                <td>{{row.identificador_factura}}</td>
-                <td>{{row.identificador_pago}}</td>
+                <td>{{ row.identificador_factura }}</td>
+                <td>{{ row.identificador_pago }}</td>
                 <td>
-                  <div class="text-wrap" style="width: 4rem;">{{row.nota}}</div>
+                  <div class="text-wrap" style="width: 4rem;">
+                    {{ row.nota }}
+                  </div>
                 </td>
-                <td >
-                  <ReenviarComprobantePago :id_alumno="idalumno" :id_pago="row.id_pago" />
+                <td>
+                  <ReenviarComprobantePago
+                    :id_alumno="idalumno"
+                    :id_pago="row.id_pago"
+                  />
                 </td>
               </tr>
             </tbody>
           </table>
- 
-        
         </div>
       </div>
     </Popup>
@@ -516,12 +632,18 @@
               Motivo
               <span class="text-danger">*</span>
             </label>
-            <textarea v-model="motivo_eliminacion" class="form-control" required></textarea>
+            <textarea
+              v-model="motivo_eliminacion"
+              class="form-control"
+              required
+            ></textarea>
           </div>
         </div>
       </div>
       <div slot="footer">
-        <button v-on:click="confirmarEliminacion()" class="btn btn-danger">Eliminar</button>
+        <button v-on:click="confirmarEliminacion()" class="btn btn-danger">
+          Eliminar
+        </button>
       </div>
     </Popup>
     <!-- ELIMINAR CARGO -->
