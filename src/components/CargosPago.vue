@@ -139,8 +139,8 @@
     </button>
 
     <!-- MODAL PARA AGREGAR CARGO -->
-
-    <Popup id="modal_cargo" show_button_close="true">
+    <!--
+    <Popup id="modal_cargo" size="lg" show_button_close="true">
       <div slot="header">
         Agregar Cargo para {{ alumno ? alumno.nombre : "" }}
       </div>
@@ -167,6 +167,131 @@
             >
           </select>
         </div>
+        <div
+          class="form-group"
+          v-if="cargo.cat_cargo.id != -1 && cargo.cat_cargo.seleccionar_fecha"
+        >
+          <label for="inputMensualidadCargo">
+            Seleccione el mes correspondiente
+            <span class="text-danger">*</span>
+          </label>
+          <select
+            v-model="cargo.fecha_cargo"
+            class="form-control"
+            placeholder="Mensualidad"
+            @change="onChangeMensualidad()"
+          >
+            <option
+              id="selectMesAdeuda"
+              v-for="p in listaMesesAdeuda"
+              v-bind:value="p"
+              v-bind:key="p.fecha_mes"
+              :disabled="p.cargo_registrado"
+            >
+              <span :class="p.cargo_registrado ? 'text-muted' : ''">{{
+                p.nombre_mes
+              }}</span>
+            </option>
+          </select>
+        </div>
+
+        <div
+          class="form-group"
+          v-if="cargo.cat_cargo.id != -1 && cargo.cat_cargo.escribir_cantidad"
+        >
+          <label for="inputCargo">
+            Cantidad
+            <span class="text-danger">*</span>
+          </label>
+          <input
+            id="inputCargo"
+            type="number"
+            v-model="cargo.cantidad"
+            class="form-control"
+            placeholder="Cantidad"
+            min="1"
+            max="999"
+            @change="calcularTotalCargo()"
+            maxlength="3"
+          />
+        </div>
+
+        <div class="form-group" v-if="cargo.cat_cargo.id != -1">
+          <label for="inputMonto">
+            Monto $
+            <span class="text-danger">*</span>
+          </label>
+          <input
+            id="inputMonto"
+            type="number"
+            v-model="cargo.monto"
+            class="form-control"
+            :disabled="!cargo.cat_cargo.escribir_monto"
+            placeholder="Monto"
+            min="1"
+            @change="calcularTotalCargo()"
+            maxlength="6"
+          />
+        </div>
+        <div class="form-group">
+          <label for="inputNota">Nota</label>
+          <input
+            id="inputNota"
+            type="text"
+            v-model="cargo.nota"
+            class="form-control"
+            placeholder="Escriba una nota"
+          />
+        </div>
+      </div>
+      <div slot="footer">
+        <button class="btn btn-lg btn-primary" v-on:click="guardarCargo()">
+          Guardar
+        </button>
+      </div>
+    </Popup>
+    -->
+    <Popup id="modal_cargo" size="lg" show_button_close="true">
+      <div slot="header">
+        Agregar Cargo para {{ alumno ? alumno.nombre : "" }}
+      </div>
+      <div slot="content">
+        <div class="row">
+          <div
+            class="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-3"
+            v-for="row in listaCargos"
+            :key="row.id"
+          >
+            <div @click="()=>onChangeCargo(row)" :class="`card ${row.id == cargo.cat_cargo.id ? 'border-primary':''}`">
+              <div class="card-body pointer">
+                <h4 class="card-title">{{ row.nombre }}</h4>
+                <h5 class="card-text">${{ row.precio }}</h5>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!--<div class="form-group">
+          <label for="selectTipoCargo">
+            Cargo
+            <span class="text-danger">*</span>
+          </label>
+          <select
+            v-model="cargo.cat_cargo"
+            class="form-control"
+            placeholder="Cargo"
+            @change="onChangeCargo()"
+            required
+            autofocus
+          >
+            <option
+              id="selectCargo"
+              v-for="p in listaCargos"
+              v-bind:value="p"
+              v-bind:key="p.id"
+              >{{ p.nombre }}</option
+            >
+          </select>
+        </div>-->
         <div
           class="form-group"
           v-if="cargo.cat_cargo.id != -1 && cargo.cat_cargo.seleccionar_fecha"

@@ -22,7 +22,10 @@
           <table class="table">            
             <tr align="left">
               <td>Correos</td>
-              <td>{{ this.estadoCuenta.alumno.correo + "" }}</td>
+              <td>
+                  {{ this.estadoCuenta.alumno.correo ? this.estadoCuenta.alumno.correo : ''}}
+                  <span class="text-danger" v-if="!this.estadoCuenta.alumno.correo"> No tiene correo </span>
+              </td>
             </tr>
           </table>
         </div>

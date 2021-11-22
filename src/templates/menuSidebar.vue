@@ -141,19 +141,22 @@
           </li>-->                    
           <li class="nav-item">
             <router-link to="/CatAlumno" class="nav-link"  >
-              <i class="fa fa-list-ul text-purple"></i> Alumnos
+              <i class="fa fa-list-ul text-primary"></i> Alumnos
             </router-link>           
-          </li>          
+          </li>                    
           <li class="nav-item">
             <router-link to="/Gastos" class="nav-link"  >
-              <i class="fa fa-cash-register text-blue"></i> Gastos
+              <i class="fa fa-cash-register text-primary"></i> Gastos
             </router-link>
           </li>
-           <li class="nav-item nav-with-child">            
-            <router-link to="/administracion" class="nav-link">
-              <i class="fa fa-cog text-blue"></i> Administración
+          <li class="nav-item">
+            <router-link
+              to="/AsistenciasUsuarios"
+              class="nav-link"              
+            ><i class="fa fa-user text-primary"></i> Asistencia Maestros
             </router-link>
-          </li>          
+          </li> 
+          
         </ul>
         <!-- Divider -->
         <hr class="my-3" />
@@ -161,13 +164,12 @@
         <h6 class="navbar-heading text-muted"></h6>
 
         <ul class="navbar-nav mb-md-3">
-          <li class="nav-item">
-            <router-link
-              to="/AsistenciasUsuarios"
-              class="btn btn-block btn btn-outline-default"
-              
-            >Asistencia/Miss</router-link>
-          </li>
+          
+          <li class="nav-item nav-with-child">            
+            <router-link to="/administracion" class="nav-link">
+              <i class="fa fa-cog text-primary"></i> Administración
+            </router-link>
+          </li>          
         </ul>
         <ul class="navbar-nav">
           <li class="nav-item active active-pro">

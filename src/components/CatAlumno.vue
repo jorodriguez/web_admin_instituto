@@ -405,6 +405,7 @@
             class="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-3 mt-2"
             v-for="row in lista"
             :key="row.id"
+            @click="verPerfil(row)"
           >
             <div class="card border-light">
               <div class="d-flex justify-content-end ">
@@ -438,14 +439,13 @@
 
               <img
                 class="card-img-top pointer rounded-circle mx-auto"
-                style="width:100px"
-                @click="subirFotoPerfil(row.id)"
+                style="width:100px"                
                 :src="row.foto"
                 alt="Foto"
                 title="Cambiar la foto"
               />
 
-              <div class="card-body pointer" @click="verPerfil(row)">
+              <div class="card-body pointer" >
                 <h4 class="card-text">
                   {{ row.nombre }}
                   <span v-if="row.mostrar_nombre_carino"
