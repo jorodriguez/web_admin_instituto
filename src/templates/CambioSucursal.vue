@@ -29,7 +29,7 @@
                     <img
                       v-if="row.foto != null && row.foto != '#'"
                       alt="Image placeholder"
-                      :src="row.foto ? row.foto:'../assets/magic.png'"
+                      :src="row.foto ? row.foto:'../assets/logo.png'"
                     />
                   </a>
                 </div>
@@ -37,17 +37,8 @@
                   <h4 class="mb-0">
                     <a href="#!" class="h1" @click="cambiarSucursal(row)">{{row.nombre_sucursal}}</a>
                   </h4>
-                  <p class="text-sm text-muted mb-0">
-                    <!--<span :class="row.contador_alumnos_por_entregar > 0 ? 'text-danger':'text-gray'">●</span>-->
-                    <span :class="row.contador_alumnos_por_entregar > 0 ? 'text-danger':'text-gray'">
-                      <span :class="row.contador_alumnos_por_entregar > 0 ? 'badge badge-pill badge-danger':'badge badge-pill badge-secondary'">{{row.contador_alumnos_por_entregar}}</span> alumnos por entregar
-                    </span>
-                  </p>
                   <span class="text-primary">●</span>
-                  <small>{{row.contador_alumnos}} Alumnos</small>
-                  <span :class="row.contador_asistencia_alumnos > 0 ? 'text-success':'text-gray'">●</span>
-                  <small>{{row.contador_asistencia_alumnos}} Asistencias en total</small>
-                  
+                  <small>{{row.contador_alumnos}} Alumnos</small>                 
                 </div>
                 <div class="col-auto">
                   <button
@@ -136,12 +127,9 @@ export default {
               cargarSesion(results.data)
                 .then(path => {
                   console.log("PATH " + path);
-
                   this.usuarioSesion = getUsuarioSesion();
-
-                  //this.$router.push({ path: '/' });
+                  
                   this.$router.push({ path: path });
-                  //  Bus.$emit('CAMBIO_SUCURSAL',{id_sucursal_seleccionada:this.usuarioSesion.co_sucursal});
                   this.$root.$emit("CAMBIO_SUCURSAL", {
                     id_sucursal_seleccionada: this.usuarioSesion.co_sucursal
                   });

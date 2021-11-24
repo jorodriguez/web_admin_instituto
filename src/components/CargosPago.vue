@@ -251,12 +251,13 @@
       </div>
     </Popup>
     -->
-    <Popup id="modal_cargo" size="lg" show_button_close="true">
+    <Popup id="modal_cargo" size="md" show_button_close="true">
       <div slot="header">
         Agregar Cargo para {{ alumno ? alumno.nombre : "" }}
       </div>
       <div slot="content">
-        <div class="row">
+        <!--<div class="row">
+        
           <div
             class="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-3"
             v-for="row in listaCargos"
@@ -270,7 +271,8 @@
             </div>
           </div>
         </div>
-        <!--<div class="form-group">
+        -->
+        <div class="form-group">
           <label for="selectTipoCargo">
             Cargo
             <span class="text-danger">*</span>
@@ -291,7 +293,9 @@
               >{{ p.nombre }}</option
             >
           </select>
-        </div>-->
+        </div>
+
+        
         <div
           class="form-group"
           v-if="cargo.cat_cargo.id != -1 && cargo.cat_cargo.seleccionar_fecha"
@@ -319,6 +323,7 @@
             </option>
           </select>
         </div>
+        
 
         <div
           class="form-group"
@@ -400,27 +405,7 @@
           >
         </select>
 
-        <div
-          class="form-group"
-          v-if="
-            pago.cat_forma_pago.permite_factura && existen_montos_facturables
-          "
-        >
-          <div class="form-check">
-            <input
-              type="checkbox"
-              id="checkboxFacturado"
-              v-model="escribir_folio_factura"
-              name="facturado"
-            />
-            <label class="form-check-label" for="checkboxFacturado">
-              Facturado
-              <span class="text-muted">| Escribir folio de factura</span>
-            </label>
-          </div>
-        </div>
-
-        <div
+           <div
           class="form-row"
           v-if="
             pago.cat_forma_pago.permite_factura &&

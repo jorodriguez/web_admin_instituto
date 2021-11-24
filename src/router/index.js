@@ -50,7 +50,7 @@ const router = new Router({
     {       
       path: '/bienvenido', name: 'Bienvenido', component: Bienvenido, meta: { requiresAuth: true },
       children: [
-        { path: '/principal', name: 'PaginaPrincipal', component: Principal, meta: { requiresAuth: true, validar: false } },
+        { path: '/principal', name: 'PaginaPrincipal', component: Principal, meta: { requiresAuth: true, validar: false } },        
         { path: '/CatAlumno', name: 'CatAlumno', component: CatAlumno, meta: { requiresAuth: true, validar: false } },
         { path: '/PerfilAlumno/:id', name: 'PerfilAlumno', component: PerfilAlumno, meta: { requiresAuth: true, validar: false } },
         { path: '/SubirFotoAlumno/:id', name: 'SubirFotoAlumno', component: SubirFotoAlumno, meta: { requiresAuth: true, validar: false } },        

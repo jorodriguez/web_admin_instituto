@@ -164,8 +164,8 @@ export default {
 
       $('#modal_cargo').modal('show');
     },
-    onChangeCargo(cargoSelect) {
-      this.cargo.cat_cargo = cargoSelect;
+    onChangeCargo() {
+      //this.cargo.cat_cargo = cargoSelect;
       console.log("cargo.cat_cargo " + JSON.stringify(this.cargo.cat_cargo));
       if (!this.cargo.cat_cargo.escribir_cantidad) {
         this.cargo.cantidad = 1;

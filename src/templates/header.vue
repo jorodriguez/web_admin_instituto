@@ -7,7 +7,7 @@
       <!-- Mask -->
       <!--<span class="mask bg-gradient-default opacity-8"></span>-->
       <!--style="background-color:#9BE1AD !important;"-->
-      <span class="mask bg-success opacity-8"></span>
+      <span class="mask bg-primary opacity-8"></span>
       <!-- Header container -->
       <div class="container-fluid d-flex align-items-center">
         <div class="row">
