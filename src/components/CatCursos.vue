@@ -1,6 +1,6 @@
 <template>
-  <div class="cat_alumno">
-    <h1>Alumnos ({{ lista != [] ? lista.length : 0 }})</h1>
+  <div class="cat_curso">
+    <h1>Cursos ({{ lista != [] ? lista.length : 0 }})</h1>
     <small>{{ usuarioSesion.nombre_sucursal }}</small>
     <div class="row">
       <div class="col-auto mr-auto">
@@ -12,22 +12,14 @@
           class="btn btn-primary btn-lg"
           v-on:click="nuevo()"
         >
-          Nueva Inscripción
+          Nuevo Curso
         </button>
-      </div>
-      <div class="col-auto">
-        <router-link
-          to="/ReactivarAlumno"
-          class="btn btn-outline-danger btn-lg"
-        >
-          Reactivar alumno
-        </router-link>
-      </div>
+      </div>      
     </div>
 
     <br />
     <div
-      id="modal_alumno"
+      id="modal_curso"
       class="modal"
       tabindex="-1"
       data-keyboard="false"
@@ -37,7 +29,7 @@
       <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title">Registro de Alumno</h5>
+            <h5 class="modal-title">Registro de Curso</h5>
             <button
               type="button"
               class="close"
@@ -100,7 +92,7 @@
                 ></datepicker>
               </div>
               <div class="form-group col-sm-6 col-md-6 col-lg-6 col-xl-6">
-              <!--<label>Télefono</label>
+              <label>Télefono</label>
                 <input
                   type="text"
                   v-model="input.telefono"
@@ -108,7 +100,11 @@
                   placeholder="(52)"
                   required
                 />
-                -->
+              </div>
+
+             
+             <!--
+              <div class="form-group col-6">
                 <label>Sexo<span class="text-danger">*</span></label>
                 <select
                   v-model="input.cat_genero"
@@ -125,13 +121,14 @@
                   >
                 </select>
               </div>
+              -->
 
             </div>
 
             <div class="form-row">
               <div class="form-group col-6">
                 <label>
-                  Especialidad/Diplomado
+                  Especialidad
                   <span class="text-danger">*</span>
                 </label>
                 <select

@@ -81,13 +81,13 @@
             <li class="nav-item">
               <a
                 class="nav-link"
-                id="pills-contacto-tab"
+                id="pills-inscripciones-tab"
                 data-toggle="pill"
-                href="#pills-contacto"
+                href="#pills-inscripciones"
                 role="tab"
-                aria-controls="pills-contacto"
+                aria-controls="pills-inscripciones"
                 aria-selected="false"
-                >Contacto
+                >Especialidad/Diplomados
               </a>
             </li>
 
@@ -342,12 +342,12 @@
 
             <!-- PAGOS -->
 
-            <!-- contacto -->
+            <!-- inscripciones -->
             <div
               class="tab-pane fade"
-              id="pills-contacto"
+              id="pills-inscripciones"
               role="tabpanel"
-              aria-labelledby="pills-contacto-tab"
+              aria-labelledby="pills-inscripciones-tab"
             >
               <div class="card">
                 <div class="card-body">
@@ -386,7 +386,7 @@
               </div>
             </div>
 
-            <!--contacto-->
+            <!--inscripciones-->
           </div>
         </div>
       </div>
