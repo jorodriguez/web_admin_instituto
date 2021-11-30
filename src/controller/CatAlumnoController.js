@@ -26,13 +26,10 @@ export default {
       criterioNombre: "",
       lista: [],
       listaGeneroAlumno: [],
-      listaRespaldo: [],
-      listaGrupos: [],
+      listaRespaldo: [],     
       loadFunction: null,
-      loadFunctionGrupos: null,
       mensaje: "",
-      es: es,
-      disableDaysFechaLimitePago: { days: [6, 0], to: new Date() },
+      es: es,     
       fechaBaja:new Date(),
       observacionesBaja:"",
       loader:false
@@ -60,152 +57,13 @@ export default {
     };
     //traer grupos
     console.log("process.env.URL_GRUPOS " + process.env.URL_GRUPOS);
-
-    this.loadFunctionGrupos = function () {
-      this.get(`${URL.GRUPOS_BASE}/${this.usuarioSesion.id_empresa}`,
-        (result) => {
-          this.response = result.data;
-          console.log("Grupos " + this.response);
-          if (this.response != null) {
-            this.listaGrupos = this.response;
-          }
-        });
-    };
-
-    //generoAlumno
-    this.loadCatalogoGeneroAlumno = function () {
-
-      this.get(
-        URL.GENERO_ALUMNO,
-        (result) => {
-          this.response = result.data;
-          console.log("Genero alumno " + this.response);
-          if (this.response != null) {
-            this.listaGeneroAlumno = this.response;
-          }
-        }
-      );
-    };
-
     this.loadFunction();
-    //this.loadFunctionGrupos();
-    //this.loadCatalogoGeneroAlumno();
+  
   },
-  methods: {
-    nuevo() {
-      console.log("Nuevo");
-      this.operacion = "INSERT";
-      this.input = {
-        id: 0,
-        co_sucursal: 0,
-        co_grupo: 0,
-        nombre: "",
-        apellidos: "",
-        direccion:"",
-        nombre_carino: "",
-        cat_genero: -1,
-        nombre_grupo: "",
-        nombre_sucursal: "",
-        fecha_nacimiento: null,        
-        nota: "",
-        hora_entrada: "",
-        hora_salida: "",
-        costo_inscripcion: "",
-        costo_colegiatura: "",
-        minutos_gracia: "",
-        fecha_inscripcion: null,
-        fecha_limite_pago: null,
-        foto: "",
-        genero: 1
-      };
-      this.generoAlumno = { id: -1, nombre: "", foto: "" },
-      this.loadFunctionGrupos();
-      this.loadCatalogoGeneroAlumno();
-
-      $("#modal_alumno").modal("show");
-    },
-   async guardar() {
-      console.log("Insertar");
-
-      if (!validacionDatosAlumno(this.input)) {        
-        console.log("No paso la validacion");
-        return;
-      }
-
-      this.input.foto = this.getFoto();
-
-      this.input.co_sucursal = this.usuarioSesion.co_sucursal;
-      this.input.co_empresa = this.usuarioSesion.id_empresa;
-      this.input.genero = this.usuarioSesion.id;
-      this.input.fecha_nacimiento = moment(this.input.fecha_nacimiento).format('YYYY-MM-DD');
-      this.input.fecha_inscripcion = moment(this.input.fecha_inscripcion).format('YYYY-MM-DD');
-      this.input.fecha_limite_pago = moment(this.input.fecha_limite_pago).format('YYYY-MM-DD');  
-
-      this.loader = true;
-      console.log("inciando");
-      const respuesta = await this.postAsync(URL.ALUMNOS_BASE,this.input);
-      console.log(respuesta);
-      if(respuesta){
-        this.$notificacion.info('Registro de alumno', 'Se registró el alumno.');
-        this.loadFunction();
-        $("#modal_alumno").modal("hide");
-      }else{
-        this.$notificacion.error('Ups!', 'Algo sucedió al intentar guardar el alumno, ponte en contacto con soporte técnico.');
-      }    
-      this.loader = false;
-      
-    },
-    modificar() {
-      console.log("Modificar el id " + this.input.id);
-
-      //if (!this.validacionGuardarFunction()) {
-      if (!validacionDatosAlumno(this.input)) {
-        console.log("No paso la validacion");
-        return;
-      }
-   
-
-      this.put(URL.ALUMNOS_BASE + "/" + this.input.id,
-        this.input,
-
-        (result) => {
-          this.response = result.data;
-          if (this.response != null) {
-            console.log("" + this.response);
-            //this.mensaje = "Se modificó el alumno";
-            this.$notificacion.info('Modificación de alumno', 'Se actualizarón los datos del alumno.');
-            this.loadFunction();
-            $("#modal_alumno").modal("hide");
-          }
-        }
-      );
-
-    },
-    eliminar() {
-      console.log("Modificar el id " + this.input.id);
-      const params = {
-        fechaBaja:this.fechaBaja,
-        observaciones:this.observacionesBaja,
-        genero:this.usuarioSesion.id
-      }
-
-      this.put(URL.ALUMNOS_BASE + "/baja/" + this.input.id,
-        params,
-        (result) => {
-          console.log(" " + result.data);
-          if (result.data != null) {
-            console.log("" + result.data);
-            this.$notificacion.error('Registro de Baja de alumno', 'Se registro la baja del alumno ' + this.input.nombre + '.');
-            this.loadFunction();
-          }
-        }
-      );
-
-    },
+  methods: {   
     getFoto() {
       let elemento = this.listaGeneroAlumno.find(e => e.id == this.input.cat_genero);
       return elemento.foto;
-
     },
     select(rowSelect, operacion) {
       console.log("fila seleccionada " + rowSelect.adeuda);
@@ -241,6 +99,26 @@ export default {
           );
 
       }
+    },
+    eliminar() {
+      console.log("Modificar el id " + this.input.id);
+      const params = {
+        fechaBaja: this.fechaBaja,
+        observaciones: this.observacionesBaja,
+        genero: this.usuarioSesion.id
+      };
+
+      this.put(URL.ALUMNOS_BASE + "/baja/" + this.input.id, params, result => {
+        console.log(" " + result.data);
+        if (result.data != null) {
+          console.log("" + result.data);
+          this.$notificacion.error(
+            "Registro de Baja de alumno",
+            "Se registro la baja del alumno " + this.input.nombre + "."
+          );
+          this.loadFunction();
+        }
+      });
     },
     cambiarSucursal(row) {
       this.$router.push({ name: "CambioSucursal", params: { id_alumno: row.id } });

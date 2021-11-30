@@ -24,6 +24,7 @@ import SubirFotoAlumno from '@/components/SubirFotoAlumno'
 import ReporteAsistenciaUsuariosRh from '@/components/ReporteAsistenciaUsuariosRh'
 import AdministrarUsuariosRh from '@/components_admin/AdministrarUsuariosRh'
 import CatAvisos from '../administracion/avisos/CatAvisos';
+import InscripcionAlumno from '@/components/InscripcionAlumno';
 import ReactivarAlumnosEliminados from '@/components/ReactivarAlumnosEliminados';
 
 import VueSession from 'vue-session'
@@ -52,6 +53,7 @@ const router = new Router({
       children: [
         { path: '/principal', name: 'PaginaPrincipal', component: Principal, meta: { requiresAuth: true, validar: false } },        
         { path: '/CatAlumno', name: 'CatAlumno', component: CatAlumno, meta: { requiresAuth: true, validar: false } },
+        { path: '/Inscripcion', name: 'Inscripcion', component: InscripcionAlumno, meta: { requiresAuth: true, validar: false } },
         { path: '/PerfilAlumno/:id', name: 'PerfilAlumno', component: PerfilAlumno, meta: { requiresAuth: true, validar: false } },
         { path: '/SubirFotoAlumno/:id', name: 'SubirFotoAlumno', component: SubirFotoAlumno, meta: { requiresAuth: true, validar: false } },        
         //{ path: '/Asistencia', name: 'Asistencia', component: Asistencia, meta: { requiresAuth: true, validar: false } },
