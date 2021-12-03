@@ -6,12 +6,17 @@ const BASE = configEnv.BASE || "http://localhost:5000";
 //const BASE = process.env.URL_API || 'https://api-ambiente-produccion.herokuapp.com';
 export const BRANCH = "202110-multiempresa";
 
+
+const CURSO = BASE + '/curso';
+const ALUMNOS_BASE = BASE + '/alumnos';
+const INSCRIPCION_BASE = BASE + '/inscripcion';
+const ESPECIALIDADES_BASE = BASE + '/especialidad';
+
 const ASISTENCIA_BASE =  BASE + '/asistencia';
 const ASISTENCIA_USUARIO_BASE =  BASE + '/asistencia_usuarios';
 const BALANCE_BASE = BASE +'/balance';
 const SUCURSAL_BASE = BASE +'/sucursal';
 const CAMBIO_SUCURSAL_BASE = BASE +'/cambio_sucursal';
-const ALUMNOS_BASE = BASE + '/alumnos';
 const PAGOS_BASE = BASE +'/pagos';
 const CARGOS_BASE = BASE +'/cargos';
 const FORMAS_PAGO_BASE = BASE +'/formas_pagos';
@@ -53,11 +58,6 @@ const REPORTE_GASTOS_GLOBAL = BASE + '/reporte_gastos_global';
 const REPORTE_MENSUALIDADES = BASE + '/reporte_mensualidades';
 const REPORTE_MENSUALIDADES_MES_ACTUAL = BASE + '/reporte_mensualidades_mes_actual';
 
-/*
-const REPORTE_MENSUALIDADES = BASE + '/reporte_mensualidades_sucursales';
-const REPORTE_MENSUALIDADES_MES_ACTUAL = BASE + '/reporte_mensualidades_mes_actual';
-*/
-
 
 //-recordatorio
 const INFO_CORREO_ALUMNOS = BASE + '/getInfoCorreoAlumnos';
@@ -82,7 +82,10 @@ const AVISOS = BASE + '/aviso'; // /aviso/:
 
 const URL = {    
     LOGIN : BASE+'/auth/login',    
+    CURSO:CURSO,
+    INSCRIPCION_BASE:INSCRIPCION_BASE,
     ASISTENCIA_BASE : ASISTENCIA_BASE,
+    ESPECIALIDADES_BASE:ESPECIALIDADES_BASE,
     ASISTENCIA_POR_RECIBIR : ASISTENCIA_BASE + '/alumnos_por_recibidos/',//param sucursal
     ASISTENCIA_RECIBIDOS : ASISTENCIA_BASE + '/alumnos_recibidos/',//param sucursal
     ASISTENCIA_ENTRADA_ALUMNOS : ASISTENCIA_BASE + '/entradaAlumnos',

@@ -47,7 +47,7 @@ export default {
   methods: {   
     async cargarInscripciones(){
       this.loader = true;
-      this.lista = await this.getAsync(URL.ALUMNOS_BASE + "/" + this.usuarioSesion.co_sucursal);
+      this.lista = await this.getAsync(URL.INSCRIPCION_BASE + "/" + this.usuarioSesion.co_sucursal);
       this.loader = false;
     },
     getFoto() {

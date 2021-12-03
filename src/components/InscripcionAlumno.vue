@@ -110,70 +110,41 @@
             <span class="text-danger">*</span>
           </label>
           <select
-            v-model="input.co_grupo"
+            v-model="input.cat_especialidad"
+            @change="onChangeEspecialidad"
             class="form-control"
-            placeholder="Grupo"
+            placeholder="Especialidad"
             required
           >
             <option
-              v-for="grupo in listaGrupos"
-              v-bind:value="grupo.id"
-              v-bind:key="grupo.id"
-              >{{ grupo.nombre }}</option
-            >
+              v-for="especialidad in listaEspecialidades"
+              v-bind:value="especialidad.id"
+              v-bind:key="especialidad.id"
+              >{{ especialidad.nombre }}
+            </option>
           </select>
         </div>
         <div class="form-group form-group col-sm-6 col-md-6 col-lg-6 col-xl-6">
           <label>
             Curso
             <span class="text-danger">*</span>
-          </label>
+          </label>          
           <select
-            v-model="input.co_grupo"
+            v-model="input.co_curso"                        
             class="form-control"
             placeholder="Grupo"
             required
           >
-            <option
-              v-for="grupo in listaGrupos"
-              v-bind:value="grupo.id"
-              v-bind:key="grupo.id"
-              >{{ grupo.nombre }}</option
+            <option            
+              v-for="curso in listaCurso"
+              v-bind:value="curso.id"
+              v-bind:key="curso.id"
+              >{{ curso.nombre }}</option
             >
-          </select>
+          </select>                    
         </div>
       </div>
 
-      <div class="form-row">
-        <div class="form-group form-group col-sm-6 col-md-6 col-lg-6 col-xl-6">
-          <label>
-            Fecha de Inicio
-            <span class="text-danger">*</span>
-          </label>
-          <datepicker
-            name="fecha_inscripcion"
-            v-model="input.fecha_inicio"
-            input-class="form-control"
-            :bootstrap-styling="true"
-            :language="es"
-            required
-          ></datepicker>
-        </div>
-        <div class="form-group form-group col-sm-6 col-md-6 col-lg-6 col-xl-6">
-          <label>
-            Fecha de Fin
-            <span class="text-danger">*</span>
-          </label>
-          <datepicker
-            name="fecha_inscripcion"
-            v-model="input.fecha_fin"
-            input-class="form-control"
-            :bootstrap-styling="true"
-            :language="es"
-            required
-          ></datepicker>
-        </div>
-      </div>
       <div class="form-row">
         <div class="form-group form-group col-sm-6 col-md-6 col-lg-6 col-xl-6">
           <label>
@@ -204,21 +175,7 @@
           />
         </div>
       </div>
-
-      <!--<div class="form-group form-group col-sm-6 col-md-6 col-lg-6 col-xl-6">
-          <label for="inputFechaLimitePago">
-            Fecha Pago
-            <span class="text-danger">*</span>
-          </label>
-          <datepicker
-            id="inputFechaLimitePagoColegiatura"
-            v-model="input.fecha_limite_pago"
-            input-class="form-control"
-            :bootstrap-styling="true"
-            :language="es"
-            required
-          ></datepicker>
-        </div>-->
+     
       <div class="form-group ">
         <label for="inputFechaLimitePago">Nota </label>
         <textarea
@@ -266,7 +223,8 @@ export default {
       usuarioSesion: {},
       input: AlumnoModel,
       listaGeneroAlumno: [],
-      listaGrupos: [],
+      listaCurso: [],
+      listaEspecialidades: [],
       generoAlumno: { id: -1, nombre: "", foto: "" },
       es: es,
       loader: false
@@ -278,15 +236,15 @@ export default {
     this.init();
   },
   methods: {
-    async init() {
-      this.generoAlumno = { id: -1, nombre: "", foto: "" };
-      this.listaGrupos = await this.getAsync(
-        `${URL.GRUPOS_BASE}/${this.usuarioSesion.id_empresa}`
-      );
-      this.listaGeneroAlumno = await this.getAsync(`${URL.GENERO_ALUMNO}`);
-      this.input.fecha_inicio = new Date();
+    async init() {   
+
+      this.listaGeneroAlumno = await this.getAsync(`${URL.GENERO_ALUMNO}`);      
+      this.listaEspecialidades = await this.getAsync(`${URL.ESPECIALIDADES_BASE}/${this.usuarioSesion.id_empresa}`);      
+      console.log("this.listaEspecialidadesvv",JSON.stringify(this.listaEspecialidades));
+      
+      await this.nuevo();
     },
-    nuevo() {
+    async nuevo() {
       console.log("Nuevo");
       this.operacion = "INSERT";
       this.input = {
@@ -296,6 +254,7 @@ export default {
         nombre: "",
         apellidos: "",
         direccion: "",       
+        telefono: "",       
         cat_genero: -1,
         nombre_grupo: "",
         nombre_sucursal: "",
@@ -303,12 +262,22 @@ export default {
         nota: "",      
         costo_inscripcion: "",
         costo_colegiatura: "",
-        minutos_gracia: "",
+        cat_especialidad:-1,
         fecha_inicio: null,
         fecha_fin: null,        
         foto: "",
         genero: 1
       };
+
+      this.generoAlumno = { id: -1, nombre: "", foto: "" };      
+      this.input.fecha_inicio = new Date();      
+    },
+    async onChangeEspecialidad(event){
+      console.log("===="+JSON.stringify(event));
+      if(!!this.input.cat_especialidad){
+          this.listaCurso = await this.getAsync(`${URL.CURSO}/${this.usuarioSesion.co_sucursal}/${this.input.cat_especialidad}`);            
+          console.log(JSON.stringify(this.listaCurso));
+      }
     },
     async guardar() {
       console.log("Insertar");
