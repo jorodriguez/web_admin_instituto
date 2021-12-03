@@ -12,12 +12,7 @@
         </router-link>        
       </div>
       <div class="col-auto">
-        <router-link
-          to="/ReactivarAlumno"
-          class="btn btn-outline-danger btn-lg"
-        >
-          Reactivar alumno
-        </router-link>
+       
       </div>
     </div>
 
@@ -33,7 +28,7 @@
       <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
           <div class="modal-header">
-            <h5 class="modal-title">Registro de Alumno</h5>
+            <h5 class="modal-title">Nueva Inscripción</h5>
             <button
               type="button"
               class="close"
@@ -104,22 +99,7 @@
                   placeholder="(52)"
                   required
                 />
-                
-                <!--<label>Sexo<span class="text-danger">*</span></label>
-                <select
-                  v-model="input.cat_genero"
-                  class="form-control"
-                  placeholder="Grupo"
-                  required
-                >
-                  <option
-                    id="selectGeneroAlumno"
-                    v-for="genero in listaGeneroAlumno"
-                    v-bind:value="genero.id"
-                    v-bind:key="genero.id"
-                    >{{ genero.nombre }}</option
-                  >
-                </select>-->
+                             
               </div>
 
             </div>
@@ -415,7 +395,7 @@
               <img
                 class="card-img-top pointer rounded-circle mx-auto"
                 style="width:100px"                
-                :src="row.foto"
+                :src="row.foto_perfil"
                 alt="Foto"
                 @click="verPerfil(row)"
                 title="Cambiar la foto"
@@ -423,11 +403,7 @@
 
               <div class="card-body pointer" @click="verPerfil(row)" >
                 <h4 class="card-text">
-                  {{ row.nombre }}
-                  <span v-if="row.mostrar_nombre_carino"
-                    >({{ row.nombre_carino }})</span
-                  >
-                  <span class="text-danger">{{ row.adeuda ? "*" : "" }}</span>
+                  {{ row.nombre }}                  
                 </h4>
                 <h5 class="card-text small">
                   {{ row.apellidos }}
@@ -436,23 +412,10 @@
                   :style="row.color ? 'background-color:' + row.color : ''"
                   class="badge badge-info text-wrap"
                 >
-                  {{ row.nombre_grupo }}
+                  {{ row.especialidad }}
                 </h6>
-                <h5><span>de</span> {{ row.hora_entrada }}</h5>
-                <h5><span>a</span> {{ row.hora_salida }}</h5>
-                <!--<div
-                  class="btn-group"
-                  role="group"
-                  aria-label="Button group with nested dropdown"
-                >
-                  <button
-                    type="button"
-                    @click="verPerfil(row)"
-                    class="btn btn-outline-primary btn-block btn-sm"
-                  >
-                    Ver Perfil
-                  </button>
-                </div>-->
+                <h5><span>Inicia</span> {{ row.fecha_inicio_previsto }}</h5>
+                <h5><span>Fin</span> {{ row.fecha_fin_previsto }}</h5>
               </div>
             </div>
           </div>

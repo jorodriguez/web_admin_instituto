@@ -166,7 +166,7 @@ export default {
      console.log("CAMBIO_SUCURSAL en indicadores");
           let message = text;
            this.usuarioSesion = getUsuarioSesion();
-             this.obtenerIndicadorMensualidad();
+           //  this.obtenerIndicadorMensualidad();
     });
 
     this.obtenerIndicadorMensualidad = function() {
