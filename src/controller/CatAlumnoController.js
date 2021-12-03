@@ -41,26 +41,15 @@ export default {
     this.usuarioSesion = getUsuarioSesion();
 
     console.log("Cargando lista alumno");
-    this.loadFunction = function () {
-      this.loader = true;
-      this.get(URL.ALUMNOS_BASE + "/" + this.usuarioSesion.co_sucursal,
-
-        (result) => {
-          this.response = result.data;
-          console.log("Consulta " + this.response);
-          if (this.response != null) {
-            this.lista = this.response;
-            this.listaRespaldo = this.response;
-            this.loader = false;
-          }
-        });
-    };
-    //traer grupos
-    console.log("process.env.URL_GRUPOS " + process.env.URL_GRUPOS);
-    this.loadFunction();
-  
+        
+    this.cargarInscripciones();  
   },
   methods: {   
+    async cargarInscripciones(){
+      this.loader = true;
+      this.lista = await this.getAsync(URL.ALUMNOS_BASE + "/" + this.usuarioSesion.co_sucursal);
+      this.loader = false;
+    },
     getFoto() {
       let elemento = this.listaGeneroAlumno.find(e => e.id == this.input.cat_genero);
       return elemento.foto;
