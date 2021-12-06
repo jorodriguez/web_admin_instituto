@@ -111,7 +111,7 @@
           </label>
           <select
             v-model="input.cat_especialidad"
-            @change="onChangeEspecialidad"
+            @change="onChangeEspecialidad()"
             class="form-control"
             placeholder="Especialidad"
             required
@@ -273,10 +273,13 @@ export default {
       this.input.fecha_inicio = new Date();      
     },
     async onChangeEspecialidad(event){
-      console.log("===="+JSON.stringify(event));
-      if(!!this.input.cat_especialidad){
+      console.log("@onChangeEspecialidad "+this.input.cat_especialidad);
+      if(this.input.cat_especialidad){
           this.listaCurso = await this.getAsync(`${URL.CURSO}/${this.usuarioSesion.co_sucursal}/${this.input.cat_especialidad}`);            
           console.log(JSON.stringify(this.listaCurso));
+      }else{
+        console.log("No va a la db");
+        this.listaCurso = [];
       }
     },
     async guardar() {
