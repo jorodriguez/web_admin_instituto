@@ -124,7 +124,8 @@
             </option>
           </select>
         </div>
-        <div class="form-group form-group col-sm-6 col-md-6 col-lg-6 col-xl-6">
+        
+        <div v-if="!!input.cat_especialidad" class="form-group form-group col-sm-6 col-md-6 col-lg-6 col-xl-6">
           <label>
             Curso
             <span class="text-danger">*</span>
@@ -139,7 +140,7 @@
               v-for="curso in listaCurso"
               v-bind:value="curso.id"
               v-bind:key="curso.id"
-              >{{ curso.nombre }}</option
+              >{{`${curso.dias} horario de ${curso.horario} / inicia ${curso.fecha_inicio_previsto_format}`}}</option
             >
           </select>                    
         </div>
@@ -148,7 +149,7 @@
       <div class="form-row">
         <div class="form-group form-group col-sm-6 col-md-6 col-lg-6 col-xl-6">
           <label>
-            Colegiatura
+            Colegiatura (semana)
             <span class="text-danger">*</span>
           </label>
           <input
@@ -304,10 +305,10 @@ export default {
 
       this.loader = true;
       console.log("inciando");
-      const respuesta = await this.postAsync(URL.ALUMNOS_BASE, this.input);
+      const respuesta = await this.postAsync(URL.INSCRIPCION_BASE, this.input);
       console.log(respuesta);
       if (respuesta) {
-        this.$notificacion.info("Registro de alumno", "Se registró el alumno.");
+        this.$notificacion.info("Inscripción realizada", "Se registró el alumno.");
          this.$router.push({ name: "PerfilAlumno", params: { id: respuesta.id } });      
       } else {
         this.$notificacion.error(
@@ -316,6 +317,10 @@ export default {
         );
       }
       this.loader = false;
+    },
+    getFoto() {
+      let elemento = this.listaGeneroAlumno.find(e => e.id == this.input.cat_genero);
+      return elemento.foto;
     },
    /* modificar() {
       console.log("Modificar el id " + this.input.id);

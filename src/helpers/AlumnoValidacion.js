@@ -14,6 +14,18 @@ export const validacionDatosAlumno = (alumno) => {
       Vue.prototype.$notificacion.error('Escribe el nombre', 'El nombre es requerido.');
       return false;
     }
+    if (alumno.nombre == '') {      
+      Vue.prototype.$notificacion.error('Escribe el nombre', 'El nombre es requerido.');
+      return false;
+    }
+    if (alumno.direccion == '') {      
+      Vue.prototype.$notificacion.error('Escribe la dirección', 'La dirección es requerida.');
+      return false;
+    }
+    if (alumno.telefono == '') {      
+      Vue.prototype.$notificacion.error('Escribe el teléfono', 'El teléfono es requerido.');
+      return false;
+    }
     if (alumno.apellidos == '') {
       //this.mensaje = "* Escribe el apellido";
       Vue.prototype.$notificacion.error('Escribe el apellido', 'El apellido es requerido.');
@@ -34,7 +46,7 @@ export const validacionDatosAlumno = (alumno) => {
       return false;
     }
    
-    if (alumno.co_grupo == 0) {
+    if (alumno.cat_especialidad == 0) {
       Vue.prototype.$notificacion.error('Selecciona una especialidad', 'La especialidad es requerida.');
       return false;
     }
@@ -44,11 +56,7 @@ export const validacionDatosAlumno = (alumno) => {
       return false;
     }
 
-    if (alumno.fecha_inicio == null || alumno.fecha_inicio == '' ||alumno.fecha_fin == null || alumno.fecha_fin == '' ) {
-      Vue.prototype.$notificacion.error('Selecciona las fechas de inicio y fin', 'Selecciona la fecha de inicio y de fin.');
-      return false;
-    }
-        
+            
     if (alumno.costo_colegiatura == null || alumno.costo_colegiatura == '') {      
       Vue.prototype.$notificacion.error('Escribe el costo de la colegiatura', 'El valor de costo de colegiatura es requedido.');
       return false;
