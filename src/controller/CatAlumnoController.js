@@ -70,7 +70,7 @@ export default {
     },
     verPerfil(rowSelect) {
       console.log("fila seleccionada " + rowSelect.nombre);
-      this.$router.push({ name: "PerfilAlumno", params: { id: rowSelect.id } });
+      this.$router.push({ name: "PerfilAlumno", params: { uid: rowSelect.uid } });
     },
     buscarPorNombre() {
       console.log("Buscar por nombre " + this.criterioNombre);
@@ -83,8 +83,6 @@ export default {
             e =>
               e.nombre.toUpperCase().includes(this.criterioNombre.toUpperCase())
               || (e.nombre_carino ? e.nombre_carino.toUpperCase().includes(this.criterioNombre.toUpperCase()) : false)
-
-
           );
 
       }

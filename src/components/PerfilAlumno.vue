@@ -35,13 +35,10 @@
           />
           <p class="font-weight-bold h4">
             {{ alumno.nombre }}
-            {{ alumno.apellidos }}
-            <span v-if="alumno.mostrar_nombre_carino"
-              >({{ alumno.nombre_carino }})</span
-            >
+            {{ alumno.apellidos }}            
           </p>
           <p>
-            <small>{{ alumno.nombre_grupo }}</small>
+            <small>especialidad</small>
           </p>
         </div>
         <div class="col text-center">
@@ -49,10 +46,11 @@
             <div class="card-body">
               Balance
               <p>
-                $<balance-alumno
+                $
+                <!--<balance-alumno
                   :idalumno="id"
                   mostrarfecha="true"
-                ></balance-alumno>
+                ></balance-alumno>-->
               </p>
               <estado-cuenta :idAlumno="id" />
             </div>
@@ -113,202 +111,8 @@
             >
               <div class="card">
                 <div class="card-body">
-                  <div class="form-row">
-                    <div class="form-group col-sm-6 col-md-6 col-lg-6 col-xl-6">
-                      <label>Alumno<span class="text-danger">*</span></label>
-                      <input
-                        type="text"
-                        v-model="alumno.nombre"
-                        class="form-control"
-                        placeholder="Nombre"
-                        required
-                        autofocus
-                      />
-                    </div>
-
-                    <div class="form-group col-sm-6 col-md-6 col-lg-6 col-xl-6">
-                      <label>Apellidos</label>
-                      <input
-                        type="text"
-                        v-model="alumno.apellidos"
-                        class="form-control"
-                        placeholder="Apellidos"
-                        required
-                      />
-                    </div>
-                  </div>
-                  <div class="form-group">
-                    <label>Dirección</label>
-                    <input
-                      type="text"
-                      v-model="alumno.direccion"
-                      class="form-control"
-                      placeholder="Dirección "
-                    />
-                  </div>
-
-                  <div class="form-row">
-                    <div class="form-group col-6">
-                      <label>
-                        F. de nacimiento
-                        <span class="text-danger">*</span>
-                      </label>
-                      <datepicker
-                        name="fecha_nacmiento"
-                        v-model="alumno.fecha_nacimiento"
-                        input-class="form-control"
-                        :format="'yyyy-MM-dd'"
-                        :bootstrap-styling="true"
-                        :language="es"
-                        required
-                      ></datepicker>
-                    </div>
-                    <div class="form-group col-6">
-                      <label>Sexo<span class="text-danger">*</span></label>
-                      <select
-                        v-model="alumno.cat_genero"
-                        class="form-control"
-                        placeholder="Grupo"
-                        required
-                      >
-                        <option
-                          id="selectGeneroAlumno"
-                          v-for="genero in listaGeneroAlumno"
-                          v-bind:value="genero.id"
-                          v-bind:key="genero.id"
-                          >{{ genero.nombre }}</option
-                        >
-                      </select>
-                    </div>
-                  </div>
-
-                  <div class="form-row">
-                    <div class="form-group col-6">
-                      <label>
-                        Especialidad
-                        <span class="text-danger">*</span>
-                      </label>
-                      <select
-                        v-model="alumno.co_grupo"
-                        class="form-control"
-                        placeholder="Grupo"
-                        required
-                      >
-                        <option
-                          v-for="grupo in listaGrupos"
-                          v-bind:value="grupo.id"
-                          v-bind:key="grupo.id"
-                          >{{ grupo.nombre }}</option
-                        >
-                      </select>
-                    </div>
-                    <div class="form-group col-6">
-                      <label>
-                        F. de Inscripción
-                        <span class="text-danger">*</span>
-                      </label>
-                      <datepicker
-                        name="fecha_inscripcion"
-                        v-model="alumno.fecha_inscripcion"
-                        input-class="form-control"
-                        :bootstrap-styling="true"
-                        :language="es"
-                        required
-                      ></datepicker>
-                    </div>
-                  </div>
-
-                  <div class="form-row">
-                    <div
-                      class="form-group form-group col-sm-6 col-md-6 col-lg-6 col-xl-6"
-                    >
-                      <label>
-                        Hora Entrada
-                        <small class="text-muted">(Pe. 08:00)</small>
-                        <span class="text-danger">*</span>
-                      </label>
-                      <input
-                        type="time"
-                        v-model="alumno.hora_entrada"
-                        class="form-control"
-                        placeholder="H. Entrada"
-                        required
-                      />
-                    </div>
-                    <div
-                      class="form-group form-group col-sm-6 col-md-6 col-lg-6 col-xl-6"
-                    >
-                      <label>
-                        Hora Salida
-                        <small class="text-muted">(Pe. 20:00)</small>
-                        <span class="text-danger">*</span>
-                      </label>
-                      <input
-                        type="time"
-                        v-model="alumno.hora_salida"
-                        class="form-control"
-                        placeholder="H. Salida"
-                        required
-                      />
-                    </div>
-                  </div>
-
-                  <div class="form-row">
-                    <div class="form-group col-6">
-                      <label>
-                        Colegiatura
-                        <span class="text-danger">*</span>
-                      </label>
-                      <input
-                        type="number"
-                        v-model="alumno.costo_colegiatura"
-                        class="form-control"
-                        placeholder="Costo Colegiatura"
-                        min="0"
-                        required
-                      />
-                    </div>
-                    <div class="form-group col-6">
-                      <label>
-                        Inscripción
-                        <span class="text-danger">*</span>
-                      </label>
-                      <input
-                        type="number"
-                        v-model="alumno.costo_inscripcion"
-                        class="form-control"
-                        placeholder="Costo Inscripcion"
-                        min="0"
-                        required
-                      />
-                    </div>
-                  </div>
-
-                  <div class="form-row">
-                    <div class="form-group col-6">
-                      <label for="inputFechaLimitePago">
-                        Fecha Pago
-                        <span class="text-danger">*</span>
-                      </label>
-                      <datepicker
-                        id="inputFechaLimitePagoColegiatura"
-                        v-model="alumno.fecha_limite_pago"
-                        input-class="form-control"
-                        :bootstrap-styling="true"
-                        :language="es"
-                        required
-                      ></datepicker>
-                    </div>
-                    <div class="form-group col-6">
-                      <label for="inputFechaLimitePago">Nota </label>
-                      <textarea
-                        rows="2"
-                        v-model="alumno.nota"
-                        class="form-control"
-                        placeholder="Notas "
-                      />
-                    </div>
-                  </div>
+                                    
+                  <InscripcionAlumno :uuid="this.uid" :mode="'MODIFICACION'"/>
 
                   <button
                     type="button"
@@ -332,10 +136,10 @@
               <div class="card">
                 <div class="card-body">
                   <!-- Componente especial para cargos y pagos -->
-                  <cargos-pagos
+                  <!--<cargos-pagos
                     :idalumno="id"
                     :requiere_factura="alumno.factura"
-                  ></cargos-pagos>
+                  ></cargos-pagos>-->
                 </div>
               </div>
             </div>

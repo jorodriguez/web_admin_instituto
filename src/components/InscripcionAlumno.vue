@@ -1,8 +1,8 @@
 <template>
   <div class="cat_alumno">
-    <h1>Inscripción Alumno</h1>
-    <small>{{ usuarioSesion.nombre_sucursal }}</small>
-    <div class="row">
+    <h1 v-if="mode != 'MODIFICAR'">Inscripción Alumno</h1>
+    <small v-if="mode != 'MODIFICAR'">{{ usuarioSesion.nombre_sucursal }}</small>
+    <div v-if="mode != 'MODIFICAR'" class="row">
       <div class="col-auto mr-auto">
         <router-link to="/CatAlumno" class="btn btn-secondary btn-lg">
           <i class="fas fa-arrow-circle-left text-gray"></i>
@@ -10,7 +10,7 @@
         <button
           type="button"
           class="btn btn-primary btn-lg"
-          v-on:click="nuevo()"
+          v-on:click="nuevo()"         
         >
           Nueva Inscripción
         </button>
@@ -18,7 +18,7 @@
       <div class="col-auto"></div>
     </div>
 
-    <br />
+    <br v-if="mode != 'MODIFICAR'"/>
 
     <div class="container text-left" :disabled="loader">
       <div class="form-row">
@@ -125,7 +125,7 @@
           </select>
         </div>
         
-        <div v-if="!!input.cat_especialidad" class="form-group form-group col-sm-6 col-md-6 col-lg-6 col-xl-6">
+        <div class="form-group form-group col-sm-6 col-md-6 col-lg-6 col-xl-6">
           <label>
             Curso
             <span class="text-danger">*</span>
@@ -133,7 +133,7 @@
           <select
             v-model="input.co_curso"                        
             class="form-control"
-            placeholder="Grupo"
+            placeholder="Curso"
             required
           >
             <option            
@@ -218,6 +218,7 @@ export default {
     Datepicker,
     Loader
   },
+  props:["mode","uuid"],
   mixins: [operacionesApi],
   data() {
     return {
@@ -228,7 +229,8 @@ export default {
       listaEspecialidades: [],
       generoAlumno: { id: -1, nombre: "", foto: "" },
       es: es,
-      loader: false
+      loader: false,
+      isModificacion:false
     };
   },
   mounted() {
@@ -242,8 +244,18 @@ export default {
       this.listaGeneroAlumno = await this.getAsync(`${URL.GENERO_ALUMNO}`);      
       this.listaEspecialidades = await this.getAsync(`${URL.ESPECIALIDADES_BASE}/${this.usuarioSesion.id_empresa}`);      
       console.log("this.listaEspecialidadesvv",JSON.stringify(this.listaEspecialidades));
+      this.isModificacion = (this.mode == 'MODIFICAR');
+      if(this.isModificacion){
+        //cargar usuaro
+        console.log("==========CARGAR  "+this.uuid);
+        this.input = await this.getAsync(`${URL.ALUMNOS_BASE}/${this.uuid}`);      
+      }else{
+        await this.nuevo();
+      }
       
-      await this.nuevo();
+    },
+    async cargarAlumno(){
+
     },
     async nuevo() {
       console.log("Nuevo");
@@ -251,7 +263,7 @@ export default {
       this.input = {
         id: 0,
         co_sucursal: 0,
-        co_grupo: 0,
+        co_curso: -1,
         nombre: "",
         apellidos: "",
         direccion: "",       
@@ -284,32 +296,28 @@ export default {
       }
     },
     async guardar() {
-      console.log("Insertar");
+      console.log("@guardar");
 
       if (!validacionDatosAlumno(this.input)) {
         console.log("No paso la validacion");
         return;
       }
 
-      this.input.foto = this.getFoto();
-
-      this.input.co_sucursal = this.usuarioSesion.co_sucursal;
-      this.input.co_empresa = this.usuarioSesion.id_empresa;
-      this.input.genero = this.usuarioSesion.id;
-      this.input.fecha_nacimiento = moment(this.input.fecha_nacimiento).format(
-        "YYYY-MM-DD"
-      );
-      this.input.fecha_inscripcion = moment(
-        this.input.fecha_inscripcion
-      ).format("YYYY-MM-DD");  
+      let values = this.getValues();
 
       this.loader = true;
       console.log("inciando");
-      const respuesta = await this.postAsync(URL.INSCRIPCION_BASE, this.input);
+      
+      
+      const respuesta = this.isModificacion ?
+                         await this.putAsync(URL.INSCRIPCION_BASE, values)
+                         :
+                         await this.postAsync(URL.INSCRIPCION_BASE, values);
+                  
       console.log(respuesta);
       if (respuesta) {
-        this.$notificacion.info("Inscripción realizada", "Se registró el alumno.");
-         this.$router.push({ name: "PerfilAlumno", params: { id: respuesta.id } });      
+          this.$notificacion.info(`Inscripción ${this.isModificacion ? 'Modificada':'realizada'} `, `Se ${this.isModificacion ? 'registró':'modificó'} el alumno`);          
+          this.$router.push({ name: "PerfilAlumno", params: { uid: respuesta.uid } });      
       } else {
         this.$notificacion.error(
           "Ups!",
@@ -317,6 +325,25 @@ export default {
         );
       }
       this.loader = false;
+    },
+    getValues(){
+      return {                                
+                co_curso:this.input.co_curso,
+                cat_genero: this.input.cat_genero,
+                nombre:this.input.nombre,
+                apellidos:this.input.apellidos,
+                direccion:this.input.direccion,
+                telefono:this.input.telefono,
+                fecha_nacimiento:this.input.fecha_nacimiento,
+                nota:this.input.nota,
+                costo_colegiatura:this.input.costo_colegiatura, 
+                costo_inscripcion:this.input.costo_inscripcion,
+                foto:this.getFoto(),
+                co_sucursal:this.usuarioSesion.co_sucursal,
+                co_empresa:this.usuarioSesion.id_empresa,
+                fecha_nacimiento:moment(this.input.fecha_nacimiento).format("YYYY-MM-DD"),
+                genero:this.usuarioSesion.id
+      };
     },
     getFoto() {
       let elemento = this.listaGeneroAlumno.find(e => e.id == this.input.cat_genero);

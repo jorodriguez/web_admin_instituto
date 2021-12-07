@@ -3,6 +3,7 @@ import Datepicker from 'vuejs-datepicker';
 import { es } from 'vuejs-datepicker/dist/locale';
 import CargosPagos from '../components/CargosPago.vue';
 import EstadoCuenta from '../components/EstadoCuenta.vue';
+import InscripcionAlumno from '../components/InscripcionAlumno';
 import { validacionDatosAlumno, validacionFechaLimitePagoAlumno } from "../helpers/AlumnoValidacion";
 import { operacionesApi } from "../helpers/OperacionesApi";
 import { getUsuarioSesion } from '../helpers/Sesion';
@@ -22,11 +23,12 @@ export default {
         CargosPagos,
         BalanceAlumno,
         Popup,
-        EstadoCuenta
+        EstadoCuenta,
+        InscripcionAlumno
     },
     data() {
         return {
-            id: 0,
+            uid: "",
             alumno: AlumnoModel,                        
             metadatos: Utils,
             listaGrupos: [],
@@ -46,7 +48,7 @@ export default {
     beforeRouteUpdate(to) {
         console.log("id = " + this.id);
         console.log(" " + to);
-        this.id = to.params.id;
+        this.uid = to.params.uid;
         this.init();
         // this.loadFamiliaresFuncion();
         //this.loadValoresEsperadosFunction();        
@@ -63,7 +65,7 @@ export default {
 
         this.usuarioSesion = getUsuarioSesion();
 
-        this.id = this.$route.params.id;
+        this.uid = this.$route.params.uid;
        
         this.init();
 
@@ -74,7 +76,7 @@ export default {
     },
     methods: {
         async init() {
-            if (this.id == undefined) {
+            if (this.uid == undefined) {
                 this.display = false;
                 console.log("No se recibe ningun id de alumno ");
             } else {
@@ -84,10 +86,10 @@ export default {
             }
         },
         async cargarInformacionAlumno(){
-            console.log("cargar informacion alumno "+URL.ALUMNOS_BASE);
-            
-            this.alumno = await this.getAsync(URL.ALUMNOS_BASE+"/id/"+this.id);                      
-            this.alumno.fecha_limite_pago = this.alumno.fecha_limite_pago_mensualidad;
+            console.log("cargar informacion alumno "+URL.INSCRIPCION_BASE);
+            aqui voy traer al alumno
+            this.alumno = await this.getAsync(URL.INSCRIPCION_BASE+"/id/"+this.uid);                      
+            //this.alumno.fecha_limite_pago = this.alumno.fecha_limite_pago_mensualidad;
         },        
         async cargarCatalogos(){
             this.listaGrupos = await this.getAsync(`${URL.GRUPOS_BASE}/${this.usuarioSesion.id_empresa}`);

@@ -7,8 +7,8 @@
         <router-link to="/principal" class="btn btn-secondary btn-lg">
           <i class="fas fa-arrow-circle-left text-gray"></i>
         </router-link>
-        <router-link to="/Inscripcion" class="btn btn-secondary btn-lg">
-          Nueva Inscripciòn
+        <router-link to="/Inscripcion" class="btn btn-primary btn-lg">
+          Nueva Inscripción
         </router-link>               
         
       </div>
@@ -170,8 +170,8 @@
                 >
                   {{ row.especialidad }}
                 </h6>
-                <h5><span>Inicia</span> {{ row.fecha_inicio_previsto }}</h5>
-                <h5><span>Fin</span> {{ row.fecha_fin_previsto }}</h5>
+                <h5><span>Inicia</span> {{ row.fecha_inicio_previsto_format }}</h5>
+                <h5><span>Fin</span> {{ row.fecha_fin_previsto_format }}</h5>
               </div>
             </div>
           </div>
