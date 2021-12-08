@@ -3,11 +3,13 @@ import Datepicker from 'vuejs-datepicker';
 import { es } from 'vuejs-datepicker/dist/locale';
 import CargosPagos from '../components/CargosPago.vue';
 import EstadoCuenta from '../components/EstadoCuenta.vue';
-import InscripcionAlumno from '../components/InscripcionAlumno';
+import DatosAlumno from '../components/DatosAlumno';
+import CursosAlumno from '../components/CursosAlumno';
 import { validacionDatosAlumno, validacionFechaLimitePagoAlumno } from "../helpers/AlumnoValidacion";
 import { operacionesApi } from "../helpers/OperacionesApi";
 import { getUsuarioSesion } from '../helpers/Sesion';
 import URL from "../helpers/Urls";
+import Emit from "../helpers/Emit";
 import { validacionCorreo } from "../helpers/ValidacionUtils";
 import AlumnoModel from "../models/AlumnoModel";
 import Utils from "../models/FormatoUtils";
@@ -24,7 +26,8 @@ export default {
         BalanceAlumno,
         Popup,
         EstadoCuenta,
-        InscripcionAlumno
+        DatosAlumno,
+        CursosAlumno
     },
     data() {
         return {
@@ -41,12 +44,13 @@ export default {
             operacion: "",
             disableDaysFechaLimitePago: { days: [6, 0], to: new Date() },
             fecha_memento: null,
+            listaInscripciones:[],
             es: es,
             usuarioSesion: {}
         };
     },
     beforeRouteUpdate(to) {
-        console.log("id = " + this.id);
+        console.log("id = " + this.uid);
         console.log(" " + to);
         this.uid = to.params.uid;
         this.init();
@@ -64,10 +68,15 @@ export default {
         console.log("iniciando el componente Perfil alumno");
 
         this.usuarioSesion = getUsuarioSesion();
-
-        this.uid = this.$route.params.uid;
-       
+        
+        this.uid = `${this.$route.params.uid}`;
+               
         this.init();
+
+        this.$root.$on(Emit.ACTUALIZAR_ALUMNO,async text => {
+            console.log("Actualizar perfil de alumno " + text);
+            await this.cargarInformacionAlumno();
+        });
 
         this.mensajeToast = mensaje => {
             $("#toast_msg").text(mensaje);
@@ -81,20 +90,14 @@ export default {
                 console.log("No se recibe ningun id de alumno ");
             } else {
                 //async version
-                await this.cargarInformacionAlumno();                
-                await this.cargarCatalogos();
+                await this.cargarInformacionAlumno();                             
             }
         },
         async cargarInformacionAlumno(){
-            console.log("cargar informacion alumno "+URL.INSCRIPCION_BASE);
-            aqui voy traer al alumno
-            this.alumno = await this.getAsync(URL.INSCRIPCION_BASE+"/id/"+this.uid);                      
+            console.log("cargar informacion alumno "+this.uid);            
+            this.alumno = await this.getAsync(`${URL.ALUMNOS_BASE}/id/${this.uid}`);                      
             //this.alumno.fecha_limite_pago = this.alumno.fecha_limite_pago_mensualidad;
-        },        
-        async cargarCatalogos(){
-            this.listaGrupos = await this.getAsync(`${URL.GRUPOS_BASE}/${this.usuarioSesion.id_empresa}`);
-            this.listaGeneroAlumno = await this.getAsync(`${URL.GENERO_ALUMNO}`);           
-        },                
+        },                                
         //FIXME : pasar al servicio
         modificar() {
             console.log("Modificar el id " + this.alumno.id);
@@ -120,6 +123,14 @@ export default {
             );
         },
 
+        async cargarCursos(){
+            console.log("@cargarCursos");
+            if(this.listaInscripciones.length == 0){
+             this.listaInscripciones = await this.getAsync(
+                `${URL.INSCRIPCION_BASE}/alumno/${this.uid}`
+              );            
+            }
+        },
                 
         confirmarResetClave() {
             this.get(

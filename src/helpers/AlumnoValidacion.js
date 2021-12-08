@@ -3,7 +3,7 @@
 import Vue from 'vue'
 //import Notificaciones from './helpers/Notificaciones'
 
-export const validacionDatosAlumno = (alumno) => {
+export const validacionDatosAlumno = (alumno,incluirEspecialidad) => {
   console.log("############## VALIDACION DE ALUMNO");
   if (alumno == null || alumno == undefined) {
     return false;
@@ -46,33 +46,29 @@ export const validacionDatosAlumno = (alumno) => {
       return false;
     }
    
-    if (alumno.cat_especialidad == 0) {
-      Vue.prototype.$notificacion.error('Selecciona una especialidad', 'La especialidad es requerida.');
-      return false;
-    }
-
-    if (alumno.co_curso == 0) {
-      Vue.prototype.$notificacion.error('Selecciona un curso', 'El curso es requerido.');
-      return false;
-    }
-
-            
-    if (alumno.costo_colegiatura == null || alumno.costo_colegiatura == '') {      
-      Vue.prototype.$notificacion.error('Escribe el costo de la colegiatura', 'El valor de costo de colegiatura es requedido.');
-      return false;
-    }
-
-    if (alumno.costo_inscripcion == null || alumno.costo_inscripcion == '') {      
-      Vue.prototype.$notificacion.error('Escribe el costo de la inscripción', 'El valor de costo de inscripción es requedido.');
-      return false;
-    }
+    if(incluirEspecialidad){
+      if (alumno.cat_especialidad == 0) {
+        Vue.prototype.$notificacion.error('Selecciona una especialidad', 'La especialidad es requerida.');
+        return false;
+      }
   
-    //--solo valida cuando esta activado mostrar el nombre de cariño
-    /*if (alumno.mostrar_nombre_carino && alumno.nombre_carino.replace(/ /g, "") == '') {     
-      Vue.prototype.$notificacion.error('Nombre de cariño', 'Escribe un nombre de cariño.');
-      return false;
-    }*/
-
+      if (alumno.co_curso == 0) {
+        Vue.prototype.$notificacion.error('Selecciona un curso', 'El curso es requerido.');
+        return false;
+      }
+  
+              
+      if (alumno.costo_colegiatura == null || alumno.costo_colegiatura == '') {      
+        Vue.prototype.$notificacion.error('Escribe el costo de la colegiatura', 'El valor de costo de colegiatura es requedido.');
+        return false;
+      }
+  
+      if (alumno.costo_inscripcion == null || alumno.costo_inscripcion == '') {      
+        Vue.prototype.$notificacion.error('Escribe el costo de la inscripción', 'El valor de costo de inscripción es requedido.');
+        return false;
+      }    
+    }    
+    
     return true;
   }
 }

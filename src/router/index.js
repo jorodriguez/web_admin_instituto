@@ -4,7 +4,6 @@ import Login from '@/components/Login'
 import Principal from '@/components/Principal'
 import CatAlumno from '@/components/CatAlumno'
 import PerfilAlumno from '@/components/PerfilAlumno'
-import Asistencia from '@/asistencia/Asistencia'
 import RegistroActividad from '@/actividad/RegistroActividad'
 import ReporteDeudas from '@/components_admin/ReporteDeudas'
 import CrecimientoGlobal from '@/components_admin/CrecimientoGlobal'
@@ -26,6 +25,7 @@ import AdministrarUsuariosRh from '@/components_admin/AdministrarUsuariosRh'
 import CatAvisos from '../administracion/avisos/CatAvisos';
 import InscripcionAlumno from '@/components/InscripcionAlumno';
 import ReactivarAlumnosEliminados from '@/components/ReactivarAlumnosEliminados';
+import CatCursos from '@/components/CatCursos';
 
 import VueSession from 'vue-session'
 
@@ -53,8 +53,9 @@ const router = new Router({
       children: [
         { path: '/principal', name: 'PaginaPrincipal', component: Principal, meta: { requiresAuth: true, validar: false } },        
         { path: '/CatAlumno', name: 'CatAlumno', component: CatAlumno, meta: { requiresAuth: true, validar: false } },
+        { path: '/CatCurso', name: 'CatCurso', component: CatCursos, meta: { requiresAuth: true, validar: false } },
         { path: '/Inscripcion', name: 'Inscripcion', component: InscripcionAlumno, meta: { requiresAuth: true, validar: false } },
-        { path: '/PerfilAlumno/:id', name: 'PerfilAlumno', component: PerfilAlumno, meta: { requiresAuth: true, validar: false } },
+        { path: '/PerfilAlumno/:uid', name: 'PerfilAlumno', component: PerfilAlumno, meta: { requiresAuth: true, validar: false } },
         { path: '/SubirFotoAlumno/:id', name: 'SubirFotoAlumno', component: SubirFotoAlumno, meta: { requiresAuth: true, validar: false } },        
         //{ path: '/Asistencia', name: 'Asistencia', component: Asistencia, meta: { requiresAuth: true, validar: false } },
         { path: '/Actividades', name: 'Actividades', component: RegistroActividad, meta: { requiresAuth: true, validar: false } },

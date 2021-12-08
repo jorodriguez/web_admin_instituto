@@ -145,6 +145,11 @@
             </router-link>           
           </li>                    
           <li class="nav-item">
+            <router-link to="/CatCurso" class="nav-link"  >
+              <i class="fa fa-list-ul text-primary"></i> Talleres
+            </router-link>           
+          </li>                    
+          <li class="nav-item">
             <router-link to="/Gastos" class="nav-link"  >
               <i class="fa fa-cash-register text-primary"></i> Gastos
             </router-link>

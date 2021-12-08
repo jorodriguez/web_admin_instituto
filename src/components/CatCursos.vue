@@ -14,351 +14,92 @@
         >
           Nuevo Curso
         </button>
-      </div>      
+      </div>
     </div>
 
     <br />
-    <div
-      id="modal_curso"
-      class="modal"
-      tabindex="-1"
-      data-keyboard="false"
-      data-backdrop="static"
-      role="dialog"
-    >
-      <div class="modal-dialog modal-lg" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title">Registro de Curso</h5>
-            <button
-              type="button"
-              class="close"
-              data-dismiss="modal"
-              aria-label="Close"
-            >
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body text-left">
-            <div class="form-row">
-              <div class="form-group col-sm-6 col-md-6 col-lg-6 col-xl-6">
-                <label>Alumno<span class="text-danger">*</span></label>
-                <input
-                  type="text"
-                  v-model="input.nombre"
-                  class="form-control"
-                  placeholder="Nombre"
-                  required
-                  autofocus
-                />
-              </div>
 
-              <div class="form-group col-sm-6 col-md-6 col-lg-6 col-xl-6">
-                <label>Apellidos</label>
-                <input
-                  type="text"
-                  v-model="input.apellidos"
-                  class="form-control"
-                  placeholder="Apellidos"
-                  required
-                />
-              </div>
-            </div>
-
+    <Popup id="popup_curso" :show_button_close="true">
+      <div slot="header">
+        Registrar Curso
+        <strong> {{ usuarioSesion.nombre_sucursal }}</strong>
+      </div>
+      <div slot="container " class="row">       
+        
+          <div class="form-row">
             <div class="form-group">
-              <label>Dirección</label>
-              <input
-                type="text"
-                v-model="input.direccion"
-                class="form-control"
-                placeholder="Dirección "
-              />
-            </div>
-
-            <div class="form-row">
-               <div class="form-group col-sm-6 col-md-6 col-lg-6 col-xl-6">
-                <label>
-                  Fecha de nacimiento
-                  <span class="text-danger">*</span>
-                </label>
-                <datepicker
-                  name="fecha_nacmiento"
-                  v-model="input.fecha_nacimiento"
-                  input-class="form-control"
-                  :format="'yyyy-MM-dd'"
-                  :bootstrap-styling="true"
-                  :language="es"
-                  required
-                ></datepicker>
-              </div>
-              <div class="form-group col-sm-6 col-md-6 col-lg-6 col-xl-6">
-              <label>Télefono</label>
-                <input
-                  type="text"
-                  v-model="input.telefono"
-                  class="form-control"
-                  placeholder="(52)"
-                  required
-                />
-              </div>
-
-             
-             <!--
-              <div class="form-group col-6">
-                <label>Sexo<span class="text-danger">*</span></label>
-                <select
-                  v-model="input.cat_genero"
-                  class="form-control"
-                  placeholder="Grupo"
-                  required
-                >
-                  <option
-                    id="selectGeneroAlumno"
-                    v-for="genero in listaGeneroAlumno"
-                    v-bind:value="genero.id"
-                    v-bind:key="genero.id"
-                    >{{ genero.nombre }}</option
-                  >
-                </select>
-              </div>
-              -->
-
-            </div>
-
-            <div class="form-row">
-              <div class="form-group col-6">
-                <label>
-                  Especialidad
-                  <span class="text-danger">*</span>
-                </label>
-                <select
-                  v-model="input.co_grupo"
-                  class="form-control"
-                  placeholder="Grupo"
-                  required
-                >
-                  <option
-                    v-for="grupo in listaGrupos"
-                    v-bind:value="grupo.id"
-                    v-bind:key="grupo.id"
-                    >{{ grupo.nombre }}</option
-                  >
-                </select>
-              </div>
-              <div class="form-group col-6">
-                <label>
-                  F. de Inscripción
-                  <span class="text-danger">*</span>
-                </label>
-                <datepicker
-                  name="fecha_inscripcion"
-                  v-model="input.fecha_inscripcion"
-                  input-class="form-control"
-                  :bootstrap-styling="true"
-                  :language="es"
-                  required
-                ></datepicker>
-              </div>
-            </div>
-    
-            <div class="form-row">
-              <div class="form-group form-group col-sm-6 col-md-6 col-lg-6 col-xl-6">
-                <label>
-                  Hora Entrada
-                  <small class="text-muted">(Pe. 08:00)</small>
-                  <span class="text-danger">*</span>
-                </label>
-                <input
-                  type="time"
-                  v-model="input.hora_entrada"
-                  class="form-control"
-                  placeholder="H. Entrada"
-                  required
-                />
-              </div>
-              <div class="form-group form-group col-sm-6 col-md-6 col-lg-6 col-xl-6">
-                <label>
-                  Hora Salida
-                  <small class="text-muted">(Pe. 20:00)</small>
-                  <span class="text-danger">*</span>
-                </label>
-                <input
-                  type="time"
-                  v-model="input.hora_salida"
-                  class="form-control"
-                  placeholder="H. Salida"
-                  required
-                />
-              </div>
-            </div>
-            <!--
-            <label>
-              Minutos de Gracia
-              <span class="text-danger">*</span>
-            </label>
-            <input
-              type="number"
-              v-model="input.minutos_gracia"
-              class="form-control"
-              placeholder="Min. Gracia"
-              min="0"
-              required
-            />-->
-            <div class="form-row">
-              <div class="form-group col-6">
-                <label>
-                  Colegiatura
-                  <span class="text-danger">*</span>
-                </label>
-                <input
-                  type="number"
-                  v-model="input.costo_colegiatura"
-                  class="form-control"
-                  placeholder="Costo Colegiatura"
-                  min="0"
-                  required
-                />
-              </div>
-              <div class="form-group col-6">
-                <label>
-                  Inscripción
-                  <span class="text-danger">*</span>
-                </label>
-                <input
-                  type="number"
-                  v-model="input.costo_inscripcion"
-                  class="form-control"
-                  placeholder="Costo Inscripcion"
-                  min="0"
-                  required
-                />
-              </div>
-            </div>
-
-            <div class="form-row">              
-              <div class="form-group col-6">
-                <label for="inputFechaLimitePago">
-                  Fecha Pago
-                  <span class="text-danger">*</span>
-                </label>
-                <datepicker
-                  id="inputFechaLimitePagoColegiatura"
-                  v-model="input.fecha_limite_pago"
-                  input-class="form-control"
-                  :bootstrap-styling="true"
-                  :language="es"
-                  required
-                ></datepicker>
-              </div>
-              <div class="form-group col-6">
-              <label for="inputFechaLimitePago">Nota
+              <label>
+                Especialidad
+                <span class="text-danger">*</span>
               </label>
-                  <textarea
-                    rows="1"
-                    v-model="input.nota"
-                    class="form-control"
-                    placeholder="Notas "
-                  />
-              </div>
-            </div>
-            
-          </div>
-
-          <div class="modal-footer">
-            <div v-if="operacion == 'INSERT'">
-              <button class="btn btn-lg btn-primary" :disabled="loader" v-on:click="guardar()">
-                Guardar
-              </button>
-            </div>
-            <div v-else-if="operacion == 'UPDATE'">
-              <button class="btn btn-lg btn-primary" :disabled="loader" v-on:click="modificar()">
-                Modificar
-              </button>
-            </div>
-            <button
-              type="button"
-              class="btn btn-lg btn-secondary"
-              data-dismiss="modal"
-            >
-              Cerrar
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-    <!-- </form>-->
-
-    <!-- ELIMINAR MODAL -->
-    <div
-      id="modal_eliminar_alumno"
-      class="modal fade"
-      tabindex="-1"
-      role="dialog"
-      data-keyboard="false"
-      data-backdrop="static"
-      aria-labelledby="exampleModalCenterTitle"
-      aria-hidden="true"
-    >
-      <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLongTitle">
-              Confirmar baja del alumno
-            </h5>
-            <button
-              type="button"
-              class="close"
-              data-dismiss="modal"
-              aria-label="Close"
-            >
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
-            <h4>
-              <strong>{{ input.nombre }} {{ input.apellidos }}</strong>
-            </h4>
-            <div class="form-group text-left">
-              <label for="fecha_baja">Fecha de baja</label>
-              <datepicker
-                name="fecha_baja"
-                v-model="fechaBaja"
-                input-class="form-control"
-                :format="'yyyy-MM-dd'"
-                :bootstrap-styling="true"
-                :language="es"
-              ></datepicker>
-            </div>
-            <div class="form-group">
-              <textarea
-                v-model="observacionesBaja"
+              <select
+                v-model="input.cat_especialidad"
                 class="form-control"
-                placeholder="Observaciones"
-                rows="3"
+                placeholder="Especialidad"
+                required
               >
-              </textarea>
+                <option
+                  v-for="grupo in listaEspecialidades"
+                  v-bind:value="grupo.id"
+                  v-bind:key="grupo.id"
+                  >{{ grupo.nombre }}</option
+                >
+              </select>
             </div>
           </div>
-          <div class="modal-footer">
-            <button
-              type="button"
-              class="btn btn-danger"
-              v-on:click="eliminar()"
-              data-dismiss="modal"
-            >
-              Dar de Baja
-            </button>
-            <button
-              type="button"
-              class="btn btn-secondary"
-              data-dismiss="modal"
-            >
-              Cancelar
-            </button>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label>
+                Dias
+                <span class="text-danger">*</span>
+              </label>
+              <select
+                v-model="input.cat_dia"
+                class="form-control"
+                placeholder="Dias"
+                required
+              >
+                <option
+                  v-for="item in listaDias"
+                  v-bind:value="item.id"
+                  v-bind:key="item.id"
+                  >{{ item.nombre }}</option
+                >
+              </select>
+            </div>
           </div>
-        </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label>
+                Horario
+                <span class="text-danger">*</span>
+              </label>
+              <select
+                v-model="input.cat_horario"
+                class="form-control"
+                placeholder="horario"
+                required
+              >
+                <option
+                  v-for="item in listaHorarios"
+                  v-bind:value="item.id"
+                  v-bind:key="item.id"
+                  >{{ item.nombre }}</option
+                >
+              </select>
+            </div>
+          </div>
+
+        
       </div>
-    </div>
+      <div slot="footer">
+        <button class="btn btn-primary">
+          Guardar
+        </button>
+      </div>
+    </Popup>
 
     <div class="card">
       <div class="card-body">
@@ -369,9 +110,9 @@
             placeholder="Buscar por nombre.."
             v-model="criterioNombre"
             v-on:keyup.enter="buscarPorNombre()"
-            aria-label="Buscar por nombre.."            
+            aria-label="Buscar por nombre.."
           />
-           <div class="input-group-append">
+          <div class="input-group-append">
             <button
               class="btn btn-outline-secondary "
               type="button"
@@ -383,182 +124,61 @@
         </div>
 
         <div v-if="loader" class="mx-auto">
-            <Loader :loading="loader" :mini="true" />
+          <Loader :loading="loader" :mini="true" />
         </div>
 
-        <div class="row">                 
-          <div
-            class="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-3 mt-2"
-            v-for="row in lista"
-            :key="row.id"            
-          >
-            <div class="card border-light">
-              <div class="d-flex justify-content-end ">
-                <div class="btn-group" role="group">
-                  <button
-                    id="btnGroupDrop1"
-                    type="button"
-                    class="btn btn-link btn-block btn-sm dropdown-toggle"
-                    data-toggle="dropdown"
-                    aria-haspopup="true"
-                    aria-expanded="false"
-                  ></button>
-                  <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">
-                    <button
-                      class="dropdown-item"
-                      @click="cambiarSucursal(row)"
-                      href="#"
-                    >
-                      <i class="fas fa-exchange-alt"></i>Cambiar de sucursal
-                    </button>
-                    <button
-                      class="dropdown-item"
-                      @click="select(row, 'DELETE')"
-                      href="#"
-                    >
-                      <i class="fas fa-user-minus"></i> Iniciar Baja
-                    </button>
-                  </div>
-                </div>
-              </div>
-
-              <img
-                class="card-img-top pointer rounded-circle mx-auto"
-                style="width:100px"                
-                :src="row.foto"
-                alt="Foto"
-                @click="verPerfil(row)"
-                title="Cambiar la foto"
-              />
-
-              <div class="card-body pointer" @click="verPerfil(row)" >
-                <h4 class="card-text">
-                  {{ row.nombre }}
-                  <span v-if="row.mostrar_nombre_carino"
-                    >({{ row.nombre_carino }})</span
-                  >
-                  <span class="text-danger">{{ row.adeuda ? "*" : "" }}</span>
-                </h4>
-                <h5 class="card-text small">
-                  {{ row.apellidos }}
-                </h5>
-                <h6
-                  :style="row.color ? 'background-color:' + row.color : ''"
-                  class="badge badge-info text-wrap"
+        <div
+          class="row border-bottom border-top"
+          v-for="item in lista"
+          :key="item.id"
+        >
+          <div class="col-2">
+            <img
+              class="mr-3 img-fluid rounded"
+              width="150"
+              :src="item.foto_curso"
+              alt="Especialidad"
+            />
+          </div>
+          <div class="col">
+            <div class=" text-left">
+              <h3 class="mt-0">{{ item.especialidad }}</h3>
+              <p class="card-text text-sm">
+                <span class="text-muted">Fecha de inicio</span>
+                {{
+                  item.fecha_inicio_format
+                    ? item.fecha_inicio_format
+                    : ` previsto ${item.fecha_inicio_previsto_format}`
+                }}
+              </p>
+              <p class="card-text  text-sm">
+                <span class="text-muted">Día(s)</span> {{ item.dias }}
+                <span class="text-muted"> Horario</span> {{ item.horario }}
+              </p>
+              <p class="card-text text-sm">
+                <span class="text-muted">Inscripción:</span>
+                <span class="font-weight-bold"
+                  >${{ item.costo_inscripcion_base }}</span
                 >
-                  {{ row.nombre_grupo }}
-                </h6>
-                <h5><span>de</span> {{ row.hora_entrada }}</h5>
-                <h5><span>a</span> {{ row.hora_salida }}</h5>
-                <!--<div
-                  class="btn-group"
-                  role="group"
-                  aria-label="Button group with nested dropdown"
+              </p>
+              <p class="card-text text-sm">
+                <span class="text-muted">Colegiatura:</span>
+                <span class="font-weight-bold"
+                  >${{ item.costo_colegiatura_base }}</span
                 >
-                  <button
-                    type="button"
-                    @click="verPerfil(row)"
-                    class="btn btn-outline-primary btn-block btn-sm"
-                  >
-                    Ver Perfil
-                  </button>
-                </div>-->
-              </div>
+              </p>
+              <span class="text-muted">Alumnos Inscritos :</span>
+              <span class="badge badge-pill badge-primary">{{
+                item.inscripciones
+              }}</span>
+            </div>
+            <div class="card-footer text-right">
+              <button class="btn btn-link">Agregar alumno</button>
+              <button class="btn btn-link">Modificar</button>
+              <button class="btn btn-link">Eliminar</button>
             </div>
           </div>
 
-          <!--  <table class="table">
-            <thead>
-              <th></th>
-              <th>Nombre</th>
-              <th class="hidden-xs">Apellidos</th>
-              <th>Grupo</th>
-              <th>Hora de Entrada</th>
-              <th>Hora de Salida</th>
-              <th></th>
-            </thead>
-            <tr v-for="row in lista" :key="row.id">
-              <td
-                class="text-right"
-                style="padding-left:2px;padding-right:2px;"
-              >                
-                <img
-                  :src="row.foto"
-                  width="50"
-                  height="50"
-                  v-on:click="subirFotoPerfil(row.id)"
-                  alt="..."
-                  title="Actualizar foto de perfil"
-                  class="rounded-circle"
-                  style="cursor:pointer"
-                />
-              </td>
-              <td class="text-left" style="padding-left:0px;">
-                <button
-                  type="button"
-                  class="btn btn-link"
-                  title="Ver el perfil del alumno"
-                  v-on:click="verPerfil(row)"
-                >
-                  {{ row.nombre }}
-                  <span v-if="row.mostrar_nombre_carino"
-                    >({{ row.nombre_carino }})</span
-                  >
-                  <span class="text-danger">{{ row.adeuda ? "*" : "" }}</span>
-                </button>
-              </td>
-              <td class="hidden-xs">{{ row.apellidos }}</td>
-              <td>
-                <span
-                  :style="row.color ? 'background-color:' + row.color : ''"
-                  class="badge badge-info text-wrap"
-                  >{{ row.nombre_grupo }}</span
-                >
-              </td>
-              <td>{{ row.hora_entrada }}</td>
-              <td>{{ row.hora_salida }}</td>
-              <td>
-                <div class="btn-group" v-if="!row.adeuda">
-                  <button
-                    type="button"
-                    class="btn btn-link text-gray"
-                    data-toggle="dropdown"
-                    aria-haspopup="true"
-                    aria-expanded="false"
-                  >
-                    <i class="fas fa-ellipsis-v"></i>
-                  </button>
-                  <div class="dropdown-menu bg-light">
-                    <button
-                      class="dropdown-item"
-                      v-on:click="cambiarSucursal(row)"
-                      title="Cambiar de sucursal."
-                    >
-                      <i class="fas fa-exchange-alt"></i>Cambiar de sucursal
-                    </button>
-                    <button
-                      class="dropdown-item text-danger"
-                      v-on:click="select(row, 'DELETE')"
-                      title="Dar de baja el alumno."
-                    >
-                      <i class="fas fa-user-minus"></i> Iniciar Baja
-                    </button>
-                  </div>
-                </div>
-              </td>
-            </tr>
-          </table>-->
-
-          <!-- Mensajes para la busqueda y carga-->
-          <div v-if="criterioNombre != '' && lista.length == 0" class="mx-auto">
-            <p class="text-muted ">Ningún resultado</p>
-          </div>
-          <div
-            v-if="criterioNombre == '' && lista.length == 0 && !loader"
-            class="mx-auto"
-          >
-            <p class="text-muted ">Oprime ENTER para listar todo</p>
-          </div>
           <div v-if="loader" class="mx-auto">
             <Loader :loading="loader" :mini="true" />
           </div>
@@ -568,6 +188,107 @@
   </div>
 </template>
 
-<script src="../controller/CatAlumnoController.js"></script>
+<script>
+import { operacionesApi } from "../helpers/OperacionesApi";
+import { getUsuarioSesion } from "../helpers/Sesion";
+import Datepicker from "vuejs-datepicker";
+import URL from "../helpers/Urls";
+import Emit from "../helpers/Emit";
+import { validacionDatosAlumno } from "../helpers/AlumnoValidacion";
+import { en, es } from "vuejs-datepicker/dist/locale";
+import Loader from "../components_utils/Loader";
+import moment from "moment";
+import Popup from "../controller/Popup";
+
+export default {
+  name: "cat-cursos",
+  components: {
+    Datepicker,
+    Loader,
+    Popup
+  },
+  mixins: [operacionesApi],
+  data() {
+    return {
+      criterioNombre: "",
+      operacion: "",
+      usuarioSesion: {},
+      input: {
+        cat_especialidad: -1,
+        cat_dia: -1,
+        cat_horario: -1,
+        co_empresa: -1,
+        co_sucursal: -1,
+        costo_colegiatura_base: 0,
+        costo_inscripcion_base: 0,
+        nota: "",
+        fecha_inicio_previsto: new Date(),
+        fecha_fin_previsto: new Date(),
+        genero: 0
+      },
+      lista: [],
+      listaEspecialidades: [],
+      listaDias: [],
+      listaHorarios: [],
+      es: es,
+      loader: false,
+      isModificacion: false
+    };
+  },
+  mounted() {
+    console.log("##### CATALOGO DE CURSOS  ####");
+    this.usuarioSesion = getUsuarioSesion();
+    console.log(`catalogo de cursos`);
+    this.init();
+  },
+  methods: {
+    async init() {
+      await this.cargarCursos();
+    },
+    async cargarCursos() {
+      this.lista = await this.getAsync(
+        `${URL.CURSO}/sucursal/${this.usuarioSesion.co_sucursal}`
+      );
+    },
+    async nuevo() {
+      this.listaDias = await this.getAsync(
+        `${URL.DIAS_BASE}/${this.usuarioSesion.id_empresa}`
+      );
+      this.listaHorarios = await this.getAsync(
+        `${URL.HORARIOS_BASE}/${this.usuarioSesion.id_empresa}`
+      );
+      this.listaEspecialidades = await this.getAsync(
+        `${URL.ESPECIALIDADES_BASE}/${this.usuarioSesion.id_empresa}`
+      );
+      $("#popup_curso").modal("show");
+    },
+    async guardar() {
+      console.log("@guardar");
+
+      this.input.genero = this.usuarioSesion.id;
+      this.input.co_empresa = this.usuarioSesion.id_empresa;
+      this.input.co_sucursal = this.usuarioSesion.co_sucursal;
+
+      this.loader = true;
+      console.log("inciando guardado de curso " + this.input.id);
+
+      const respuesta = await this.postAsync(`${URL.CURSO}`, this.input);
+
+      console.log(respuesta);
+      if (respuesta) {
+        this.$notificacion.info(`Curso registrado`, `Se registró el curso`);
+        this.cargarCursos();
+        //this.$root.$emit(Emit.ACTUALIZAR_ALUMNO, Emit.ACTUALIZAR_ALUMNO);
+      } else {
+        this.$notificacion.error(
+          "Ups!",
+          "Algo sucedió al intentar guardar el curso, ponte en contacto con soporte técnico."
+        );
+      }
+      this.loader = false;
+    }
+  }
+};
+</script>
 
 <style scoped></style>

@@ -1,8 +1,8 @@
 <template>
   <div class="cat_alumno">
-    <h1 v-if="mode != 'MODIFICAR'">Inscripción Alumno</h1>
-    <small v-if="mode != 'MODIFICAR'">{{ usuarioSesion.nombre_sucursal }}</small>
-    <div v-if="mode != 'MODIFICAR'" class="row">
+    <h1 >Inscripción Alumno</h1>
+    <small >{{ usuarioSesion.nombre_sucursal }}</small>
+    <div  class="row">
       <div class="col-auto mr-auto">
         <router-link to="/CatAlumno" class="btn btn-secondary btn-lg">
           <i class="fas fa-arrow-circle-left text-gray"></i>
@@ -18,7 +18,7 @@
       <div class="col-auto"></div>
     </div>
 
-    <br v-if="mode != 'MODIFICAR'"/>
+    <br />
 
     <div class="container text-left" :disabled="loader">
       <div class="form-row">
@@ -103,7 +103,7 @@
         </div>
       </div>
 
-      <div class="form-row">
+      <div v-if="!isModificacion" class="form-row">
         <div class="form-group form-group col-sm-6 col-md-6 col-lg-6 col-xl-6">
           <label>
             Especialidad
@@ -140,7 +140,7 @@
               v-for="curso in listaCurso"
               v-bind:value="curso.id"
               v-bind:key="curso.id"
-              >{{`${curso.dias} horario de ${curso.horario} / inicia ${curso.fecha_inicio_previsto_format}`}}</option
+              >{{`${curso.dias} horario ${curso.horario} / inicia ${curso.fecha_inicio_previsto_format}`}}</option
             >
           </select>                    
         </div>
@@ -217,8 +217,7 @@ export default {
   components: {
     Datepicker,
     Loader
-  },
-  props:["mode","uuid"],
+  },  
   mixins: [operacionesApi],
   data() {
     return {
@@ -239,26 +238,15 @@ export default {
     this.init();
   },
   methods: {
-    async init() {   
-
+    async init() {         
       this.listaGeneroAlumno = await this.getAsync(`${URL.GENERO_ALUMNO}`);      
-      this.listaEspecialidades = await this.getAsync(`${URL.ESPECIALIDADES_BASE}/${this.usuarioSesion.id_empresa}`);      
-      console.log("this.listaEspecialidadesvv",JSON.stringify(this.listaEspecialidades));
-      this.isModificacion = (this.mode == 'MODIFICAR');
-      if(this.isModificacion){
-        //cargar usuaro
-        console.log("==========CARGAR  "+this.uuid);
-        this.input = await this.getAsync(`${URL.ALUMNOS_BASE}/${this.uuid}`);      
-      }else{
-        await this.nuevo();
-      }
       
-    },
-    async cargarAlumno(){
-
-    },
-    async nuevo() {
-      console.log("Nuevo");
+      this.listaEspecialidades = await this.getAsync(`${URL.ESPECIALIDADES_BASE}/${this.usuarioSesion.id_empresa}`);            
+      
+      this.nuevo();            
+    },    
+    nuevo() {
+      console.log("Es un formulario Nuevo");
       this.operacion = "INSERT";
       this.input = {
         id: 0,
@@ -291,14 +279,14 @@ export default {
           this.listaCurso = await this.getAsync(`${URL.CURSO}/${this.usuarioSesion.co_sucursal}/${this.input.cat_especialidad}`);            
           console.log(JSON.stringify(this.listaCurso));
       }else{
-        console.log("No va a la db");
+        console.log("No va a la db por los cursos");
         this.listaCurso = [];
       }
     },
     async guardar() {
       console.log("@guardar");
 
-      if (!validacionDatosAlumno(this.input)) {
+      if (!validacionDatosAlumno(this.input,true)) {
         console.log("No paso la validacion");
         return;
       }
@@ -307,16 +295,13 @@ export default {
 
       this.loader = true;
       console.log("inciando");
-      
-      
-      const respuesta = this.isModificacion ?
-                         await this.putAsync(URL.INSCRIPCION_BASE, values)
-                         :
-                         await this.postAsync(URL.INSCRIPCION_BASE, values);
+            
+      const respuesta =  await this.postAsync(URL.INSCRIPCION_BASE, values);
                   
       console.log(respuesta);
       if (respuesta) {
-          this.$notificacion.info(`Inscripción ${this.isModificacion ? 'Modificada':'realizada'} `, `Se ${this.isModificacion ? 'registró':'modificó'} el alumno`);          
+          this.$notificacion.info(`Inscripción realizada`, `Se registró el alumno`);          
+          console.log(respuesta);
           this.$router.push({ name: "PerfilAlumno", params: { uid: respuesta.uid } });      
       } else {
         this.$notificacion.error(
@@ -348,35 +333,7 @@ export default {
     getFoto() {
       let elemento = this.listaGeneroAlumno.find(e => e.id == this.input.cat_genero);
       return elemento.foto;
-    },
-   /* modificar() {
-      console.log("Modificar el id " + this.input.id);
-
-      //if (!this.validacionGuardarFunction()) {
-      if (!validacionDatosAlumno(this.input)) {
-        console.log("No paso la validacion");
-        return;
-      }
-
-      this.put(
-        URL.ALUMNOS_BASE + "/" + this.input.id,
-        this.input,
-
-        result => {
-          this.response = result.data;
-          if (this.response != null) {
-            console.log("" + this.response);
-            //this.mensaje = "Se modificó el alumno";
-            this.$notificacion.info(
-              "Modificación de alumno",
-              "Se actualizarón los datos del alumno."
-            );
-            
-            $("#modal_alumno").modal("hide");
-          }
-        }
-      );
-    },*/
+    }, 
    
   }
 };

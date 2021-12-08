@@ -11,6 +11,8 @@ const CURSO = BASE + '/curso';
 const ALUMNOS_BASE = BASE + '/alumnos';
 const INSCRIPCION_BASE = BASE + '/inscripcion';
 const ESPECIALIDADES_BASE = BASE + '/especialidad';
+const DIAS_BASE = BASE + '/dias';
+const HORARIOS_BASE = BASE + '/horarios';
 
 const ASISTENCIA_BASE =  BASE + '/asistencia';
 const ASISTENCIA_USUARIO_BASE =  BASE + '/asistencia_usuarios';
@@ -86,6 +88,9 @@ const URL = {
     INSCRIPCION_BASE:INSCRIPCION_BASE,
     ASISTENCIA_BASE : ASISTENCIA_BASE,
     ESPECIALIDADES_BASE:ESPECIALIDADES_BASE,
+    DIAS_BASE:DIAS_BASE,
+    HORARIOS_BASE:HORARIOS_BASE,
+
     ASISTENCIA_POR_RECIBIR : ASISTENCIA_BASE + '/alumnos_por_recibidos/',//param sucursal
     ASISTENCIA_RECIBIDOS : ASISTENCIA_BASE + '/alumnos_recibidos/',//param sucursal
     ASISTENCIA_ENTRADA_ALUMNOS : ASISTENCIA_BASE + '/entradaAlumnos',

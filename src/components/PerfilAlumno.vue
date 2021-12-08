@@ -52,7 +52,7 @@
                   mostrarfecha="true"
                 ></balance-alumno>-->
               </p>
-              <estado-cuenta :idAlumno="id" />
+              <!--<estado-cuenta :idAlumno="id" />-->
             </div>
           </div>
         </div>
@@ -85,6 +85,7 @@
                 role="tab"
                 aria-controls="pills-inscripciones"
                 aria-selected="false"
+                @click="cargarCursos()"
                 >Especialidad/Diplomados
               </a>
             </li>
@@ -110,23 +111,13 @@
               aria-labelledby="pills-home-tab"
             >
               <div class="card">
-                <div class="card-body">
-                                    
-                  <InscripcionAlumno :uuid="this.uid" :mode="'MODIFICACION'"/>
-
-                  <button
-                    type="button"
-                    class="btn btn-lg btn-primary"
-                    v-on:click="modificar()"
-                  >
-                    Guardar
-                  </button>
+                <div class="card-body">                  
+                  <DatosAlumno :uuidAlumno="alumno.uid"/>               
                 </div>
               </div>
             </div>
 
             <!-- PAGOS -->
-
             <div
               class="tab-pane fade"
               id="pills-servicios"
@@ -155,37 +146,9 @@
             >
               <div class="card">
                 <div class="card-body">
-                  <div class="form-row">
-                    <div class="form-group col-sm-6 col-md-6 col-lg-6 col-xl-6">
-                      <label>Télefono</label>
-                      <input
-                        type="text"
-                        v-model="alumno.telefono"
-                        class="form-control"
-                        placeholder="(52)"
-                        required
-                        autofocus
-                      />
-                    </div>
-
-                    <div class="form-group col-sm-6 col-md-6 col-lg-6 col-xl-6">
-                      <label>Correo</label>
-                      <input
-                        type="text"
-                        v-model="alumno.correo"
-                        class="form-control"
-                        placeholder="@"
-                        required
-                      />
-                    </div>
-                  </div>
-                  <button
-                  type="button"
-                  class="btn btn-primary"
-                  v-on:click="modificar()"
-                >
-                  Guardar
-                </button>
+                  
+                  <CursosAlumno :lista="listaInscripciones"/>
+                                    
                 </div>                
               </div>
             </div>
@@ -196,41 +159,10 @@
       </div>
     </div>
 
-    <!-- EN CASO DE NO ENVIAR EL ID -->
-    <div class="text-info" v-else-if="display == false">
-      Es necesario seleccionar un alumno
-    </div>
-    <!-- MODAL TOAST -->
-    <div
-      id="toast_id"
-      role="alert"
-      aria-live="assertive"
-      aria-atomic="true"
-      class="toast border-warning"
-      data-autohide="true"
-      data-delay="1000"
-    >
-      <div class="toast-header p-1 mb-1 bg-warning text-dark">
-        <!--<img src="" class="rounded mr-2" alt="...">-->
-        <strong class="mr-auto">Perfil</strong>
-        <!--<small>11 mins ago</small>-->
-        <button
-          type="button"
-          class="ml-2 mb-1 close"
-          data-dismiss="toast"
-          aria-label="Close"
-        >
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div class="toast-body">
-        <p id="toast_msg"></p>
-      </div>
-    </div>
-    <!-- MODAL TOAST -->
+   
 
     <!-- captura de fecha de pago-->
-
+<!--
     <Popup id="popup_captura_fecha_pago" :show_button_close="false">
       <div slot="header">
         Fecha de pago
@@ -245,6 +177,7 @@
         </button>
       </div>
     </Popup>
+    -->
   </div>
 </template>
 

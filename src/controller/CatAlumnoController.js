@@ -69,7 +69,7 @@ export default {
       }
     },
     verPerfil(rowSelect) {
-      console.log("fila seleccionada " + rowSelect.nombre);
+      console.log("fila seleccionada " + rowSelect.uid);
       this.$router.push({ name: "PerfilAlumno", params: { uid: rowSelect.uid } });
     },
     buscarPorNombre() {

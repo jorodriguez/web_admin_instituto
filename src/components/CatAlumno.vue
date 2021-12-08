@@ -159,19 +159,19 @@
 
               <div class="card-body pointer" @click="verPerfil(row)" >
                 <h4 class="card-text">
-                  {{ row.nombre }}                  
+                  {{ row.alumno }}                  
                 </h4>
                 <h5 class="card-text small">
                   {{ row.apellidos }}
                 </h5>
                 <h6
-                  :style="row.color ? 'background-color:' + row.color : ''"
+                  :style="row.color_especialidad ? 'background-color:' + row.color_especialidad : ''"
                   class="badge badge-info text-wrap"
                 >
                   {{ row.especialidad }}
-                </h6>
-                <h5><span>Inicia</span> {{ row.fecha_inicio_previsto_format }}</h5>
-                <h5><span>Fin</span> {{ row.fecha_fin_previsto_format }}</h5>
+                </h6>                
+                <h5><span class="font-weight-normal">Inicia</span> {{ row.fecha_inicio_previsto_format }}</h5>                
+                <h5><span class="font-weight-normal"></span>{{row.dias}} turno {{ row.horario }}</h5>
               </div>
             </div>
           </div>
