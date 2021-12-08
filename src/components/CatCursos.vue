@@ -21,83 +21,129 @@
 
     <Popup id="popup_curso" :show_button_close="true">
       <div slot="header">
-        Registrar Curso
-        <strong> {{ usuarioSesion.nombre_sucursal }}</strong>
+        Registrar Curso en <strong> {{ usuarioSesion.nombre_sucursal }}</strong>
       </div>
-      <div slot="container " class="row">       
-        
-          <div class="form-row">
-            <div class="form-group">
-              <label>
-                Especialidad
-                <span class="text-danger">*</span>
-              </label>
-              <select
-                v-model="input.cat_especialidad"
-                class="form-control"
-                placeholder="Especialidad"
-                required
-              >
-                <option
-                  v-for="grupo in listaEspecialidades"
-                  v-bind:value="grupo.id"
-                  v-bind:key="grupo.id"
-                  >{{ grupo.nombre }}</option
-                >
-              </select>
-            </div>
-          </div>
+      <div slot="content" class="text-left">
+        <div class="form-group">
+          <label>
+            Especialidad
+            <span class="text-danger">*</span>
+          </label>
+          <select
+            v-model="input.cat_especialidad"
+            class="form-control"
+            placeholder="Especialidad"
+            required
+          >
+            <option
+              v-for="grupo in listaEspecialidades"
+              v-bind:value="grupo.id"
+              v-bind:key="grupo.id"
+            >
+              {{ grupo.nombre }}
+            </option>
+          </select>
+        </div>
 
-          <div class="form-row">
-            <div class="form-group">
-              <label>
-                Dias
-                <span class="text-danger">*</span>
-              </label>
-              <select
-                v-model="input.cat_dia"
-                class="form-control"
-                placeholder="Dias"
-                required
-              >
-                <option
-                  v-for="item in listaDias"
-                  v-bind:value="item.id"
-                  v-bind:key="item.id"
-                  >{{ item.nombre }}</option
-                >
-              </select>
-            </div>
+        <div class="form-group">
+          <label>
+            Dias
+            <span class="text-danger">*</span>            
+          </label>
+          <div class="form-control text-center">
+            <span
+              v-for="item in listaDias"
+              v-bind:key="item.id"
+              style="margin-left: 10px"
+            >
+              <input type="checkbox" id="checkbox" v-model="item.checked" />
+              <label class="font-weight-bold"> {{ item.nombre }}</label>
+            </span>
           </div>
+        </div>
 
-          <div class="form-row">
-            <div class="form-group">
-              <label>
-                Horario
-                <span class="text-danger">*</span>
-              </label>
-              <select
-                v-model="input.cat_horario"
-                class="form-control"
-                placeholder="horario"
-                required
+        <div class="form-row">
+          <div
+            class="form-group form-group col-sm-6 col-md-6 col-lg-6 col-xl-6"
+          >
+            <label>
+              Horario
+              <span class="text-danger">*</span>
+            </label>
+            <select
+              v-model="input.cat_horario"
+              class="form-control"
+              placeholder="horario"
+              required
+            >
+              <option
+                v-for="item in listaHorarios"
+                v-bind:value="item.id"
+                v-bind:key="item.id"
               >
-                <option
-                  v-for="item in listaHorarios"
-                  v-bind:value="item.id"
-                  v-bind:key="item.id"
-                  >{{ item.nombre }}</option
-                >
-              </select>
-            </div>
+                {{ item.nombre }}
+              </option>
+            </select>
           </div>
+          <div class="form-group col-sm-6 col-md-6 col-lg-6 col-xl-6">
+            <label>
+              Fecha Inicio
+              <span class="text-danger">*</span>
+            </label>
+            <datepicker
+              name="fecha_inicio_previsto"
+              v-model="input.fecha_inicio_previsto"
+              input-class="form-control"
+              :format="'yyyy-MM-dd'"
+              :bootstrap-styling="true"
+              :language="es"
+              required
+            ></datepicker>
+          </div>
+        </div>
 
-        
+        <div class="form-row">
+          <div
+            class="form-group form-group col-sm-6 col-md-6 col-lg-6 col-xl-6"
+          >
+            <label>
+              Costo Colegiatura
+              <span class="text-danger">*</span>
+            </label>
+            <input
+              type="number"
+              v-model="input.costo_colegiatura"
+              class="form-control"
+              placeholder="Costo Colegiatura"
+              min="0"
+              required
+            />
+          </div>
+          <div
+            class="form-group form-group col-sm-6 col-md-6 col-lg-6 col-xl-6"
+          >
+            <label>
+              Costo Inscripción
+              <span class="text-danger">*</span>
+            </label>
+            <input
+              type="number"
+              v-model="input.costo_inscripcion"
+              class="form-control"
+              placeholder="Costo Inscripción"
+              min="0"
+              required
+            />
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label> Nota </label>
+          <input type="text" v-model="input.nota" class="form-control" />
+        </div>
       </div>
       <div slot="footer">
-        <button class="btn btn-primary">
-          Guardar
-        </button>
+        <button class="btn btn-primary" @click="guardar()">Guardar</button>
       </div>
     </Popup>
 
@@ -114,7 +160,7 @@
           />
           <div class="input-group-append">
             <button
-              class="btn btn-outline-secondary "
+              class="btn btn-outline-secondary"
               type="button"
               v-on:click="buscarPorNombre()"
             >
@@ -141,7 +187,7 @@
             />
           </div>
           <div class="col">
-            <div class=" text-left">
+            <div class="text-left">
               <h3 class="mt-0">{{ item.especialidad }}</h3>
               <p class="card-text text-sm">
                 <span class="text-muted">Fecha de inicio</span>
@@ -151,7 +197,7 @@
                     : ` previsto ${item.fecha_inicio_previsto_format}`
                 }}
               </p>
-              <p class="card-text  text-sm">
+              <p class="card-text text-sm">
                 <span class="text-muted">Día(s)</span> {{ item.dias }}
                 <span class="text-muted"> Horario</span> {{ item.horario }}
               </p>
@@ -199,13 +245,15 @@ import { en, es } from "vuejs-datepicker/dist/locale";
 import Loader from "../components_utils/Loader";
 import moment from "moment";
 import Popup from "../controller/Popup";
+import InscripcionAlumno from "./InscripcionAlumno.vue";
 
 export default {
   name: "cat-cursos",
   components: {
     Datepicker,
     Loader,
-    Popup
+    Popup,
+    InscripcionAlumno,
   },
   mixins: [operacionesApi],
   data() {
@@ -224,7 +272,7 @@ export default {
         nota: "",
         fecha_inicio_previsto: new Date(),
         fecha_fin_previsto: new Date(),
-        genero: 0
+        genero: 0,
       },
       lista: [],
       listaEspecialidades: [],
@@ -232,7 +280,7 @@ export default {
       listaHorarios: [],
       es: es,
       loader: false,
-      isModificacion: false
+      isModificacion: false,
     };
   },
   mounted() {
@@ -251,12 +299,18 @@ export default {
       );
     },
     async nuevo() {
-      this.listaDias = await this.getAsync(
+      let lDias = await this.getAsync(
         `${URL.DIAS_BASE}/${this.usuarioSesion.id_empresa}`
       );
+
+      this.listaDias = lDias.map((e) => {
+        return { checked: false, ...e };
+      });
+
       this.listaHorarios = await this.getAsync(
         `${URL.HORARIOS_BASE}/${this.usuarioSesion.id_empresa}`
       );
+
       this.listaEspecialidades = await this.getAsync(
         `${URL.ESPECIALIDADES_BASE}/${this.usuarioSesion.id_empresa}`
       );
@@ -265,6 +319,18 @@ export default {
     async guardar() {
       console.log("@guardar");
 
+      const diasArray = this.listaDias.reduce(function(filtered, item) {
+        if (item.checked) {          
+          filtered.push(item.id);
+        }
+        return filtered;
+      }, []);
+
+  console.log(diasArray);
+      //let seleccion = this.listaDias.filter(e=>{e.checked});
+
+      //this.input.dias = seleccion.map(e=>e.id);
+      this.input.dias = diasArray;
       this.input.genero = this.usuarioSesion.id;
       this.input.co_empresa = this.usuarioSesion.id_empresa;
       this.input.co_sucursal = this.usuarioSesion.co_sucursal;
@@ -286,8 +352,8 @@ export default {
         );
       }
       this.loader = false;
-    }
-  }
+    },
+  },
 };
 </script>
 
