@@ -21,7 +21,8 @@
 
     <Popup id="popup_curso" :show_button_close="true">
       <div slot="header">
-        Registrar Curso en <strong> {{ usuarioSesion.nombre_sucursal }}</strong>
+        {{ `${operacion == "INSERT" ? "Registrar" : "Modificar"}` }} Curso en
+        <strong> {{ usuarioSesion.nombre_sucursal }}</strong>
       </div>
       <div slot="content" class="text-left">
         <div class="form-group">
@@ -30,6 +31,7 @@
             <span class="text-danger">*</span>
           </label>
           <select
+            :disabled="operacion == 'UPDATE'"
             v-model="input.cat_especialidad"
             class="form-control"
             placeholder="Especialidad"
@@ -58,10 +60,10 @@
             >
               <input
                 type="checkbox"
-                :id="`${checkbox}_${item.id}`"
+                :id="`checkbox_${item.id}`"
                 v-model="item.checked"
               />
-              <label :for="`${checkbox}_${item.id}`" class="font-weight-bold">
+              <label :for="`checkbox_${item.id}`" class="font-weight-bold">
                 {{ item.nombre }}</label
               >
             </span>
@@ -149,8 +151,20 @@
         </div>
       </div>
       <div slot="footer">
-        <button v-if="operacion==='INSERT'" class="btn btn-primary" @click="guardar()">Guardar</button>
-        <button v-if="operacion==='UPDATE'" class="btn btn-primary" @click="modificar()">Modificar</button>
+        <button
+          v-if="operacion === 'INSERT'"
+          class="btn btn-primary"
+          @click="guardar()"
+        >
+          Guardar
+        </button>
+        <button
+          v-if="operacion === 'UPDATE'"
+          class="btn btn-primary"
+          @click="guardar()"
+        >
+          Modificar
+        </button>
       </div>
     </Popup>
 
@@ -180,93 +194,98 @@
           <Loader :loading="loader" :mini="true" />
         </div>
 
-        <div
-          class="row border-bottom border-top mt-2"
-          v-for="item in lista"
-          :key="item.id"
-        >
-          <div class="col-2 mr-auto text-center mt-2">
-            <img
-              v-if="item.foto_curso"
-              class="mr-3 img-fluid rounded"
-              width="150"
-              :src="item.foto_curso"
-              alt="Especialidad"
-            />
-            <div v-else class="card border-light" style="width: 140px">
-              <div class="card-body">
-                <button class="btn btn-link">
-                  <i class="fa fa-plus "></i>
-                </button>
+        <span v-for="item in lista" :key="item.id">
+          <div class="row  border-top mt-2">
+             <div class="col-md-2 mt-2">
+              <img
+                v-if="item.foto_curso"
+                class="mr-3 img-fluid rounded border border-gray"
+                width="150"
+                :src="item.foto_curso"
+                alt="Especialidad"
+              />
+              <div
+                v-else
+                class="card border border-gray"
+                style="width: 140px"
+              >
+                <div class="card-body">
+                  <button class="btn btn-link">
+                    <i class="fa fa-plus"></i>
+                  </button>
+                </div>
               </div>
             </div>
-          </div>
-          <div class="col mt-2">
-            <div class="text-left">
-              <h3 class="mt-0">{{ item.especialidad }}</h3>
-              <p class="card-text text-sm">
-                <span class="text-muted">Fecha de inicio</span>
-                {{
-                  item.fecha_inicio_format
-                    ? item.fecha_inicio_format
-                    : ` previsto ${item.fecha_inicio_previsto_format}`
-                }}
-                <span class="text-muted">Fecha de fin</span>
-                {{
-                  item.fecha_fin_format
-                    ? item.fecha_fin_format
-                    : ` previsto ${item.fecha_fin_previsto_format}`
-                }}
-              </p>
-              <p class="card-text text-sm">
-                <span class="text-muted">Día(s)</span> {{ item.dias }}
-                <span class="text-muted"> Horario</span> {{ item.horario }}
-              </p>
-              <p class="card-text text-sm">
-                <span class="text-muted">Inscripción:</span>
+            <div class="col mt-2">
+              <div class="text-left">
+                <h3 class="mt-0 pointer" @click="seleccionar(item,'UPDATE')">{{ item.especialidad }}</h3>
+                <p class="card-text text-sm">
+                  <span class="text-muted">Fecha de inicio</span>
+                  {{
+                    item.fecha_inicio_format
+                      ? item.fecha_inicio_format
+                      : ` previsto ${item.fecha_inicio_previsto_format}`
+                  }}
+                  <span class="text-muted">Fecha de fin</span>
+                  {{
+                    item.fecha_fin_format
+                      ? item.fecha_fin_format
+                      : ` previsto ${item.fecha_fin_previsto_format}`
+                  }}
+                </p>
+                <p class="card-text text-sm">
+                  <span class="text-muted">Día(s)</span> {{ item.dias }}
+                  <span class="text-muted"> Horario</span> {{ item.horario }}
+                </p>
+                 <p class="card-text text-sm">
+                  <span class="text-muted">Colegiatura </span> <span class="font-weight-bold d-inline p-2 bg-gray rounded text-white m-2">${{ item.costo_colegiatura_base }}</span>
+                  <span class="text-muted"> Inscripción </span><span class="font-weight-bold d-inline p-2 bg-gray rounded text-white m-2">${{ item.costo_inscripcion_base }}</span>
+                </p>
+              </div>
+            </div>
+            <!--<div class="col-4 mt-2 mb-2 text-right">
+              <p class="card-text text-sm ">                
                 <span class="font-weight-bold"
                   >${{ item.costo_inscripcion_base }}</span
-                >
+                ><span class="text-muted">Inscripción</span>
               </p>
-              <p class="card-text text-sm">
-                <span class="text-muted">Colegiatura:</span>
+              <p class="card-text text-sm">                
                 <span class="font-weight-bold"
                   >${{ item.costo_colegiatura_base }}</span
-                >
+                ><span class="text-muted">Colegiatura</span>
               </p>
-              <span class="text-muted">Alumnos Inscritos :</span>
+              <p class="card-text text-sm">              
               <span
-                :class="
-                  `badge badge-pill ${
-                    item.inscripciones && item.inscripciones > 0
-                      ? 'badge-primary'
-                      : 'badge-secondary'
-                  }`
-                "
+                :class="`badge badge-pill ${
+                  item.inscripciones && item.inscripciones > 0
+                    ? 'badge-primary'
+                    : 'badge-secondary'
+                }`"
                 >{{ item.inscripciones }}</span
               >
-            </div>
-            <div class="card-footer text-right">
+              <span class="text-muted">Inscritos</span>
+              </p>
+            </div>-->
+           
+          </div>
+          <div class="row bg-secondary">
+            <div class="col-md-4 offset-md-8  text-right">
               <!--<button class="btn btn-link">Agregar alumno</button>-->
-              <button class="btn btn-link" @click="seleccionar(item,'UPDATE')">Modificar</button>
-              <button class="btn btn-link" @click="seleccionar(item,'DELETE')">
+              <button class="btn btn-link" @click="seleccionar(item, 'UPDATE')">
+                Modificar
+              </button>
+              <button class="btn btn-link text-danger" @click="seleccionar(item, 'DELETE')">
                 Eliminar
               </button>
             </div>
           </div>
-
-          <div v-if="loader" class="mx-auto">
-            <Loader :loading="loader" :mini="true" />
-          </div>
-        </div>
+        </span>
       </div>
     </div>
 
     <!--Eliminar-->
     <Popup id="popup_eliminar" :show_button_close="true">
-      <div slot="header">
-        Eliminar Curso
-      </div>
+      <div slot="header">Eliminar Curso</div>
       <div slot="content">
         <div class="row text-left">
           <table class="table">
@@ -280,8 +299,8 @@
                   alt="Especialidad"
                 />
                 <div v-else class="card border-light" style="width: 140px">
-                  <div class="card-body">                    
-                      <i >sin imagen</i>                    
+                  <div class="card-body">
+                    <i>sin imagen</i>
                   </div>
                 </div>
               </td>
@@ -289,7 +308,7 @@
                 <span class="font-weight-bold">{{ input.especialidad }}</span>
               </td>
             </tr>
-            <tr>              
+            <tr>
               <td>
                 <span class="font-weight-bold">
                   {{
@@ -300,36 +319,30 @@
                 </span>
               </td>
             </tr>
-            <tr>              
+            <tr>
               <td>
                 <span class="font-weight-bold">{{ input.dias }}</span>
               </td>
             </tr>
-            <tr>              
+            <tr>
               <td>
                 <span class="font-weight-bold">{{ input.horario }}</span>
               </td>
             </tr>
-            <tr>           
-              <td>Motivo de baja <span class="text-danger">*</span></td>   
+            <tr>
+              <td>Motivo de baja <span class="text-danger">*</span></td>
               <td>
-                  <textarea v-model="motivo"
-                    class="form-control"
-                    rows="2"
-                  >
-                  </textarea>
+                <textarea v-model="motivo" class="form-control" rows="2">
+                </textarea>
               </td>
             </tr>
           </table>
         </div>
       </div>
       <div slot="footer">
-        <button class="btn btn-danger" @click="eliminar()">
-          Eliminar
-        </button>
+        <button class="btn btn-danger" @click="eliminar()">Eliminar</button>
       </div>
     </Popup>
-    
   </div>
 </template>
 
@@ -352,7 +365,7 @@ export default {
     Datepicker,
     Loader,
     Popup,
-    InscripcionAlumno
+    InscripcionAlumno,
   },
   mixins: [operacionesApi],
   data() {
@@ -361,8 +374,10 @@ export default {
       operacion: "",
       usuarioSesion: {},
       input: {
+        id: 0,
         cat_especialidad: -1,
         dias: [],
+        dias_array: [],
         cat_horario: -1,
         co_empresa: -1,
         co_sucursal: -1,
@@ -371,16 +386,16 @@ export default {
         nota: "",
         fecha_inicio_previsto: new Date(),
         fecha_fin_previsto: new Date(),
-        genero: 0
+        genero: 0,
       },
       lista: [],
       listaEspecialidades: [],
       listaDias: [],
       listaHorarios: [],
-      motivo:"",
+      motivo: "",
       es: es,
       loader: false,
-      isModificacion: false
+      isModificacion: false,
     };
   },
   mounted() {
@@ -392,42 +407,59 @@ export default {
   methods: {
     async init() {
       await this.cargarCursos();
-      this.operacion='INSERT';
+      this.operacion = "INSERT";
     },
     async cargarCursos() {
       this.lista = await this.getAsync(
         `${URL.CURSO}/sucursal/${this.usuarioSesion.co_sucursal}`
       );
     },
-    async seleccionar(row,operacion) {
-      console.log("===="+JSON.stringify(row));      
+    async seleccionar(row, ope) {
+      console.log("====" + JSON.stringify(row));
       this.input = Object.assign({}, row);
-      this.operacion = operacion;
-      if(this.operacion==='DELETE'){
-          $("#popup_eliminar").modal("show");
+      this.operacion = ope;
+      if (this.operacion === "DELETE") {
+        $("#popup_eliminar").modal("show");
       }
-      if(this.operacion==='UPDATE'){
-          await this.nuevo();
-          console.log(this.input);
+      if (this.operacion === "UPDATE") {
+        await this.cargarCatalogos();
+        console.log(this.input);
 
-          this.input.dias_array.forEach(i=>{
-              this.listaDias.forEach(e=>{
-                    if(e.id == i){
-                        e.checked = true;
-                    }
-              });
+        this.input.dias_array.forEach((i) => {
+          this.listaDias.forEach((e) => {
+            if (e.id == i) {
+              e.checked = true;
+            }
           });
+        });
 
-          this.input.fecha_inicio_previsto = new Date(this.input.fecha_inicio_previsto);
-          
-      }      
+        this.input.fecha_inicio_previsto = new Date(
+          this.input.fecha_inicio_previsto
+        );
+        $("#popup_curso").modal("show");
+      }
     },
     async nuevo() {
+      this.operacion = "INSERT";
+
+      await this.cargarCatalogos();
+
+      this.input.cat_especialidad = -1;
+      this.input.cat_horario = -1;
+      this.input.dias_array = [];
+      this.input.costo_colegiatura_base = 0;
+      this.input.costo_inscripcion_base = 0;
+      this.input.nota = "";
+      this.input.fecha_inicio_previsto = new Date();
+
+      $("#popup_curso").modal("show");
+    },
+    async cargarCatalogos() {
       let lDias = await this.getAsync(
         `${URL.DIAS_BASE}/${this.usuarioSesion.id_empresa}`
       );
 
-      this.listaDias = lDias.map(e => {
+      this.listaDias = lDias.map((e) => {
         return { checked: false, ...e };
       });
 
@@ -438,20 +470,18 @@ export default {
       this.listaEspecialidades = await this.getAsync(
         `${URL.ESPECIALIDADES_BASE}/${this.usuarioSesion.id_empresa}`
       );
-      this.operacion='INSERT';
-      $("#popup_curso").modal("show");
     },
     async guardar() {
       console.log("@guardar");
 
-      const diasArray = this.listaDias.reduce(function(filtered, item) {
+      const diasArray = this.listaDias.reduce(function (filtered, item) {
         if (item.checked) {
           filtered.push(item.id);
         }
         return filtered;
       }, []);
 
-      this.input.dias = diasArray;
+      this.input.dias_array = diasArray;
       this.input.genero = this.usuarioSesion.id;
       this.input.co_empresa = this.usuarioSesion.id_empresa;
       this.input.co_sucursal = this.usuarioSesion.co_sucursal;
@@ -461,17 +491,19 @@ export default {
       }
 
       this.loader = true;
-      console.log("inciando guardado de curso " + this.input.id);
+      let isModificacion = this.operacion == "UPDATE";
+      console.log(`inciando ${this.operacion} de curso ${this.input.id}`);
 
-      let isModificacion = this.operacion =='UPDATE';
-
-      const respuesta = isModificacion ? await this.pytAsync(`${URL.CURSO}`, this.input)
-                                         :
-                                         await this.postAsync(`${URL.CURSO}`, this.input);
+      const respuesta = isModificacion
+        ? await this.putAsync(`${URL.CURSO}/${this.input.id}`, this.input)
+        : await this.postAsync(`${URL.CURSO}`, this.input);
 
       console.log(respuesta);
       if (respuesta) {
-        this.$notificacion.info(`Curso ${isModificacion ? 'modificado':'registrado'}`, `Se ${isModificacion ? 'modificado':'registró'} el curso`);
+        this.$notificacion.info(
+          `Curso ${isModificacion ? "modificado" : "registrado"}`,
+          `Se ${isModificacion ? "modificado" : "registró"} el curso`
+        );
         this.cargarCursos();
         $("#popup_curso").modal("hide");
         //this.$root.$emit(Emit.ACTUALIZAR_ALUMNO, Emit.ACTUALIZAR_ALUMNO);
@@ -483,9 +515,8 @@ export default {
       }
       this.loader = false;
     },
-    async eliminar() {      
-
-      if(!this.motivo || this.motivo==''){
+    async eliminar() {
+      if (!this.motivo || this.motivo == "") {
         this.$notificacion.error(
           "Motivo de baja",
           "Escribe el motivo por el cual daras de baja el curso."
@@ -493,7 +524,10 @@ export default {
         return;
       }
 
-      const result =  await this.putAsync(`${URL.CURSO}/eliminar/${this.input.id}`,{motivo:this.motivo,genero:this.usuarioSesion.id});
+      const result = await this.putAsync(
+        `${URL.CURSO}/eliminar/${this.input.id}`,
+        { motivo: this.motivo, genero: this.usuarioSesion.id }
+      );
 
       this.cargarCursos();
 
@@ -507,7 +541,7 @@ export default {
         val = false;
       }
 
-      if (this.input.dias.length == 0) {
+      if (this.input.dias_array.length == 0) {
         this.$notificacion.error("Dias", "Selecciona los dias a impartir");
         val = false;
       }
@@ -544,8 +578,8 @@ export default {
         val = false;
       }
       return val;
-    }
-  }
+    },
+  },
 };
 </script>
 

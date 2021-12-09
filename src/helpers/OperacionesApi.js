@@ -2,8 +2,6 @@ import { getToken } from "../helpers/Sesion";
 import axios from "axios";
 
 const get = function(url, handler) {
-  console.log("== TOKEN INTERNO " + getToken());
-
   this.$http
     .get(url, {
       headers: {

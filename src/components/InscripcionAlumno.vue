@@ -132,6 +132,7 @@
           </label>          
           <select
             v-model="input.co_curso"                        
+            @change="onChangeCurso()"
             class="form-control"
             placeholder="Curso"
             required
@@ -154,6 +155,7 @@
           </label>
           <input
             type="number"
+            :disabled="true"
             v-model="input.costo_colegiatura"
             class="form-control"
             placeholder="Costo Colegiatura"
@@ -168,6 +170,7 @@
           </label>
           <input
             type="number"
+            :disabled="true"
             v-model="input.costo_inscripcion"
             class="form-control"
             placeholder="Costo Inscripcion"
@@ -276,12 +279,20 @@ export default {
     async onChangeEspecialidad(event){
       console.log("@onChangeEspecialidad "+this.input.cat_especialidad);
       if(this.input.cat_especialidad){
-          this.listaCurso = await this.getAsync(`${URL.CURSO}/${this.usuarioSesion.co_sucursal}/${this.input.cat_especialidad}`);            
-          console.log(JSON.stringify(this.listaCurso));
+          this.listaCurso = await this.getAsync(`${URL.CURSO}/${this.usuarioSesion.co_sucursal}/${this.input.cat_especialidad}`);                      
       }else{
         console.log("No va a la db por los cursos");
         this.listaCurso = [];
       }
+      this.input.costo_colegiatura = 0;
+      this.input.costo_inscripcion = 0;
+      this.input.co_curso = -1;
+    },
+    async onChangeCurso(event){
+      console.log("@onChangeCurso "+this.input.co_curso);
+      let cursoSeleccionado = this.listaCurso.find(e=>e.id == this.input.co_curso);  
+      this.input.costo_colegiatura = cursoSeleccionado.costo_colegiatura_base;
+      this.input.costo_inscripcion = cursoSeleccionado.costo_inscripcion_base;
     },
     async guardar() {
       console.log("@guardar");
