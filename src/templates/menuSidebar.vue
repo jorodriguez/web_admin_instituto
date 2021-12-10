@@ -141,7 +141,7 @@
           </li>-->                    
           <li class="nav-item">
             <router-link to="/CatAlumno" class="nav-link"  >
-              <i class="fa fa-list-ul text-primary"></i> Alumnos
+              <i class="fa fa-list-ul text-primary"></i> Inscripciones
             </router-link>           
           </li>                    
           <li class="nav-item">

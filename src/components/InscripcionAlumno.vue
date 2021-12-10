@@ -103,6 +103,61 @@
         </div>
       </div>
 
+      <div class="form-row">
+        <div class="form-group col-sm-6 col-md-6 col-lg-6 col-xl-6">
+          <label>
+            Escolaridad
+          </label>
+          <select
+            v-model="input.cat_genero"
+            class="form-control"
+            placeholder="Escolaridad"            
+          >
+            <option
+              id="selectEscolaridad"
+              v-for="escolaridad in listaEscolaridad"
+              v-bind:value="escolaridad.id"
+              v-bind:key="escolaridad.id"
+              >{{ escolaridad.nombre }}</option
+            >
+          </select>
+        </div>
+        <div class="form-group col-sm-6 col-md-6 col-lg-6 col-xl-6">
+          <label>Ocupación</label>
+           <input
+            type="text"
+            v-model="input.ocupacion"
+            class="form-control"
+            placeholder=""            
+          />
+        </div>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group col-sm-6 col-md-6 col-lg-6 col-xl-6">
+          <label>
+            Tutor(a)
+          </label>
+           <input
+              type="text"
+              v-model="input.tutor"
+              class="form-control"
+              placeholder=""            
+          />
+        </div>
+        <div class="form-group col-sm-6 col-md-6 col-lg-6 col-xl-6">
+          <label>Teléfono</label>
+           <input
+            type="text"
+            v-model="input.telefono"
+            class="form-control"
+            placeholder="Teléfono"            
+          />
+        </div>
+        </div>
+      </div>
+
       <div v-if="!isModificacion" class="form-row">
         <div class="form-group form-group col-sm-6 col-md-6 col-lg-6 col-xl-6">
           <label>
@@ -269,7 +324,12 @@ export default {
         cat_especialidad:-1,
         fecha_inicio: null,
         fecha_fin: null,        
-        foto: "",
+        foto: "",        
+        cat_escolaridad:-1,
+        ocupacion:"",
+        originario:"",
+        tutor:"",
+        telefono_tutor:"",
         genero: 1
       };
 
@@ -334,7 +394,12 @@ export default {
                 nota:this.input.nota,
                 costo_colegiatura:this.input.costo_colegiatura, 
                 costo_inscripcion:this.input.costo_inscripcion,
-                foto:this.getFoto(),
+                foto:this.getFoto(),                
+                cat_escolaridad:this.input.cat_escolaridad,
+                ocupacion:this.input.ocupacion || '',
+                originario:this.input.originario || '',
+                tutor :this.input.tutor ||'',
+                telefono_tutor:this.input.telefono || '',
                 co_sucursal:this.usuarioSesion.co_sucursal,
                 co_empresa:this.usuarioSesion.id_empresa,
                 fecha_nacimiento:moment(this.input.fecha_nacimiento).format("YYYY-MM-DD"),
