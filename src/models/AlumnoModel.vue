@@ -8,6 +8,7 @@ var Alumno = new Vue({
         madre:{},        
         co_sucursal:-1,
         co_curso:-1,
+        cat_escolaridad:1,
         nombre: "",
         adeuda:false,        
         apellidos: "",

@@ -86,7 +86,7 @@
                 aria-controls="pills-inscripciones"
                 aria-selected="false"
                 @click="cargarCursos()"
-                >Especialidad/Diplomados
+                >Inscripciones
               </a>
             </li>
 

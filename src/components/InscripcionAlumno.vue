@@ -1,8 +1,8 @@
 <template>
   <div class="cat_alumno">
-    <h1 >Inscripción Alumno</h1>
-    <small >{{ usuarioSesion.nombre_sucursal }}</small>
-    <div  class="row">
+    <h1>Inscripción Alumno</h1>
+    <small>{{ usuarioSesion.nombre_sucursal }}</small>
+    <div class="row">
       <div class="col-auto mr-auto">
         <router-link to="/CatAlumno" class="btn btn-secondary btn-lg">
           <i class="fas fa-arrow-circle-left text-gray"></i>
@@ -10,7 +10,7 @@
         <button
           type="button"
           class="btn btn-primary btn-lg"
-          v-on:click="nuevo()"         
+          v-on:click="nuevo()"
         >
           Nueva Inscripción
         </button>
@@ -97,68 +97,15 @@
               v-for="genero in listaGeneroAlumno"
               v-bind:value="genero.id"
               v-bind:key="genero.id"
-              >{{ genero.nombre }}</option
             >
+              {{ genero.nombre }}
+            </option>
           </select>
         </div>
       </div>
+     
 
       <div class="form-row">
-        <div class="form-group col-sm-6 col-md-6 col-lg-6 col-xl-6">
-          <label>
-            Escolaridad
-          </label>
-          <select
-            v-model="input.cat_genero"
-            class="form-control"
-            placeholder="Escolaridad"            
-          >
-            <option
-              id="selectEscolaridad"
-              v-for="escolaridad in listaEscolaridad"
-              v-bind:value="escolaridad.id"
-              v-bind:key="escolaridad.id"
-              >{{ escolaridad.nombre }}</option
-            >
-          </select>
-        </div>
-        <div class="form-group col-sm-6 col-md-6 col-lg-6 col-xl-6">
-          <label>Ocupación</label>
-           <input
-            type="text"
-            v-model="input.ocupacion"
-            class="form-control"
-            placeholder=""            
-          />
-        </div>
-        </div>
-      </div>
-
-      <div class="form-row">
-        <div class="form-group col-sm-6 col-md-6 col-lg-6 col-xl-6">
-          <label>
-            Tutor(a)
-          </label>
-           <input
-              type="text"
-              v-model="input.tutor"
-              class="form-control"
-              placeholder=""            
-          />
-        </div>
-        <div class="form-group col-sm-6 col-md-6 col-lg-6 col-xl-6">
-          <label>Teléfono</label>
-           <input
-            type="text"
-            v-model="input.telefono"
-            class="form-control"
-            placeholder="Teléfono"            
-          />
-        </div>
-        </div>
-      </div>
-
-      <div v-if="!isModificacion" class="form-row">
         <div class="form-group form-group col-sm-6 col-md-6 col-lg-6 col-xl-6">
           <label>
             Especialidad
@@ -175,30 +122,34 @@
               v-for="especialidad in listaEspecialidades"
               v-bind:value="especialidad.id"
               v-bind:key="especialidad.id"
-              >{{ especialidad.nombre }}
+            >
+              {{ especialidad.nombre }}
             </option>
           </select>
         </div>
-        
+
         <div class="form-group form-group col-sm-6 col-md-6 col-lg-6 col-xl-6">
           <label>
             Curso
             <span class="text-danger">*</span>
-          </label>          
+          </label>
           <select
-            v-model="input.co_curso"                        
+            v-model="input.co_curso"
             @change="onChangeCurso()"
             class="form-control"
             placeholder="Curso"
             required
           >
-            <option            
+            <option
               v-for="curso in listaCurso"
               v-bind:value="curso.id"
               v-bind:key="curso.id"
-              >{{`${curso.dias} horario ${curso.horario} / inicia ${curso.fecha_inicio_previsto_format}`}}</option
             >
-          </select>                    
+              {{
+                `${curso.dias} horario ${curso.horario} / inicia ${curso.fecha_inicio_previsto_format}`
+              }}
+            </option>
+          </select>
         </div>
       </div>
 
@@ -234,8 +185,8 @@
           />
         </div>
       </div>
-     
-      <div class="form-group ">
+
+      <div class="form-group">
         <label for="inputFechaLimitePago">Nota </label>
         <textarea
           rows="2"
@@ -245,7 +196,6 @@
         />
       </div>
 
-    
       <button
         class="btn btn-block btn-primary"
         :disabled="loader"
@@ -274,8 +224,8 @@ export default {
   name: "inscripcion-alumno",
   components: {
     Datepicker,
-    Loader
-  },  
+    Loader,
+  },
   mixins: [operacionesApi],
   data() {
     return {
@@ -283,11 +233,11 @@ export default {
       input: AlumnoModel,
       listaGeneroAlumno: [],
       listaCurso: [],
-      listaEspecialidades: [],
+      listaEspecialidades: [],      
       generoAlumno: { id: -1, nombre: "", foto: "" },
       es: es,
       loader: false,
-      isModificacion:false
+      isModificacion: false,
     };
   },
   mounted() {
@@ -296,51 +246,51 @@ export default {
     this.init();
   },
   methods: {
-    async init() {         
-      this.listaGeneroAlumno = await this.getAsync(`${URL.GENERO_ALUMNO}`);      
-      
-      this.listaEspecialidades = await this.getAsync(`${URL.ESPECIALIDADES_BASE}/${this.usuarioSesion.id_empresa}`);            
-      
-      this.nuevo();            
-    },    
+    async init() {
+      this.listaGeneroAlumno = await this.getAsync(`${URL.GENERO_ALUMNO}`);
+
+      this.listaEspecialidades = await this.getAsync(
+        `${URL.ESPECIALIDADES_BASE}/${this.usuarioSesion.id_empresa}`
+      );
+     
+
+      this.nuevo();
+    },
     nuevo() {
       console.log("Es un formulario Nuevo");
       this.operacion = "INSERT";
       this.input = {
         id: 0,
         co_sucursal: 0,
-        co_curso: -1,
+        co_curso: -1,        
         nombre: "",
         apellidos: "",
-        direccion: "",       
-        telefono: "",       
+        direccion: "",
+        telefono: "",
         cat_genero: -1,
         nombre_grupo: "",
         nombre_sucursal: "",
         fecha_nacimiento: null,
-        nota: "",      
+        nota: "",
         costo_inscripcion: "",
         costo_colegiatura: "",
-        cat_especialidad:-1,
+        cat_especialidad: -1,
         fecha_inicio: null,
-        fecha_fin: null,        
-        foto: "",        
-        cat_escolaridad:-1,
-        ocupacion:"",
-        originario:"",
-        tutor:"",
-        telefono_tutor:"",
-        genero: 1
+        fecha_fin: null,
+        foto: "",       
+        genero: 1,
       };
 
-      this.generoAlumno = { id: -1, nombre: "", foto: "" };      
-      this.input.fecha_inicio = new Date();      
+      this.generoAlumno = { id: -1, nombre: "", foto: "" };
+      this.input.fecha_inicio = new Date();
     },
-    async onChangeEspecialidad(event){
-      console.log("@onChangeEspecialidad "+this.input.cat_especialidad);
-      if(this.input.cat_especialidad){
-          this.listaCurso = await this.getAsync(`${URL.CURSO}/${this.usuarioSesion.co_sucursal}/${this.input.cat_especialidad}`);                      
-      }else{
+    async onChangeEspecialidad(event) {
+      console.log("@onChangeEspecialidad " + this.input.cat_especialidad);
+      if (this.input.cat_especialidad) {
+        this.listaCurso = await this.getAsync(
+          `${URL.CURSO}/${this.usuarioSesion.co_sucursal}/${this.input.cat_especialidad}`
+        );
+      } else {
         console.log("No va a la db por los cursos");
         this.listaCurso = [];
       }
@@ -348,16 +298,18 @@ export default {
       this.input.costo_inscripcion = 0;
       this.input.co_curso = -1;
     },
-    async onChangeCurso(event){
-      console.log("@onChangeCurso "+this.input.co_curso);
-      let cursoSeleccionado = this.listaCurso.find(e=>e.id == this.input.co_curso);  
+    async onChangeCurso(event) {
+      console.log("@onChangeCurso " + this.input.co_curso);
+      let cursoSeleccionado = this.listaCurso.find(
+        (e) => e.id == this.input.co_curso
+      );
       this.input.costo_colegiatura = cursoSeleccionado.costo_colegiatura_base;
       this.input.costo_inscripcion = cursoSeleccionado.costo_inscripcion_base;
     },
     async guardar() {
       console.log("@guardar");
 
-      if (!validacionDatosAlumno(this.input,true)) {
+      if (!validacionDatosAlumno(this.input, true)) {
         console.log("No paso la validacion");
         return;
       }
@@ -366,14 +318,20 @@ export default {
 
       this.loader = true;
       console.log("inciando");
-            
-      const respuesta =  await this.postAsync(URL.INSCRIPCION_BASE, values);
-                  
+
+      const respuesta = await this.postAsync(URL.INSCRIPCION_BASE, values);
+
       console.log(respuesta);
       if (respuesta) {
-          this.$notificacion.info(`Inscripción realizada`, `Se registró el alumno`);          
-          console.log(respuesta);
-          this.$router.push({ name: "PerfilAlumno", params: { uid: respuesta.uid } });      
+        this.$notificacion.info(
+          `Inscripción realizada`,
+          `Se registró el alumno`
+        );
+        console.log(respuesta);
+        this.$router.push({
+          name: "PerfilAlumno",
+          params: { uid: respuesta.uid },
+        });
       } else {
         this.$notificacion.error(
           "Ups!",
@@ -382,36 +340,34 @@ export default {
       }
       this.loader = false;
     },
-    getValues(){
-      return {                                
-                co_curso:this.input.co_curso,
-                cat_genero: this.input.cat_genero,
-                nombre:this.input.nombre,
-                apellidos:this.input.apellidos,
-                direccion:this.input.direccion,
-                telefono:this.input.telefono,
-                fecha_nacimiento:this.input.fecha_nacimiento,
-                nota:this.input.nota,
-                costo_colegiatura:this.input.costo_colegiatura, 
-                costo_inscripcion:this.input.costo_inscripcion,
-                foto:this.getFoto(),                
-                cat_escolaridad:this.input.cat_escolaridad,
-                ocupacion:this.input.ocupacion || '',
-                originario:this.input.originario || '',
-                tutor :this.input.tutor ||'',
-                telefono_tutor:this.input.telefono || '',
-                co_sucursal:this.usuarioSesion.co_sucursal,
-                co_empresa:this.usuarioSesion.id_empresa,
-                fecha_nacimiento:moment(this.input.fecha_nacimiento).format("YYYY-MM-DD"),
-                genero:this.usuarioSesion.id
+    getValues() {
+      return {
+        co_curso: this.input.co_curso,
+        cat_genero: this.input.cat_genero,
+        nombre: this.input.nombre,
+        apellidos: this.input.apellidos,
+        direccion: this.input.direccion,
+        telefono: this.input.telefono,
+        fecha_nacimiento: this.input.fecha_nacimiento,
+        nota: this.input.nota,
+        costo_colegiatura: this.input.costo_colegiatura,
+        costo_inscripcion: this.input.costo_inscripcion,
+        foto: this.getFoto(),                
+        co_sucursal: this.usuarioSesion.co_sucursal,
+        co_empresa: this.usuarioSesion.id_empresa,
+        fecha_nacimiento: moment(this.input.fecha_nacimiento).format(
+          "YYYY-MM-DD"
+        ),
+        genero: this.usuarioSesion.id,
       };
     },
     getFoto() {
-      let elemento = this.listaGeneroAlumno.find(e => e.id == this.input.cat_genero);
+      let elemento = this.listaGeneroAlumno.find(
+        (e) => e.id == this.input.cat_genero
+      );
       return elemento.foto;
-    }, 
-   
-  }
+    },
+  },
 };
 </script>
 

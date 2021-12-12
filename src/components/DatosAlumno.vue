@@ -83,6 +83,56 @@
         </div>
       </div>
 
+      <div class="form-row">
+        <div class="form-group col-sm-6 col-md-6 col-lg-6 col-xl-6">
+          <label> Escolaridad </label>
+          <select
+            v-model="input.cat_escolaridad"
+            class="form-control"
+            placeholder="Escolaridad"
+          >
+            <option
+              id="selectEscolaridad"
+              v-for="escolaridad in listaEscolaridad"
+              v-bind:value="escolaridad.id"
+              v-bind:key="escolaridad.id"
+            >
+              {{ escolaridad.nombre }}
+            </option>
+          </select>
+        </div>
+        <div class="form-group col-sm-6 col-md-6 col-lg-6 col-xl-6">
+          <label>Ocupación</label>
+          <input
+            type="text"
+            v-model="input.ocupacion"
+            class="form-control"
+            placeholder=""
+          />
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group col-sm-6 col-md-6 col-lg-6 col-xl-6">
+          <label> Tutor(a) </label>
+          <input
+            type="text"
+            v-model="input.tutor"
+            class="form-control"
+            placeholder="Nombre del padre o tutor"
+          />
+        </div>
+        <div class="form-group col-sm-6 col-md-6 col-lg-6 col-xl-6">
+          <label>Teléfono del tutor(a)</label>
+          <input
+            type="text"
+            v-model="input.telefono_tutor"
+            class="form-control"
+            placeholder="Teléfono"
+          />
+        </div>
+      </div>
+
       <div class="form-group ">
         <label for="inputFechaLimitePago">Nota </label>
         <textarea
@@ -132,6 +182,7 @@ export default {
       usuarioSesion: {},
       input: AlumnoModel,
       listaGeneroAlumno: [],
+      listaEscolaridad: [],
       generoAlumno: { id: -1, nombre: "", foto: "" },
       es: es,
       loader: false,
@@ -149,6 +200,8 @@ export default {
     async init() {
       if(this.uid){
           this.listaGeneroAlumno = await this.getAsync(`${URL.GENERO_ALUMNO}`);
+          
+          this.listaEscolaridad = await this.getAsync(`${URL.ESCOLARIDAD}`);
           
           console.log("==========CARGAR DATOS DE ALUMNO  " +  JSON.stringify(this.uid));
           this.input = await this.getAsync(`${URL.ALUMNOS_BASE}/id/${this.uid}`);
@@ -192,18 +245,20 @@ export default {
       this.loader = false;
     },
     getValues() {
-      return {
-        //co_curso: this.input.co_curso,
+      return {        
         cat_genero: this.input.cat_genero,
         nombre: this.input.nombre,
         apellidos: this.input.apellidos,
         direccion: this.input.direccion,
         telefono: this.input.telefono,
         fecha_nacimiento: this.input.fecha_nacimiento,
-        nota: this.input.nota,
-        //costo_colegiatura: this.input.costo_colegiatura,
-        //costo_inscripcion: this.input.costo_inscripcion,
-        foto: this.getFoto(),        
+        nota: this.input.nota,        
+        foto: this.getFoto(), 
+        cat_escolaridad: this.input.cat_escolaridad,
+        ocupacion: this.input.ocupacion,
+        originario: this.input.originario,
+        tutor: this.input.tutor,
+        telefono_tutor: this.input.telefono_tutor,       
         fecha_nacimiento: moment(this.input.fecha_nacimiento).format(
           "YYYY-MM-DD"
         ),

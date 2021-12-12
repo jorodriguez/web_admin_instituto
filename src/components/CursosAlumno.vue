@@ -6,7 +6,7 @@
           <i class="fas fa-plus text-gray"></i>Inscribir a otra especialidad
         </button>
       </div>
-    </div>-->
+    </div>-->    
     <span
       v-for="item in lista"
       :key="item.id"      
@@ -79,9 +79,8 @@
             <div class="col">
               Pagado: <strong>{{ item.pagado ? "SI" : "NO" }}</strong>
             </div>
-            <div class="col">
-                <button class="btn btn-link">Modificar</button>
-                <button class="btn btn-link">Eliminar</button>
+            <div class="col">                
+                <!--<button class="btn btn-link text-danger"></button>-->
             </div>
           </div>
         </div>
