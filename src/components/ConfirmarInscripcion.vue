@@ -1,16 +1,13 @@
 <template>
   <div class="cat_alumno">
-    <h1>Alumnos ({{ lista != [] ? lista.length : 0 }})</h1>
+    <h1>Confirmar Inscripciòn ({{ lista != [] ? lista.length : 0 }})</h1>
     <small>{{ usuarioSesion.nombre_sucursal }}</small>
     <div class="row">
       <div class="col-auto mr-auto">
         <router-link to="/principal" class="btn btn-secondary btn-lg">
           <i class="fas fa-arrow-circle-left text-gray"></i>
         </router-link>
-        <router-link to="/Inscripcion" class="btn btn-primary btn-lg">
-          Nueva Inscripción
-        </router-link>               
-        
+
       </div>
       <div class="col-auto">
        
@@ -21,98 +18,11 @@
     
     <!-- </form>-->
 
-    <!-- ELIMINAR MODAL -->
-    <div
-      id="modal_eliminar_alumno"
-      class="modal fade"
-      tabindex="-1"
-      role="dialog"
-      data-keyboard="false"
-      data-backdrop="static"
-      aria-labelledby="exampleModalCenterTitle"
-      aria-hidden="true"
-    >
-      <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLongTitle">
-              Confirmar baja del alumno
-            </h5>
-            <button
-              type="button"
-              class="close"
-              data-dismiss="modal"
-              aria-label="Close"
-            >
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
-            <h4>
-              <strong>{{ input.nombre }} {{ input.apellidos }}</strong>
-            </h4>
-            <div class="form-group text-left">
-              <label for="fecha_baja">Fecha de baja</label>
-              <datepicker
-                name="fecha_baja"
-                v-model="fechaBaja"
-                input-class="form-control"
-                :format="'yyyy-MM-dd'"
-                :bootstrap-styling="true"
-                :language="es"
-              ></datepicker>
-            </div>
-            <div class="form-group">
-              <textarea
-                v-model="observacionesBaja"
-                class="form-control"
-                placeholder="Observaciones"
-                rows="3"
-              >
-              </textarea>
-            </div>
-          </div>
-          <div class="modal-footer">
-            <button
-              type="button"
-              class="btn btn-danger"
-              v-on:click="eliminar()"
-              data-dismiss="modal"
-            >
-              Dar de Baja
-            </button>
-            <button
-              type="button"
-              class="btn btn-secondary"
-              data-dismiss="modal"
-            >
-              Cancelar
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
-
     <div class="card">
       <div class="card-body">
-        <div class="input-group mb-3">
-          <input
-            type="text"
-            class="form-control"
-            placeholder="Buscar por nombre.."
-            v-model="criterioNombre"
-            v-on:keyup.enter="buscarPorNombre()"
-            aria-label="Buscar por nombre.."            
-          />
-           <div class="input-group-append">
-            <button
-              class="btn btn-outline-secondary "
-              type="button"
-              v-on:click="buscarPorNombre()"
-            >
-              <i class="fas fa-search"></i>
-            </button>
-          </div>
+        <div class="input-group mb-3 text-right">
+          
+        
         </div>
 
         <div v-if="loader" class="mx-auto">
@@ -197,6 +107,106 @@
   </div>
 </template>
 
-<script src="../controller/CatAlumnoController.js"></script>
+<script>
+import { operacionesApi } from "../helpers/OperacionesApi";
+import { getUsuarioSesion } from "../helpers/Sesion";
+import AlumnoModel from "../models/AlumnoModel";
+import Datepicker from "vuejs-datepicker";
+import URL from "../helpers/Urls";
+import Emit from "../helpers/Emit";
+import { validacionDatosAlumno } from "../helpers/AlumnoValidacion";
+import { en, es } from "vuejs-datepicker/dist/locale";
+import Loader from "../components_utils/Loader";
+import moment from "moment";
+
+export default {
+  name: "datos-alumno",
+  components: {
+    Datepicker,
+    Loader
+  },
+  props: ["lista"],
+  mixins: [operacionesApi],
+  data() {
+    return {
+      uid: "",
+      usuarioSesion: {},
+      input: AlumnoModel,
+      listaInscripciones: [],
+      generoAlumno: { id: -1, nombre: "", foto: "" },
+      es: es,
+      loader: false,
+      isModificacion: false
+    };
+  },
+  mounted() {
+    console.log("##### DATOS ALUMNO  ####");
+    this.usuarioSesion = getUsuarioSesion();
+    console.log(`DATOS ALUMNO ${this.$route.params.uid}`);
+    this.uid = `${this.$route.params.uid}`;
+    this.init();
+  },
+  watch: {
+    lista: function (newId, oldId) {
+      console.log(`Observador para cambios de valor de la lista de curso ${newId} - ${oldId}`);
+      
+      
+    }
+  },
+  methods: {
+    async init() {
+      
+    },
+    async cargarCursosAlumno(){
+      if (this.uid) {
+      this.listaInscripciones = await this.getAsync(
+          `${URL.INSCRIPCION_BASE}/alumno/${this.uid}`
+        );
+      }
+    },
+    async guardar() {
+      console.log("@guardar");
+      const NO_VALIDAR_ESPECIALIDAD = false;
+
+      if (!validacionDatosAlumno(this.input, NO_VALIDAR_ESPECIALIDAD)) {
+        console.log("No paso la validacion");
+        return;
+      }
+
+      let values = this.getValues();
+
+      this.loader = true;
+      console.log("inciando id alumno " + this.input.id);
+
+      const respuesta = await this.putAsync(
+        `${URL.ALUMNOS_BASE}/${this.input.id}`,
+        values
+      );
+
+      console.log(respuesta);
+      if (respuesta) {
+        this.$notificacion.info(
+          `Inscripción realizada`,
+          `Se modificó el alumno`
+        );
+
+        this.$root.$emit(Emit.ACTUALIZAR_ALUMNO, Emit.ACTUALIZAR_ALUMNO);
+      } else {
+        this.$notificacion.error(
+          "Ups!",
+          "Algo sucedió al intentar guardar el alumno, ponte en contacto con soporte técnico."
+        );
+        this.$router.push({
+          name: "PerfilAlumno",
+          params: { uid: this.input.uid }
+        });
+      }
+      this.loader = false;
+    },
+   
+   
+  }
+};
+</script>
 
 <style scoped></style>
