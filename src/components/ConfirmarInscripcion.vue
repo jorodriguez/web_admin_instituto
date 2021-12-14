@@ -1,106 +1,106 @@
 <template>
   <div class="cat_alumno">
-    <h1>Confirmar Inscripciòn ({{ lista != [] ? lista.length : 0 }})</h1>
+    <h1>
+      Confirmar Inscripciòn ({{
+        listaInscripciones != [] ? listaInscripciones.length : 0
+      }})
+    </h1>
     <small>{{ usuarioSesion.nombre_sucursal }}</small>
     <div class="row">
       <div class="col-auto mr-auto">
         <router-link to="/principal" class="btn btn-secondary btn-lg">
           <i class="fas fa-arrow-circle-left text-gray"></i>
         </router-link>
-
       </div>
-      <div class="col-auto">
-       
-      </div>
+      <div class="col-auto"></div>
     </div>
 
     <br />
-    
+
     <!-- </form>-->
 
     <div class="card">
       <div class="card-body">
-        <div class="input-group mb-3 text-right">
-          
-        
+        <div class="form-row">
+          <div
+            class="form-group form-group col-sm-6 col-md-6 col-lg-6 col-xl-6"
+          >
+            <label>
+              Especialidad
+              <span class="text-danger">*</span>
+            </label>
+            <select
+              v-model="cat_especialidad"
+              @change="onChangeEspecialidad()"
+              class="form-control"
+              placeholder="Especialidad"
+              required
+            >
+              <option
+                v-for="especialidad in listaEspecialidades"
+                v-bind:value="especialidad.id"
+                v-bind:key="especialidad.id"
+              >
+                {{ especialidad.nombre }}
+              </option>
+            </select>
+          </div>
+
+          <div
+            class="form-group form-group col-sm-6 col-md-6 col-lg-6 col-xl-6"
+          >
+            <label>
+              Curso
+              <span class="text-danger">*</span>
+            </label>
+            <select
+              v-model="uidCurso"
+              @change="onChangeCurso()"
+              class="form-control"
+              placeholder="Curso"
+              required
+            >
+              <option
+                v-for="curso in listaCursos"
+                v-bind:value="curso.uid"
+                v-bind:key="curso.uid"
+              >
+                {{
+                  `${curso.dias} horario ${curso.horario} / inicia ${curso.fecha_inicio_previsto_format}`
+                }}
+              </option>
+            </select>
+          </div>
         </div>
 
         <div v-if="loader" class="mx-auto">
-            <Loader :loading="loader" :mini="true" />
+          <Loader :loading="loader" :mini="true" />
         </div>
 
-        <div class="row">                 
-          <div
-            class="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-3 mt-2"
-            v-for="row in lista"
-            :key="row.id"            
-          >
-            <div class="card border-light">
-              <div class="d-flex justify-content-end ">
-                <div class="btn-group" role="group">
-                  <button
-                    id="btnGroupDrop1"
-                    type="button"
-                    class="btn btn-link btn-block btn-sm dropdown-toggle"
-                    data-toggle="dropdown"
-                    aria-haspopup="true"
-                    aria-expanded="false"
-                  ></button>
-                  <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">                  
-                    <button
-                      class="dropdown-item"
-                      @click="select(row, 'DELETE')"
-                      href="#"
-                    >
-                      <i class="fas fa-user-minus"></i> Iniciar Baja
+        <div class="row">
+          <table class="table">
+            <th>
+                <td>Alumno</td>
+                <td>Teléfono</td>
+                <td></td>
+            </th>
+            <tbody 
+              v-for="row in listaInscripciones"
+              :key="row.id">
+                <tr>
+                  <td>{{row.alumno}}</td>
+                  <td>{{row.telefono}}</td>
+                  <td>
+                    <button class="btn btn-success">
+                      Confirmar
                     </button>
-                  </div>
-                </div>
-              </div>
-
-              <img
-                class="card-img-top pointer rounded-circle mx-auto"
-                style="width:100px"                
-                :src="row.foto"
-                alt="Foto"
-                @click="verPerfil(row)"
-                title="Cambiar la foto"
-              />
-
-              <div class="card-body pointer" @click="verPerfil(row)" >
-                <h4 class="card-text">
-                  {{ row.alumno }}                  
-                </h4>
-                <h5 class="card-text small">
-                  {{ row.apellidos }}
-                </h5>
-                <h6
-                  :style="row.color_especialidad ? 'background-color:' + row.color_especialidad : ''"
-                  class="badge badge-info text-wrap"
-                >
-                  {{ row.especialidad }}
-                </h6>                
-                <h5><span class="font-weight-normal">Inicia</span> {{ row.fecha_inicio_previsto_format }}</h5>                
-                <h5><span class="font-weight-normal"></span>{{row.dias}} turno {{ row.horario }}</h5>
-              </div>
-            </div>
-          </div>
-
-          
-
-          <!-- Mensajes para la busqueda y carga-->
-          <div v-if="criterioNombre != '' && lista.length == 0" class="mx-auto">
-            <p class="text-muted ">Ningún resultado</p>
-          </div>
-          <div
-            v-if="criterioNombre == '' && lista.length == 0 && !loader"
-            class="mx-auto"
-          >
-            <p class="text-muted ">Oprime ENTER para listar todo</p>
-          </div>
-          <div v-if="loader" class="mx-auto">
-            <Loader :loading="loader" :mini="true" />
-          </div>
+                    <button class="btn btn-success">
+                      Cancelar
+                    </button>
+                  </td>
+                </tr>                
+            </tbody>
+          </table>
         </div>
       </div>
     </div>
@@ -120,68 +120,92 @@ import Loader from "../components_utils/Loader";
 import moment from "moment";
 
 export default {
-  name: "datos-alumno",
+  name: "confirmar-inscripcion",
   components: {
     Datepicker,
-    Loader
+    Loader,
   },
-  props: ["lista"],
   mixins: [operacionesApi],
   data() {
     return {
-      uid: "",
+      uidCurso: "",
+
       usuarioSesion: {},
-      input: AlumnoModel,
+      cat_especialidad: null,
+      listaEspecialidades: [],
+      listaCursos: [],
       listaInscripciones: [],
-      generoAlumno: { id: -1, nombre: "", foto: "" },
+      lista: [],
       es: es,
       loader: false,
-      isModificacion: false
+      isModificacion: false,
     };
   },
   mounted() {
-    console.log("##### DATOS ALUMNO  ####");
+    console.log("##### CONFIRMAR INSCRIPCIONES  ####");
     this.usuarioSesion = getUsuarioSesion();
-    console.log(`DATOS ALUMNO ${this.$route.params.uid}`);
-    this.uid = `${this.$route.params.uid}`;
+    console.log(
+      `DATOS curso uidCurso ${this.$route.params} especialidad ${this.$route.params.cat_especialidad} `
+    );
+    this.uidCurso = `${this.$route.params.uidCurso}`;
+    this.cat_especialidad = `${this.$route.params.cat_especialidad}`;
     this.init();
   },
-  watch: {
-    lista: function (newId, oldId) {
-      console.log(`Observador para cambios de valor de la lista de curso ${newId} - ${oldId}`);
-      
-      
-    }
-  },
+
   methods: {
     async init() {
-      
-    },
-    async cargarCursosAlumno(){
-      if (this.uid) {
-      this.listaInscripciones = await this.getAsync(
-          `${URL.INSCRIPCION_BASE}/alumno/${this.uid}`
+      this.listaEspecialidades = await this.getAsync(
+        `${URL.ESPECIALIDADES_BASE}/${this.usuarioSesion.id_empresa}`
+      );
+
+      if (this.cat_especialidad) {
+        this.listaCursos = await this.getAsync(
+          `${URL.CURSO}/${this.usuarioSesion.co_sucursal}/${this.cat_especialidad}`
         );
+      } else {
+        console.log("No va a la db por los cursos");
+        this.listaCursos = [];
       }
     },
-    async guardar() {
-      console.log("@guardar");
-      const NO_VALIDAR_ESPECIALIDAD = false;
-
-      if (!validacionDatosAlumno(this.input, NO_VALIDAR_ESPECIALIDAD)) {
-        console.log("No paso la validacion");
-        return;
+    async cargarAlumnosCurso() {
+      console.log("@cargarAlumnosCurso");
+      if (this.uidCurso) {
+        console.log("this.uidCurso "+this.uidCurso);
+        this.listaInscripciones = await this.getAsync(
+          `${URL.ALUMNOS_BASE}/curso/${this.uidCurso}`
+        );
+        console.log(this.listaInscripciones);
       }
-
-      let values = this.getValues();
+    },
+     async onChangeEspecialidad(event) {
+      console.log("@onChangeEspecialidad " + this.cat_especialidad);
+      if (this.cat_especialidad) {
+        this.listaCursos = await this.getAsync(
+          `${URL.CURSO}/${this.usuarioSesion.co_sucursal}/${this.cat_especialidad}`
+        );
+      } else {
+        console.log("No va a la db por los cursos");
+        this.listaCursos = [];
+      }      
+    },
+    async onChangeCurso(event) {
+      console.log("@onChangeCurso " + this.uidCurso);
+      await this.cargarAlumnosCurso();
+      /*let cursoSeleccionado = this.listaCurso.find(
+        (e) => e.id == this.input.co_curso
+      );
+      this.input.costo_colegiatura = cursoSeleccionado.costo_colegiatura_base;
+      this.input.costo_inscripcion = cursoSeleccionado.costo_inscripcion_base;*/
+    },
+    async guardarConfirmacionInscripcion() {
+      console.log("@guardarConfirmacionInscripcion");
 
       this.loader = true;
-      console.log("inciando id alumno " + this.input.id);
-
-      const respuesta = await this.putAsync(
+      
+      /*const respuesta = await this.putAsync(
         `${URL.ALUMNOS_BASE}/${this.input.id}`,
         values
-      );
+      );*/
 
       console.log(respuesta);
       if (respuesta) {
@@ -196,16 +220,11 @@ export default {
           "Ups!",
           "Algo sucedió al intentar guardar el alumno, ponte en contacto con soporte técnico."
         );
-        this.$router.push({
-          name: "PerfilAlumno",
-          params: { uid: this.input.uid }
-        });
+  
       }
       this.loader = false;
     },
-   
-   
-  }
+  },
 };
 </script>
 

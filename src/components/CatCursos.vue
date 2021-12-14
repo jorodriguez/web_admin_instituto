@@ -1,6 +1,6 @@
 <template>
   <div class="cat_curso">
-    <h1>Cursos ({{ lista ? lista.length : 0 }})</h1>
+    <h1>Talleres ({{ lista ? lista.length : 0 }})</h1>
     <small>{{ usuarioSesion.nombre_sucursal }}</small>
     <div class="row">
       <div class="col-auto mr-auto">
@@ -12,7 +12,7 @@
           class="btn btn-primary btn-lg"
           v-on:click="nuevo()"
         >
-          Nuevo Curso
+          Nuevo Taller
         </button>
       </div>
     </div>
@@ -21,7 +21,7 @@
 
     <Popup id="popup_curso" :show_button_close="true">
       <div slot="header">
-        {{ `${operacion == "INSERT" ? "Registrar" : "Modificar"}` }} Curso en
+        {{ `${operacion == "INSERT" ? "Registrar" : "Modificar"}` }} Taller en
         <strong> {{ usuarioSesion.nombre_sucursal }}</strong>
       </div>
       <div slot="content" class="text-left">
@@ -271,6 +271,9 @@
           <div class="row bg-secondary">
             <div class="col-md-4 offset-md-8  text-right">
               <!--<button class="btn btn-link">Agregar alumno</button>-->
+              <button class="btn btn-link" @click="seleccionar(item, 'CONFIRM')">
+                Confirmar inscripciones
+              </button>
               <button class="btn btn-link" @click="seleccionar(item, 'UPDATE')">
                 Modificar
               </button>
@@ -285,7 +288,7 @@
 
     <!--Eliminar-->
     <Popup id="popup_eliminar" :show_button_close="true">
-      <div slot="header">Eliminar Curso</div>
+      <div slot="header">Eliminar Taller</div>
       <div slot="content">
         <div class="row text-left">
           <table class="table">
@@ -399,9 +402,9 @@ export default {
     };
   },
   mounted() {
-    console.log("##### CATALOGO DE CURSOS  ####");
+    console.log("##### CATALOGO DE TALLERES  ####");
     this.usuarioSesion = getUsuarioSesion();
-    console.log(`catalogo de cursos`);
+    console.log(`catalogo de talleres`);
     this.init();
   },
   methods: {
@@ -437,6 +440,9 @@ export default {
           this.input.fecha_inicio_previsto
         );
         $("#popup_curso").modal("show");
+      }
+      if (this.operacion === "CONFIRM") {
+          this.$router.push({ name: "ConfirmarInscripcion", params: { uidCurso: row.uid,cat_especialidad:row.cat_especialidad } });
       }
     },
     async nuevo() {
