@@ -1,7 +1,7 @@
 <template>
   <div class="cat_alumno">
     <h1>
-      Confirmar Inscripciòn ({{
+      Confirmar Inscripción ({{
         listaInscripciones != [] ? listaInscripciones.length : 0
       }})
     </h1>
@@ -78,24 +78,31 @@
         </div>
 
         <div class="row">
-          <table class="table">
-            <th>
-                <td>Alumno</td>
-                <td>Teléfono</td>
-                <td></td>
-            </th>
+          <table class="table text-left">          
+            <tr>                
+                <th>Alumno</th>
+                <th>Teléfono</th>
+                <th></th>
+            </tr>
             <tbody 
               v-for="row in listaInscripciones"
               :key="row.id">
-                <tr>
-                  <td>{{row.alumno}}</td>
-                  <td>{{row.telefono}}</td>
-                  <td>
-                    <button class="btn btn-success">
-                      Confirmar
-                    </button>
-                    <button class="btn btn-success">
-                      Cancelar
+                <tr>                
+                  <td>{{row.alumno}} {{row.apellidos}}</td>
+                  <td class="font-weight-bold">{{row.telefono}}</td>
+                  <td class="text-right">                  
+                    <span v-if="row.confirmado">
+                        <i class="fa fa-check-circle text-success"></i>                    
+                        <span class="text-success"> Confirmado el {{row.fecha_confirmado}}</span>                         
+                        <!--<span @click="seleccionar(row,'NO_CONFIRMAR')" class="text-danger pointer" title="Quitar confirmación"><i class="fa fa-times "></i></span>  -->
+                    </span>
+                    <span v-else>
+                      <button class="btn btn-success " @click="seleccionar(row,'CONFIRMAR')">
+                        Confirmar
+                      </button>                      
+                    </span>
+                    <button class="btn btn-light" @click="seleccionar(row,'NO_CONFIRMAR')" >
+                        Cancelar
                     </button>
                   </td>
                 </tr>                
@@ -104,6 +111,75 @@
         </div>
       </div>
     </div>
+
+    <!-- confirmar inscripcion -->
+    <Popup id="popup_confirmar_inscripcion" :show_button_close="true">
+      <div slot="header">
+          <span v-if="operacion == 'CONFIRMAR'">Confirmar inscripción</span> 
+          <span v-if="operacion == 'NO_CONFIRMAR'" class="text-danger">Cancelar inscripción</span>
+      </div>
+      <div slot="content">
+        <div class="row text-left">
+          <table class="table">
+            <tr>  
+              <td>Alumno</td>            
+              <td>
+                <span class="font-weight-bold">{{ alumno.alumno }} {{alumno.apellidos}}</span>
+                <span v-if="alumno.confirmado" class="text-success">
+                  <i class="fa fa-check-circle text-success"></i>                    
+                 Confirmado el {{alumno.fecha_confirmado}}
+                 </span>                                         
+              </td>
+            </tr>
+            <tr>  
+              <td>Teléfono</td>            
+              <td>
+                <span class="font-weight-bold">{{ alumno.telefono }}</span>
+              </td>
+            </tr>
+            <tr>  
+              <td>Taller</td>            
+              <td>
+                <span class="font-weight-bold">{{ alumno.especialidad }}</span>
+              </td>
+            </tr>
+            <tr>
+              <td>Inicia</td>
+              <td>
+                <span class="font-weight-bold">
+                  {{
+                    alumno.fecha_inicio_format
+                      ? alumno.fecha_inicio_format
+                      : ` previsto ${alumno.fecha_inicio_previsto_format}`
+                  }}
+                </span>
+              </td>
+            </tr>
+            <tr>
+            <td>Dias</td>
+              <td>
+                <span class="font-weight-bold">{{ alumno.dias }}</span>
+                -<span class="font-weight-bold">{{ alumno.horario }}</span>
+              </td>
+            </tr>
+            <tr>           
+            
+            <tr>
+              <td>Nota</td>
+              <td>
+                <textarea v-model="alumno.nota" class="form-control" rows="2">
+                </textarea>
+              </td>
+            </tr>
+          </table>
+        </div>
+      </div>
+      <div slot="footer">
+        <button v-if="operacion == 'CONFIRMAR'" class="btn btn-success"  @click="confirmarInscripcion(true)">Confirmar</button>
+        <button v-if="operacion == 'NO_CONFIRMAR'" class="btn btn-dark" @click="confirmarInscripcion(false)">Cancelar inscripción</button>
+      </div>
+    </Popup>
+
   </div>
 </template>
 
@@ -118,18 +194,21 @@ import { validacionDatosAlumno } from "../helpers/AlumnoValidacion";
 import { en, es } from "vuejs-datepicker/dist/locale";
 import Loader from "../components_utils/Loader";
 import moment from "moment";
+import Popup from "../controller/Popup";
 
 export default {
   name: "confirmar-inscripcion",
   components: {
     Datepicker,
     Loader,
+    Popup
   },
   mixins: [operacionesApi],
   data() {
     return {
       uidCurso: "",
-
+      operacion:"",
+      alumno:AlumnoModel,
       usuarioSesion: {},
       cat_especialidad: null,
       listaEspecialidades: [],
@@ -166,6 +245,7 @@ export default {
         console.log("No va a la db por los cursos");
         this.listaCursos = [];
       }
+      await this.cargarAlumnosCurso();
     },
     async cargarAlumnosCurso() {
       console.log("@cargarAlumnosCurso");
@@ -190,37 +270,34 @@ export default {
     },
     async onChangeCurso(event) {
       console.log("@onChangeCurso " + this.uidCurso);
-      await this.cargarAlumnosCurso();
-      /*let cursoSeleccionado = this.listaCurso.find(
-        (e) => e.id == this.input.co_curso
-      );
-      this.input.costo_colegiatura = cursoSeleccionado.costo_colegiatura_base;
-      this.input.costo_inscripcion = cursoSeleccionado.costo_inscripcion_base;*/
+      await this.cargarAlumnosCurso();      
     },
-    async guardarConfirmacionInscripcion() {
-      console.log("@guardarConfirmacionInscripcion");
+    seleccionar(row,operacion){
+        console.log("iniciar confirmacion");
+        this.alumno =  Object.assign({},row);
+        this.operacion = operacion;        
+        this.alumno.nota = '';
+        $("#popup_confirmar_inscripcion").modal("show");        
+    },
+    async confirmarInscripcion(confirmacion) {
+      console.log("@confirmarInscripcion "+confirmacion+" alumno "+this.alumno.id_alumno);
 
       this.loader = true;
-      
-      /*const respuesta = await this.putAsync(
-        `${URL.ALUMNOS_BASE}/${this.input.id}`,
-        values
-      );*/
+      const values ={
+          confirmacion:confirmacion,
+          nota:this.alumno.nota,
+          genero:this.usuarioSesion.id
+      };  
+
+      const respuesta = await this.putAsync(`${URL.INSCRIPCION_BASE}/confirmar/${this.alumno.id_alumno}`, values);
 
       console.log(respuesta);
       if (respuesta) {
-        this.$notificacion.info(
-          `Inscripción realizada`,
-          `Se modificó el alumno`
-        );
-
-        this.$root.$emit(Emit.ACTUALIZAR_ALUMNO, Emit.ACTUALIZAR_ALUMNO);
+        this.$notificacion.info(`Inscripción confirmada`,`${this.alumno.nombre} ${this.alumno.apellidos} fué confirmado para el taller ${this.alumno.especialidad} `);
+        await this.cargarAlumnosCurso();
+        //this.$root.$emit(Emit.ACTUALIZAR_ALUMNO, Emit.ACTUALIZAR_ALUMNO);
       } else {
-        this.$notificacion.error(
-          "Ups!",
-          "Algo sucedió al intentar guardar el alumno, ponte en contacto con soporte técnico."
-        );
-  
+        this.$notificacion.error("Ups!","Algo sucedió al intentar confirmar la inscripción, ponte en contacto con soporte técnico.");  
       }
       this.loader = false;
     },
