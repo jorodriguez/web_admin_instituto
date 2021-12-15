@@ -20,8 +20,8 @@
     <!-- </form>-->
 
     <div class="card">
-      <div class="card-body">
-        <div class="form-row">
+      <div class="card-body text-left">
+        <div class="form-row ">
           <div
             class="form-group form-group col-sm-6 col-md-6 col-lg-6 col-xl-6"
           >
@@ -90,21 +90,28 @@
                 <tr>                
                   <td>{{row.alumno}} {{row.apellidos}}</td>
                   <td class="font-weight-bold">{{row.telefono}}</td>
-                  <td class="text-right">                  
-                    <span v-if="row.confirmado">
-                        <i class="fa fa-check-circle text-success"></i>                    
-                        <span class="text-success"> Confirmado el {{row.fecha_confirmado}}</span>                         
+                  <td class="text-right" >                  
+
+                    <span v-if="row.confirmado" class="btn btn-link btn-sm">
+                        <i class="fa fa-check-circle text-success "></i>                    
+                        <span class="text-success pointer" @click="seleccionar(row,'DETALLE')"> Confirmado</span>                         
                         <!--<span @click="seleccionar(row,'NO_CONFIRMAR')" class="text-danger pointer" title="Quitar confirmación"><i class="fa fa-times "></i></span>  -->
                     </span>
-                    <span v-else>
+                    <span v-else >
                       <button class="btn btn-success " @click="seleccionar(row,'CONFIRMAR')">
                         Confirmar
                       </button>                      
                     </span>
-                    <button class="btn btn-light" @click="seleccionar(row,'NO_CONFIRMAR')" >
+                    <span v-if="row.confirmado == false" class="btn btn-link btn-sm">
+                        <i class="fa fa-times text-dark "></i>                    
+                        <span class="text-dark pointer" @click="seleccionar(row,'DETALLE')">Cancelado</span>                                                 
+                    </span>
+                    <span v-else >
+                    <button  class="btn btn-light" @click="seleccionar(row,'NO_CONFIRMAR')" >
                         Cancelar
                     </button>
-                  </td>
+                    </span>
+                  </td>                  
                 </tr>                
             </tbody>
           </table>
@@ -127,7 +134,7 @@
                 <span class="font-weight-bold">{{ alumno.alumno }} {{alumno.apellidos}}</span>
                 <span v-if="alumno.confirmado" class="text-success">
                   <i class="fa fa-check-circle text-success"></i>                    
-                 Confirmado el {{alumno.fecha_confirmado}}
+                    Confirmado el {{alumno.fecha_confirmado}}
                  </span>                                         
               </td>
             </tr>
@@ -177,6 +184,81 @@
       <div slot="footer">
         <button v-if="operacion == 'CONFIRMAR'" class="btn btn-success"  @click="confirmarInscripcion(true)">Confirmar</button>
         <button v-if="operacion == 'NO_CONFIRMAR'" class="btn btn-dark" @click="confirmarInscripcion(false)">Cancelar inscripción</button>
+      </div>
+    </Popup>
+
+     <!-- detalle de confirmación -->
+    <Popup id="popup_detalle" :show_button_close="true">
+      <div slot="header">
+          Detalle de incripción
+      </div>
+      <div slot="content">
+        <div class="row text-left">
+          <table class="table">
+            <tr>  
+              <td colspan="2">
+                <span v-if="alumno.confirmado" class="text-success h3 ">
+                  <i class="fa fa-check-circle text-success "></i>                    
+                       Inscripción Confirmada
+                 </span>                                         
+                 <span v-if="alumno.confirmado == false" class="text-danger h3">
+                  <i class="fa fa-check-circle text-danger"></i>                    
+                       Inscripción Cancelada
+                 </span>                                                                                
+                 <p class="text-sm text-muted">por {{alumno.usuario_confirmo}} el <strong>{{alumno.fecha_confirmado}}</strong></p>
+              </td>
+            </tr>
+            <tr>  
+              <td>Alumno</td>            
+              <td>
+                <span class="font-weight-bold">{{ alumno.alumno }} {{alumno.apellidos}}</span>                
+              </td>
+            </tr>            
+            <tr>  
+              <td>Teléfono</td>            
+              <td>
+                <span class="font-weight-bold">{{ alumno.telefono }}</span>
+              </td>
+            </tr>
+            <tr>  
+              <td>Taller</td>            
+              <td>
+                <span class="font-weight-bold">{{ alumno.especialidad }}</span>
+              </td>
+            </tr>
+            <tr>
+              <td>Inicia</td>
+              <td>
+                <span class="font-weight-bold">
+                  {{
+                    alumno.fecha_inicio_format
+                      ? alumno.fecha_inicio_format
+                      : ` previsto ${alumno.fecha_inicio_previsto_format}`
+                  }}
+                </span>
+              </td>
+            </tr>
+            <tr>
+            <td>Dias</td>
+              <td>
+                <span class="font-weight-bold">{{ alumno.dias }}</span>
+                -<span class="font-weight-bold">{{ alumno.horario }}</span>
+              </td>
+            </tr>
+            <tr>           
+            
+            <tr>
+              <td>Nota</td>
+              <td>
+                <textarea v-model="alumno.nota" class="form-control" rows="2" disabled>
+                </textarea>
+              </td>
+            </tr>
+          </table>
+        </div>
+      </div>
+      <div slot="footer">        
+        
       </div>
     </Popup>
 
@@ -277,7 +359,11 @@ export default {
         this.alumno =  Object.assign({},row);
         this.operacion = operacion;        
         this.alumno.nota = '';
-        $("#popup_confirmar_inscripcion").modal("show");        
+        if(operacion == 'DETALLE'){
+          $("#popup_detalle").modal("show");        
+        }else{
+            $("#popup_confirmar_inscripcion").modal("show");        
+        }
     },
     async confirmarInscripcion(confirmacion) {
       console.log("@confirmarInscripcion "+confirmacion+" alumno "+this.alumno.id_alumno);

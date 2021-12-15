@@ -269,8 +269,7 @@
            
           </div>
           <div class="row bg-secondary">
-            <div class="col-md-4 offset-md-8  text-right">
-              <!--<button class="btn btn-link">Agregar alumno</button>-->
+            <div class="col-md-8 offset-md-4  text-right">              
               <button class="btn btn-link" @click="seleccionar(item, 'CONFIRM')">
                 Confirmar inscripciones
               </button>

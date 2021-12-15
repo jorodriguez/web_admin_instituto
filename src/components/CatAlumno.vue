@@ -169,7 +169,12 @@
                   class="badge badge-info text-wrap"
                 >
                   {{ row.especialidad }}
-                </h6>                
+                </h6>     
+                <span :class="`badge badge-pill ${row.confirmado == true && 'badge-light'} ${row.confirmado == false && 'badge-danger'} ${row.confirmado == null && 'badge-light'}`">
+                  {{ row.confirmado == null ? 'Pendiente':''}}
+                  {{ row.confirmado == true ? 'Confirmado':'' }}
+                  {{ row.confirmado == false ? 'Cancelado' :'' }}
+                </span>                
                 <h5><span class="font-weight-normal">Inicia</span> {{ row.fecha_inicio_previsto_format }}</h5>                
                 <h5><span class="font-weight-normal"></span>{{row.dias}} turno {{ row.horario }}</h5>
               </div>
