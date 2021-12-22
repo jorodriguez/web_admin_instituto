@@ -26,7 +26,8 @@ import CatAvisos from '../administracion/avisos/CatAvisos';
 import InscripcionAlumno from '@/components/InscripcionAlumno';
 import ReactivarAlumnosEliminados from '@/components/ReactivarAlumnosEliminados';
 import CatCursos from '@/components/CatCursos';
-import ConfirmatInscripcion from '@/components/ConfirmarInscripcion';
+import ConfirmarInscripcion from '@/components/ConfirmarInscripcion';
+import IniciarCurso from '@/components/IniciarCurso';
 
 import VueSession from 'vue-session'
 
@@ -56,7 +57,8 @@ const router = new Router({
         { path: '/CatAlumno', name: 'CatAlumno', component: CatAlumno, meta: { requiresAuth: true, validar: false } },
         { path: '/CatCurso', name: 'CatCurso', component: CatCursos, meta: { requiresAuth: true, validar: false } },
         { path: '/Inscripcion', name: 'Inscripcion', component: InscripcionAlumno, meta: { requiresAuth: true, validar: false } },
-        { path: '/ConfirmarInscripcion/:uidCurso/:cat_especialidad', name: 'ConfirmarInscripcion', component: ConfirmatInscripcion, meta: { requiresAuth: true, validar: false } },
+        { path: '/ConfirmarInscripcion/:uidCurso/:cat_especialidad', name: 'ConfirmarInscripcion', component: ConfirmarInscripcion, meta: { requiresAuth: true, validar: false } },
+        { path: '/InciarCurso/:uidCurso', name: 'InciarCurso', component: IniciarCurso, meta: { requiresAuth: true, validar: false } },
         { path: '/PerfilAlumno/:uid', name: 'PerfilAlumno', component: PerfilAlumno, meta: { requiresAuth: true, validar: false } },
         { path: '/SubirFotoAlumno/:id', name: 'SubirFotoAlumno', component: SubirFotoAlumno, meta: { requiresAuth: true, validar: false } },        
         //{ path: '/Asistencia', name: 'Asistencia', component: Asistencia, meta: { requiresAuth: true, validar: false } },

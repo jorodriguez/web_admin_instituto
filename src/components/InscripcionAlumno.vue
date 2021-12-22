@@ -57,7 +57,7 @@
           />
         </div>
         <div class="form-group form-group col-sm-6 col-md-6 col-lg-6 col-xl-6">
-          <label>Télefono<span class="text-danger">*</span></label>
+          <label>Télefono/Whatsapp<span class="text-danger">*</span></label>
           <input
             type="text"
             v-model="input.telefono"

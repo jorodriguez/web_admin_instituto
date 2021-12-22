@@ -195,81 +195,14 @@
         </div>
 
         <span v-for="item in lista" :key="item.id">
-          <div class="row  border-top mt-2">
-             <div class="col-md-2 mt-2">
-              <img
-                v-if="item.foto_curso"
-                class="mr-3 img-fluid rounded border border-gray"
-                width="150"
-                :src="item.foto_curso"
-                alt="Especialidad"
-              />
-              <div
-                v-else
-                class="card border border-gray"
-                style="width: 140px"
-              >
-                <div class="card-body">
-                  <button class="btn btn-link">
-                    <i class="fa fa-plus"></i>
-                  </button>
-                </div>
-              </div>
-            </div>
-            <div class="col mt-2">
-              <div class="text-left">
-                <h3 class="mt-0 pointer" @click="seleccionar(item,'UPDATE')">{{ item.especialidad }}</h3>
-                <p class="card-text text-sm">
-                  <span class="text-muted">Fecha de inicio</span>
-                  {{
-                    item.fecha_inicio_format
-                      ? item.fecha_inicio_format
-                      : ` previsto ${item.fecha_inicio_previsto_format}`
-                  }}
-                  <span class="text-muted">Fecha de fin</span>
-                  {{
-                    item.fecha_fin_format
-                      ? item.fecha_fin_format
-                      : ` previsto ${item.fecha_fin_previsto_format}`
-                  }}
-                </p>
-                <p class="card-text text-sm">
-                  <span class="text-muted">Día(s)</span> {{ item.dias }}
-                  <span class="text-muted"> Horario</span> {{ item.horario }}
-                </p>
-                 <p class="card-text text-sm">
-                  <span class="text-muted">Colegiatura </span> <span class="font-weight-bold d-inline p-2 bg-gray rounded text-white m-2">${{ item.costo_colegiatura_base }}</span>
-                  <span class="text-muted"> Inscripción </span><span class="font-weight-bold d-inline p-2 bg-gray rounded text-white m-2">${{ item.costo_inscripcion_base }}</span>
-                </p>
-              </div>
-            </div>
-            <!--<div class="col-4 mt-2 mb-2 text-right">
-              <p class="card-text text-sm ">                
-                <span class="font-weight-bold"
-                  >${{ item.costo_inscripcion_base }}</span
-                ><span class="text-muted">Inscripción</span>
-              </p>
-              <p class="card-text text-sm">                
-                <span class="font-weight-bold"
-                  >${{ item.costo_colegiatura_base }}</span
-                ><span class="text-muted">Colegiatura</span>
-              </p>
-              <p class="card-text text-sm">              
-              <span
-                :class="`badge badge-pill ${
-                  item.inscripciones && item.inscripciones > 0
-                    ? 'badge-primary'
-                    : 'badge-secondary'
-                }`"
-                >{{ item.inscripciones }}</span
-              >
-              <span class="text-muted">Inscritos</span>
-              </p>
-            </div>-->
-           
-          </div>
+          
+          <RowCurso :curso="item" :clickHeader="()=>{seleccionar(item,'UPDATE')}" />         
+
           <div class="row bg-secondary">
             <div class="col-md-8 offset-md-4  text-right">              
+              <button class="btn btn-link" @click="seleccionar(item, 'INICIAR')">
+                Iniciar
+              </button>
               <button class="btn btn-link" @click="seleccionar(item, 'CONFIRM')">
                 Confirmar inscripciones
               </button>
@@ -360,6 +293,7 @@ import Loader from "../components_utils/Loader";
 import moment from "moment";
 import Popup from "../controller/Popup";
 import InscripcionAlumno from "./InscripcionAlumno.vue";
+import RowCurso from "./fragmentos/curso/RowCurso";
 
 export default {
   name: "cat-cursos",
@@ -368,6 +302,7 @@ export default {
     Loader,
     Popup,
     InscripcionAlumno,
+    RowCurso
   },
   mixins: [operacionesApi],
   data() {
@@ -423,6 +358,7 @@ export default {
       if (this.operacion === "DELETE") {
         $("#popup_eliminar").modal("show");
       }
+
       if (this.operacion === "UPDATE") {
         await this.cargarCatalogos();
         console.log(this.input);
@@ -440,8 +376,14 @@ export default {
         );
         $("#popup_curso").modal("show");
       }
+      
       if (this.operacion === "CONFIRM") {
           this.$router.push({ name: "ConfirmarInscripcion", params: { uidCurso: row.uid,cat_especialidad:row.cat_especialidad } });
+      }
+
+      if (this.operacion == "INICIAR") {
+          console.log("INICIAR CURSO");
+          this.$router.push({ name: "InciarCurso", params: { uidCurso: row.uid } });
       }
     },
     async nuevo() {
