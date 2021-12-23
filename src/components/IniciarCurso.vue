@@ -1,8 +1,6 @@
 <template>
   <div class="cat_alumno">
-    <h1>
-      Iniciar curso
-    </h1>
+    <h1>Iniciar curso</h1>
     <small>{{ usuarioSesion.nombre_sucursal }}</small>
     <div class="row">
       <div class="col-auto mr-auto">
@@ -17,7 +15,6 @@
     <div class="card mt-2 mb-2 pb-3">
       <RowCurso :curso="cursoSeleccionado" />
     </div>
-
 
     <div class="card">
       <div class="card-body text-left">
@@ -87,7 +84,22 @@
             role="tabpanel"
             aria-labelledby="pills-semanas-tab"
           >
-            semanas
+            <div class="row">
+              <table class="table text-left">
+                <tr>
+                  <th>Periodo</th>
+                  <th></th>
+                  <th></th>
+                </tr>
+                <tbody v-for="row in listaSemanas" :key="row.id">
+                  <tr>
+                    <td>{{ row.periodo }} {{ row.numero_periodo }} </td>
+                    <td class="font-weight-bold">{{ row.inicio }}</td>                    
+                    <td class="font-weight-bold">{{ row.fin }}</td>                    
+                  </tr>
+                </tbody>
+              </table>
+            </div>
           </div>
           <div
             class="tab-pane fade"
@@ -140,7 +152,7 @@ export default {
     Loader,
     Popup,
     RowCurso,
-    TablaAlumnosConfirmar
+    TablaAlumnosConfirmar,
   },
   mixins: [operacionesApi],
   data() {
@@ -155,9 +167,10 @@ export default {
       listaCursos: [],
       listaInscripciones: [],
       lista: [],
+      listaSemanas: [],
       es: es,
       loader: false,
-      isModificacion: false
+      isModificacion: false,
     };
   },
   mounted() {
@@ -171,6 +184,7 @@ export default {
     async init() {
       await this.cargarCurso();
       await this.cargarAlumnosCurso();
+      await this.cargarSemanas();
     },
     async cargarAlumnosCurso() {
       console.log("@cargarAlumnosCurso");
@@ -187,8 +201,16 @@ export default {
           `${URL.CURSO}/uid/${this.uidCurso}`
         );
       }
-    }
-  }
+    },
+    async cargarSemanas() {
+      console.log("Cargar semanas");
+      if (this.uidCurso) {
+        this.listaSemanas = await this.getAsync(
+          `${URL.PERIODOS_CURSO}/curso/${this.uidCurso}`
+        );
+      }
+    },
+  },
 };
 </script>
 
