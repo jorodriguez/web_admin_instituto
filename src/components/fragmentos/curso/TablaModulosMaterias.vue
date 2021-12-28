@@ -8,8 +8,8 @@
      <h5>{{row.descripcion}}</h5>
      <table class="table text-left">          
             <tr>                
-                <th>Modulo</th>
-                <th>materias</th>
+                <th>Materia</th>
+                <th>Duración</th>
                 <th></th>
             </tr>
             <tbody 
@@ -17,27 +17,9 @@
               :key="row.id">
                 <tr>                
                   <td>{{row.nombre}} </td>
-                  <td class="font-weight-bold">{{row.telefono}}</td>
-                  <td class="text-right" >                  
-                    <span v-if="row.confirmado" class="btn btn-link btn-sm">
-                        <i class="fa fa-check-circle text-success "></i>                    
-                        <span class="text-success pointer" @click="seleccionar(row,'DETALLE')"> Confirmado</span>                         
-                        <!--<span @click="seleccionar(row,'NO_CONFIRMAR')" class="text-danger pointer" title="Quitar confirmación"><i class="fa fa-times "></i></span>  -->
-                    </span>
-                    <span v-else >
-                      <button class="btn btn-success " @click="seleccionar(row,'CONFIRMAR')">
-                        Confirmar
-                      </button>                      
-                    </span>
-                    <span v-if="row.confirmado == false" class="btn btn-link btn-sm">
-                        <i class="fa fa-times text-dark "></i>                    
-                        <span class="text-dark pointer" @click="seleccionar(row,'DETALLE')">Cancelado</span>                                                 
-                    </span>
-                    <span v-else >
-                    <button  class="btn btn-light" @click="seleccionar(row,'NO_CONFIRMAR')" >
-                        Cancelar
-                    </button>
-                    </span>
+                  <td class="font-weight-bold">{{row.duracion}}</td>
+                  <td class="text-right" >                                      
+                    
                   </td>                  
                 </tr>                
             </tbody>
