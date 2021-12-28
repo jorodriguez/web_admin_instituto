@@ -32,7 +32,7 @@
               role="tab"
               aria-controls="pills-alumnos"
               aria-selected="true"
-              >Alumnos</a
+              ><span v-if="listaSemanas" class="badge badge-pill badge-info">{{listaInscripciones.length}}</span> Alumnos</a
             >
           </li>
 
@@ -45,7 +45,7 @@
               role="tab"
               aria-controls="pills-semanas"
               aria-selected="false"
-              >Semanas
+              ><span v-if="listaSemanas" class="badge badge-pill badge-info">{{listaSemanas.length}}</span> Semanas 
             </a>
           </li>
 
@@ -87,15 +87,15 @@
             <div class="row">
               <table class="table text-left">
                 <tr>
-                  <th>Periodo</th>
+                  <th>Periodo </th>
                   <th></th>
                   <th></th>
                 </tr>
                 <tbody v-for="row in listaSemanas" :key="row.id">
                   <tr>
                     <td>{{ row.periodo }} {{ row.numero_periodo }} </td>
-                    <td class="font-weight-bold">{{ row.inicio }}</td>                    
-                    <td class="font-weight-bold">{{ row.fin }}</td>                    
+                    <td class="font-weight-bold">{{ row.inicio_semana }}</td>                    
+                    <td class="font-weight-bold">{{ row.fin_semana }}</td>                    
                   </tr>
                 </tbody>
               </table>
@@ -173,11 +173,11 @@ export default {
       isModificacion: false,
     };
   },
-  mounted() {
+ async mounted() {
     console.log("##### INCIAR CURSO  ####");
     this.usuarioSesion = getUsuarioSesion();
     this.uidCurso = `${this.$route.params.uidCurso}`;
-    this.init();
+    await this.init();
   },
 
   methods: {
@@ -203,10 +203,18 @@ export default {
       }
     },
     async cargarSemanas() {
-      console.log("Cargar semanas");
+      console.log("Cargar semanas "+this.uidCurso);
       if (this.uidCurso) {
         this.listaSemanas = await this.getAsync(
           `${URL.PERIODOS_CURSO}/curso/${this.uidCurso}`
+        );
+      }
+    },
+     async cargarMaterias() {
+      console.log("Cargar materuias "+this.uidCurso);
+      if (this.uidCurso) {
+        this.listaSemanas = await this.getAsync(
+          `${URL.MATERIAS_ESPECIALIDAD}/${this.cursoSeleccionado.cat_especialidad}`
         );
       }
     },

@@ -3,11 +3,12 @@
     <!--<div class="bg-gradient-primary pb-6 pt-4 pt-md-2" > </div>-->
       <!-- Header -->
     <!--<div class="header pb-8 pt-5 pt-lg-8 d-flex align-items-center" style="min-height: 100px; background-image: url(../assets/img/theme/profile-cover.jpg); background-size: cover; background-position: center top;">-->
-    <div class="header pb-2 pt-5 pt-lg-4 d-flex align-items-center" style="min-height: 80px; background-image: url(../assets/img/theme/profile-cover.jpg); background-size: cover; background-position: center top;">
+    <div class="header pb-2 pt-5 pt-lg-4 d-flex align-items-center" 
+    style="min-height: 80px; ">
       <!-- Mask -->
       <!--<span class="mask bg-gradient-default opacity-8"></span>-->
       <!--style="background-color:#9BE1AD !important;"-->
-      <span class="mask bg-primary opacity-8"></span>
+      <span class="mask opacity-8" style="background-color:#E701A8 !important;"></span>
       <!-- Header container -->
       <div class="container-fluid d-flex align-items-center">
         <div class="row">

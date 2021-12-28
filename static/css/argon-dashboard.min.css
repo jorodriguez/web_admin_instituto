@@ -19,7 +19,7 @@
 :root {
     --blue: #5e72e4;
     --indigo: #5603ad;
-    --purple: #8965e0;
+    --purple: hsl(258, 66%, 64%);
     --pink: #f3a4b5;
     --red: #f5365c;
     --orange: #fb6340;
@@ -31,7 +31,8 @@
     --gray-dark: #32325d;
     --light: #ced4da;
     --lighter: #e9ecef;
-    --primary: #5e72e4;
+    /*--primary: #5e72e4;*/    
+    --primary: #d510d5;    
     --secondary: #f7fafc;
     --success: #2dce89;
     --info: #11cdef;

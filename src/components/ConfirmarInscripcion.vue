@@ -77,10 +77,10 @@
           <Loader :loading="loader" :mini="true" />
         </div>
 
-        <div class="row">
-        
-          <TablaAlumnosConfirmar :listaInscripciones="listaInscripciones" :reload="this.cargarAlumnosCurso" />
-        
+        <div class="card">           
+              <div class="card-body">        
+              <TablaAlumnosConfirmar :listaInscripciones="listaInscripciones" :reload="this.cargarAlumnosCurso" />
+              </div>
         </div>
       </div>
     </div>

@@ -7,17 +7,11 @@
           <div class="row justify-content-center">
             <div class="col-lg-5">
               <div class="card bg-secondary shadow border-0">
-                <div class="card-header bg-white pb-5 text-center">
-                  <!--<div class="text-muted text-center mb-3">
-              <small>Login </small>
-                  </div>-->
-                  <img src="../assets/logo.jpeg" height="80" width="140" />
-                 
+                <div class="card-header bg-white pb-5 text-center">                  
+                  <img src="https://res.cloudinary.com/dwttlkcmu/image/upload/v1640639519/static/thumbnail_LOGO_PARIS_aw1o2o.png" height="80" width="140" />                  
+                
                 </div>
                 <div class="card-body px-lg-5 py-lg-5">
-                  <!--<div class="text-center text-muted mb-4">
-              <small>Or sign in with credentials</small>
-                  </div>-->
                   <form role="form">
         
                     <div class="form-group mb-3">
