@@ -1,6 +1,6 @@
 <template>
     
-        <div class="row  border-top mt-2">
+        <div class="row    mt-2">
              <div class="col-md-2 mt-2">
               <img
                 v-if="curso.foto_curso"

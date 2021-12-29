@@ -197,8 +197,8 @@
         <span v-for="item in lista" :key="item.id">
           
           <RowCurso :curso="item" :clickHeader="()=>{seleccionar(item,'UPDATE')}" />         
-
-          <div class="row bg-secondary">
+          
+          <div class="row bg-secondary mt-2 border-top">
             <div class="col-md-8 offset-md-4  text-right">              
               <button class="btn btn-link" @click="seleccionar(item, 'INICIAR')">
                 Iniciar

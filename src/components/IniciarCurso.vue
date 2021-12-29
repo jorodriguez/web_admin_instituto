@@ -85,17 +85,19 @@
             aria-labelledby="pills-semanas-tab"
           >
             <div class="row">
-              <table class="table text-left">
+              <table class="table table-sm table-hover text-left ">
                 <tr>
-                  <th>Periodo </th>
-                  <th></th>
-                  <th></th>
+                  <th scope="col"># </th>                  
+                  <th scope="col">Clase</th>
+                  <th scope="col">Fecha</th>
+                  <th scope="col">Módulo </th>                  
                 </tr>
-                <tbody v-for="row in listaSemanas" :key="row.id">
-                  <tr>
-                    <td>{{ row.periodo }} {{ row.numero_periodo }} </td>
-                    <td class="font-weight-bold">{{ row.inicio_semana }}</td>                    
-                    <td class="font-weight-bold">{{ row.fin_semana }}</td>                    
+                <tbody v-for="(row, index) in listaSemanas" :key="row.id">
+                  <tr :class="(index % 2) == 0 ? 'bg-secondary':''">
+                    <td>{{ row.numero_periodo }} </td>
+                    <td class="font-weight-bold">{{ row.fecha_semana_clase_format }}</td>                                                            
+                    <td>{{ row.clase }} </td>                    
+                    <td>{{ row.modulo }} </td>
                   </tr>
                 </tbody>
               </table>
