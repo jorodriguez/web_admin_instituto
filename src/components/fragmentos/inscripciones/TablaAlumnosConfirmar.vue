@@ -10,7 +10,7 @@
               v-for="row in listaInscripciones"
               :key="row.id">
                 <tr>                
-                  <td>{{row.inscripcion}} {{row.apellidos}}</td>
+                  <td>{{row.alumno}} {{row.apellidos}}</td>
                   <td class="font-weight-bold">{{row.telefono}}</td>
                   <td class="text-right" >                  
 
@@ -242,7 +242,7 @@ export default {
       const respuesta = await this.putAsync(`${URL.INSCRIPCION_BASE}/confirmar/${this.inscripcion.id_inscripcion}`, values);
       
       if (respuesta) {
-        this.$notificacion.info(`Inscripción confirmada`,`${this.inscripcion.nombre} ${this.inscripcion.apellidos} fué confirmado para el taller ${this.inscripcion.especialidad} `);
+        this.$notificacion.info(`Inscripción confirmada`,`${this.inscripcion.alumno} ${this.inscripcion.apellidos} fué confirmado para el taller ${this.inscripcion.especialidad} `);
         
         $("#popup_confirmar_inscripcion").modal("hide");        
 
