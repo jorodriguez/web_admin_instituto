@@ -149,13 +149,12 @@
         <tr>
           <td>Fecha de Inicio</td>
           <td><datepicker
-              name="fecha_inicio_previsto"
-              v-model="cursoSeleccionado.fecha_inicio_previsto"
-              input-class="form-control"
+              name="fecha_inicio"
+              v-model="fecha_inicio_real"
+              input-class="form-cntrol"
               :format="'yyyy-MM-dd'"
               :bootstrap-styling="true"
-              :language="es"
-              required
+              :language="es"              
             ></datepicker></td>
         </tr>
       </table>    
@@ -343,7 +342,8 @@ export default {
       es: es,
       loader: false,
       isModificacion: false, 
-      alumnosConfirmados:0
+      alumnosConfirmados:0,
+      fecha_inicio_real:new Date()
     };
   },
   async mounted() {
@@ -396,11 +396,14 @@ export default {
     iniciarTaller(row) {
       //obtener alumnos confirmados
       this.alumnosConfirmados = this.listaInscripciones.filter(item=>item.confirmado==true).length;
+      this.fecha_inicio_real = this.cursoSeleccionado.fecha_inicio_previsto;
 
       $("#popup_iniciar").modal("show");
     },
-    confirmarIniciarTaller(){
-
+    async confirmarIniciarTaller(){
+       
+      const res = await this.postAsync(`${URL.CURSO}/iniciar`,{uid:this.cursoSeleccionado.uid,genero:this.usuarioSesion.id});
+      console.log("respuesta "+res);
     },
     async iniciarModificacionCurso(row) {
       this.input = Object.assign({}, row);

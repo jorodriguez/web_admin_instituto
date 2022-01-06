@@ -196,6 +196,7 @@
 
         <span v-for="item in lista" :key="item.id">
           
+          {{item}}
           <RowCurso :curso="item" :clickHeader="()=>{seleccionar(item,'UPDATE')}" />         
           
           <div class="row bg-secondary mt-2 border-top">
