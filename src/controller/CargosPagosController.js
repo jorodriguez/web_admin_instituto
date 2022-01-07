@@ -15,7 +15,7 @@ export default {
   components: {
     Popup, Datepicker,ReenviarComprobantePago
   },
-  props: ['idalumno', 'requiere_factura'],
+  props: ['uidalumno', 'requiere_factura'],
   mixins: [operacionesApi],
   data() {
     return {
@@ -62,7 +62,7 @@ export default {
       loaderCargos:false
     };
   },
-  mounted() {
+  async mounted() {
     console.log("iniciando el componente de pagos y cargos ");
 
     this.usuarioSesion = getUsuarioSesion();
@@ -120,21 +120,32 @@ export default {
       this.$root.$emit('actualizacionPorCargoEvent', 'ACTUALIZAR');
     }
 
-    this.cargarCargos();
-
+    await this.cargarCargos();
+    
   },
   watch: {
-    idalumno: function (newId, oldId) {
-      console.log(`Observador para cambios de valor del id de alumno ${newId} - ${oldId}`);
-      //this.loadFunctionCargosAlumno();
+    uidalumno: function (newId, oldId) {
+      console.log(`Observador para cambios de valor del id de alumno ${newId} - ${oldId}`);            
       this.cargarCargos();
     }
   },
   methods: {
     async cargarCargos(){
       this.loaderCargos = true;
-      this.listaCargosAlumnos = await this.getAsync(`${URL.CARGOS_BASE}/alumno/${this.idalumno}/${this.limite}`);             
-      this.loaderCargos = false;      
+      console.log(" consultando cargos ");
+      if(this.uidalumno){
+        console.log(`${URL.CARGOS_BASE}/alumno/${this.uidalumno}/${this.limite}`);
+        this.listaCargosAlumnos = await this.getAsync(`${URL.CARGOS_BASE}/alumno/${this.uidalumno}/${this.limite}`);             
+        console.log("tineen "+this.listaCargosAlumnos.length+" cargos");        
+        this.loaderCargos = false;      
+      }
+    },
+    async cargarInfoAlumno(){
+      if(this.uidalumno){
+        console.log("XXXXXXXXXXXXXXX CARGAR INFO ALUMNO");
+        console.log(`${URL.ALUMNOS_BASE}/id/${this.uidalumno}`);
+        this.alumno = await this.getAsync(`${URL.ALUMNOS_BASE}/id/${this.uidalumno}`);
+      }
     },
     async cargarTodosCargos(){
       this.limite = " all ";
@@ -150,18 +161,10 @@ export default {
       this.mensaje = "";
       this.cargo.total_cargo = 0;
 
-      await this.get(
-        URL.ALUMNOS_BASE + "/id/" + this.idalumno,
-
-        (result) => {
-          this.alumno = result.data;
-          console.log("==== >>" + JSON.stringify(this.alumno));
-        }
-      );
-
+      await this.cargarInfoAlumno();
+      
       this.loadFunctionCatCargos();
-      //Cargar colegiatura e inscripcion del alumno seleccionado y asignarla al monto al cambiar el cargo
-
+      
       $('#modal_cargo').modal('show');
     },
     onChangeCargo() {
@@ -246,7 +249,7 @@ export default {
 
       console.log("invocar");
       this.cargo.genero = this.usuarioSesion.id;
-      this.cargo.id_alumno = this.idalumno;
+      this.cargo.uid_alumno = this.idalumno;
 
       this.post(
         URL.CARGO_REGISTRAR,
@@ -303,7 +306,7 @@ export default {
         this.pago.pago_total = this.total_cargos;
 
         this.loadFunctionCatFormasPago();
-        this.loadDescuentos();
+//        this.loadDescuentos();
 
         $('#modal_pago').modal('show');
 
@@ -315,14 +318,7 @@ export default {
       console.log("Cancelar agregar pago");
       this.listaCargosAlumnosSeleccionados=[];
       $('#modal_pago').modal('hide');
-  /*    for (var i = 0; i < this.listaCargosAlumnos.length; i++) {
-        var element = this.listaCargosAlumnos[i];
-        if (element.checked && element.cat_descuento != -1) {          
-          element.cat_descuento = this.noOptionDescuento;
-          console.log("this.pago.descuento_total  " + this.pago.descuento_total);
-        }
-      }
-*/
+  
     },
     reacalcularTotales() {
       var pass = true;
@@ -476,7 +472,7 @@ export default {
 
 
           var objEnvio = {
-            id_alumno: this.idalumno,
+            uid_alumno: this.uid_alumno,
             pago: this.pago.pago_total,
             nota: this.pago.nota_pago,
             ids_cargos: ids_cargos,

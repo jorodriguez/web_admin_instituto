@@ -79,7 +79,7 @@
 
         <div class="card">           
               <div class="card-body">        
-              <TablaAlumnosConfirmar :listaInscripciones="listaInscripciones" :reload="this.cargarAlumnosCurso" />
+              <TablaAlumnosConfirmar :listaInscripciones="listaInscripciones" :reload="this.cargarAlumnosCurso" :mostrar_acciones="true" />
               </div>
         </div>
       </div>

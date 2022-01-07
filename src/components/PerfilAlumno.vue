@@ -127,10 +127,9 @@
               <div class="card">
                 <div class="card-body">
                   <!-- Componente especial para cargos y pagos -->
-                  <!--<cargos-pagos
-                    :idalumno="id"
-                    :requiere_factura="alumno.factura"
-                  ></cargos-pagos>-->
+                  <cargos-pagos
+                    :uidalumno="uid"                    
+                  ></cargos-pagos>
                 </div>
               </div>
             </div>

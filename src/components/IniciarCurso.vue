@@ -7,7 +7,7 @@
         <router-link to="/CatCursos" class="btn btn-secondary btn-lg">
           <i class="fas fa-arrow-circle-left text-gray"></i>
         </router-link>
-        <button  @click="iniciarTaller()" class="btn btn-success btn-lg">Iniciar taller</button>
+        <button  @click="iniciarTaller()" class="btn btn-success btn-lg " :disabled="alumnosConfirmados == 0">Iniciar taller</button>
       </div>
       <div class="col-auto"></div>
     </div>
@@ -42,9 +42,7 @@
               role="tab"
               aria-controls="pills-alumnos"
               aria-selected="true"
-              ><span v-if="listaSemanas" class="badge badge-pill badge-info">{{
-                listaInscripciones.length
-              }}</span>
+              ><span v-if="listaSemanas" class="badge badge-pill badge-info">{{alumnosConfirmados}}/{{listaInscripciones.length}}</span>
               Alumnos</a
             >
           </li>
@@ -369,7 +367,7 @@ export default {
         this.listaInscripciones = await this.getAsync(
           `${URL.INSCRIPCION_BASE}/curso/${this.uidCurso}`
         );
-        console.log(this.listaInscripciones);
+        this.alumnosConfirmados = this.listaInscripciones.filter(item=>item.confirmado==true).length;
       }
     },
     async cargarCurso() {
@@ -398,8 +396,7 @@ export default {
       }
     },
     iniciarTaller(row) {
-      //obtener alumnos confirmados
-      this.alumnosConfirmados = this.listaInscripciones.filter(item=>item.confirmado==true).length;
+      //obtener alumnos confirmados      
       this.fecha_inicio_real = this.cursoSeleccionado.fecha_inicio_previsto;
 
       $("#popup_iniciar").modal("show");
