@@ -14,10 +14,13 @@
 
     <div class="card mt-2 mb-2 ">
       <RowCurso :curso="cursoSeleccionado" />
-      <div class="row mt-2 ">
+      <div  class="row mt-2 ">
         <div class="col-md-8 offset-md-4  text-right">
-          <button class="btn btn-link" @click="iniciarModificacionCurso(item)">
+          <button v-if="!cursoSeleccionado.activo" class="btn btn-link" @click="iniciarModificacionCurso(item)">
             Modificar
+          </button>
+          <button v-else class="btn btn-link text-danger" >
+            Cancelar curso
           </button>
         </div>
       </div>
@@ -87,6 +90,7 @@
                 <TablaAlumnosConfirmar
                   :listaInscripciones="listaInscripciones"
                   :reload="this.cargarAlumnosCurso"
+                  :mostrar_acciones="!this.cursoSeleccionado.activo"
                 />
               </div>
             </div>
@@ -107,12 +111,12 @@
                 </tr>
                 <tbody v-for="(row, index) in listaSemanas" :key="row.id">
                   <tr :class="index % 2 == 0 ? 'bg-secondary' : ''">
-                    <td>{{ row.numero_periodo }}</td>
-                    <td class="font-weight-bold">
-                      {{ row.fecha_semana_clase_format }}
+                    <td :class="`${row.semana_actual && 'bg-info'}`" >{{ row.numero_semana_curso }}</td>
+                    <td :class="`${row.semana_actual && 'bg-info font-weight-bold'}`">
+                      {{ row.fecha_clase_format }}
                     </td>
-                    <td>{{ row.clase }}</td>
-                    <td>{{ row.modulo }}</td>
+                    <td :class="`${row.semana_actual && 'bg-info'}`" >{{ row.materia_modulo_especialidad }}</td>
+                    <td :class="`${row.semana_actual && 'bg-info'}`" >{{ row.modulo_especialidad }}</td>
                   </tr>
                 </tbody>
               </table>

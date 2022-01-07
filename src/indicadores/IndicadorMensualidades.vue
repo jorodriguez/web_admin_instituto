@@ -193,7 +193,8 @@ export default {
         }
       );
     };
-    this.obtenerIndicadorMensualidad();
+    //marca error por que se botto co_balance_alumno de la tabla co_inscripcion y co_alumno
+    //this.obtenerIndicadorMensualidad();
   },
   methods: {
     mostrarListaMensualidades() {

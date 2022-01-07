@@ -12,7 +12,7 @@
                 <tr>                
                   <td>{{row.alumno}} {{row.apellidos}}</td>
                   <td class="font-weight-bold">{{row.telefono}}</td>
-                  <td class="text-right" >                  
+                  <td class="text-right" v-if="mostrar_acciones" >                  
 
                     <span v-if="row.confirmado" class="btn btn-link btn-sm">
                         <i class="fa fa-check-circle text-success "></i>                    
@@ -199,7 +199,7 @@ export default {
     Popup
   },
   mixins: [operacionesApi],
-  props:["listaInscripciones","reload"],
+  props:["listaInscripciones","reload","mostrar_acciones"],
   data() {
     return {
       uidCurso: "",

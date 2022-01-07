@@ -194,25 +194,26 @@
           <Loader :loading="loader" :mini="true" />
         </div>
 
-        <span v-for="item in lista" :key="item.id">
+        <span v-for="item in lista" :key="item.id">         
           
-          {{item}}
           <RowCurso :curso="item" :clickHeader="()=>{seleccionar(item,'UPDATE')}" />         
           
           <div class="row bg-secondary mt-2 border-top">
-            <div class="col-md-8 offset-md-4  text-right">              
-              <button class="btn btn-link" @click="seleccionar(item, 'INICIAR')">
+
+          <div class="col-md-8 offset-md-4  text-right">              
+              <p v-if="item.activo" class=" text-muted text-sm">activo desde {{item.fecha_inicio_format}}</p>
+              <button v-if="!item.activo" class="btn btn-link" @click="seleccionar(item, 'INICIAR')">
                 Iniciar
               </button>
-              <button class="btn btn-link" @click="seleccionar(item, 'CONFIRM')">
+              <button v-if="!item.activo" class="btn btn-link" @click="seleccionar(item, 'CONFIRM')">
                 Confirmar inscripciones
               </button>
-              <button class="btn btn-link" @click="seleccionar(item, 'UPDATE')">
+              <button v-if="!item.activo" class="btn btn-link" @click="seleccionar(item, 'UPDATE')">
                 Modificar
               </button>
-              <button class="btn btn-link text-danger" @click="seleccionar(item, 'DELETE')">
+              <button v-if="!item.activo" class="btn btn-link text-danger" @click="seleccionar(item, 'DELETE')">
                 Eliminar
-              </button>
+              </button>              
             </div>
           </div>
         </span>
