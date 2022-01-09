@@ -186,11 +186,12 @@ export default {
       generoAlumno: { id: -1, nombre: "", foto: "" },
       es: es,
       loader: false,
-      isModificacion: false
+      isModificacion: false,
+      cargado:false
     };
   },
   mounted() {
-    console.log("##### DATOS ALUMNO  ####");
+    console.log("##### MOUNTED DATOS ALUMNO  ####");
     this.usuarioSesion = getUsuarioSesion();    
     console.log(`DATOS ALUMNO ${this.$route.params.uid}`);
     this.uid = `${this.$route.params.uid}`;
@@ -198,14 +199,18 @@ export default {
   },
   methods: {
     async init() {
-      if(this.uid){
-          this.listaGeneroAlumno = await this.getAsync(`${URL.GENERO_ALUMNO}`);
+      if(this.uid && !this.cargado){
+         
+         console.log("==== CARGANDO DATOS DE ALUMNO  " +  JSON.stringify(this.uid));
+         
+         this.listaGeneroAlumno = await this.getAsync(`${URL.GENERO_ALUMNO}`);
           
-          this.listaEscolaridad = await this.getAsync(`${URL.ESCOLARIDAD}`);
+         this.listaEscolaridad = await this.getAsync(`${URL.ESCOLARIDAD}`);          
           
-          console.log("==========CARGAR DATOS DE ALUMNO  " +  JSON.stringify(this.uid));
-          this.input = await this.getAsync(`${URL.ALUMNOS_BASE}/id/${this.uid}`);
-          //this.input = Object.assign({}, this.alumno);
+         this.input = await this.getAsync(`${URL.ALUMNOS_BASE}/id/${this.uid}`);
+
+         this.cargado = true;
+         
       }      
     },   
     async guardar() {

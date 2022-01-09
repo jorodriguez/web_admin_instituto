@@ -21,7 +21,7 @@ export default {
     return {
       cargo: {
         cantidad: 1,
-        cat_cargo: { id: -1, nombre: "", descripcion: "", precio: 0, escribir_cantidad: false },
+        cat_cargo: { id: -1, id_curso:-1, nombre: "", descripcion: "", precio: 0, escribir_cantidad: false },
         total_cargo: 0
       },
       pago: {
@@ -31,6 +31,7 @@ export default {
         identificador_factura: "",
         nota_pago: ""
       },
+      cursoSeleccionado:null,        
       cargoSeleccionado: { fecha: null, cargo: 0, total_pago: 0, nota: '' },
       noOptionDescuento: { id: -1, nombre: " NA ", descuento_decimal: 0.0 },
       escribir_folio_factura: false,
@@ -51,6 +52,7 @@ export default {
       listaPagosCargo: [],
       listaFormasPago: [],
       listaMesesAdeuda: [],
+      listaCursosAlumno: [],
       //loadFunctionCargosAlumno: null,
       loadFunctionCatCargos: null,
       loadFunctionActualizarCargoGeneral: null,
@@ -120,25 +122,29 @@ export default {
       this.$root.$emit('actualizacionPorCargoEvent', 'ACTUALIZAR');
     }
 
-    await this.cargarCargos();
+    if(this.uidalumno){
+      await this.cargarCargos();
+    }
     
   },
   watch: {
     uidalumno: function (newId, oldId) {
       console.log(`Observador para cambios de valor del id de alumno ${newId} - ${oldId}`);            
-      this.cargarCargos();
+      if(this.uidalumno){
+        this.cargarCargos();
+      }
     }
   },
   methods: {
     async cargarCargos(){
       this.loaderCargos = true;
       console.log(" consultando cargos ");
-      if(this.uidalumno){
+      
         console.log(`${URL.CARGOS_BASE}/alumno/${this.uidalumno}/${this.limite}`);
         this.listaCargosAlumnos = await this.getAsync(`${URL.CARGOS_BASE}/alumno/${this.uidalumno}/${this.limite}`);             
         console.log("tineen "+this.listaCargosAlumnos.length+" cargos");        
         this.loaderCargos = false;      
-      }
+      
     },
     async cargarInfoAlumno(){
       if(this.uidalumno){
@@ -167,27 +173,34 @@ export default {
       
       $('#modal_cargo').modal('show');
     },
-    onChangeCargo() {
-      //this.cargo.cat_cargo = cargoSelect;
+    async onChangeCargo() {      
       console.log("cargo.cat_cargo " + JSON.stringify(this.cargo.cat_cargo));
       if (!this.cargo.cat_cargo.escribir_cantidad) {
         this.cargo.cantidad = 1;
       }
       this.cargo.monto = this.cargo.cat_cargo.precio;
       this.calcularTotalCargo();
+            
+      if (this.cargo.cat_cargo.id == CONSTANTES.ID_CARGO_COLEGIATURA) {
+          //this.cargo.monto = this.alumno.costo_colegiatura;
+            //cargar lista de cursos del alumno
+          this.listaCursosAlumno  =  await this.getAsync(`${URL.INSCRIPCION_BASE}/inscripciones_activas/${this.uidalumno}`);               
 
-      let id_cargo_mes = CONSTANTES.ID_CARGO_MENSUALIDAD;
-      //cargar mensualidades si se selecciono la mensualidad
-      if (this.cargo.cat_cargo.id == id_cargo_mes) {
-        this.cargo.monto = this.alumno.costo_colegiatura;
-        if (this.listaMesesAdeuda.length == 0) {
-          this.loadFunctionMesesAdeuda();
-        }
+          //seleccionar el primer curso de la lista
+          const idPrimerItem = ( (this.listaCursosAlumno && this.listaCursosAlumno.length > 0) ? this.listaCursosAlumno[0].id_curso : -1);
+          this.cargo.id_curso = idPrimerItem;
+
       } else {
         if (this.cargo.cat_cargo.id == CONSTANTES.ID_CARGO_INCRIPCION) {
           this.cargo.monto = this.alumno.costo_inscripcion;
         }
       }
+    },    
+    onChangeCurso() {      
+      console.log("@onchange curso");
+
+      //cargar las semanas del curso seleccionado - que no estan pagadas
+
     },
     onChangeMensualidad() {
       if (this.cargo.mes_seleccionado.cargo_registrado) {
@@ -294,7 +307,6 @@ export default {
           if (element.checked) {
             element.pago = Number(element.total);
             element.total_original = Number(element.total);
-            //this.total_cargos = this.total_cargos + Number(element.total); //el total de deudas            
             this.total_cargos = this.total_cargos + Number(element.total); //el total de deudas            
             element.cat_descuento = this.noOptionDescuento;
             element.descuento_decimal = 0.0;
@@ -468,11 +480,10 @@ export default {
           });
           console.log(" = = = cargos descuentos > " + ids_cargos_descuento);
           console.log(" = = = descuentos > " + ids_descuentos_desglose);
-
-
+          console.log(" = = = uid_alumno > " + this.uidalumno);
 
           var objEnvio = {
-            uid_alumno: this.uid_alumno,
+            uid_alumno: this.uidalumno,
             pago: this.pago.pago_total,
             nota: this.pago.nota_pago,
             ids_cargos: ids_cargos,

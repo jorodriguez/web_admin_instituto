@@ -45,29 +45,27 @@
               v-on:change="seleccionarTodoPagos()"
             />
             <!--</div>-->
-          </th>
-          <th>Fecha</th>
+          </th>          
           <th>Concepto</th>
-          <th>Adeuda</th>
-          <th>Desc.</th>
-          <th>Pagado</th>
+          <th>Fecha</th>
+          <th>Monto</th>
+          <th>Abono</th>
+          <!--<th>Desc.</th>-->
+          <th>Saldo</th>
           <!--<th>Nota</th>-->
           <th></th>
         </thead>
         <tbody v-for="row in listaCargosAlumnos" :key="row.id">
           <tr>
-            <td>
+            <td >
               <input
                 type="checkbox"
                 id="checkbox"
                 v-model="row.checked"
                 v-if="!row.pagado"
               />
-              <i v-else class="text-success font-weight-normal">¡Pagado!</i>
-            </td>
-            <td>
-              <span class="font-weight-normal">{{ row.fecha_format }}</span>
-            </td>
+              <i v-else class="text-primary font-weight-normal">¡Pagado!</i>
+            </td>            
             <td>
               <a
                 v-on:click="verDetalleCargo(row)"
@@ -92,12 +90,30 @@
               </a>
             </td>
             <td>
+              <span :class="`font-weight-normal ${row.pagado ? 'text-gray':''}`">{{ row.fecha_format }}</span>
+            </td>
+            <td> <!-- monto -->
+               <strong>
+                <span :class="`font-weight-normal ${row.pagado ? 'text-gray':''}`"
+                  >${{ row.cargo }}</span
+                >
+              </strong>
+            </td>   
+             <td><!-- abonos -->
+              <strong>
+                <span :class="`font-weight-normal ${row.pagado ? 'text-gray':''} `"
+                  >${{ row.total_pagado }}</span
+                >
+              </strong>
+            </td>         
+            <td>
               <strong>
                 <span class="font-weight-bold text-danger"
                   >${{ row.total }}</span
                 >
               </strong>
             </td>
+            <!--
             <td>
               <strong>
                 <span class="font-weight-bold text-">${{ row.descuento }}</span
@@ -107,13 +123,8 @@
                 }}</span>
               </strong>
             </td>
-            <td>
-              <strong>
-                <span class="font-weight-bold text-success"
-                  >${{ row.total_pagado }}</span
-                >
-              </strong>
-            </td>
+            -->
+           
             <!--
           <td>
             <div class="text-wrap" style="width: 15rem;">{{row.nota}}</div>
@@ -138,140 +149,12 @@
       Ver todos los cargos
     </button>
 
-    <!-- MODAL PARA AGREGAR CARGO -->
-    <!--
-    <Popup id="modal_cargo" size="lg" show_button_close="true">
-      <div slot="header">
-        Agregar Cargo para {{ alumno ? alumno.nombre : "" }}
-      </div>
-      <div slot="content">
-        <div class="form-group">
-          <label for="selectTipoCargo">
-            Cargo
-            <span class="text-danger">*</span>
-          </label>
-          <select
-            v-model="cargo.cat_cargo"
-            class="form-control"
-            placeholder="Cargo"
-            @change="onChangeCargo()"
-            required
-            autofocus
-          >
-            <option
-              id="selectCargo"
-              v-for="p in listaCargos"
-              v-bind:value="p"
-              v-bind:key="p.id"
-              >{{ p.nombre }}</option
-            >
-          </select>
-        </div>
-        <div
-          class="form-group"
-          v-if="cargo.cat_cargo.id != -1 && cargo.cat_cargo.seleccionar_fecha"
-        >
-          <label for="inputMensualidadCargo">
-            Seleccione el mes correspondiente
-            <span class="text-danger">*</span>
-          </label>
-          <select
-            v-model="cargo.fecha_cargo"
-            class="form-control"
-            placeholder="Mensualidad"
-            @change="onChangeMensualidad()"
-          >
-            <option
-              id="selectMesAdeuda"
-              v-for="p in listaMesesAdeuda"
-              v-bind:value="p"
-              v-bind:key="p.fecha_mes"
-              :disabled="p.cargo_registrado"
-            >
-              <span :class="p.cargo_registrado ? 'text-muted' : ''">{{
-                p.nombre_mes
-              }}</span>
-            </option>
-          </select>
-        </div>
-
-        <div
-          class="form-group"
-          v-if="cargo.cat_cargo.id != -1 && cargo.cat_cargo.escribir_cantidad"
-        >
-          <label for="inputCargo">
-            Cantidad
-            <span class="text-danger">*</span>
-          </label>
-          <input
-            id="inputCargo"
-            type="number"
-            v-model="cargo.cantidad"
-            class="form-control"
-            placeholder="Cantidad"
-            min="1"
-            max="999"
-            @change="calcularTotalCargo()"
-            maxlength="3"
-          />
-        </div>
-
-        <div class="form-group" v-if="cargo.cat_cargo.id != -1">
-          <label for="inputMonto">
-            Monto $
-            <span class="text-danger">*</span>
-          </label>
-          <input
-            id="inputMonto"
-            type="number"
-            v-model="cargo.monto"
-            class="form-control"
-            :disabled="!cargo.cat_cargo.escribir_monto"
-            placeholder="Monto"
-            min="1"
-            @change="calcularTotalCargo()"
-            maxlength="6"
-          />
-        </div>
-        <div class="form-group">
-          <label for="inputNota">Nota</label>
-          <input
-            id="inputNota"
-            type="text"
-            v-model="cargo.nota"
-            class="form-control"
-            placeholder="Escriba una nota"
-          />
-        </div>
-      </div>
-      <div slot="footer">
-        <button class="btn btn-lg btn-primary" v-on:click="guardarCargo()">
-          Guardar
-        </button>
-      </div>
-    </Popup>
-    -->
     <Popup id="modal_cargo" size="md" show_button_close="true">
       <div slot="header">
         Agregar Cargo para {{ alumno ? alumno.nombre : "" }}
       </div>
       <div slot="content">
-        <!--<div class="row">
-        
-          <div
-            class="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-3"
-            v-for="row in listaCargos"
-            :key="row.id"
-          >
-            <div @click="()=>onChangeCargo(row)" :class="`card ${row.id == cargo.cat_cargo.id ? 'border-primary':''}`">
-              <div class="card-body pointer">
-                <h4 class="card-title">{{ row.nombre }}</h4>
-                <h5 class="card-text">${{ row.precio }}</h5>
-              </div>
-            </div>
-          </div>
-        </div>
-        -->
+  
         <div class="form-group">
           <label for="selectTipoCargo">
             Cargo
@@ -295,31 +178,29 @@
           </select>
         </div>
 
+{{cargo}}
         
         <div
           class="form-group"
-          v-if="cargo.cat_cargo.id != -1 && cargo.cat_cargo.seleccionar_fecha"
+          v-if="cargo.cat_cargo.id == 1"
         >
           <label for="inputMensualidadCargo">
-            Seleccione el mes correspondiente
+            Curso 
             <span class="text-danger">*</span>
           </label>
           <select
-            v-model="cargo.fecha_cargo"
+            v-model="cargo.id_curso"
             class="form-control"
-            placeholder="Mensualidad"
-            @change="onChangeMensualidad()"
+            placeholder="Cursos"
+            @change="onChangeCurso()"
           >
             <option
-              id="selectMesAdeuda"
-              v-for="p in listaMesesAdeuda"
-              v-bind:value="p"
-              v-bind:key="p.fecha_mes"
-              :disabled="p.cargo_registrado"
+              id="selectCurso"
+              v-for="c in listaCursosAlumno"
+              v-bind:value="c.id_curso"
+              v-bind:key="c.id_curso"             
             >
-              <span :class="p.cargo_registrado ? 'text-muted' : ''">{{
-                p.nombre_mes
-              }}</span>
+              {{c.especialidad}} - {{c.horario}}
             </option>
           </select>
         </div>
@@ -607,16 +488,15 @@
       <div slot="header">Detalle del cargo</div>
       <div slot="content">
         <table class="table">
-          <thead>
-            <th>Fecha</th>
+          <thead>            
             <th>Cargo</th>
+            <th>Fecha</th>
             <th>Descuento</th>
             <th>Total Adeuda</th>
             <th>Pagado</th>
           </thead>
           <tbody>
-            <tr>
-              <td>{{ cargoSeleccionado.fecha_format }}</td>
+            <tr>              
               <td style="width:25%;">
                 <span v-if="!cargoSeleccionado.pagado" class="font-weight-bold">
                   {{
@@ -653,6 +533,7 @@
                   }}</small>
                 </div>
               </td>
+              <td>{{ cargoSeleccionado.fecha_format }}</td>
               <td>
                 <label class="font-weight-bold h3"
                   >${{ cargoSeleccionado.descuento }} <br />

@@ -46,7 +46,7 @@
             <div class="card-body">
               Balance
               <p>
-                $
+                ${{alumno.total_adeudo}}
                 <!--<balance-alumno
                   :idalumno="id"
                   mostrarfecha="true"
@@ -99,7 +99,7 @@
                 role="tab"
                 aria-controls="pills-servicios"
                 aria-selected="false"
-                >Pagos
+                >Cobranza
               </a>
             </li>
           </ul>
@@ -128,7 +128,7 @@
                 <div class="card-body">
                   <!-- Componente especial para cargos y pagos -->
                   <cargos-pagos
-                    :uidalumno="uid"                    
+                    :uidalumno="alumno.uid"                    
                   ></cargos-pagos>
                 </div>
               </div>

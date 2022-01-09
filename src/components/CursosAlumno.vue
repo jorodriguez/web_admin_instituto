@@ -122,9 +122,8 @@ export default {
     };
   },
   mounted() {
-    console.log("##### DATOS ALUMNO  ####");
-    this.usuarioSesion = getUsuarioSesion();
-    console.log(`DATOS ALUMNO ${this.$route.params.uid}`);
+    console.log("##### MOUNTED CURSO ALUMNOS  ####");
+    this.usuarioSesion = getUsuarioSesion();    
     this.uid = `${this.$route.params.uid}`;
     this.init();
   },

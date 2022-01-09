@@ -46,7 +46,8 @@ export default {
             fecha_memento: null,
             listaInscripciones:[],
             es: es,
-            usuarioSesion: {}
+            usuarioSesion: {},
+            alumnoCargado:false
         };
     },
     beforeRouteUpdate(to) {
@@ -89,8 +90,9 @@ export default {
                 this.display = false;
                 console.log("No se recibe ningun id de alumno ");
             } else {
-                //async version
-                await this.cargarInformacionAlumno();                             
+                if(!this.alumnoCargado){
+                    await this.cargarInformacionAlumno();                             
+                }
             }
         },
         async cargarInformacionAlumno(){
