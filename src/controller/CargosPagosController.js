@@ -6,6 +6,7 @@ import URL from "../helpers/Urls";
 import Popup from './Popup'
 import Datepicker from 'vuejs-datepicker';
 import CONSTANTES from "../helpers/Constantes";
+import Emit from "../helpers/Emit";
 import { getUsuarioSesion } from '../helpers/Sesion';
 import ReenviarComprobantePago from '../components_utils/ReenviarComprobantePago';
 
@@ -119,7 +120,7 @@ export default {
     };
 
     this.loadFunctionActualizarCargoGeneral = function () {
-      this.$root.$emit('actualizacionPorCargoEvent', 'ACTUALIZAR');
+      this.$root.$emit(Emit.ACTUALIZAR_ALUMNO, 'ACTUALIZAR');
     }
 
     if(this.uidalumno){
@@ -182,24 +183,31 @@ export default {
       this.calcularTotalCargo();
             
       if (this.cargo.cat_cargo.id == CONSTANTES.ID_CARGO_COLEGIATURA) {
-          //this.cargo.monto = this.alumno.costo_colegiatura;
-            //cargar lista de cursos del alumno
+          
+          //cargar lista de cursos del alumno
           this.listaCursosAlumno  =  await this.getAsync(`${URL.INSCRIPCION_BASE}/inscripciones_activas/${this.uidalumno}`);               
 
           //seleccionar el primer curso de la lista
           const idPrimerItem = ( (this.listaCursosAlumno && this.listaCursosAlumno.length > 0) ? this.listaCursosAlumno[0].id_curso : -1);
           this.cargo.id_curso = idPrimerItem;
 
-      } else {
-        if (this.cargo.cat_cargo.id == CONSTANTES.ID_CARGO_INCRIPCION) {
-          this.cargo.monto = this.alumno.costo_inscripcion;
+      } 
+      //tomar el costo de colegiaruta e inscripcion del objeto inscripcion
+      /*else {
+        if (this.cargo.cat_cargo.id == CONSTANTES.ID_CARGO_INCRIPCION) {        
+            this.cargo.monto = this.alumno.costo_inscripcion;
+            
         }
-      }
+      }*/
     },    
     onChangeCurso() {      
       console.log("@onchange curso");
 
       //cargar las semanas del curso seleccionado - que no estan pagadas
+
+    },
+    onChangeSemanaCurso(){
+      console.log("@ChangeSemanaCurso");
 
     },
     onChangeMensualidad() {
@@ -221,7 +229,7 @@ export default {
       console.log("total calculado " + this.cargo.total_cargo);
       console.log("precio de cargo " + this.cargo.precio);
     },
-    guardarCargo() {
+   async guardarCargo() {
       console.log("guardar cargos");
       if (this.cargo.cat_cargo.id == -1) {
         console.log("cargo");
@@ -260,14 +268,25 @@ export default {
         return;
       }
 
-      console.log("invocar");
+      console.log("invocar "+this.usuarioSesion.id);
       this.cargo.genero = this.usuarioSesion.id;
-      this.cargo.uid_alumno = this.idalumno;
+      this.cargo.uid_alumno = this.uidalumno;
+      //this.car
 
-      this.post(
+      const result = await this.postAsync(URL.CARGO_REGISTRAR,this.cargo);
+      console.log(result);
+      if (result != null) {
+        this.$notificacion.info("Se agrego el cargo", "");
+        this.seleccionTodos = false;
+        $("#modal_cargo").modal("hide");
+        this.listaMesesAdeuda = [];      
+        await this.cargarCargos();
+        this.loadFunctionActualizarCargoGeneral();
+      }
+
+      /*this.post(
         URL.CARGO_REGISTRAR,
         this.cargo,
-
         (result) => {
           if (result.data != null) {
             this.$notificacion.info("Se agrego el cargo", "");
@@ -276,10 +295,10 @@ export default {
             this.listaMesesAdeuda = [];
           //  this.loadFunctionCargosAlumno();
             this.cargarCargos();
-            this.loadFunctionActualizarCargoGeneral();
+            this.cargarInfoAlumno();
           }
         }
-      );
+      );*/
     },
     iniciarAgregarPago() {
       console.log("iniciar agregar pago ");
@@ -378,7 +397,7 @@ export default {
         this.reacalcularTotales();
       }
     },
-    guardarPago() {
+   async guardarPago() {
 
       console.log("=>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>guardar pago <<<<<<<<<<<<<<<<<<<<<<<<<");
       console.log(" pago " + this.pago.pago_total + " total_calculado " + this.total_cargos);
@@ -466,6 +485,7 @@ export default {
               id_descuento: e.cat_descuento.id              
             };
           });
+
           first = true;
 
           listaCargosDescuentos.forEach(element => {
@@ -496,23 +516,35 @@ export default {
             genero: this.usuarioSesion.id
           };
 
-          this.post(
+          const result = await this.postAsync(URL.PAGOS_REGISTRAR,objEnvio);
+          
+          if (result != null) {
+            console.log("" + result.data);
+            this.$notificacion.info("Se agregó el pago ", "");
+            this.seleccionTodos = false;
+            //this.loadFunctionCargosAlumno();
+            await this.cargarCargos();                
+            this.listaCargosAlumnosSeleccionados=[];
+            this.loadFunctionActualizarCargoGeneral();
+            $("#modal_pago").modal("hide");
+          }
+
+          /*this.post(
             URL.PAGOS_REGISTRAR,
             objEnvio,
-
             (result) => {
               if (result.data != null) {
                 console.log("" + result.data);
                 this.$notificacion.warn("Se agregó el pago ", "");
                 this.seleccionTodos = false;
                 //this.loadFunctionCargosAlumno();
-                this.cargarCargos();
-                this.loadFunctionActualizarCargoGeneral();
+                this.cargarCargos();                
                 this.listaCargosAlumnosSeleccionados=[];
+                tis.loadFunctionActualizarCargoGeneral();
                 $("#modal_pago").modal("hide");
               }
             }
-          );
+          );*/
         }
       }
     },

@@ -178,8 +178,6 @@
           </select>
         </div>
 
-{{cargo}}
-        
         <div
           class="form-group"
           v-if="cargo.cat_cargo.id == 1"
@@ -197,6 +195,32 @@
             <option
               id="selectCurso"
               v-for="c in listaCursosAlumno"
+              v-bind:value="c.id_curso"
+              v-bind:key="c.id_curso"             
+            >
+              {{c.especialidad}} - {{c.horario}}
+            </option>
+          </select>
+        </div>
+
+
+        <div
+          class="form-group"
+          v-if="cargo.cat_cargo.id == 1"
+        >
+          <label for="inputSemanaCurso">
+            Semana
+            <span class="text-danger">*</span>
+          </label>
+          <select
+            v-model="cargo.id_semana_curso"
+            class="form-control"
+            placeholder="Cursos"
+            @change="onChangeSemanaCurso()"
+          >
+            <option
+              id="selectCurso"
+              v-for="c in listaSemanaCursos"
               v-bind:value="c.id_curso"
               v-bind:key="c.id_curso"             
             >

@@ -8,7 +8,7 @@
     <small>{{ usuarioSesion.nombre_sucursal }}</small>
     <div class="row">
       <div class="col-auto mr-auto">
-        <router-link to="/principal" class="btn btn-secondary btn-lg">
+        <router-link to="/CatCurso" class="btn btn-secondary btn-lg">
           <i class="fas fa-arrow-circle-left text-gray"></i>
         </router-link>
       </div>

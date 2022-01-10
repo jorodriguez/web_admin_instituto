@@ -51,14 +51,13 @@ export default {
             .then(path=>{
               console.log("PATH "+path);
               this.$router.push({ path: path });
-            });
-         
+            });         
           } else {
             this.$notificacion.error('Login', 'No se encuentra el usuario.');
           }
         },
         error => { //FIXME: modificar la contestacion del API
-
+          console.log(error)
           this.loading = false;
           //console.log(JSON.stringify(error));
           if (!error.auth) {

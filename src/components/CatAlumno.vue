@@ -1,6 +1,6 @@
 <template>
   <div class="cat_alumno">
-    <h1>Alumnos ({{ lista != [] ? lista.length : 0 }})</h1>
+    <h1>Alumnos </h1>
     <small>{{ usuarioSesion.nombre_sucursal }}</small>
     <div class="row">
       <div class="col-auto mr-auto">
@@ -181,9 +181,7 @@
             </div>
           </div>
 
-          
-
-          <!-- Mensajes para la busqueda y carga-->
+                    <!-- Mensajes para la busqueda y carga-->
           <div v-if="criterioNombre != '' && lista.length == 0" class="mx-auto">
             <p class="text-muted ">Ningún resultado</p>
           </div>
