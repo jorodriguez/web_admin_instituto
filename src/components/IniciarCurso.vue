@@ -4,7 +4,7 @@
     <small>{{ usuarioSesion.nombre_sucursal }}</small>
     <div class="row">
       <div class="col-auto mr-auto">
-        <router-link to="/CatCursos" class="btn btn-secondary btn-lg">
+        <router-link to="/CatCurso" class="btn btn-secondary btn-lg">
           <i class="fas fa-arrow-circle-left text-gray"></i>
         </router-link>
         <button  @click="iniciarTaller()" class="btn btn-success btn-lg " :disabled="alumnosConfirmados == 0">Iniciar taller</button>
@@ -148,6 +148,7 @@
           <td>Confirmados</td>
           <td><span class="h6 badge badge-primary text-white"> {{alumnosConfirmados}}</span></td>
         </tr>
+        <!--
         <tr>
           <td>Fecha de Inicio</td>
           <td><datepicker
@@ -159,6 +160,7 @@
               :language="es"              
             ></datepicker></td>
         </tr>
+        -->
       </table>    
       </div>
       <div slot="footer">        

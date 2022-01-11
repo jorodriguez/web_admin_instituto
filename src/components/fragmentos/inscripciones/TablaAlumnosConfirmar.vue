@@ -1,7 +1,8 @@
 <template>
   <div class="row">
      <table class="table text-left">          
-            <tr>                
+            <tr>
+                <th></th>                
                 <th>Alumno</th>
                 <th>Teléfono</th>
                 <th></th>
@@ -10,7 +11,19 @@
               v-for="row in listaInscripciones"
               :key="row.id">
                 <tr>                
-                  <td>{{row.alumno}} {{row.apellidos}}</td>
+                  <td style="width:40px">
+                    <img
+            :src="row.foto"
+            class="rounded-circle bg-gray"
+            width="30"
+            height="30"
+            style="cursor:pointer"
+            title="Actualizar foto de perfil"
+            @click="verPerfil(row)"
+          />               
+              
+                     </td>
+                  <td> <span class="pointer" @click="verPerfil(row)"> {{row.alumno}} {{row.apellidos}} </span></td>
                   <td class="font-weight-bold">{{row.telefono}}</td>
                   <td class="text-right" v-if="mostrar_acciones" >                  
 
@@ -48,6 +61,7 @@
         <div class="row text-left">
           <table class="table">
             <tr>  
+
               <td>Alumno</td>            
               <td>
                 <span class="font-weight-bold">{{ inscripcion.alumno }} {{inscripcion.apellidos}}</span>
@@ -228,6 +242,10 @@ export default {
         }else{
             $("#popup_confirmar_inscripcion").modal("show");        
         }
+    },
+     verPerfil(rowSelect) {
+      console.log("fila seleccionada " + rowSelect.uid);
+      this.$router.push({ name: "PerfilAlumno", params: { uid: rowSelect.uid } });
     },
     async confirmarInscripcion(confirmacion) {
       console.log("@confirmarInscripcion "+confirmacion+" inscripcion "+this.inscripcion.id_inscripcion);

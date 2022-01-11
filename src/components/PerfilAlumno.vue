@@ -125,7 +125,7 @@
               aria-labelledby="pills-servicios-tab"
             >
               <div class="card">
-                <div class="card-body">
+                <div class="card-body">                  
                   <!-- Componente especial para cargos y pagos -->
                   <cargos-pagos
                     :uidalumno="alumno.uid"                    

@@ -22,6 +22,56 @@
 
     <div class="container text-left" :disabled="loader">
       <div class="form-row">
+        <div class="form-group form-group col-sm-6 col-md-6 col-lg-6 col-xl-6">
+          <label>
+            Especialidad
+            <span class="text-danger">*</span>
+          </label>
+          <select
+            v-model="input.cat_especialidad"
+            @change="onChangeEspecialidad()"
+            class="form-control"
+            placeholder="Especialidad"
+            autofocus
+            required
+          >
+            <option
+              v-for="especialidad in listaEspecialidades"
+              v-bind:value="especialidad.id"
+              v-bind:key="especialidad.id"
+            >
+              {{ especialidad.nombre }}
+            </option>
+          </select>
+        </div>
+
+        <div class="form-group form-group col-sm-6 col-md-6 col-lg-6 col-xl-6">
+          <label>
+            Curso
+            <span class="text-danger">*</span>
+          </label>
+          <select
+            v-model="input.co_curso"
+            @change="onChangeCurso()"
+            class="form-control"
+            placeholder="Curso"
+            required
+          >
+            <option
+              v-for="curso in listaCurso"
+              v-bind:value="curso.id"
+              v-bind:key="curso.id"
+            >
+              {{
+                `${curso.dias} horario ${curso.horario} / inicia ${curso.fecha_inicio_previsto_format}`
+              }}
+            </option>
+          </select>
+        </div>
+      </div>
+       
+
+      <div class="form-row">
         <div class="form-group col-sm-6 col-md-6 col-lg-6 col-xl-6">
           <label>Alumno<span class="text-danger">*</span></label>
           <input
@@ -29,8 +79,7 @@
             v-model="input.nombre"
             class="form-control"
             placeholder="Nombre"
-            required
-            autofocus
+            required            
           />
         </div>
 
@@ -103,62 +152,17 @@
           </select>
         </div>
       </div>
-     
+    
 
-      <div class="form-row">
-        <div class="form-group form-group col-sm-6 col-md-6 col-lg-6 col-xl-6">
-          <label>
-            Especialidad
-            <span class="text-danger">*</span>
-          </label>
-          <select
-            v-model="input.cat_especialidad"
-            @change="onChangeEspecialidad()"
-            class="form-control"
-            placeholder="Especialidad"
-            required
-          >
-            <option
-              v-for="especialidad in listaEspecialidades"
-              v-bind:value="especialidad.id"
-              v-bind:key="especialidad.id"
-            >
-              {{ especialidad.nombre }}
-            </option>
-          </select>
-        </div>
-
-        <div class="form-group form-group col-sm-6 col-md-6 col-lg-6 col-xl-6">
-          <label>
-            Curso
-            <span class="text-danger">*</span>
-          </label>
-          <select
-            v-model="input.co_curso"
-            @change="onChangeCurso()"
-            class="form-control"
-            placeholder="Curso"
-            required
-          >
-            <option
-              v-for="curso in listaCurso"
-              v-bind:value="curso.id"
-              v-bind:key="curso.id"
-            >
-              {{
-                `${curso.dias} horario ${curso.horario} / inicia ${curso.fecha_inicio_previsto_format}`
-              }}
-            </option>
-          </select>
-        </div>
-      </div>
-
+      
+<!--
       <div class="form-row">
         <div class="form-group form-group col-sm-6 col-md-6 col-lg-6 col-xl-6">
           <label>
             Colegiatura (semana)
             <span class="text-danger">*</span>
           </label>
+
           <input
             type="number"
             :disabled="true"
@@ -185,6 +189,7 @@
           />
         </div>
       </div>
+      -->
 
       <div class="form-group">
         <label for="inputFechaLimitePago">Nota </label>
@@ -195,6 +200,17 @@
           placeholder="Notas "
         />
       </div>
+
+        
+      <div class="form-row">
+        <div class="form-group form-group col-sm-6 col-md-6 col-lg-6 col-xl-6">
+          <h2>${{input.costo_colegiatura}} /<small>Colegiatura</small></h2>                     
+        </div>
+        <div class="form-group form-group col-sm-6 col-md-6 col-lg-6 col-xl-6">
+          <h2>${{input.costo_colegiatura}} /<small>Inscripción</small></h2>                     
+        </div>
+      </div>
+     
 
       <button
         class="btn btn-block btn-primary"

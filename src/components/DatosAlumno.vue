@@ -25,7 +25,6 @@
           />
         </div>
       </div>
-
       <div class="form-row">
         <div class="form-group form-group col-sm-6 col-md-6 col-lg-6 col-xl-6">
           <label>Dirección</label>
