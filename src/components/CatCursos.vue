@@ -196,24 +196,24 @@
 
         <span v-for="item in lista" :key="item.id">         
           
-          <RowCurso :curso="item" :clickHeader="()=>{seleccionar(item,'UPDATE')}" />         
+          <RowCurso :curso="item" :clickHeader="()=>{seleccionar(item,'DETALLE')}" />         
           
           <div class="row bg-secondary mt-2 border-top">
 
           <div class="col-md-8 offset-md-4  text-right">              
-              <p v-if="item.activo" class=" text-muted text-sm">activo desde {{item.fecha_inicio_format}}</p>
-              <button v-if="!item.activo" class="btn btn-link" @click="seleccionar(item, 'INICIAR')">
-                Iniciar
+              <p v-if="item.activo" class=" text-muted text-sm">activo desde {{item.fecha_inicio_format}}</p>              
+              <button v-if="!item.activo" class="btn btn-link" @click="seleccionar(item, 'DETALLE')">
+                Ver detalle
               </button>
-              <button v-if="!item.activo" class="btn btn-link" @click="seleccionar(item, 'CONFIRM')">
+              <!--<button v-if="!item.activo" class="btn btn-link" @click="seleccionar(item, 'CONFIRM')">
                 Confirmar inscripciones
-              </button>
+              </button>-->
               <button v-if="!item.activo" class="btn btn-link" @click="seleccionar(item, 'UPDATE')">
                 Modificar
               </button>
               <button v-if="!item.activo" class="btn btn-link text-danger" @click="seleccionar(item, 'DELETE')">
                 Eliminar
-              </button>              
+              </button>                            
             </div>
           </div>
         </span>
@@ -383,9 +383,9 @@ export default {
           this.$router.push({ name: "ConfirmarInscripcion", params: { uidCurso: row.uid,cat_especialidad:row.cat_especialidad } });
       }
 
-      if (this.operacion == "INICIAR") {
-          console.log("INICIAR CURSO");
-          this.$router.push({ name: "InciarCurso", params: { uidCurso: row.uid } });
+      if (this.operacion == "DETALLE") {
+          console.log("DETALLE CURSO");
+          this.$router.push({ name: "DetalleCurso", params: { uidCurso: row.uid } });
       }
     },
     async nuevo() {

@@ -23,7 +23,7 @@
             </div>
             <div class="col mt-2">
               <div class="text-left">
-                <h3 class="mt-0 pointer"  @click="this.clickHead()"> {{ curso.especialidad }}</h3>
+                <h3 class="mt-0 pointer"  @click="()=>this.clickHead()"> {{ curso.especialidad }}</h3>
                 <p class="card-text text-sm">
                   <span class="text-muted">Fecha de inicio</span>
                   {{

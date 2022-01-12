@@ -154,42 +154,7 @@
       </div>
     
 
-      
-<!--
-      <div class="form-row">
-        <div class="form-group form-group col-sm-6 col-md-6 col-lg-6 col-xl-6">
-          <label>
-            Colegiatura (semana)
-            <span class="text-danger">*</span>
-          </label>
 
-          <input
-            type="number"
-            :disabled="true"
-            v-model="input.costo_colegiatura"
-            class="form-control"
-            placeholder="Costo Colegiatura"
-            min="0"
-            required
-          />
-        </div>
-        <div class="form-group form-group col-sm-6 col-md-6 col-lg-6 col-xl-6">
-          <label>
-            Inscripción
-            <span class="text-danger">*</span>
-          </label>
-          <input
-            type="number"
-            :disabled="true"
-            v-model="input.costo_inscripcion"
-            class="form-control"
-            placeholder="Costo Inscripcion"
-            min="0"
-            required
-          />
-        </div>
-      </div>
-      -->
 
       <div class="form-group">
         <label for="inputFechaLimitePago">Nota </label>

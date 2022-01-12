@@ -1,25 +1,32 @@
 <template>
   <div class="cat_alumno">
-    <h1>Iniciar taller</h1>
+    <h1>Taller</h1>
     <small>{{ usuarioSesion.nombre_sucursal }}</small>
     <div class="row">
       <div class="col-auto mr-auto">
         <router-link to="/CatCurso" class="btn btn-secondary btn-lg">
           <i class="fas fa-arrow-circle-left text-gray"></i>
         </router-link>
-        <button  @click="iniciarTaller()" class="btn btn-success btn-lg " :disabled="alumnosConfirmados == 0">Iniciar taller</button>
+        <!--<button  @click="iniciarTaller()" class="btn btn-success btn-lg " :disabled="alumnosConfirmados == 0">Iniciar taller</button>-->
+        <button @click="iniciarInscripcion()" class="btn btn-success btn-lg ">
+          Agregar inscripción
+        </button>
       </div>
       <div class="col-auto"></div>
     </div>
 
     <div class="card mt-2 mb-2 ">
       <RowCurso :curso="cursoSeleccionado" />
-      <div  class="row mt-2 ">
+      <div class="row mt-2 ">
         <div class="col-md-8 offset-md-4  text-right">
-          <button v-if="!cursoSeleccionado.activo" class="btn btn-link" @click="iniciarModificacionCurso(item)">
+          <button
+            v-if="!cursoSeleccionado.activo"
+            class="btn btn-link"
+            @click="iniciarModificacionCurso(item)"
+          >
             Modificar
           </button>
-          <button v-else class="btn btn-link text-danger" >
+          <button v-else class="btn btn-link text-danger">
             Cancelar curso
           </button>
         </div>
@@ -42,7 +49,9 @@
               role="tab"
               aria-controls="pills-alumnos"
               aria-selected="true"
-              ><span v-if="listaSemanas" class="badge badge-pill badge-info">{{alumnosConfirmados}}/{{listaInscripciones.length}}</span>
+              ><span v-if="listaSemanas" class="badge badge-pill badge-info"
+                >{{ listaInscripciones.length }}</span
+              >
               Alumnos</a
             >
           </li>
@@ -85,11 +94,15 @@
           >
             <div class="card">
               <div class="card-body">
-                <TablaAlumnosConfirmar
+                <TablaAlumnos
                   :listaInscripciones="listaInscripciones"
                   :reload="this.cargarAlumnosCurso"
-                  :mostrar_acciones="!this.cursoSeleccionado.activo"
-                />
+                  :mostrar_acciones="true"
+                >
+                 <span slot="acciones"  >                 
+                      
+                 </span>
+                </TablaAlumnos>
               </div>
             </div>
           </div>
@@ -109,12 +122,22 @@
                 </tr>
                 <tbody v-for="(row, index) in listaSemanas" :key="row.id">
                   <tr :class="index % 2 == 0 ? 'bg-secondary' : ''">
-                    <td :class="`${row.semana_actual && 'bg-info'}`" >{{ row.numero_semana_curso }}</td>
-                    <td :class="`${row.semana_actual && 'bg-info font-weight-bold'}`">
+                    <td :class="`${row.semana_actual && 'bg-info'}`">
+                      {{ row.numero_semana_curso }}
+                    </td>
+                    <td
+                      :class="
+                        `${row.semana_actual && 'bg-info font-weight-bold'}`
+                      "
+                    >
                       {{ row.fecha_clase_format }}
                     </td>
-                    <td :class="`${row.semana_actual && 'bg-info'}`" >{{ row.materia_modulo_especialidad }}</td>
-                    <td :class="`${row.semana_actual && 'bg-info'}`" >{{ row.modulo_especialidad }}</td>
+                    <td :class="`${row.semana_actual && 'bg-info'}`">
+                      {{ row.materia_modulo_especialidad }}
+                    </td>
+                    <td :class="`${row.semana_actual && 'bg-info'}`">
+                      {{ row.modulo_especialidad }}
+                    </td>
                   </tr>
                 </tbody>
               </table>
@@ -133,22 +156,27 @@
     </div>
 
     <!-- detalle de confirmación -->
-     <Popup id="popup_iniciar" :show_button_close="true">
-      <div slot="header">                    
-            <h4>Iniciar taller </h4>          
+    <Popup id="popup_iniciar" :show_button_close="true">
+      <div slot="header">
+        <h4>Iniciar taller</h4>
       </div>
-      <div slot="content" >      
-      <table class="table text-left">
-        <tr>
+      <div slot="content">
+        <table class="table text-left">
+          <tr>
             <td>Taller</td>
-            <td><strong>
-            {{cursoSeleccionado.especialidad}}</strong></td>
-        </tr>
-        <tr>
-          <td>Confirmados</td>
-          <td><span class="h6 badge badge-primary text-white"> {{alumnosConfirmados}}</span></td>
-        </tr>
-        <!--
+            <td>
+              <strong> {{ cursoSeleccionado.especialidad }}</strong>
+            </td>
+          </tr>
+          <tr>
+            <td>Confirmados</td>
+            <td>
+              <span class="h6 badge badge-primary text-white">
+                {{ alumnosConfirmados }}</span
+              >
+            </td>
+          </tr>
+          <!--
         <tr>
           <td>Fecha de Inicio</td>
           <td><datepicker
@@ -160,15 +188,15 @@
               :language="es"              
             ></datepicker></td>
         </tr>
-        -->
-      </table>    
+        --></table>
       </div>
-      <div slot="footer">        
+      <div slot="footer">
         <button class="btn btn-success" @click="confirmarIniciarTaller()">
           Confirmar inicio
         </button>
       </div>
-    </Popup>-
+    </Popup>
+
     <Popup id="popup_curso" :show_button_close="true">
       <div slot="header">
         <div class="row text-left">
@@ -179,14 +207,14 @@
               width="150"
               :src="cursoSeleccionado.foto_curso"
               alt="Especialidad"
-            />            
+            />
           </div>
           <div class="col">
-            <h4>{{cursoSeleccionado.especialidad}}</h4>
+            <h4>{{ cursoSeleccionado.especialidad }}</h4>
           </div>
         </div>
       </div>
-      <div slot="content" class="text-left mt-0" >        
+      <div slot="content" class="text-left mt-0">
         <div class="form-group">
           <label>
             Dias
@@ -300,6 +328,135 @@
         </button>
       </div>
     </Popup>
+
+    <!-- agregar alumno -->
+    <Popup id="popup_inscripcion" :show_button_close="true">
+      <div slot="header">
+        <h4>Inscripción a {{cursoSeleccionado.especialidad}}</h4>
+      </div>
+      <div slot="content" class="text-left">
+        
+        <div class="form-row">
+          <div class="form-group col-sm-6 col-md-6 col-lg-6 col-xl-6">
+            <label>Alumno<span class="text-danger">*</span></label>
+            <input
+              type="text"
+              v-model="input.nombre"
+              class="form-control"
+              placeholder="Nombre"
+              required
+            />
+          </div>
+
+          <div class="form-group col-sm-6 col-md-6 col-lg-6 col-xl-6">
+            <label>Apellidos<span class="text-danger">*</span></label>
+            <input
+              type="text"
+              v-model="input.apellidos"
+              class="form-control"
+              placeholder="Apellidos"
+              required
+            />
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div
+            class="form-group form-group col-sm-6 col-md-6 col-lg-6 col-xl-6"
+          >
+            <label>Dirección</label>
+            <input
+              type="text"
+              v-model="input.direccion"
+              class="form-control"
+              placeholder="Dirección "
+            />
+          </div>
+          <div
+            class="form-group form-group col-sm-6 col-md-6 col-lg-6 col-xl-6"
+          >
+            <label>Télefono/Whatsapp<span class="text-danger">*</span></label>
+            <input
+              type="text"
+              v-model="input.telefono"
+              class="form-control"
+              placeholder="(52)"
+              required
+            />
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group col-sm-6 col-md-6 col-lg-6 col-xl-6">
+            <label>
+              Fecha de nacimiento
+              <span class="text-danger">*</span>
+            </label>
+            <datepicker
+              name="fecha_nacmiento"
+              v-model="input.fecha_nacimiento"
+              input-class="form-control"
+              :format="'yyyy-MM-dd'"
+              :bootstrap-styling="true"
+              :language="es"
+              required
+            ></datepicker>
+          </div>
+          <div class="form-group col-sm-6 col-md-6 col-lg-6 col-xl-6">
+            <label>Sexo<span class="text-danger">*</span></label>
+            <select
+              v-model="input.cat_genero"
+              class="form-control"
+              placeholder="Grupo"
+              required
+            >
+              <option
+                id="selectGeneroAlumno"
+                v-for="genero in listaGeneroAlumno"
+                v-bind:value="genero.id"
+                v-bind:key="genero.id"
+              >
+                {{ genero.nombre }}
+              </option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="inputFechaLimitePago">Nota </label>
+          <textarea
+            rows="2"
+            v-model="input.nota"
+            class="form-control"
+            placeholder="Notas "
+          />
+        </div>
+
+        <div class="form-row">
+          <div
+            class="form-group form-group col-sm-6 col-md-6 col-lg-6 col-xl-6"
+          >
+            <h2>${{ input.costo_colegiatura }} /<small>Colegiatura</small></h2>
+          </div>
+          <div
+            class="form-group form-group col-sm-6 col-md-6 col-lg-6 col-xl-6"
+          >
+            <h2>${{ input.costo_colegiatura }} /<small>Inscripción</small></h2>
+          </div>
+        </div>
+      </div>
+
+      <div slot="footer">
+       <button
+        class="btn btn-block btn-primary"
+        :disabled="loader"
+        v-on:click="guardarInscripcion()"
+      >
+        <Loader :loading="loader" :mini="true" />
+        Guardar
+       </button>
+      </div>
+    </Popup>
   </div>
 </template>
 
@@ -316,16 +473,18 @@ import Loader from "../components_utils/Loader";
 import moment from "moment";
 import Popup from "../controller/Popup";
 import RowCurso from "./fragmentos/curso/RowCurso";
-import TablaAlumnosConfirmar from "./fragmentos/inscripciones/TablaAlumnosConfirmar";
+import TablaAlumnos from "./fragmentos/inscripciones/TablaAlumnos";
+import InscripcionAlumno from "./InscripcionAlumno.vue";
 
 export default {
-  name: "iniciar-curso",
+  name: "detalle-curso",
   components: {
     Datepicker,
     Loader,
     Popup,
     RowCurso,
-    TablaAlumnosConfirmar
+    TablaAlumnos,
+    InscripcionAlumno
   },
   mixins: [operacionesApi],
   data() {
@@ -345,9 +504,13 @@ export default {
       listaHorarios: [],
       es: es,
       loader: false,
-      isModificacion: false, 
-      alumnosConfirmados:0,
-      fecha_inicio_real:new Date()
+      isModificacion: false,
+      alumnosConfirmados: 0,
+      fecha_inicio_real: new Date(),
+
+      listaGeneroAlumno:[],
+      input: AlumnoModel,
+      generoAlumno: { id: -1, nombre: "", foto: "" },
     };
   },
   async mounted() {
@@ -369,7 +532,9 @@ export default {
         this.listaInscripciones = await this.getAsync(
           `${URL.INSCRIPCION_BASE}/curso/${this.uidCurso}`
         );
-        this.alumnosConfirmados = this.listaInscripciones.filter(item=>item.confirmado==true).length;
+        this.alumnosConfirmados = this.listaInscripciones.filter(
+          item => item.confirmado == true
+        ).length;
       }
     },
     async cargarCurso() {
@@ -397,17 +562,7 @@ export default {
         );
       }
     },
-    iniciarTaller(row) {
-      //obtener alumnos confirmados      
-      this.fecha_inicio_real = this.cursoSeleccionado.fecha_inicio_previsto;
-
-      $("#popup_iniciar").modal("show");
-    },
-    async confirmarIniciarTaller(){
-       
-      const res = await this.postAsync(`${URL.CURSO}/iniciar`,{uid:this.cursoSeleccionado.uid,genero:this.usuarioSesion.id});
-      console.log("respuesta "+res);
-    },
+    
     async iniciarModificacionCurso(row) {
       this.input = Object.assign({}, row);
 
@@ -440,7 +595,7 @@ export default {
     async guardar() {
       console.log("@guardar");
 
-      const diasArray = this.listaDias.reduce(function (filtered, item) {
+      const diasArray = this.listaDias.reduce(function(filtered, item) {
         if (item.checked) {
           filtered.push(item.id);
         }
@@ -456,17 +611,20 @@ export default {
         return;
       }
 
-      this.loader = true;      
-      console.log(`inciando ${this.operacion} de curso ${this.cursoSeleccionado.id}`);
+      this.loader = true;
+      console.log(
+        `inciando ${this.operacion} de curso ${this.cursoSeleccionado.id}`
+      );
 
-      const respuesta = await this.putAsync(`${URL.CURSO}/${this.cursoSeleccionado.id}`, this.cursoSeleccionado);       
-     
+      const respuesta = await this.putAsync(
+        `${URL.CURSO}/${this.cursoSeleccionado.id}`,
+        this.cursoSeleccionado
+      );
+
       if (respuesta) {
-        this.$notificacion.info(
-          `Curso  modificado`, `Se modificado el curso`
-        );
+        this.$notificacion.info(`Curso  modificado`, `Se modificado el curso`);
         await this.init();
-        $("#popup_curso").modal("hide");        
+        $("#popup_curso").modal("hide");
       } else {
         this.$notificacion.error(
           "Ups!",
@@ -474,12 +632,15 @@ export default {
         );
       }
       this.loader = false;
-    },  
+    },
     validarDatos() {
-      let val = true;     
+      let val = true;
 
       if (this.cursoSeleccionado.dias_array.length == 0) {
-        this.$notificacion.error("Dias", "Selecciona al menos 1 día a impartir");
+        this.$notificacion.error(
+          "Dias",
+          "Selecciona al menos 1 día a impartir"
+        );
         val = false;
       }
 
@@ -516,6 +677,99 @@ export default {
       }
       return val;
     },
+    verPerfilAlumno(rowAlumno){
+    this.$router.push({
+          name: "PerfilAlumno",
+          params: { uid: rowAlumno.uid },
+        });
+    },
+    async iniciarInscripcion() {
+    this.input = {
+        id: 0,
+        co_sucursal: 0,
+        co_curso: this.cursoSeleccionado.id,        
+        nombre: "",
+        apellidos: "",
+        direccion: "",
+        telefono: "",
+        cat_genero: -1,
+        nombre_grupo: "",
+        nombre_sucursal: "",
+        fecha_nacimiento: null,
+        nota: "",
+        costo_inscripcion:this.cursoSeleccionado.costo_inscripcion_base,
+        costo_colegiatura:this.cursoSeleccionado.costo_colegiatura_base,
+        cat_especialidad: this.cursoSeleccionado.cat_especialidad,
+        fecha_inicio: null,
+        fecha_fin: null,
+        foto: "",       
+        genero: 1,
+      };
+         this.listaGeneroAlumno = await this.getAsync(`${URL.GENERO_ALUMNO}`);
+      $("#popup_inscripcion").modal("show");
+    },    
+    async guardarInscripcion() {
+      console.log("@guardar");
+
+      if (!validacionDatosAlumno(this.input, true)) {
+        console.log("No paso la validacion");
+        return;
+      }
+
+      let values = this.getValues();
+
+      this.loader = true;
+      console.log("inciando");
+
+      const respuesta = await this.postAsync(URL.INSCRIPCION_BASE, values);
+
+      console.log(respuesta);
+      if (respuesta) {
+        this.$notificacion.info(
+          `Inscripción realizada`,
+          `Se registró el alumno`
+        );
+        console.log(respuesta);
+
+        await this.cargarAlumnosCurso();
+        $("#popup_inscripcion").modal("hide");
+        
+      } else {
+        this.$notificacion.error(
+          "Ups!",
+          "Algo sucedió al intentar guardar el alumno, ponte en contacto con soporte técnico."
+        );
+      }
+      this.loader = false;
+    },
+     getValues() {
+      return {
+        co_curso: this.input.co_curso,
+        cat_genero: this.input.cat_genero,
+        nombre: this.input.nombre,
+        apellidos: this.input.apellidos,
+        direccion: this.input.direccion,
+        telefono: this.input.telefono,
+        fecha_nacimiento: this.input.fecha_nacimiento,
+        nota: this.input.nota,
+        costo_colegiatura: this.input.costo_colegiatura,
+        costo_inscripcion: this.input.costo_inscripcion,
+        foto: this.getFoto(),                
+        co_sucursal: this.usuarioSesion.co_sucursal,
+        co_empresa: this.usuarioSesion.id_empresa,
+        fecha_nacimiento: moment(this.input.fecha_nacimiento).format(
+          "YYYY-MM-DD"
+        ),
+        genero: this.usuarioSesion.id,
+      };
+    },
+    getFoto() {
+      let elemento = this.listaGeneroAlumno.find(
+        (e) => e.id == this.input.cat_genero
+      );
+      return elemento.foto;
+    },
+
   }
 };
 </script>
