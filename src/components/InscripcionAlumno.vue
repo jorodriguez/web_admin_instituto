@@ -313,6 +313,14 @@ export default {
       this.input.costo_colegiatura = 0;
       this.input.costo_inscripcion = 0;
       this.input.co_curso = -1;
+      //cargar primer item si existe
+      if(this.listaCurso &&  this.listaCurso.length == 1){
+         const item =  this.listaCurso[0];
+         console.log(item);
+         this.input.costo_inscripcion = item.costo_inscripcion_base;
+         this.input.costo_colegiatura = item.costo_colegiatura_base;
+         this.input.co_curso = item.id;
+      }
     },
     async onChangeCurso(event) {
       console.log("@onChangeCurso " + this.input.co_curso);

@@ -14,7 +14,7 @@
                   <td style="width:40px">
                     <img
             :src="row.foto"
-            class="rounded-circle bg-gray"
+            class="rounded-circle "
             width="30"
             height="30"
             style="cursor:pointer"
