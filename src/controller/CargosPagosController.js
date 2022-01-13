@@ -78,7 +78,7 @@ export default {
         (result) => {
           console.log("Consulta del catalogo de cargos" + result.data);
           if (result.data != null) {
-            this.listaCargos = result.data;
+            this.listaCargos = result.data;            
           }
         }
       );
@@ -95,6 +95,9 @@ export default {
             console.log("Consulta del catalogo de formas pago" + result.data);
             if (result.data != null) {
               this.listaFormasPago = result.data;
+              if(this.listaFormasPago.length == 1){
+                this.pago.cat_forma_pago = this.listaFormasPago[0];
+              }
             }
           }
         );
@@ -184,9 +187,8 @@ export default {
             
       if (this.cargo.cat_cargo.id == CONSTANTES.ID_CARGO_COLEGIATURA) {
           
-          //cargar lista de cursos del alumno
-          this.listaCursosAlumno  =  await this.getAsync(`${URL.INSCRIPCION_BASE}/inscripciones_activas/${this.uidalumno}`);               
-
+          //cargar lista de cursos del alumno          
+          this.listaCursosAlumno  =  await this.getAsync(`${URL.INSCRIPCION_BASE}/inscripciones_activas/${this.uidalumno}`);                         
           //seleccionar el primer curso de la lista
           const idPrimerItem = ( (this.listaCursosAlumno && this.listaCursosAlumno.length > 0) ? this.listaCursosAlumno[0].id_curso : -1);
           this.cargo.id_curso = idPrimerItem;

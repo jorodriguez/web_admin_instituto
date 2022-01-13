@@ -220,7 +220,7 @@
           >
             <option
               id="selectCurso"
-              v-for="c in listaSemanaCursos"
+              v-for="c in listaCursosAlumno"
               v-bind:value="c.id_curso"
               v-bind:key="c.id_curso"             
             >
@@ -299,7 +299,6 @@
           class="form-control"
           placeholder="Forma pago"
           required
-          autofocus
         >
           <option
             id="selectFormaPago"
