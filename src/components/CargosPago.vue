@@ -1,3 +1,5 @@
+/* eslint-disable vue/no-parsing-error */
+/* eslint-disable vue/valid-v-bind */
 <template>
   <div id="id_tabla_cargos">
     <div class="row">
@@ -640,7 +642,12 @@
                     :id_alumno="idalumno"
                     :id_pago="row.id_pago"
                   />-->
-                  <span class="text-primary pointer">Imprimir</span>
+                  <!--<ImprimirPago :idPago="row.id_pago"/>-->                                     
+                   <router-link :to="{path:'ReciboPago', params:{id_pago:row.id_pago}}"   class="btn btn-link ">
+                        Imprimir
+                    </router-link>    
+                  <!--<a target="_blank" class="text-primary pointer" @click="imprimirPago(row.id)">
+                  Imprimir</a>                  -->
                 </td>
               </tr>
             </tbody>

@@ -9,12 +9,13 @@ import CONSTANTES from "../helpers/Constantes";
 import Emit from "../helpers/Emit";
 import { getUsuarioSesion } from '../helpers/Sesion';
 import ReenviarComprobantePago from '../components_utils/ReenviarComprobantePago';
+import ImprimirPago from '../components/ImprimirPago';
 
 
 export default {
   name: "cargos-pagos",
   components: {
-    Popup, Datepicker,ReenviarComprobantePago
+    Popup, Datepicker,ReenviarComprobantePago,ImprimirPago
   },
   props: ['uidalumno', 'requiere_factura'],
   mixins: [operacionesApi],
@@ -661,7 +662,13 @@ export default {
           }
         }
       );
-    }   
+    }   ,
+    imprimirPago(id){
+      this.$router.push({ name: "ReciboPago", params: { id_pago: id } });
+    },
+    getLinkReciboPago(id){
+      return {path:'/ReciboPago',params:{id_pago:row.id_pago}};
+    }
   },
 };
 

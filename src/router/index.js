@@ -28,6 +28,7 @@ import ReactivarAlumnosEliminados from '@/components/ReactivarAlumnosEliminados'
 import CatCursos from '@/components/CatCursos';
 import ConfirmarInscripcion from '@/components/ConfirmarInscripcion';
 import DetalleCurso from '@/components/DetalleCurso';
+import ReciboPago from '@/components/ReciboPago';
 
 import VueSession from 'vue-session'
 
@@ -40,6 +41,7 @@ const router = new Router({
       path: '/',
       beforeEnter(to, from, next) {
         console.log("REVISNADO SESION ");
+        console.log("llendo a "+to.fullPath);
         const sesion = getSesion();
         if (sesion != null && sesion.auth) {
           console.log("REDIRECCION A " + sesion.paginaPrincipal);
@@ -60,6 +62,7 @@ const router = new Router({
         { path: '/ConfirmarInscripcion/:uidCurso/:cat_especialidad', name: 'ConfirmarInscripcion', component: ConfirmarInscripcion, meta: { requiresAuth: true, validar: false } },
         { path: '/DetalleCurso/:uidCurso', name: 'DetalleCurso', component: DetalleCurso, meta: { requiresAuth: true, validar: false } },
         { path: '/PerfilAlumno/:uid', name: 'PerfilAlumno', component: PerfilAlumno, meta: { requiresAuth: true, validar: false } },
+        { path: '/ReciboPago/:id_pago', name: 'ReciboPago', component: ReciboPago, meta: { requiresAuth: true, validar: false } },
         { path: '/SubirFotoAlumno/:id', name: 'SubirFotoAlumno', component: SubirFotoAlumno, meta: { requiresAuth: true, validar: false } },        
         //{ path: '/Asistencia', name: 'Asistencia', component: Asistencia, meta: { requiresAuth: true, validar: false } },
         { path: '/Actividades', name: 'Actividades', component: RegistroActividad, meta: { requiresAuth: true, validar: false } },
@@ -134,7 +137,7 @@ router.beforeEach((to, from, next) => {
             next({ name: 'PaginaPrincipal' });
           }
         } else {
-          console.log("PASA a URL");
+          console.log("PASA a URL "+to.fullPath);
           next();
         }
       }
