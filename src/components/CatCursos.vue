@@ -154,15 +154,19 @@
         <button
           v-if="operacion === 'INSERT'"
           class="btn btn-primary"
+          :disabled="loader"
           @click="guardar()"
         >
-          Guardar
+         <span v-if="loader" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+         Guardar
         </button>
         <button
           v-if="operacion === 'UPDATE'"
           class="btn btn-primary"
+          :disabled="loader"
           @click="guardar()"
         >
+          <span v-if="loader" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
           Modificar
         </button>
       </div>

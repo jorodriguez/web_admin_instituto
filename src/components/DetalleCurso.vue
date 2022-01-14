@@ -441,7 +441,7 @@
           <div
             class="form-group form-group col-sm-6 col-md-6 col-lg-6 col-xl-6"
           >
-            <h2>${{ input.costo_colegiatura }} /<small>Inscripción</small></h2>
+            <h2>${{ input.costo_inscripcion }} /<small>Inscripción</small></h2>
           </div>
         </div>
       </div>

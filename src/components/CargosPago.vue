@@ -72,16 +72,23 @@
                 class="btn-link text-primary font-weight-normal"
                 style="cursor: pointer;"
               >
-                <span v-if="!row.pagado" class="font-weight-normal"
+                <span v-if="!row.pagado" class="font-weight-bold"
                   >{{ row.cantidad > 1 ? row.cantidad : "" }}
                   {{ row.nombre_cargo }}{{ row.cantidad > 1 ? "s" : "" }}
-                  {{ row.texto_ayuda != null ? row.texto_ayuda : "" }}</span
-                >
-                <span v-else-if="row.pagado" class="font-weight-normal tachado"
+                  {{ row.numero_semana_curso != null ? `Semana ${row.numero_semana_curso}` : "" }}
+                </span>
+
+                <span v-else-if="row.pagado" class="font-weight-bold tachado"
                   >{{ row.cantidad > 1 ? row.cantidad : "" }}
                   {{ row.nombre_cargo }}
                   {{ row.texto_ayuda != null ? row.texto_ayuda : "" }}</span
                 >
+                <span class="small ">
+                  <div class="text-wrap" style="width: 10rem;">
+                    {{row.especialidad != null ? row.especialidad :"" }} 
+                    <!--{{ row.materia_modulo != null ? row.materia_modulo:'' }}-->
+                  </div>
+                </span>
                 <span class="small text-muted">
                   <div class="text-wrap" style="width: 10rem;">
                     {{ row.nota }}
@@ -180,14 +187,15 @@
 
         <div
           class="form-group"
-          v-if="cargo.cat_cargo.id == 1"
+          v-if="cargo.cat_cargo.id == 1 
+            || cargo.cat_cargo.id == 2"
         >
           <label for="inputMensualidadCargo">
             Curso 
             <span class="text-danger">*</span>
           </label>
           <select
-            v-model="cargo.id_curso"
+            v-model="cargo.co_curso"
             class="form-control"
             placeholder="Cursos"
             @change="onChangeCurso()"
@@ -195,7 +203,7 @@
             <option
               id="selectCurso"
               v-for="c in listaCursosAlumno"
-              v-bind:value="c.id_curso"
+              v-bind:value="c"
               v-bind:key="c.id_curso"             
             >
               {{c.especialidad}} - {{c.horario}}
@@ -206,27 +214,27 @@
 
         <div
           class="form-group"
-          v-if="cargo.cat_cargo.id == 1"
+          v-if="cargo.cat_cargo.id == 1 "
         >
           <label for="inputSemanaCurso">
             Semana
             <span class="text-danger">*</span>
           </label>
           <select
-            v-model="cargo.id_semana_curso"
+            v-model="cargo.id_curso_semanas"
             class="form-control"
-            placeholder="Cursos"
-            @change="onChangeSemanaCurso()"
+            placeholder="Cursos"            
           >
             <option
               id="selectCurso"
-              v-for="c in listaCursosAlumno"
-              v-bind:value="c.id_curso"
-              v-bind:key="c.id_curso"             
+              v-for="semana in listaSemanasCurso"
+              v-bind:value="semana.id"
+              v-bind:key="semana.id"             
+              :disabled="semana.tiene_cargo"
             >
-              {{c.especialidad}} - {{c.horario}}
+             Sem-{{semana.numero_semana_curso}} {{semana.materia_modulo_especialidad}} | {{semana.fecha_clase_format}} 
             </option>
-          </select>
+          </select>          
         </div>
         
 
@@ -309,7 +317,7 @@
           >
         </select>
 
-           <div
+       <div
           class="form-row"
           v-if="
             pago.cat_forma_pago.permite_factura &&
@@ -366,7 +374,7 @@
             <th>Concepto</th>
             <th>Cargo</th>
             <!--<th>Adeuda</th>-->
-            <th>Descuento</th>
+            <!--<th>Descuento</th>-->
             <th>Pago Recibido</th>
             <th>Importe</th>
           </thead>
@@ -377,14 +385,20 @@
             >
               <td style="width:25%">
                 <span class="h4"
-                  >{{ row.nombre_cargo }} {{ row.texto_ayuda }}</span
-                >
+                  >{{ row.nombre_cargo }}  {{ row.numero_semana_curso != null ? `Semana ${row.numero_semana_curso}` : "" }}
+                </span>
+                 <span class="small ">
+                  <div class="text-wrap" style="width: 10rem;">
+                    {{row.especialidad != null ? row.especialidad :"" }}                     
+                  </div>
+                </span>
               </td>
               <td>
                 <strong>
                   <span class="h3 font-weight-bold">${{ row.cargo }}</span>
                 </strong>
               </td>
+              <!--
               <td style="width:15%">
                 <select
                   v-model="row.cat_descuento"
@@ -415,6 +429,7 @@
                   {{ row.nombre_descuento }}
                 </h3>
               </td>
+              -->
               <td style="width:20%">
                 <input
                   id="inputAbono"
@@ -514,14 +529,14 @@
           <thead>            
             <th>Cargo</th>
             <th>Fecha</th>
-            <th>Descuento</th>
-            <th>Total Adeuda</th>
+            <!--<th>Descuento</th>-->
             <th>Pagado</th>
+            <th>Total Adeuda</th>            
           </thead>
           <tbody>
             <tr>              
               <td style="width:25%;">
-                <span v-if="!cargoSeleccionado.pagado" class="font-weight-bold">
+                <span v-if="!cargoSeleccionado.pagado" class="font-weight-bold text-primary">
                   {{
                     cargoSeleccionado.cantidad > 1
                       ? cargoSeleccionado.cantidad
@@ -529,26 +544,23 @@
                   }}
                   {{ cargoSeleccionado.nombre_cargo
                   }}{{ cargoSeleccionado.cantidad > 1 ? "s" : "" }}
-                  {{
-                    cargoSeleccionado.texto_ayuda != null
-                      ? cargoSeleccionado.texto_ayuda
-                      : ""
-                  }}
+                  {{cargoSeleccionado.numero_semana_curso != null ? `Semana ${cargoSeleccionado.numero_semana_curso}` : "" }}
                 </span>
                 <span
                   v-else-if="cargoSeleccionado.pagado"
-                  class="tachado font-weight-bold "
+                  class="tachado font-weight-bold text-primary"
                   >{{
                     cargoSeleccionado.cantidad > 1
                       ? cargoSeleccionado.cantidad
                       : ""
                   }}
                   {{ cargoSeleccionado.nombre_cargo }}
-                  {{
-                    cargoSeleccionado.texto_ayuda != null
-                      ? cargoSeleccionado.texto_ayuda
-                      : ""
-                  }}
+                  {{cargoSeleccionado.numero_semana_curso != null ? `Semana ${cargoSeleccionado.numero_semana_curso}` : "" }}
+                </span>
+                 <span :class="`small text-primary ${cargoSeleccionado.pagado ? 'tachado':''} `">
+                  <div class="text-wrap" style="width: 10rem;">
+                    {{cargoSeleccionado.especialidad != null ? cargoSeleccionado.especialidad :"" }}                     
+                  </div>
                 </span>
                 <div class="text-wrap" style="width: 10rem;">
                   <small :class="cargoSeleccionado.pagado ? 'tachado' : ''">{{
@@ -557,7 +569,7 @@
                 </div>
               </td>
               <td>{{ cargoSeleccionado.fecha_format }}</td>
-              <td>
+              <!--<td>
                 <label class="font-weight-bold h3"
                   >${{ cargoSeleccionado.descuento }} <br />
                   <span class="h4 text-orange"
@@ -568,12 +580,7 @@
                     }}
                   </span></label
                 >
-              </td>
-              <td>
-                <label class="font-weight-bold text-danger h3"
-                  >${{ cargoSeleccionado.total }}</label
-                >
-              </td>
+              </td>-->             
               <td>
                 <label class="font-weight-bold text-success h3"
                   >${{ cargoSeleccionado.total_pagado }}</label
@@ -583,6 +590,11 @@
                   class="fas fa-check-circle text-success"
                 ></i>
                 <i v-else class="fas fa-check-circle text-gray"></i>
+              </td>
+               <td>
+                <label class="font-weight-bold text-danger h3"
+                  >${{ cargoSeleccionado.total }}</label
+                >
               </td>
             </tr>
           </tbody>
@@ -596,8 +608,8 @@
               <th>Fecha</th>
               <th>Pago</th>
               <th>Forma de Pago</th>
-              <th>Factura</th>
-              <th>Ident.</th>
+              <!--<th>Factura</th>
+              <th>Ident.</th>-->
               <th>Nota</th>
               <th>Actions</th>
             </thead>
@@ -616,18 +628,19 @@
                     row.nombre_forma_pago
                   }}</label>
                 </td>
-                <td>{{ row.identificador_factura }}</td>
-                <td>{{ row.identificador_pago }}</td>
+                <!--<td>{{ row.identificador_factura }}</td>
+                <td>{{ row.identificador_pago }}</td>-->
                 <td>
                   <div class="text-wrap" style="width: 4rem;">
                     {{ row.nota }}
                   </div>
                 </td>
                 <td>
-                  <ReenviarComprobantePago
+                  <!--<ReenviarComprobantePago
                     :id_alumno="idalumno"
                     :id_pago="row.id_pago"
-                  />
+                  />-->
+                  <span class="text-primary pointer">Imprimir</span>
                 </td>
               </tr>
             </tbody>

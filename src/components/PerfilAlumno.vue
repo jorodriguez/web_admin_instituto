@@ -52,7 +52,7 @@
                   mostrarfecha="true"
                 ></balance-alumno>-->
               </p>
-              <!--<estado-cuenta :idAlumno="id" />-->
+              <estado-cuenta :idAlumno="alumno.id" />
             </div>
           </div>
         </div>

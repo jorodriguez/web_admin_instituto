@@ -13,7 +13,7 @@ import Emit from "../helpers/Emit";
 import { validacionCorreo } from "../helpers/ValidacionUtils";
 import AlumnoModel from "../models/AlumnoModel";
 import Utils from "../models/FormatoUtils";
-import BalanceAlumno from './BalanceAlumnoController';
+//import BalanceAlumno from './BalanceAlumnoController';
 import Popup from './Popup';
 
 
@@ -22,8 +22,7 @@ export default {
     mixins: [operacionesApi],
     components: {
         Datepicker,
-        CargosPagos,
-        BalanceAlumno,
+        CargosPagos,        
         Popup,
         EstadoCuenta,
         DatosAlumno,
