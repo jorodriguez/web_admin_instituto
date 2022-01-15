@@ -40,6 +40,7 @@ export default {
     console.log(" =========== RECIBO PAGO=======");
     this.idPago = `${this.$route.params.id_pago}`;
     console.log(" RECIBO PAGO "+this.idPago);
+    //Vue.prototype.$mostrarSidebar 
     this.onInit();
   },
   methods: {

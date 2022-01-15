@@ -643,11 +643,12 @@
                     :id_pago="row.id_pago"
                   />-->
                   <!--<ImprimirPago :idPago="row.id_pago"/>-->                                     
-                   <router-link :to="{path:'ReciboPago', params:{id_pago:row.id_pago}}"   class="btn btn-link ">
+                   <!--<router-link :to="{path:'ReciboPago', params:{id_pago:row.id_pago}}"   class="btn btn-link ">
                         Imprimir
-                    </router-link>    
-                  <!--<a target="_blank" class="text-primary pointer" @click="imprimirPago(row.id)">
-                  Imprimir</a>                  -->
+                    </router-link>    -->
+                  <a class="text-primary pointer" @click="imprimirPago(row.id_pago)">
+                    
+                  Imprimir</a>                  
                 </td>
               </tr>
             </tbody>
