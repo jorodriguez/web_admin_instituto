@@ -605,9 +605,11 @@
           <h4>Pagos Realizados</h4>
         </div>
         <div class="row">
+          <div class="table-responsive">
           <table class="table">
             <thead>
-              <th>Fecha</th>
+              <th>Folio</th>              
+              <th>Fecha</th>              
               <th>Pago</th>
               <th>Forma de Pago</th>
               <!--<th>Factura</th>
@@ -618,8 +620,13 @@
             <tbody v-for="row in listaPagosCargo" :key="row.id">
               <tr>
                 <td>
-                  <label>{{ row.fecha_format }}</label>
-                </td>
+                  <label class="font-weight-bold"
+                    >{{ row.folio }}
+                  </label>                  
+                </td>                
+                <td>                                    
+                  <small>{{ row.fecha_format }}</small>
+                </td>                
                 <td>
                   <label class="font-weight-bold text-success"
                     >${{ row.pago }}</label
@@ -653,6 +660,7 @@
               </tr>
             </tbody>
           </table>
+          </div>
         </div>
       </div>
     </Popup>

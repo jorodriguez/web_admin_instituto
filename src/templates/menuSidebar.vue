@@ -140,7 +140,7 @@
             </router-link>
           </li>-->                    
           <li class="nav-item">
-            <router-link to="/CatAlumno" class="nav-link"  >
+              <router-link to="/CatAlumno" class="nav-link"  >
               <i class="fa fa-list-ul text-primary"></i> Inscripciones
             </router-link>           
           </li>                    
@@ -158,24 +158,34 @@
             <router-link
               to="/AsistenciasUsuarios"
               class="nav-link"              
-            ><i class="fa fa-user text-primary"></i> Asistencia Maestros
-            </router-link>
+            ><i class="fa fa-user text-primary"></i>Corte
+            </router-link>            
           </li> 
+          
+          <!--
+          <li class="nav-item">
+            <router-link
+              to="/AsistenciasUsuarios"
+              class="nav-link"              
+            ><i class="fa fa-user text-primary"></i> Asistencia Maestros
+            </router-link>            
+          </li> 
+          -->
           
         </ul>
         <!-- Divider -->
         <hr class="my-3" />
         <!-- Heading -->
         <h6 class="navbar-heading text-muted"></h6>
-
-        <ul class="navbar-nav mb-md-3">
-          
+<!--
+        <ul class="navbar-nav mb-md-3">          
           <li class="nav-item nav-with-child">            
             <router-link to="/administracion" class="nav-link">
               <i class="fa fa-cog text-primary"></i> Administración
             </router-link>
           </li>          
         </ul>
+        -->
         <ul class="navbar-nav">
           <li class="nav-item active active-pro">
             <a class="nav-link" href="#">

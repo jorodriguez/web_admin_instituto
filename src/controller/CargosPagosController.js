@@ -534,6 +534,7 @@ export default {
           console.log(" = = = cargos descuentos > " + ids_cargos_descuento);
           console.log(" = = = descuentos > " + ids_descuentos_desglose);
           console.log(" = = = uid_alumno > " + this.uidalumno);
+          console.log("--"+JSON.stringify(this.usuarioSesion));
 
           var objEnvio = {
             uid_alumno: this.uidalumno,
@@ -546,6 +547,7 @@ export default {
             cat_forma_pago: this.pago.cat_forma_pago.id,
             identificador_factura: this.pago.identificador_factura,
             identificador_pago: this.pago.identificador_pago,
+            id_sucursal:this.usuarioSesion.co_sucursal,
             genero: this.usuarioSesion.id
           };
 
