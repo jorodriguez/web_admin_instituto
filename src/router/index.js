@@ -29,6 +29,7 @@ import CatCursos from '@/components/CatCursos';
 import ConfirmarInscripcion from '@/components/ConfirmarInscripcion';
 import DetalleCurso from '@/components/DetalleCurso';
 import ReciboPago from '@/components/ReciboPago';
+import CorteDia from '@/components/reportes/CorteDia';
 
 import VueSession from 'vue-session'
 
@@ -63,6 +64,7 @@ const router = new Router({
         { path: '/DetalleCurso/:uidCurso', name: 'DetalleCurso', component: DetalleCurso, meta: { requiresAuth: true, validar: false } },
         { path: '/PerfilAlumno/:uid', name: 'PerfilAlumno', component: PerfilAlumno, meta: { requiresAuth: true, validar: false } },
         { path: '/ReciboPago/:id_pago', name: 'ReciboPago', component: ReciboPago, meta: { requiresAuth: true, validar: false } },
+        { path: '/Corte', name: 'Corte', component: CorteDia, meta: { requiresAuth: true, validar: false } },
         { path: '/SubirFotoAlumno/:id', name: 'SubirFotoAlumno', component: SubirFotoAlumno, meta: { requiresAuth: true, validar: false } },        
         //{ path: '/Asistencia', name: 'Asistencia', component: Asistencia, meta: { requiresAuth: true, validar: false } },
         { path: '/Actividades', name: 'Actividades', component: RegistroActividad, meta: { requiresAuth: true, validar: false } },

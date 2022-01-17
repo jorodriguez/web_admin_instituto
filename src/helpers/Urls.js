@@ -28,7 +28,8 @@ const CARGOS_BASE = BASE +'/cargos';
 const FORMAS_PAGO_BASE = BASE +'/formas_pagos';
 const GRUPOS_BASE = BASE + '/grupos';
 const GASTOS_BASE = BASE + '/gastos';
-const USUARIO_BASE = BASE+'/usuario'    
+const USUARIO_BASE = BASE+'/usuario';
+const REPORTES_BASE =  BASE + '/reportes';
 
 const HISTORICO_GASTOS  = BASE +'/historico_gastos';
 const TIPOS_GASTO = BASE + '/tipos_gasto';
@@ -97,6 +98,7 @@ const URL = {
     ESCOLARIDAD:ESCOLARIDAD_BASE,
     PERIODOS_CURSO : PERIODOS_CURSO,
     MATERIAS_ESPECIALIDAD : MATERIAS_ESPECIALIDAD,
+    REPORTES_BASE:REPORTES_BASE,
 
     ASISTENCIA_POR_RECIBIR : ASISTENCIA_BASE + '/alumnos_por_recibidos/',//param sucursal
     ASISTENCIA_RECIBIDOS : ASISTENCIA_BASE + '/alumnos_recibidos/',//param sucursal

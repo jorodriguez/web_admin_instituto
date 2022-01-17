@@ -156,7 +156,7 @@
           </li>
           <li class="nav-item">
             <router-link
-              to="/AsistenciasUsuarios"
+              to="/Corte"
               class="nav-link"              
             ><i class="fa fa-user text-primary"></i>Corte
             </router-link>            
