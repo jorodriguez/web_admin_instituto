@@ -31,17 +31,17 @@
           <div class="col-3 h4 text-left">
              <h1>Ingreso</h1>             
           </div>
-          <div class="col-4 bg-success rounded ">
+          <div class="col-4 bg-light rounded ">
              <div class="media">
                 <div class="media-body">
-                  <h2 class="mt-0 mb-1 "> ${{corte ? formatPrice(corte.total) : ''}}</h2>                  
+                  <h2 class="mt-0 mb-1 "> ${{corte ? formatPrice(corte.totalIngreso) : ''}}</h2>                  
                 </div>  
             </div>           
           </div>
          </div>
 
         <vue-good-table
-                    :columns="columnas"
+          :columns="columnas"
           :rows="lista"
           :line-numbers="true"
           @on-row-click="onRowClick"
@@ -99,10 +99,10 @@
                 <i class="fas fa-download" /> XLS
               </download-excel>        -->
           </div>
-          <div class="col-4 bg-success rounded">           
+          <div class="col-4 bg-light rounded">           
             <div class="media">
                 <div class="media-body">
-                  <h2 class="mt-0 mb-1">Ingreso ${{corte ? formatPrice(corte.total) : ''}}</h2>                  
+                  <h2 class="mt-0 mb-1">Ingreso ${{corte ? formatPrice(corte.totalIngreso) : ''}}</h2>                  
                 </div>  
             </div>           
           </div>
@@ -110,12 +110,26 @@
         <br/>
           <div class="row justify-content-between">
           <div class="col-3 h4 text-left">
-             <h1>Gastos</h1>             
+             <h1>Gasto</h1>             
           </div>
           <div class="col-4 border border-danger border-top-0 border-left-0 border-right-0  border-bottom-2 ">
              <div class="media">
                 <div class="media-body">
-                  <h2 class="mt-0 mb-1 "> ${{corte ? formatPrice(corte.total) : ''}}</h2>                  
+                  <h2 class="mt-0 mb-1 "> ${{corte ? formatPrice(corte.totalGasto) : ''}}</h2>                  
+                </div>  
+            </div>           
+          </div>
+         </div>
+        
+         <br/>
+          <div class="row justify-content-between">
+          <div class="col-3 h4 text-left">
+             <h1>Total</h1>             
+          </div>
+          <div class="col-4 border border-primary border-top-0 border-left-0 border-right-0  border-bottom-2 bg-success">
+             <div class="media">
+                <div class="media-body">
+                  <h1 class="mt-0 mb-1 "> ${{corte ? formatPrice(corte.totalIngreso - corte.totalGasto) : ''}}</h1>                  
                 </div>  
             </div>           
           </div>
@@ -151,7 +165,9 @@ export default {
      // sesion: {}, 
       fecha:Date,
       lista: [],                                    
-      corte:undefined,                                    
+      listaGastos: [],                                    
+      corte:undefined,  
+      corteGasto:undefined,
       alumno_seleccionado:{},
       columnas:[
       {
@@ -294,11 +310,12 @@ export default {
        console.log(URL.REPORTES_BASE +'/corte/dia/sucursal/'+this.usuarioSesion.co_sucursal);
        this.corte =  await this.putAsync(URL.REPORTES_BASE +'/corte/dia/sucursal/'+this.usuarioSesion.co_sucursal,
        { fecha:this.fecha });
-       this.lista = this.corte.detalle;
+       this.lista = this.corte.detalleIngreso;
+       this.listaGastos = this.corte.detalleGasto;
        
        this.loading = false;
     },
-    cambiarFecha(){
+       cambiarFecha(){
          this.$nextTick(() => {
            console.log(this.fecha)
            this.loadFunction();
