@@ -671,17 +671,12 @@ export default {
       );
     },
     async imprimirPago(id) {
-      //  const routeData = this.$router.resolve({ name: "ReciboPago", params: { id_pago: id } });
-      //  let routeData = this.$router.resolve({name: 'routeName', query: {data: "someData"}});
-      //     console.log("REDIRECt "+routeData.href);
-      //   window.open(routeData.href, '_blank');
-      // Open the print window
-      const html = await this.getAsync(URL.PAGOS_BASE + "/imprimir/" + id);
+      const html = await this.getAsync(URL.PAGOS_BASE + "/imprimir/" + id+"/"+this.usuarioSesion.id);
 
       const WinPrint = window.open('', '', 'width=800,height=900');
 
       WinPrint.document.write(`
-          <center>
+             <center>
               ${html}
               </center>
           `);
