@@ -48,6 +48,7 @@ export default {
     async cargarInscripciones(){
       this.loader = true;
       this.lista = await this.getAsync(URL.INSCRIPCION_BASE + "/" + this.usuarioSesion.co_sucursal);
+      this.listaRespaldo = Object.assign(this.lista,{});
       this.loader = false;
     },
     getFoto() {
@@ -81,8 +82,8 @@ export default {
         this.lista = this.listaRespaldo
           .filter(
             e =>
-              e.nombre.toUpperCase().includes(this.criterioNombre.toUpperCase())
-              || (e.nombre_carino ? e.nombre_carino.toUpperCase().includes(this.criterioNombre.toUpperCase()) : false)
+              e.alumno.toUpperCase().includes(this.criterioNombre.toUpperCase())
+              || (e.apellidos ? e.apellidos.toUpperCase().includes(this.criterioNombre.toUpperCase()) : false)
           );
 
       }
@@ -97,8 +98,7 @@ export default {
 
       this.put(URL.ALUMNOS_BASE + "/baja/" + this.input.id, params, result => {
         console.log(" " + result.data);
-        if (result.data != null) {
-          console.log("" + result.data);
+        if (result.data != null) {       
           this.$notificacion.error(
             "Registro de Baja de alumno",
             "Se registro la baja del alumno " + this.input.nombre + "."

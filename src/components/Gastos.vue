@@ -40,7 +40,8 @@
           </td>
           <td>
             <p v-on:click="seleccionarGasto(row,'UPDATE')" class="text-primary pointer">
-              <span>{{row.nombre_tipo_gasto}}</span>              
+              <span>{{row.nombre_tipo_gasto}}</span>
+              <span v-if="row.es_nuevo" class="badge badge-pill badge-warning">Hoy</span>
             </p>
           </td>
           <td>
@@ -96,8 +97,8 @@
                 </label>                
                 <datepicker
                   name="fecha"
-                  v-model="gasto.fecha"
-                  :open-date="new Date()"
+                  v-model="gasto.fecha"                  
+                  format="yyyy-MM-dd"
                   input-class="form-control"
                   :disabledDates="disabledDates"
                   required

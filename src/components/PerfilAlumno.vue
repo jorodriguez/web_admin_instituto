@@ -33,12 +33,13 @@
             title="Actualizar foto de perfil"
             @click="subirFotoPerfil(alumno.id)"
           />
+          <p class="m-0 p-0">{{alumno.matricula}}</p>
           <p class="font-weight-bold h4">
             {{ alumno.nombre }}
             {{ alumno.apellidos }}            
           </p>
           <p>
-            <small>especialidad</small>
+            
           </p>
         </div>
         <div class="col text-center">
