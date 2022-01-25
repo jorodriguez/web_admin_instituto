@@ -4,10 +4,11 @@
              <div class="col-md-2 mt-2">
               <img
                 v-if="curso.foto_curso"
-                class="mr-3 img-fluid rounded border border-gray"
+                class="mr-3 img-fluid rounded border border-gray pointer"
                 width="150"
                 :src="curso.foto_curso"
                 alt="Especialidad"
+                 @click="()=>this.clickHead()"
               />
               <div
                 v-else
@@ -23,20 +24,24 @@
             </div>
             <div class="col mt-2">
               <div class="text-left">
-                <h3 class="mt-0 pointer"  @click="()=>this.clickHead()"> {{ curso.especialidad }}</h3>
+                <h3 class="mt-0 pointer"  @click="()=>this.clickHead()"> {{ curso.especialidad }} 
+                 <small style="font-size:10px" :class="`badge badge-pill ${curso.inscripciones == 0 ? ' badge-dark':' badge-primary'}`">{{curso.inscripciones}} {{`alumno${curso.inscripciones == 1 ? '':'s'}`}} </small> 
+                 <!--<small :class="`text-info`">{{`Alumno${curso.inscripciones == 1 ? '':'s'}`}} </small> -->
+                  <span v-if="curso.es_nuevo" class="badge badge-pill badge-warning">Nuevo</span></h3>
                 <p class="card-text text-sm">
                   <span class="text-muted">Fecha de inicio</span>
                   {{
                     curso.fecha_inicio_format
                       ? curso.fecha_inicio_format
                       : ` previsto ${curso.fecha_inicio_previsto_format}`
-                  }}
-                  <span class="text-muted">Fecha de fin</span>
+                  }}         
+                   <span v-if="curso.inicia_manana" class="badge  badge-warning">Inicia Mañana</span>        
+                  <!--<span class="text-muted">Fecha de fin</span>
                   {{
                     curso.fecha_fin_format
                       ? curso.fecha_fin_format
                       : ` previsto ${curso.fecha_fin_previsto_format}`
-                  }}
+                  }}-->
                 </p>
                 <p class="card-text text-sm">
                   <span class="text-muted">Día(s)</span> {{ curso.dias }}

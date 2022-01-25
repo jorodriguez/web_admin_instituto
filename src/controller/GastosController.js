@@ -19,7 +19,7 @@ export default {
       gasto: {
         cat_tipo_gasto: -1,
         co_forma_pago: -1,
-        fecha: (new Date()),
+        fecha:Date,
         gasto: 0,
         observaciones: ""
       },

@@ -212,10 +212,10 @@
               <!--<button v-if="!item.activo" class="btn btn-link" @click="seleccionar(item, 'CONFIRM')">
                 Confirmar inscripciones
               </button>-->
-              <button v-if="!item.activo" class="btn btn-link" @click="seleccionar(item, 'UPDATE')">
+              <button v-if="item.fecha_inicio_previsto_pasada" class="btn btn-link" @click="seleccionar(item, 'UPDATE')">
                 Modificar
               </button>
-              <button v-if="!item.activo" class="btn btn-link text-danger" @click="seleccionar(item, 'DELETE')">
+              <button v-if="item.fecha_inicio_previsto_pasada" class="btn btn-link text-danger" @click="seleccionar(item, 'DELETE')">
                 Eliminar
               </button>                            
             </div>

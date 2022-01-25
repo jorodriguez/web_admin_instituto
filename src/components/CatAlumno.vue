@@ -157,11 +157,11 @@
                 title="Cambiar la foto"
               />
 
-              <div class="card-body pointer" @click="verPerfil(row)" >
+              <div class="card-body p-1 pointer" @click="verPerfil(row)" >
                 <h4 class="card-text">
                   {{ row.alumno }}                  
                 </h4>
-                <h5 class="card-text small">
+                <h5 class="card-text pt-0 small">
                   {{ row.apellidos }}
                 </h5>
                 <h6
@@ -169,14 +169,8 @@
                   class="badge badge-info text-wrap"
                 >
                   {{ row.especialidad }}
-                </h6>     
-                <span :class="`badge badge-pill ${row.confirmado == true && 'badge-light'} ${row.confirmado == false && 'badge-danger'} ${row.confirmado == null && 'badge-light'}`">
-                  {{ row.confirmado == null ? 'Pendiente':''}}
-                  {{ row.confirmado == true ? 'Confirmado':'' }}
-                  {{ row.confirmado == false ? 'Cancelado' :'' }}
-                </span>                
-                <h5><span class="font-weight-normal">Inicia</span> {{ row.fecha_inicio_previsto_format }}</h5>                
-                <h5><span class="font-weight-normal"></span>{{row.dias}} turno {{ row.horario }}</h5>
+                </h6>                                                    
+                <small class="font-weight-normal">{{row.dias}} turno {{ row.horario }}</small>
               </div>
             </div>
           </div>

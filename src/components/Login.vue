@@ -57,7 +57,7 @@
                     </div>                   
                     <div class="text-center">
                       <button
-                      :disabled="invalid"
+                        :disabled="loading"
                         :class="loading ? 'btn btn-block btn-primary my-4 disabled':'btn btn-block btn-primary my-4 '"
                         v-on:click="login()"
                       >

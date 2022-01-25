@@ -188,10 +188,10 @@
         -->
         <ul class="navbar-nav">
           <li class="nav-item active active-pro">
-            <a class="nav-link" href="#">
-              <i class="ni ni-send text-dark"></i>
-              {{usuarioSesion && usuarioSesion.nombre_empresa ? usuarioSesion.nombre_empresa : ''}}              
-            </a>
+            <!--<a class="nav-link" href="#">
+              <i class="ni ni-send text-dark"></i>-->
+              <small>{{usuarioSesion && usuarioSesion.nombre_empresa ? usuarioSesion.nombre_empresa : ''}}</small>
+            <!--</a>-->
           </li>
         </ul>
       </div>

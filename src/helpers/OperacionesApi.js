@@ -125,21 +125,27 @@ const lanzarAvisoExpiracionSesion = function(error) {
   console.log("lanzar aviso");
   let mensaje = "";
   let sesionExpirada = false;
-  console.log("error " + JSON.stringify(error));
-  if (error.ok == false && error.status == 401) {
-    // if (error.body && error.body.auth == false && error.body.message.name == 'TokenExpiredError') {
-    console.log("===" + error.tokenExpired);
-    sesionExpirada = error.body.tokenExpired;
-    mensaje = sesionExpirada ? "Su sesión ha expirado." : "Ocurrió un error.";
-  }
+  let data = error.response.data;
+  console.log("error " + JSON.stringify(data));
 
-  $("#id_header_popup_expiracion_sesion").text(
-    sesionExpirada ? "Sesión" : "Ups¡"
-  );
-  $("#id_icono_popup_expiracion_sesion").attr(
-    "class",
-    sesionExpirada ? "fas fa-user-clock fa-5x" : "fas fa-error fa-5x"
-  );
+  const isExpiredToken = data.tokenExpired;
+
+  //if (error.ok == false && error.status == 401) {
+  if(isExpiredToken){    
+    console.log("@Sesion expirada ");    
+    mensaje = "Su sesión ha expirado, por razones de seguridas es necesario que vuelva a iniciar sesión.";
+    $("#id_header_popup_expiracion_sesion").text("Sesión");
+    $("#id_icono_popup_expiracion_sesion").attr(
+      "class","fas fa-user-clock fa-5x"
+    );
+  }else{
+    mensaje = "Ocurrió un error.";
+    $("#id_header_popup_expiracion_sesion").text("Ups");
+    $("#id_icono_popup_expiracion_sesion").attr(
+      "class","fas fa-error fa-5x"
+    );
+  } 
+  
   $("#id_mensaje_popup_expiracion_sesion").text(mensaje);
   $("#id_mensaje_secundario_popup_expiracion_sesion").empty();
   $("#popup_expiracion_sesion").modal("show");

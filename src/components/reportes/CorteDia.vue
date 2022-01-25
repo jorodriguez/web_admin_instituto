@@ -24,7 +24,10 @@
                 @selected="cambiarFecha"
                 format="yyyy-MM-dd"
               ></datepicker>            
-          </div>          
+          </div>    
+          <div class="col-3 text-right">
+                <button :disabled="loading" @click="imprimir()" class="btn btn-outline-primary"><i class="fas fa-print"></i> Imprimir</button>
+          </div>      
          </div>
  
           <div class="row justify-content-between border border-light border-top-0 border-left-0 border-right-0  border-bottom-2 ">
@@ -373,11 +376,28 @@ export default {
        this.loading = true;
        console.log(URL.REPORTES_BASE +'/corte/dia/sucursal/'+this.usuarioSesion.co_sucursal);
        this.corte =  await this.putAsync(URL.REPORTES_BASE +'/corte/dia/sucursal/'+this.usuarioSesion.co_sucursal,
-       { fecha:this.fecha });
+       { fecha:this.fecha,id_usuario:this.usuarioSesion.id });
        this.lista = this.corte.detalleIngreso;
        this.listaGastos = this.corte.detalleGasto;
        
        this.loading = false;
+    },
+    async imprimir() {
+      const html =  await this.putAsync(URL.REPORTES_BASE +'/corte/dia/sucursal/imprimir/'+this.usuarioSesion.co_sucursal,
+            { fecha:this.fecha,id_usuario:this.usuarioSesion.id });
+
+      const WinPrint = window.open('', '', 'width=800,height=900');
+
+      WinPrint.document.write(`
+             <center>
+              ${html}
+              </center>
+          `);
+
+      WinPrint.document.close();
+      WinPrint.focus();
+      WinPrint.print();
+      WinPrint.close();
     },
        cambiarFecha(){
          this.$nextTick(() => {
