@@ -239,7 +239,7 @@
         </div>
 
         <div class="form-row">
-          <div
+          <!--<div
             class="form-group form-group col-sm-6 col-md-6 col-lg-6 col-xl-6"
           >
             <label>
@@ -261,6 +261,7 @@
               </option>
             </select>
           </div>
+          -->
           <div class="form-group col-sm-6 col-md-6 col-lg-6 col-xl-6">
             <label>
               Fecha Inicio
