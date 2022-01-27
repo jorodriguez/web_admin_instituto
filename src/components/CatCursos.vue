@@ -47,7 +47,7 @@
           </select>
         </div>
 
-        <div class="form-group">
+       <!-- <div class="form-group">
           <label>
             Dias
             <span class="text-danger">*</span>
@@ -68,31 +68,34 @@
               >
             </span>
           </div>
-        </div>
-
-        <div class="form-row">
-          <div
-            class="form-group form-group col-sm-6 col-md-6 col-lg-6 col-xl-6"
-          >
+        </div>-->
+       <!-- <div class="form-row">         
+          <div class="form-group col-sm-6 col-md-6 col-lg-6 col-xl-6">
             <label>
-              Horario
+              Día
               <span class="text-danger">*</span>
             </label>
-            <select
-              v-model="input.cat_horario"
-              class="form-control"
-              placeholder="horario"
-              required
+           <select
+            :disabled="operacion == 'UPDATE'"
+            v-model="input.cat_dia"
+            class="form-control"
+            placeholder="Especialidad"
+            required
+          >
+            <option
+              v-for="dia in listaDias"
+              v-bind:value="dia.id"
+              v-bind:key="dia.id"
             >
-              <option
-                v-for="item in listaHorarios"
-                v-bind:value="item.id"
-                v-bind:key="item.id"
-              >
-                {{ item.nombre }}
-              </option>
-            </select>
-          </div>
+              {{ dia.nombre }}
+            </option>
+          </select>
+          </div>          
+        </div>
+        -->
+
+        <div class="form-row">
+         
           <div class="form-group col-sm-6 col-md-6 col-lg-6 col-xl-6">
             <label>
               Fecha Inicio
@@ -107,15 +110,73 @@
               :language="es"
               required
             ></datepicker>
+            {{getNombreDia()}}
+            
           </div>
+           <div class="form-group col-sm-6 col-md-6 col-lg-6 col-xl-6">
+            <label>
+              Número Semanas
+              <span class="text-danger">*</span>
+            </label>
+             <input
+              type="number"
+              v-model="input.numero_semanas"
+              class="form-control"
+              placeholder="No. semanas del curso"
+              min="1"
+              required
+            />
+             
+          </div>
+          
         </div>
+
+         <div class="form-row">
+            <div
+            class="form-group form-group col-sm-6 col-md-6 col-lg-6 col-xl-6"
+          >
+              <label>
+                Hora Inicio
+                <span class="text-danger">*</span>
+              </label>
+              <vue-timepicker
+                v-model="input.hora_inicio"
+                :minute-interval="30"
+                :hour-range="[[7, 20]]"
+                :hide-disabled-hours="true"
+                hour-label="hora"
+                minute-label="minuto"
+                format="HH:mm"
+                placeholder="00:00"
+              ></vue-timepicker>
+            </div>
+             <div
+            class="form-group form-group col-sm-6 col-md-6 col-lg-6 col-xl-6"
+          >
+              <label>
+                Hora Fin
+                <span class="text-danger">*</span>
+              </label>
+              <vue-timepicker
+                v-model="input.hora_fin"
+                :min="input.hora_inicio"
+                :minute-interval="30"
+                :hour-range="[[7, 20]]"
+                :hide-disabled-hours="true"
+                hour-label="hora"
+                minute-label="minuto"
+                format="HH:mm"
+                placeholder="00:00"
+              ></vue-timepicker>
+            </div>
+          </div>
 
         <div class="form-row">
           <div
             class="form-group form-group col-sm-6 col-md-6 col-lg-6 col-xl-6"
           >
             <label>
-              Costo Colegiatura
+              Costo Colegiatura base
               <span class="text-danger">*</span>
             </label>
             <input
@@ -131,7 +192,7 @@
             class="form-group form-group col-sm-6 col-md-6 col-lg-6 col-xl-6"
           >
             <label>
-              Costo Inscripción
+              Costo Inscripción base
               <span class="text-danger">*</span>
             </label>
             <input
@@ -300,6 +361,7 @@ import moment from "moment";
 import Popup from "../controller/Popup";
 import InscripcionAlumno from "./InscripcionAlumno.vue";
 import RowCurso from "./fragmentos/curso/RowCurso";
+import VueTimepicker from "vue2-timepicker";
 
 export default {
   name: "cat-cursos",
@@ -308,7 +370,8 @@ export default {
     Loader,
     Popup,
     InscripcionAlumno,
-    RowCurso
+    RowCurso,
+    VueTimepicker
   },
   mixins: [operacionesApi],
   data() {
@@ -320,8 +383,11 @@ export default {
         id: 0,
         cat_especialidad: -1,
         dias: [],
-        dias_array: [],
-        cat_horario: -1,
+        //dias_array: [],
+        cat_dia: -1,
+        //cat_horario: -1,
+        hora_inicio:null,
+        hora_fin:null,
         co_empresa: -1,
         co_sucursal: -1,
         costo_colegiatura_base: 0,
@@ -329,8 +395,12 @@ export default {
         nota: "",
         fecha_inicio_previsto: new Date(),
         fecha_fin_previsto: new Date(),
+        hora_inicio:null,
+        hora_fin:null,
+        numero_semanas:0,
         genero: 0,
       },
+      rangoHora: [7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20],
       lista: [],
       listaEspecialidades: [],
       listaDias: [],
@@ -369,13 +439,13 @@ export default {
         await this.cargarCatalogos();
         console.log(this.input);
 
-        this.input.dias_array.forEach((i) => {
+        /*this.input.dias_array.forEach((i) => {
           this.listaDias.forEach((e) => {
             if (e.id == i) {
               e.checked = true;
             }
           });
-        });
+        });*/
 
         this.input.fecha_inicio_previsto = new Date(
           this.input.fecha_inicio_previsto
@@ -398,8 +468,12 @@ export default {
       await this.cargarCatalogos();
 
       this.input.cat_especialidad = -1;
-      this.input.cat_horario = -1;
-      this.input.dias_array = [];
+      //this.input.cat_horario = -1;
+      this.input.hora_inicio = "";
+      this.input.hora_fin = "";
+      //this.input.dias_array = [];
+      this.input.cat_dia = -1;//moment(input.fecha_inicio_previsto).isoWeekday();
+      this.input.numero_semanas = 12;
       this.input.costo_colegiatura_base = 0;
       this.input.costo_inscripcion_base = 0;
       this.input.nota = "";
@@ -408,13 +482,13 @@ export default {
       $("#popup_curso").modal("show");
     },
     async cargarCatalogos() {
-      let lDias = await this.getAsync(
+      this.listaDias = await this.getAsync(
         `${URL.DIAS_BASE}/${this.usuarioSesion.id_empresa}`
       );
 
-      this.listaDias = lDias.map((e) => {
+      /*this.listaDias = lDias.map((e) => {
         return { checked: false, ...e };
-      });
+      });*/
 
       this.listaHorarios = await this.getAsync(
         `${URL.HORARIOS_BASE}/${this.usuarioSesion.id_empresa}`
@@ -426,15 +500,15 @@ export default {
     },
     async guardar() {
       console.log("@guardar");
-
+/*
       const diasArray = this.listaDias.reduce(function (filtered, item) {
         if (item.checked) {
           filtered.push(item.id);
         }
         return filtered;
-      }, []);
+      }, []);*/
 
-      this.input.dias_array = diasArray;
+     // this.input.dias_array = diasArray;
       this.input.genero = this.usuarioSesion.id;
       this.input.co_empresa = this.usuarioSesion.id_empresa;
       this.input.co_sucursal = this.usuarioSesion.co_sucursal;
@@ -486,6 +560,42 @@ export default {
 
       $("#popup_eliminar").modal("hide");
     },
+    getDiaFechaInicioSeleccionadaList(){
+        let dia = null;
+        if(this.input.fecha_inicio_previsto && this.listaDias){
+          const  nDia = moment(this.input.fecha_inicio_previsto).isoWeekday()-1;
+          dia = this.listaDias[nDia];         
+        }
+        return dia;
+    },
+    getNombreDia(){
+      let nombreDia='';
+      if(this.input && this.input.fecha_inicio_previsto){
+        const diaOfList = this.getDiaFechaInicioSeleccionadaList();
+        this.input.cat_dia = diaOfList && diaOfList.id;
+        nombreDia = diaOfList && diaOfList.nombre;
+      }
+      return nombreDia;
+        
+    },
+    validarHoras(eventData) {
+      let horaEntrada = moment({
+        hour: this.input.hora_entrada.HH,
+        minute: this.input.hora_entrada.mm
+      });
+      let horaSalida = moment({
+        hour: this.input.hora_salida.HH,
+        minute: this.input.hora_salida.mm
+      });
+      console.log(` ${horaEntrada} salida ${horaSalida}`);
+      if (horaSalida <= horaEntrada) {
+        Vue.prototype.$notificacion.error(
+          "Hora de entrada y salida",
+          "La hora de entrada es menos a la hora de salida."
+        );
+        return false;
+      }
+    },
     validarDatos() {
       let val = true;
 
@@ -494,16 +604,16 @@ export default {
         val = false;
       }
 
-      if (this.input.dias_array.length == 0) {
+      /*if (this.input.dias_array.length == 0) {
         this.$notificacion.error("Dias", "Selecciona los dias a impartir");
         val = false;
-      }
+      }*/
 
-      if (this.input.cat_horario == -1) {
-        this.$notificacion.error("Horario", "Selecciona los el horario");
+      if (this.input.hora_inicio == null || this.input.hora_fin == null) {
+        this.$notificacion.error("Hora de inicio", "Selecciona la hora de inicio y fin");
         val = false;
       }
-
+      
       if (
         this.input.fecha_inicio_previsto == null ||
         this.input.fecha_inicio_previsto == ""
@@ -530,7 +640,7 @@ export default {
         );
         val = false;
       }
-      return val;
+      return val ;
     },
   },
 };
