@@ -3,6 +3,7 @@
      <table class="table table-sm text-left">          
             <tr>
                 <th></th>                
+                <th>Matricula</th>
                 <th>Alumno</th>
                 <th>Teléfono</th>
                 <th>Dirección</th>
@@ -25,6 +26,11 @@
           />               
               
                      </td>
+                  <td>                   
+                    <span class="pointer " @click="verPerfil(row)"> 
+                      {{row.matricula}} 
+                    </span>                                            
+                  </td>
                   <td>                   
                     <span class="pointer " @click="verPerfil(row)"> 
                       {{row.alumno}} {{row.apellidos}} 

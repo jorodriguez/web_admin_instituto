@@ -170,7 +170,7 @@
                 >
                   {{ row.especialidad }}
                 </h6>                                                    
-                <small class="font-weight-normal">{{row.dias}} turno {{ row.horario }}</small>
+                <small class="font-weight-normal">{{row.dia}} turno {{ row.horario }}</small>
               </div>
             </div>
           </div>

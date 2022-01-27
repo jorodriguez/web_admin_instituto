@@ -35,7 +35,8 @@
                       ? curso.fecha_inicio_format
                       : ` previsto ${curso.fecha_inicio_previsto_format}`
                   }}         
-                   <span v-if="curso.inicia_manana" class="badge  badge-warning">Inicia Mañana</span>        
+                  <span class="text-orange">({{curso.numero_semanas}} semanas)</span>        
+                  <span v-if="curso.inicia_manana" class="badge  badge-warning">Inicia Mañana</span>        
                   <!--<span class="text-muted">Fecha de fin</span>
                   {{
                     curso.fecha_fin_format
@@ -44,12 +45,11 @@
                   }}-->
                 </p>
                 <p class="card-text text-sm">
-                  <span class="text-muted">Día(s)</span> {{ curso.dias }}
-                  <span class="text-muted"> Horario</span> {{ curso.horario }}
+                  {{ curso.dia }} de {{ curso.horario }}
                 </p>
                  <p class="card-text text-sm">
-                  <span class="text-muted">Colegiatura </span> <span class="font-weight-bold d-inline p-2 bg-gray rounded text-white m-2">${{ curso.costo_colegiatura_base }}</span>
-                  <span class="text-muted"> Inscripción </span><span class="font-weight-bold d-inline p-2 bg-gray rounded text-white m-2">${{ curso.costo_inscripcion_base }}</span>
+                  Colegiatura  <span class="font-weight-bold d-inline p-2 bg-gray rounded text-white m-2">${{ curso.costo_colegiatura_base }}</span>
+                  Inscripción <span class="font-weight-bold d-inline p-2 bg-gray rounded text-white m-2">${{ curso.costo_inscripcion_base }}</span>
                 </p>
               </div>
             </div>     

@@ -63,7 +63,7 @@
               v-bind:key="curso.id"
             >
               {{
-                `${curso.dias} horario ${curso.horario} / inicia ${curso.fecha_inicio_previsto_format}`
+                `${curso.dia} horario ${curso.horario} / inicia ${curso.fecha_inicio_previsto_format}`
               }}
             </option>
           </select>

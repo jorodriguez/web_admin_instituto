@@ -29,22 +29,31 @@
           <label>
             Especialidad
             <span class="text-danger">*</span>
-          </label>
+          </label>          
           <select
-            :disabled="operacion == 'UPDATE'"
+            v-if="operacion == 'INSERT'"            
             v-model="input.cat_especialidad"
             class="form-control"
-            placeholder="Especialidad"
+            placeholder="Especialidad"     
+            @change="setNumeroSemanasEspecialidad()"       
             required
           >
             <option
               v-for="grupo in listaEspecialidades"
-              v-bind:value="grupo.id"
+              v-bind:value="grupo"
               v-bind:key="grupo.id"
             >
               {{ grupo.nombre }}
             </option>
           </select>
+           <input
+              v-else
+              disabled
+              type="text"
+              v-model="input.especialidad"
+              class="form-control"            
+              required
+            />       
         </div>
 
        <!-- <div class="form-group">
@@ -102,15 +111,15 @@
               <span class="text-danger">*</span>
             </label>
             <datepicker
-              name="fecha_inicio_previsto"
+              name="fecha_inicio_previsto"              
               v-model="input.fecha_inicio_previsto"
-              input-class="form-control"
+              input-class="form-control bg-white"              
               :format="'yyyy-MM-dd'"
               :bootstrap-styling="true"
               :language="es"
               required
             ></datepicker>
-            {{getNombreDia()}}
+            <small class="text-gray">{{getNombreDia()}} </small>
             
           </div>
            <div class="form-group col-sm-6 col-md-6 col-lg-6 col-xl-6">
@@ -119,14 +128,14 @@
               <span class="text-danger">*</span>
             </label>
              <input
+              :disabled="operacion == 'UPDATE'"       
               type="number"
               v-model="input.numero_semanas"
               class="form-control"
               placeholder="No. semanas del curso"
               min="1"
               required
-            />
-             
+            />             
           </div>
           
         </div>
@@ -147,7 +156,7 @@
                 hour-label="hora"
                 minute-label="minuto"
                 format="HH:mm"
-                placeholder="00:00"
+                placeholder="00:00"                
               ></vue-timepicker>
             </div>
              <div
@@ -265,9 +274,8 @@
           
           <div class="row bg-secondary mt-2 border-top">
 
-          <div class="col-md-8 offset-md-4  text-right">              
-              <p v-if="item.activo" class=" text-muted text-sm">activo desde {{item.fecha_inicio_format}}</p>              
-              <button v-if="!item.activo" class="btn btn-link" @click="seleccionar(item, 'DETALLE')">
+          <div class="col-md-8 offset-md-4  text-right">                               
+              <button class="btn btn-link" @click="seleccionar(item, 'DETALLE')">
                 Ver detalle
               </button>
               <!--<button v-if="!item.activo" class="btn btn-link" @click="seleccionar(item, 'CONFIRM')">
@@ -323,7 +331,7 @@
             </tr>
             <tr>
               <td>
-                <span class="font-weight-bold">{{ input.dias }}</span>
+                <span class="font-weight-bold">{{ input.dia }}</span>
               </td>
             </tr>
             <tr>
@@ -437,18 +445,10 @@ export default {
 
       if (this.operacion === "UPDATE") {
         await this.cargarCatalogos();
-        console.log(this.input);
-
-        /*this.input.dias_array.forEach((i) => {
-          this.listaDias.forEach((e) => {
-            if (e.id == i) {
-              e.checked = true;
-            }
-          });
-        });*/
-
+        console.log(this.input);      
+        
         this.input.fecha_inicio_previsto = new Date(
-          this.input.fecha_inicio_previsto
+          this.input.fecha_inicio_previsto +' 00:00:00'          
         );
         $("#popup_curso").modal("show");
       }
@@ -467,13 +467,12 @@ export default {
 
       await this.cargarCatalogos();
 
-      this.input.cat_especialidad = -1;
+      this.input.cat_especialidad = null;
       //this.input.cat_horario = -1;
       this.input.hora_inicio = "";
-      this.input.hora_fin = "";
-      //this.input.dias_array = [];
+      this.input.hora_fin = "";      
       this.input.cat_dia = -1;//moment(input.fecha_inicio_previsto).isoWeekday();
-      this.input.numero_semanas = 12;
+      this.input.numero_semanas = 0;
       this.input.costo_colegiatura_base = 0;
       this.input.costo_inscripcion_base = 0;
       this.input.nota = "";
@@ -508,24 +507,41 @@ export default {
         return filtered;
       }, []);*/
 
-     // this.input.dias_array = diasArray;
-      this.input.genero = this.usuarioSesion.id;
+     
+  /*    this.input.genero = this.usuarioSesion.id;
       this.input.co_empresa = this.usuarioSesion.id_empresa;
       this.input.co_sucursal = this.usuarioSesion.co_sucursal;
-
+*/
       if (!this.validarDatos()) {
         return;
       }
+      
+      //const catDia = getDiaFechaInicioSeleccionadaList();
+            
+      const curso = {
+          cat_especialidad:this.input.cat_especialidad.id, 
+          cat_dia:this.input.cat_dia,                    
+          hora_inicio:this.input.hora_inicio,
+          hora_fin:this.input.hora_fin,
+          costo_colegiatura_base:this.input.costo_colegiatura_base,
+          costo_inscripcion_base:this.input.costo_inscripcion_base,
+          nota:this.input.nota,
+          fecha_inicio_previsto:this.input.fecha_inicio_previsto,
+          numero_semanas:this.input.numero_semanas,         
+          genero:this.usuarioSesion.id,
+          co_empresa:this.usuarioSesion.id_empresa,
+          co_sucursal:this.usuarioSesion.co_sucursal,
+          genero:this.usuarioSesion.id
+      };
 
       this.loader = true;
       let isModificacion = this.operacion == "UPDATE";
-      console.log(`inciando ${this.operacion} de curso ${this.input.id}`);
+      console.log(`inciando ${this.operacion} de curso ${JSON.stringify(curso)}`);
 
       const respuesta = isModificacion
-        ? await this.putAsync(`${URL.CURSO}/${this.input.id}`, this.input)
-        : await this.postAsync(`${URL.CURSO}`, this.input);
-
-      console.log(respuesta);
+        ? await this.putAsync(`${URL.CURSO}/${this.input.id}`, curso)
+        : await this.postAsync(`${URL.CURSO}`, curso);
+      
       if (respuesta) {
         this.$notificacion.info(
           `Curso ${isModificacion ? "modificado" : "registrado"}`,
@@ -578,6 +594,11 @@ export default {
       return nombreDia;
         
     },
+    setNumeroSemanasEspecialidad(){
+        if(this.input.cat_especialidad){
+            this.input.numero_semanas = this.input.cat_especialidad.duracion;
+        }
+    },
     validarHoras(eventData) {
       let horaEntrada = moment({
         hour: this.input.hora_entrada.HH,
@@ -599,8 +620,13 @@ export default {
     validarDatos() {
       let val = true;
 
-      if (this.input.cat_especialidad == -1) {
+      if (this.input.cat_especialidad == null) {
         this.$notificacion.error("Especialidad", "Selecciona la especialidad");
+        val = false;
+      }
+
+      if (this.input.numero_semanas == 0 || this.input.numero_semanas == '') {
+        this.$notificacion.error("Semanas", "Escriba el número de semanas");
         val = false;
       }
 
@@ -609,7 +635,7 @@ export default {
         val = false;
       }*/
 
-      if (this.input.hora_inicio == null || this.input.hora_fin == null) {
+      if (this.input.hora_inicio == "" || this.input.hora_fin == "") {
         this.$notificacion.error("Hora de inicio", "Selecciona la hora de inicio y fin");
         val = false;
       }
