@@ -429,6 +429,47 @@
           </div>
         </div>
 
+         <div class="form-row ">
+        <div class="form-group form-group col-sm-6 col-md-6 col-lg-6 col-xl-6 ">
+          <label>
+            Colegiatura 
+            <span class="text-danger">*</span>
+          </label>
+          <div class="input-group  border border-success ">
+            <div class="input-group-prepend ">
+              <span class="input-group-text text-success" id="basic-addon1">$</span>
+            </div>
+            <input
+              type="number"
+              v-model="input.costo_colegiatura"
+              class="form-control font-weight-bold"
+              placeholder="Costo Colegiatura"
+              min="0"
+              required
+            />
+          </div>
+        </div>
+        <div class="form-group col-sm-6 col-md-6 col-lg-6 col-xl-6">
+          <label>
+            Inscripción 
+            <span class="text-danger">*</span>
+          </label>
+          <div class="input-group  border border-success">
+            <div class="input-group-prepend ">
+              <span class="input-group-text text-success" id="basic-addon1">$</span>
+            </div>
+            <input
+              type="number"
+              v-model="input.costo_inscripcion"
+              class="form-control font-weight-bold"
+              placeholder="Costo Inscripción"
+              min="0"
+              required
+            />
+          </div>
+        </div>
+      </div>
+
         <div class="form-group">
           <label for="inputFechaLimitePago">Nota </label>
           <textarea
@@ -438,19 +479,7 @@
             placeholder="Notas "
           />
         </div>
-
-        <div class="form-row">
-          <div
-            class="form-group form-group col-sm-6 col-md-6 col-lg-6 col-xl-6"
-          >
-            <h2>${{ input.costo_colegiatura }} /<small>Colegiatura</small></h2>
-          </div>
-          <div
-            class="form-group form-group col-sm-6 col-md-6 col-lg-6 col-xl-6"
-          >
-            <h2>${{ input.costo_inscripcion }} /<small>Inscripción</small></h2>
-          </div>
-        </div>
+   
       </div>
 
       <div slot="footer">
@@ -670,7 +699,7 @@ export default {
         val = false;
       }
 
-      if (this.cursoSeleccionado.costo_inscripcion_base == 0) {
+      if (this.cursoSeleccionado.costo_inscripcion_base == '') {
         this.$notificacion.error(
           "Inscripción",
           "Escribe el costo de la inscripción"

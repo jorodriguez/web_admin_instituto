@@ -146,7 +146,6 @@
           <template slot="table-row" slot-scope="props">
             <span v-if="props.column.field == 'observaciones'">
               <textarea class="form-control" disabled v-model="props.row.observaciones">
-
               </textarea>
             </span>            
             <span v-else>{{props.formattedRow[props.column.field]}}</span>

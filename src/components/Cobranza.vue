@@ -19,10 +19,8 @@
     <!-- </form>-->
 
     
-
-    <div class="card">
-      <div class="card-body">
-        <div class="input-group mb-3">
+    <div class="card">      
+        <!--<div class="input-group mb-3">
           <input
             type="text"
             class="form-control"
@@ -41,90 +39,64 @@
             </button>
           </div>
         </div>
-        <!-- filtro-->
-        <div class="row h1">    
-          <div class="col">Lunes</div>
-          <div class="col">Martes</div>
-          <div class="col">Miercoles</div>
-          <div class="col">Jueves</div>
-          <div class="col">Viernes</div>
-        </div>
+        -->
+        
         
         <div v-if="loader" class="mx-auto">
             <Loader :loading="loader" :mini="true" />
         </div>
 
-        <div class="row">                 
-          <div
-            class="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-3 mt-2"
-            v-for="row in lista"
-            :key="row.id"            
-          >
-            <div class="card border-light">
-              <div class="d-flex justify-content-end ">
-                <div class="btn-group" role="group">
-                  <button
-                    id="btnGroupDrop1"
-                    type="button"
-                    class="btn btn-link btn-block btn-sm dropdown-toggle"
-                    data-toggle="dropdown"
-                    aria-haspopup="true"
-                    aria-expanded="false"
-                  ></button>
-                  <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">                  
-                    <button
-                      class="dropdown-item"
-                      @click="select(row, 'DELETE')"
-                      href="#"
-                    >
-                      <i class="fas fa-user-minus"></i> Iniciar Baja
-                    </button>
-                  </div>
+      <vue-good-table
+          :columns="columnas"
+          :rows="lista"
+          :line-numbers="true"
+          @on-row-click="onRowClick"
+          @on-search="onSearch"
+          :search-options="TABLE_CONFIG.SEARCH_OPTIONS"
+          :pagination-options="TABLE_CONFIG.PAGINATION_OPTIONS"
+          @on-selected-rows-change="selectionChanged"
+          :selectOptions="TABLE_CONFIG.NO_SELECT_OPTIONS"
+          @on-select-all="selectAll"
+          class="table-striped"
+          :groupOptions="{
+  	          enabled: false,               
+          }"
+        >
+          <template slot="table-header-row" slot-scope="props">
+            <span class="font-weight-bold text-info h5">{{ props.row.label }}</span>
+          </template>
+
+          <template slot="table-row" slot-scope="props">
+            <span v-if="props.column.field == 'alumno'">              
+              <div class="media">
+                <img  @click="verPerfil(props.row)" :src="props.row.foto_alumno" alt class="pointer mr-3 rounded-circle" width="50" height="50" />                
+                <div  @click="verPerfil(props.row)" class="pointer media-body">                
+                  <h4>{{props.row.alumno}} {{props.row.apellidos}}</h4>
+                  <h5 class="font-weight-normal">{{props.row.matricula}}</h5>                                  
                 </div>
               </div>
-
-              <img
-                class="card-img-top pointer rounded-circle mx-auto"
-                style="width:100px"                
-                :src="row.foto"
-                alt="Foto"
-                @click="verPerfil(row)"
-                title="Cambiar la foto"
-              />
-
-              <div class="card-body p-1 pointer" @click="verPerfil(row)" >
-                <h4 class="card-text">
-                  {{ row.alumno }}                  
-                </h4>
-                <h5 class="card-text pt-0 small">
-                  {{ row.apellidos }}
-                </h5>
-                <h6
-                  :style="row.color_especialidad ? 'background-color:' + row.color_especialidad : ''"
-                  class="badge badge-info text-wrap"
-                >
-                  {{ row.especialidad }}
-                </h6>                                                    
-                <small class="font-weight-normal">{{row.dia}} turno {{ row.horario }}</small>
-              </div>
-            </div>
-          </div>
-
-                    <!-- Mensajes para la busqueda y carga-->
-          <div v-if="criterioNombre != '' && lista.length == 0" class="mx-auto">
-            <p class="text-muted ">Ningún resultado</p>
-          </div>
-          <div
-            v-if="criterioNombre == '' && lista.length == 0 && !loader"
-            class="mx-auto"
-          >
-            <p class="text-muted ">Oprime ENTER para listar todo</p>
-          </div>
-          <div v-if="loader" class="mx-auto">
-            <Loader :loading="loader" :mini="true" />
-          </div>
-        </div>
-      </div>
+            </span>
+            <span v-else-if="props.column.field == 'especialidad'">              
+                  <h4>Semana {{props.row.numero_semana_curso}}</h4>
+                  <h5 class="font-weight-normal">{{props.row.especialidad}}</h5>                  
+            </span>
+            <span v-else-if="props.column.field == 'dia'">              
+                  <h4>{{props.row.dia}}</h4>
+                  <h5 class="font-weight-normal">{{props.row.fecha_clase}}</h5>
+                  
+            </span>                                           
+            <span  v-else-if="props.column.field == 'cargo'">              
+                  <h4 class="">${{props.row.cargo}}</h4>                                    
+            </span>  
+            
+            <span  v-else-if="props.column.field == 'acciones'">              
+                <button type="button"  @click="verPerfil(props.row)" class="btn btn-outline-primary">Cobrar</button>
+            </span>                                           
+            <span v-else>{{props.formattedRow[props.column.field]}}</span>
+          </template>
+        </vue-good-table>
+           
+            
     </div>
   </div>
 </template>
@@ -137,13 +109,15 @@ import { operacionesApi } from "../helpers/OperacionesApi";
 import { en, es } from 'vuejs-datepicker/dist/locale'
 import { getUsuarioSesion } from '../helpers/Sesion';
 import Loader from '../components_utils/Loader';
-import moment from 'moment'
-
+import moment from 'moment';
+import {formatPrice} from '../helpers/Utils';
+import TABLE_CONFIG from "../helpers/DatatableConfig";
+import { VueGoodTable } from 'vue-good-table';
 
 export default {
   name: "Cobranza",
   components: {
-    Datepicker,Loader
+    Datepicker,Loader,VueGoodTable
   },
   mixins: [operacionesApi],
   data() {
@@ -157,7 +131,91 @@ export default {
       mensaje: "",
       es: es,           
       observacionesBaja:"",
-      loader:false
+      loader:false,
+      TABLE_CONFIG:TABLE_CONFIG,
+      columnas:[
+      {
+        label: 'Id',
+        field: 'id',
+        hidden: true
+      },
+      {
+        label: 'Fecha Cargo',
+        field: 'fecha_cargo',
+        filterable: false,
+        thClass: 'text-center',
+        tdClass: 'text-center',
+        hidden: true
+      },
+      {
+        label: 'Cargo',
+        field: 'Cargo',
+        filterable: true,
+        thClass: 'text-center',
+        tdClass: 'text-left',
+        hidden:true
+      
+      },
+      {
+        label: 'uid_alumno',
+        field: 'uid_alumno',
+        filterable: true,
+        thClass: 'text-center',
+        tdClass: 'text-left',
+        hidden:true
+      },
+      {
+        label: 'foto_alumno',
+        field: 'uid_alumno',
+        filterable: true,
+        thClass: 'text-center',
+        tdClass: 'text-left',
+        hidden:true
+      },      
+      {
+        label: 'Alumno',
+        field: 'alumno',
+        filterable: true,
+        thClass: 'text-center',
+        tdClass: 'text-left',
+        hidden:false
+      },
+      
+      {
+        label: 'Especialidad',
+        field: 'especialidad',
+        filterable: true,
+        thClass: 'text-center',
+        tdClass: 'text-left',
+        hidden:false        
+      },
+      {
+        label: 'Clase',
+        field: 'dia',
+        filterable: true,
+        thClass: 'text-center',
+        tdClass: 'text-left',
+        hidden:false
+      },
+      {
+        label: 'Cargo',
+        field: 'cargo',
+        filterable: true,
+        thClass: 'text-center',
+        tdClass: 'text-center',
+        hidden:false
+      },
+      
+      {
+        label: '',
+        field: 'acciones',
+        filterable: true,
+        thClass: 'text-center',
+        tdClass: 'text-left',
+        hidden:false
+      },
+     
+      ],
     };
   },
   mounted() {
@@ -165,6 +223,8 @@ export default {
 
     this.usuarioSesion = getUsuarioSesion();
             
+    this.TABLE_CONFIG.PAGINATION_OPTIONS.perPage = 50;
+
     this.cargarListaCobranza();  
   },
   methods: {   
@@ -182,7 +242,7 @@ export default {
     },
     verPerfil(rowSelect) {
       console.log("fila seleccionada " + rowSelect.uid);
-      this.$router.push({ name: "PerfilAlumno", params: { uid: rowSelect.uid } });
+      this.$router.push({ name: "PerfilAlumno", params: { uid: rowSelect.uid_alumno } });
     },
     buscarPorNombre() {
       console.log("Buscar por nombre " + this.criterioNombre);
