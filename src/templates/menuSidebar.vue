@@ -140,6 +140,12 @@
             </router-link>
           </li>-->                    
           <li class="nav-item">
+              <router-link to="/Cobranza" class="nav-link"  >
+              <i class="fa fa-list-ul text-primary"></i> Cobranza
+            </router-link>           
+          </li>                    
+
+          <li class="nav-item">
               <router-link to="/CatAlumno" class="nav-link"  >
               <i class="fa fa-list-ul text-primary"></i> Inscripciones
             </router-link>           

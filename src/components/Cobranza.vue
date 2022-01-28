@@ -1,97 +1,24 @@
 <template>
   <div class="cat_alumno">
-    <h1>Alumnos </h1>
+    <h1>Cobranza </h1>
     <small>{{ usuarioSesion.nombre_sucursal }}</small>
     <div class="row">
-      <div class="col-auto mr-auto">
-        <router-link to="/principal" class="btn btn-secondary btn-lg">
-          <i class="fas fa-arrow-circle-left text-gray"></i>
-        </router-link>
+      <!--<div class="col-auto mr-auto">       
         <router-link to="/Inscripcion" class="btn btn-primary btn-lg">
-          Nueva Inscripción
-        </router-link>               
+          
+        </router-link>              
         
       </div>
       <div class="col-auto">
        
-      </div>
+      </div>-->
     </div>
 
     <br />
     
     <!-- </form>-->
 
-    <!-- ELIMINAR MODAL -->
-    <div
-      id="modal_eliminar_alumno"
-      class="modal fade"
-      tabindex="-1"
-      role="dialog"
-      data-keyboard="false"
-      data-backdrop="static"
-      aria-labelledby="exampleModalCenterTitle"
-      aria-hidden="true"
-    >
-      <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLongTitle">
-              Confirmar baja del alumno
-            </h5>
-            <button
-              type="button"
-              class="close"
-              data-dismiss="modal"
-              aria-label="Close"
-            >
-              <span aria-hidden="true">&times;</span>
-            </button>
-          </div>
-          <div class="modal-body">
-            <h4>
-              <strong>{{ input.nombre }} {{ input.apellidos }}</strong>
-            </h4>
-            <div class="form-group text-left">
-              <label for="fecha_baja">Fecha de baja</label>
-              <datepicker
-                name="fecha_baja"
-                v-model="fechaBaja"
-                input-class="form-control"
-                :format="'yyyy-MM-dd'"
-                :bootstrap-styling="true"
-                :language="es"
-              ></datepicker>
-            </div>
-            <div class="form-group">
-              <textarea
-                v-model="observacionesBaja"
-                class="form-control"
-                placeholder="Observaciones"
-                rows="3"
-              >
-              </textarea>
-            </div>
-          </div>
-          <div class="modal-footer">
-            <button
-              type="button"
-              class="btn btn-danger"
-              v-on:click="eliminar()"
-              data-dismiss="modal"
-            >
-              Dar de Baja
-            </button>
-            <button
-              type="button"
-              class="btn btn-secondary"
-              data-dismiss="modal"
-            >
-              Cancelar
-            </button>
-          </div>
-        </div>
-      </div>
-    </div>
+    
 
     <div class="card">
       <div class="card-body">
@@ -115,6 +42,13 @@
           </div>
         </div>
         <!-- filtro-->
+        <div class="row h1">    
+          <div class="col">Lunes</div>
+          <div class="col">Martes</div>
+          <div class="col">Miercoles</div>
+          <div class="col">Jueves</div>
+          <div class="col">Viernes</div>
+        </div>
         
         <div v-if="loader" class="mx-auto">
             <Loader :loading="loader" :mini="true" />
@@ -195,6 +129,85 @@
   </div>
 </template>
 
-<script src="../controller/CatAlumnoController.js"></script>
+<script>
+
+import Datepicker from 'vuejs-datepicker';
+import URL from "../helpers/Urls";
+import { operacionesApi } from "../helpers/OperacionesApi";
+import { en, es } from 'vuejs-datepicker/dist/locale'
+import { getUsuarioSesion } from '../helpers/Sesion';
+import Loader from '../components_utils/Loader';
+import moment from 'moment'
+
+
+export default {
+  name: "Cobranza",
+  components: {
+    Datepicker,Loader
+  },
+  mixins: [operacionesApi],
+  data() {
+    return {            
+      response: "",
+      usuarioSesion: {},
+      sesion: {},      
+      criterioNombre: "",
+      lista: [],      
+      listaRespaldo: [],           
+      mensaje: "",
+      es: es,           
+      observacionesBaja:"",
+      loader:false
+    };
+  },
+  mounted() {
+    console.log("##### iniciando lista de cobranza ####");
+
+    this.usuarioSesion = getUsuarioSesion();
+            
+    this.cargarListaCobranza();  
+  },
+  methods: {   
+    async cargarListaCobranza(){
+      this.loader = true;
+      this.lista = await this.getAsync(URL.COBRANZA + "/colegiaturas/" + this.usuarioSesion.co_sucursal);
+      this.listaRespaldo = Object.assign(this.lista,{});
+      this.loader = false;
+    },    
+    select(rowSelect, operacion) {
+      console.log("fila seleccionada " + rowSelect.adeuda);
+      this.operacion = operacion;
+      this.input = rowSelect;
+      this.mensaje = "";      
+    },
+    verPerfil(rowSelect) {
+      console.log("fila seleccionada " + rowSelect.uid);
+      this.$router.push({ name: "PerfilAlumno", params: { uid: rowSelect.uid } });
+    },
+    buscarPorNombre() {
+      console.log("Buscar por nombre " + this.criterioNombre);
+      if (this.criterioNombre == '') {
+        this.lista = this.listaRespaldo;
+      } else {
+
+        this.lista = this.listaRespaldo
+          .filter(
+            e =>
+              e.alumno.toUpperCase().includes(this.criterioNombre.toUpperCase())
+              || (e.apellidos ? e.apellidos.toUpperCase().includes(this.criterioNombre.toUpperCase()) : false)
+          );
+
+      }
+    },
+    cambiarSucursal(row) {
+      this.$router.push({ name: "CambioSucursal", params: { id_alumno: row.id } });
+    },
+    subirFotoPerfil(id) {
+
+      this.$router.push({ name: "SubirFotoAlumno", params: { id: id } });
+    }
+  }
+};
+</script>
 
 <style scoped></style>

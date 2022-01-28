@@ -198,7 +198,9 @@ export default {
         this.cargo.monto = itemCurso.costo_colegiatura;
 
         if (this.cargo.co_curso) {
-          this.listaSemanasCurso = await this.getAsync(`${URL.PERIODOS_CURSO}/curso/${this.cargo.co_curso.uid_curso}`);
+          //this.listaSemanasCurso = await this.getAsync(`${URL.PERIODOS_CURSO}/curso/${this.cargo.co_curso.uid_curso}`);
+          this.listaSemanasCurso = await this.getAsync(`${URL.PERIODOS_CURSO}//semanas/pendientes/${this.cargo.co_curso.uid_curso}/${this.alumno.id}`);
+          
           console.log(JSON.stringify(this.listaSemanasCurso));
         }
 

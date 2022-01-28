@@ -16,6 +16,7 @@ const HORARIOS_BASE = BASE + '/horarios';
 const ESCOLARIDAD_BASE = BASE+'/escolaridad';
 const PERIODOS_CURSO = BASE + '/periodos-curso';
 const MATERIAS_ESPECIALIDAD = BASE + '/materias';
+const COBRANZA = BASE + '/cobranza';
 
 
 const ASISTENCIA_BASE =  BASE + '/asistencia';
@@ -99,6 +100,7 @@ const URL = {
     PERIODOS_CURSO : PERIODOS_CURSO,
     MATERIAS_ESPECIALIDAD : MATERIAS_ESPECIALIDAD,
     REPORTES_BASE:REPORTES_BASE,
+    COBRANZA:COBRANZA,
 
     ASISTENCIA_POR_RECIBIR : ASISTENCIA_BASE + '/alumnos_por_recibidos/',//param sucursal
     ASISTENCIA_RECIBIDOS : ASISTENCIA_BASE + '/alumnos_recibidos/',//param sucursal
