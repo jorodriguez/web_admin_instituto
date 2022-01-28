@@ -63,13 +63,14 @@
               v-bind:key="curso.id"
             >
               {{
-                `${curso.dia} horario ${curso.horario} / inicia ${curso.fecha_inicio_previsto_format}`
+                `${curso.dia} horario ${curso.horario} / inicia ${
+                  curso.fecha_inicio_previsto_format
+                }`
               }}
             </option>
           </select>
         </div>
       </div>
-       
 
       <div class="form-row">
         <div class="form-group col-sm-6 col-md-6 col-lg-6 col-xl-6">
@@ -79,7 +80,7 @@
             v-model="input.nombre"
             class="form-control"
             placeholder="Nombre"
-            required            
+            required
           />
         </div>
 
@@ -152,9 +153,47 @@
           </select>
         </div>
       </div>
-    
 
-
+      <div class="form-row ">
+        <div class="form-group form-group col-sm-6 col-md-6 col-lg-6 col-xl-6 ">
+          <label>
+            Costo Colegiatura base
+            <span class="text-danger">*</span>
+          </label>
+          <div class="input-group  border border-success ">
+            <div class="input-group-prepend ">
+              <span class="input-group-text text-success" id="basic-addon1">$</span>
+            </div>
+            <input
+              type="number"
+              v-model="input.costo_colegiatura"
+              class="form-control font-weight-bold"
+              placeholder="Costo Colegiatura"
+              min="0"
+              required
+            />
+          </div>
+        </div>
+        <div class="form-group col-sm-6 col-md-6 col-lg-6 col-xl-6">
+          <label>
+            Costo Inscripción base
+            <span class="text-danger">*</span>
+          </label>
+          <div class="input-group  border border-success">
+            <div class="input-group-prepend ">
+              <span class="input-group-text text-success" id="basic-addon1">$</span>
+            </div>
+            <input
+              type="number"
+              v-model="input.costo_inscripcion"
+              class="form-control font-weight-bold"
+              placeholder="Costo Inscripción"
+              min="0"
+              required
+            />
+          </div>
+        </div>
+      </div>
 
       <div class="form-group">
         <label for="inputFechaLimitePago">Nota </label>
@@ -165,17 +204,6 @@
           placeholder="Notas "
         />
       </div>
-
-        
-      <div class="form-row">
-        <div class="form-group form-group col-sm-6 col-md-6 col-lg-6 col-xl-6">
-          <h2>${{input.costo_colegiatura}} /<small>Colegiatura</small></h2>                     
-        </div>
-        <div class="form-group form-group col-sm-6 col-md-6 col-lg-6 col-xl-6">
-          <h2>${{input.costo_colegiatura}} /<small>Inscripción</small></h2>                     
-        </div>
-      </div>
-     
 
       <button
         class="btn btn-block btn-primary"
@@ -205,7 +233,7 @@ export default {
   name: "inscripcion-alumno",
   components: {
     Datepicker,
-    Loader,
+    Loader
   },
   mixins: [operacionesApi],
   data() {
@@ -214,11 +242,11 @@ export default {
       input: AlumnoModel,
       listaGeneroAlumno: [],
       listaCurso: [],
-      listaEspecialidades: [],      
+      listaEspecialidades: [],
       generoAlumno: { id: -1, nombre: "", foto: "" },
       es: es,
       loader: false,
-      isModificacion: false,
+      isModificacion: false
     };
   },
   mounted() {
@@ -233,7 +261,6 @@ export default {
       this.listaEspecialidades = await this.getAsync(
         `${URL.ESPECIALIDADES_BASE}/${this.usuarioSesion.id_empresa}`
       );
-     
 
       this.nuevo();
     },
@@ -243,7 +270,7 @@ export default {
       this.input = {
         id: 0,
         co_sucursal: 0,
-        co_curso: -1,        
+        co_curso: -1,
         nombre: "",
         apellidos: "",
         direccion: "",
@@ -258,8 +285,8 @@ export default {
         cat_especialidad: -1,
         fecha_inicio: null,
         fecha_fin: null,
-        foto: "",       
-        genero: 1,
+        foto: "",
+        genero: 1
       };
 
       this.generoAlumno = { id: -1, nombre: "", foto: "" };
@@ -269,7 +296,9 @@ export default {
       console.log("@onChangeEspecialidad " + this.input.cat_especialidad);
       if (this.input.cat_especialidad) {
         this.listaCurso = await this.getAsync(
-          `${URL.CURSO}/${this.usuarioSesion.co_sucursal}/${this.input.cat_especialidad}`
+          `${URL.CURSO}/${this.usuarioSesion.co_sucursal}/${
+            this.input.cat_especialidad
+          }`
         );
       } else {
         console.log("No va a la db por los cursos");
@@ -279,18 +308,18 @@ export default {
       this.input.costo_inscripcion = 0;
       this.input.co_curso = -1;
       //cargar primer item si existe
-      if(this.listaCurso &&  this.listaCurso.length == 1){
-         const item =  this.listaCurso[0];
-         console.log(item);
-         this.input.costo_inscripcion = item.costo_inscripcion_base;
-         this.input.costo_colegiatura = item.costo_colegiatura_base;
-         this.input.co_curso = item.id;
+      if (this.listaCurso && this.listaCurso.length == 1) {
+        const item = this.listaCurso[0];
+        console.log(item);
+        this.input.costo_inscripcion = item.costo_inscripcion_base;
+        this.input.costo_colegiatura = item.costo_colegiatura_base;
+        this.input.co_curso = item.id;
       }
     },
     async onChangeCurso(event) {
       console.log("@onChangeCurso " + this.input.co_curso);
       let cursoSeleccionado = this.listaCurso.find(
-        (e) => e.id == this.input.co_curso
+        e => e.id == this.input.co_curso
       );
       this.input.costo_colegiatura = cursoSeleccionado.costo_colegiatura_base;
       this.input.costo_inscripcion = cursoSeleccionado.costo_inscripcion_base;
@@ -319,7 +348,7 @@ export default {
         console.log(respuesta);
         this.$router.push({
           name: "PerfilAlumno",
-          params: { uid: respuesta.uid },
+          params: { uid: respuesta.uid }
         });
       } else {
         this.$notificacion.error(
@@ -341,22 +370,22 @@ export default {
         nota: this.input.nota,
         costo_colegiatura: this.input.costo_colegiatura,
         costo_inscripcion: this.input.costo_inscripcion,
-        foto: this.getFoto(),                
+        foto: this.getFoto(),
         co_sucursal: this.usuarioSesion.co_sucursal,
         co_empresa: this.usuarioSesion.id_empresa,
         fecha_nacimiento: moment(this.input.fecha_nacimiento).format(
           "YYYY-MM-DD"
         ),
-        genero: this.usuarioSesion.id,
+        genero: this.usuarioSesion.id
       };
     },
     getFoto() {
       let elemento = this.listaGeneroAlumno.find(
-        (e) => e.id == this.input.cat_genero
+        e => e.id == this.input.cat_genero
       );
       return elemento.foto;
-    },
-  },
+    }
+  }
 };
 </script>
 

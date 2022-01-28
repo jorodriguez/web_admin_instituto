@@ -234,7 +234,7 @@
               v-bind:key="semana.id"             
               :disabled="semana.tiene_cargo"
             >
-             Sem-{{semana.numero_semana_curso}} {{semana.materia_modulo_especialidad}} | {{semana.fecha_clase_format}} 
+             Sem-{{semana.numero_semana_curso}} {{semana.materia_modulo_especialidad}} | {{semana.fecha_clase_format}} {{semana}}
             </option>
           </select>          
         </div>

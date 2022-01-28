@@ -1,6 +1,7 @@
 <template>
   <div class="perfil container">
     <div class="text-info">{{ mensaje }}</div>
+    
     <div v-if="display == true" class="text-left">
       <div class="row">
         <div class="col">
@@ -10,20 +11,10 @@
             v-if="!usuarioSesion.permiso_gerente"
           >
             <i class="fas fa-arrow-circle-left text-gray"></i>
-          </router-link>
-          <router-link
-            :to="{ name: 'ReporteDeudas', params: {} }"
-            class="btn btn-secondary btn-lg"
-            v-if="usuarioSesion.permiso_gerente"
-          >
-            <i class="fas fa-arrow-circle-left text-gray"></i>
-          </router-link>
-          <!--<a @click="$router.go(-1)" class="btn btn-secondary btn-lg">
-            <i class="fas fa-arrow-circle-left text-white"></i>
-          </a>
-          -->
+          </router-link>     
         </div>
-        <div class="col text-center">
+        
+        <div class="col text-center">          
           <img
             :src="alumno.foto"
             class="rounded-circle"
@@ -38,9 +29,11 @@
             {{ alumno.nombre }}
             {{ alumno.apellidos }}            
           </p>
-          <p>
-            
-          </p>
+          
+          <h2 v-if="alumno.is_cumpleanos" class="text-orange ">
+            🥳¡Felíz cumpleaños!🎂
+          </h2>
+          
         </div>
         <div class="col text-center">
           <div class="text-danger card font-weight-bold h6">

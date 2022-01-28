@@ -81,22 +81,13 @@
             </div>
             <div class="col">   
               Confirmado:
-               <span v-if="item.confirmado == true"><strong> {{item.fecha_confirmado}}</strong> </span> 
-               <!--<span v-if="item.confirmado == false"> NO </span> -->
-               <span v-if="item.confirmado == null"> Pendiente </span> 
-               
-              <!--
-              <table class="table">
-                <tr> 
-                  <td>Confirmado</td>
-                  <td> 
-                   <span v-if="item.confirmado == true"> SI </span> 
-                   <span v-if="item.confirmado == false"> NO </span> 
-                   <span v-if="item.confirmado == null"> Pendiente </span> 
-                  </td>
-                </tr>
-              </table>-->
-                <!--<button class="btn btn-link text-danger"></button>-->
+               <span v-if="item.confirmado == true"><strong> {{item.fecha_confirmado}}</strong> </span>                
+               <span v-if="item.confirmado == null"> Pendiente </span>                          
+            </div>
+          </div>
+          <div v-if="item.nota_inscripcion" class="row">
+            <div class="col bg-yellow border border-1">
+                <p class="small font-weight-bold mt-1"><i>Nota: {{item.nota_inscripcion}}</i></p>
             </div>
           </div>
         </div>
