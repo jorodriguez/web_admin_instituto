@@ -69,8 +69,7 @@
                         ></span>
                         {{loading ? 'Validando..':'Entrar'}}
                       </button>                      
-                    </div>                    
-                     
+                    </div>                                         
                   </form>               
                </div>
               </div>
@@ -86,6 +85,7 @@
           </div>
         </div>
       </div>
+      <small class="text-gray">luci-1</small>
     </section>
     <!--
     <img src="../assets/logo.jpeg" class="rounded-lg" width="235" height="110" />
