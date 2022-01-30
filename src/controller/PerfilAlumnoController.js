@@ -46,7 +46,8 @@ export default {
             listaInscripciones:[],
             es: es,
             usuarioSesion: {},
-            alumnoCargado:false
+            alumnoCargado:false,
+            mostrarCobranza:false
         };
     },
     beforeRouteUpdate(to) {
@@ -77,6 +78,15 @@ export default {
             console.log("Actualizar perfil de alumno " + text);
             await this.cargarInformacionAlumno();
         });
+
+        //---mostrar tab cobranza debe tener el rol COBRANZA
+        const ROL_COBRANZA = 2;
+        const roles = this.usuarioSesion.roles;
+        for (let i = 0; i < roles.length; i++) {
+          if (roles[i].id == ROL_COBRANZA) {
+            this.mostrarCobranza = true;
+          }
+        }
 
         this.mensajeToast = mensaje => {
             $("#toast_msg").text(mensaje);

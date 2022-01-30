@@ -5,6 +5,7 @@
     <div v-if="display == true" class="text-left">
       <div class="row">
         <div class="col">
+          <!--
           <router-link
             :to="{ name: 'CatAlumno', params: {} }"
             class="btn btn-secondary btn-lg"
@@ -12,6 +13,7 @@
           >
             <i class="fas fa-arrow-circle-left text-gray"></i>
           </router-link>     
+          -->
         </div>
         
         <div class="col text-center">          
@@ -93,6 +95,7 @@
                 role="tab"
                 aria-controls="pills-servicios"
                 aria-selected="false"
+                v-if="mostrarCobranza"
                 >Cobranza
               </a>
             </li>
@@ -117,13 +120,15 @@
               id="pills-servicios"
               role="tabpanel"
               aria-labelledby="pills-servicios-tab"
+              v-if="mostrarCobranza"
             >
               <div class="card">
                 <div class="card-body">                  
                   <!-- Componente especial para cargos y pagos -->
-                  <cargos-pagos
+                  <cargos-pagos                    
                     :uidalumno="alumno.uid"                    
                   ></cargos-pagos>
+                  
                 </div>
               </div>
             </div>

@@ -4,7 +4,7 @@
     <div class="row"></div>
       <div class="scroll-panel-salida-div rounded border">
       <div class="row">                
-        
+        {{usuarioSesion}}
       </div>      
     </div>   
   </div>

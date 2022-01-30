@@ -128,17 +128,20 @@
           <button data-v-0a89599e="" type="button" data-toggle="collapse" data-target="#sidenav-collapse-main" aria-controls="sidenav-main" aria-expanded="true" aria-label="Toggle sidenav" class="navbar-toggler"><span data-v-0a89599e=""></span> <span data-v-0a89599e=""></span></button>
 
           -->
+
+          <ul class="navbar-nav" v-for="opc in opciones" :key="opc.id">                        
+            <li class="nav-item">
+                <router-link :to="`/${opc.ruta}`" class="nav-link"  >
+                <i :class="`text-primary ${opc.icono_menu}`"></i> {{`${opc.nombre}`}}
+              </router-link>           
+            </li>    
+          </ul>        
+
+      
+
+          <!--
         <ul class="navbar-nav">
-          <!--<li class="nav-item">
-            <router-link to="/Principal" class="nav-link" >
-              <i class="fa fa-home text-purple"></i> Asistencias
-            </router-link>
-          </li>
-          <li class="nav-item">
-            <router-link to="/Asistencia" class="nav-link"  >
-              <i class="fa fa-child text-blue"></i> Entrada de Alumnos
-            </router-link>
-          </li>-->                    
+                        
           <li class="nav-item">
               <router-link to="/Cobranza" class="nav-link"  >
               <i class="fa fa-list-ul text-primary"></i> Cobranza
@@ -168,17 +171,9 @@
             </router-link>            
           </li> 
           
-          <!--
-          <li class="nav-item">
-            <router-link
-              to="/AsistenciasUsuarios"
-              class="nav-link"              
-            ><i class="fa fa-user text-primary"></i> Asistencia Maestros
-            </router-link>            
-          </li> 
-          -->
-          
+       
         </ul>
+        -->
         <!-- Divider -->
         <hr class="my-3" />
         <!-- Heading -->
@@ -216,13 +211,16 @@ export default {
     return {      
       usuarioSesion: null,      
       mostrarSideBar:true,
-      logotipoEmpresa:""
+      logotipoEmpresa:"",
+      opciones:[]
     };
   },
   mounted() {
     console.log("iniciando el template de menu");
     this.usuarioSesion = getUsuarioSesion();
     this.mostrarSideBar = !getUsuarioSesion().permiso_gerente;
+    //this.opciones = this.usuarioSesion.opciones_acceso;
+    this.opciones = this.usuarioSesion.menu;
     //this.$mostrarSidebar = !getUsuarioSesion().permiso_gerente;
     
   },

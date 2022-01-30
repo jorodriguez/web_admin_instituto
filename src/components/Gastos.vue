@@ -38,18 +38,18 @@
           <td>                        
             <span >{{row.fecha_text}}</span>
           </td>
-          <td>
-            <p v-on:click="seleccionarGasto(row,'UPDATE')" class="text-primary pointer">
+          <td class="text-left">
+            <p v-on:click="seleccionarGasto(row,'UPDATE')" class="text-primary pointer ">
               <span>{{row.nombre_tipo_gasto}}</span>
               <span v-if="row.es_nuevo" class="badge badge-pill badge-warning">Hoy</span>
             </p>
           </td>
-          <td>
+          <td class="text-center">
             <strong>
               <span class="font-weight-bold">{{row.nombre_tipo_pago}}</span>
             </strong>
           </td>      
-          <td>
+          <td class="text-center">
             ${{row.gasto}}
           </td>   
           <td>
