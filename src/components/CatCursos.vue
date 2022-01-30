@@ -651,7 +651,7 @@ export default {
         val = false;
       }
 
-      if (this.input.costo_colegiatura_base == 0) {
+      if (this.input.costo_colegiatura_base == '') {
         this.$notificacion.error(
           "Colegiatura",
           "Escribe el costo de la colegiatura"
@@ -659,7 +659,7 @@ export default {
         val = false;
       }
 
-      if (this.input.costo_inscripcion_base == 0) {
+      if (this.input.costo_inscripcion_base == '') {
         this.$notificacion.error(
           "Inscripción",
           "Escribe el costo de la inscripción"
