@@ -221,7 +221,9 @@ export default {
   },
   methods: {
     async init() {
+      
       //this.listaInscripciones=this.lista;
+
     },
     async cargarCursosAlumno() {
       if (this.uid) {
