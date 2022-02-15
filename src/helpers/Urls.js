@@ -5,7 +5,7 @@ const BASE = configEnv.BASE || "http://localhost:5000";
 //const BASE = process.env.URL_API || 'https://instituto-api-dev.herokuapp.com'
 //const BASE = process.env.URL_API || 'https://api-admin-paris.herokuapp.com';
 
-export const BRANCH = "2201-roles";
+export const BRANCH = "220212-correcciones";
 
 
 const CURSO = BASE + '/curso';
