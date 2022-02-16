@@ -20,7 +20,7 @@
           <div class="cotainer">
             <div class="row justify-content-center">
               <div class="col-5 text-right">
-                <i id=id_icono_popup_expiracion_sesion></i>
+                <i id="id_icono_popup_expiracion_sesion"></i>
               </div>
               <div class="col text-left">
                 <h2>
