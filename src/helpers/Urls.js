@@ -5,7 +5,7 @@ const BASE = configEnv.BASE || "http://localhost:5000";
 //const BASE = process.env.URL_API || 'https://instituto-api-dev.herokuapp.com'
 //const BASE = process.env.URL_API || 'https://api-admin-paris.herokuapp.com';
 
-export const BRANCH = "220212-correcciones";
+export const BRANCH = "2202-ventas";
 
 
 const CURSO = BASE + '/curso';
@@ -18,6 +18,7 @@ const ESCOLARIDAD_BASE = BASE+'/escolaridad';
 const PERIODOS_CURSO = BASE + '/periodos-curso';
 const MATERIAS_ESPECIALIDAD = BASE + '/materias';
 const COBRANZA = BASE + '/cobranza';
+const VENTA = BASE + '/venta';
 
 
 const ASISTENCIA_BASE =  BASE + '/asistencia';
@@ -102,32 +103,13 @@ const URL = {
     MATERIAS_ESPECIALIDAD : MATERIAS_ESPECIALIDAD,
     REPORTES_BASE:REPORTES_BASE,
     COBRANZA:COBRANZA,
+    VENTA:VENTA,
 
-    ASISTENCIA_POR_RECIBIR : ASISTENCIA_BASE + '/alumnos_por_recibidos/',//param sucursal
-    ASISTENCIA_RECIBIDOS : ASISTENCIA_BASE + '/alumnos_recibidos/',//param sucursal
-    ASISTENCIA_ENTRADA_ALUMNOS : ASISTENCIA_BASE + '/entradaAlumnos',
-    ASISTENCIA_SALIDA_ALUMNOS : ASISTENCIA_BASE + '/salidaAlumnos',
-    ASISTENCIA_SALIDA_ALUMNOS_TIEMPO_EXTRA : ASISTENCIA_BASE+'/salidaAlumnos/alumno_tiempo_extra/',//parametro lista asistencias
-    ASISTENCIA_REPORTE : ASISTENCIA_BASE + '/reporte/',
-    ASISTENCIA_REPORTE_POR_ALUMNO : ASISTENCIA_BASE + '/reporte_por_alumno/', //id_alumno y numero_mes
-    ASISTENCIA_REPORTE_MES_ALUMNO : ASISTENCIA_BASE + '/reporte_mes_alumno/', //id_alumno y numero_mes
-    ASISTENCIA_REPORTE_MES_SUCURSAL : ASISTENCIA_BASE + '/reporte_mes_sucursal/', //id_sucursal y numero_mes
-    ASISTENCIA_MENSUAL_ALUMNO : ASISTENCIA_BASE + '/mensual/', //id_alumno
     USUARIO_BASE:  USUARIO_BASE,
     USUARIO_BUSCAR_ID:  USUARIO_BASE+'/buscar',//+id_usuario
     
-    //Usuari
-    //Asistencia Usuarios
-    ASISTENCIA_USUARIO_BASE:ASISTENCIA_USUARIO_BASE,
-    ASISTENCIA_USUARIO_POR_ENTRAR : ASISTENCIA_USUARIO_BASE + '/por_entrar/', // parametro de sucursal
-    ASISTENCIA_USUARIO_POR_SALIR : ASISTENCIA_USUARIO_BASE + '/por_salir/', // parametro de sucursal    
-    ASISTENCIA_USUARIO_ENTRADA : ASISTENCIA_USUARIO_BASE + '/entrada', // parametro en body
-    ASISTENCIA_USUARIO_SALIDA : ASISTENCIA_USUARIO_BASE + '/salida', // parametro en body
-    ASISTENCIA_USUARIO_REPORTE_SUC_RANGO_FECHA : ASISTENCIA_USUARIO_BASE + '/reporte_mes/', // id_sucursal,fecha_inicio,fecha_fin
-    ASISTENCIA_USUARIO_REPORTE_USUARIO_RANGO_FECHA : ASISTENCIA_USUARIO_BASE + '/usuario/', // id_usuario,fecha_inicio,fecha_fin
-    ASISTENCIA_USUARIO_REPORTE_FILTRO_ANIOS : ASISTENCIA_USUARIO_BASE + '/filtros_anios', // co_empresa
-    ASISTENCIA_USUARIO_REPORTE_FILTRO_QUINCENAS : ASISTENCIA_USUARIO_BASE + '/filtros_quincenas', // co_empresa,anio
-
+      
+    
     BALANCE_BASE : BALANCE_BASE,
     SUCURSAL_BASE : SUCURSAL_BASE,
     CAMBIO_SUCURSAL_BASE : CAMBIO_SUCURSAL_BASE,
@@ -144,8 +126,7 @@ const URL = {
     MENSUALIDAD_VENCE_SEMANA_ACTUAL : REPORTE_MENSUALIDAD_BASE + '/vence_semana_actual/',//id_sucursal
     
     FORMAS_PAGO_BASE : FORMAS_PAGO_BASE,
-
-    GRUPOS_BASE : GRUPOS_BASE,
+   
     GASTOS_BASE : GASTOS_BASE,
     HISTORICO_GASTOS:HISTORICO_GASTOS,
     TIPOS_GASTO : TIPOS_GASTO,
