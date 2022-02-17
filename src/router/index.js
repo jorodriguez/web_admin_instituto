@@ -31,6 +31,7 @@ import DetalleCurso from '@/components/DetalleCurso';
 import ReciboPago from '@/components/ReciboPago';
 import CorteDia from '@/components/reportes/CorteDia';
 import Cobranza from '@/components/Cobranza';
+import Venta from '@/components/venta/index';
 
 import VueSession from 'vue-session'
 
@@ -71,6 +72,7 @@ const router = new Router({
         //{ path: '/Actividades', name: 'Actividades', component: RegistroActividad, meta: { requiresAuth: true, validar: false } },
         { path: '/Gastos', name: 'Gastos', component: Gastos, meta: { requiresAuth: true, validar: false } },
         { path: '/Cobranza', name: 'Cobranza', component: Cobranza, meta: { requiresAuth: true, validar: false } },
+        { path: '/Venta', name: 'Venta', component: Venta, meta: { requiresAuth: true, validar: false } },
         { path: '/CambioSucursal/:id_alumno', name: 'CambioSucursal', component: CambiarSucursal, meta: { requiresAuth: true, validar: false } },
         //{ path: '/ReporteAsistencias', name: 'ReporteAsistencias', component: ReporteAsistencia, meta: { requiresAuth: true, validar: false } },
         //{ path: '/ReporteAsistenciasSucursalMes', name: 'ReporteAsistenciasSucursalMes', component: ReporteAsistenciasFaltasSucursalMes, meta: { requiresAuth: true, validar: false } },

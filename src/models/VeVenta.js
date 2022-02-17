@@ -1,4 +1,4 @@
-class VeVenta {
+export default  class VeVenta {
   constructor() {
     this.id = null;
     this.co_empresa = null;

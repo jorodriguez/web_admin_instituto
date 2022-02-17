@@ -1,21 +1,19 @@
-export default class VeVentaDetalle {
+class CatArticuloSucursal {
   constructor() {
     this.id = null;
     this.co_empresa = null;
     this.co_sucursal = null;
-    this.ve_venta = null;
-    this.cat_articulo_sucursal = null;
+    this.cat_articulo = null;
     this.genero = null;
     this.modifico = null;
-    this.fecha_genero = null;
     this.precio = null;
-    this.importe = null;
-    this.cantidad = null;
-    this.eliminado = null;
+    this.fecha_genero = null;
     this.fecha_modifico = null;
-
-    this.articulo = ''; // nombre del producto
-    
+    this.cantidad_existencia = null;
+    this.nota_interna = "";
+    this.eliminado = null;
+    this.costo_base = null;
+    this.stock_minimo = null;    
   }
   setId(id) {
     this.id = id;
@@ -29,12 +27,8 @@ export default class VeVentaDetalle {
     this.co_sucursal = coSucursal;
     return this;
   }
-  setVeVenta(veVenta) {
-    this.ve_venta = veVenta;
-    return this;
-  }
-  setCatArticuloSucursal(catArticuloSucursal) {
-    this.cat_articulo_sucursal = catArticuloSucursal;
+  setCatArticulo(catArticulo) {
+    this.cat_articulo = catArticulo;
     return this;
   }
   setGenero(genero) {
@@ -45,28 +39,36 @@ export default class VeVentaDetalle {
     this.modifico = modifico;
     return this;
   }
-  setFechaGenero(fechaGenero) {
-    this.fecha_genero = fechaGenero;
-    return this;
-  }
   setPrecio(precio) {
     this.precio = precio;
     return this;
   }
-  setImporte(importe) {
-    this.importe = importe;
+  setFechaGenero(fechaGenero) {
+    this.fecha_genero = fechaGenero;
     return this;
   }
-  setCantidad(cantidad) {
-    this.cantidad = cantidad;
+  setFechaModifico(fechaModifico) {
+    this.fecha_modifico = fechaModifico;
+    return this;
+  }
+  setCantidadExistencia(cantidadExistencia) {
+    this.cantidad_existencia = cantidadExistencia;
+    return this;
+  }
+  setNotaInterna(notaInterna) {
+    this.nota_interna = notaInterna;
     return this;
   }
   setEliminado(eliminado) {
     this.eliminado = eliminado;
     return this;
   }
-  setFechaModifico(fechaModifico) {
-    this.fecha_modifico = fechaModifico;
+  setCostoBase(costoBase) {
+    this.costo_base = costoBase;
+    return this;
+  }
+  setStockMinimo(stockMinimo) {
+    this.stock_minimo = stockMinimo;
     return this;
   }
   build() {
@@ -74,16 +76,17 @@ export default class VeVentaDetalle {
       id: this.id,
       co_empresa: this.co_empresa,
       co_sucursal: this.co_sucursal,
-      ve_venta: this.ve_venta,
-      cat_articulo_sucursal: this.cat_articulo_sucursal,
+      cat_articulo: this.cat_articulo,
       genero: this.genero,
       modifico: this.modifico,
-      fecha_genero: this.fecha_genero,
       precio: this.precio,
-      importe: this.importe,
-      cantidad: this.cantidad,
+      fecha_genero: this.fecha_genero,
+      fecha_modifico: this.fecha_modifico,
+      cantidad_existencia: this.cantidad_existencia,
+      nota_interna: this.nota_interna,
       eliminado: this.eliminado,
-      fecha_modifico: this.fecha_modifico
+      costo_base: this.costo_base,
+      stock_minimo: this.stock_minimo
     };
   }
 }

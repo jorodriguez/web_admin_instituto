@@ -218,7 +218,7 @@ export default {
   mounted() {
     console.log("iniciando el template de menu");
     this.usuarioSesion = getUsuarioSesion();
-    this.mostrarSideBar = !getUsuarioSesion().permiso_gerente;
+    //this.mostrarSideBar = !getUsuarioSesion().permiso_gerente;
     //this.opciones = this.usuarioSesion.opciones_acceso;
     this.opciones = this.usuarioSesion.menu;
     //this.$mostrarSidebar = !getUsuarioSesion().permiso_gerente;
