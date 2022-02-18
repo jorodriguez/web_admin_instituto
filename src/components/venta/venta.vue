@@ -1,25 +1,68 @@
 <template>
   <div class="ventas">
     <div class="card">
-      <div class="card-body">
+      <div class="card-body ">
         <div class="row mt-1 ">
-          <nav aria-label="...">
-            <ul class="pagination pagination-lg border">
-              <li><a class="page-link" href="#">(F2) Nueva</a></li>
-              <li><a class="page-link" href="#">(F3) Buscar</a></li>
-              <li><a class="page-link" href="#">(F4) Cobrar</a></li>
-              <li>
-                <a class="page-link text-red" @click="salir()" href="#"
-                  >(F9) Salir</a
-                >
-              </li>
-            </ul>
-          </nav>
+          <div class="col border">
+            <nav aria-label="...">
+              <ul class="pagination pagination-lg border">
+                <li><a class="page-link" href="#">Nueva</a></li>
+                <li>
+                  <button
+                    @click="iniciarBuscarProducto()"
+                    class="page-link"
+                    href="#"
+                  >
+                     Buscar
+                  </button>
+                </li>
+                <li><a class="page-link" href="#">Cobrar</a></li>
+                <li>
+                  <a class="page-link text-red" @click="salir()" href="#"
+                    >Salir</a
+                  >
+                </li>
+              </ul>
+            </nav>
+          </div>
+          <div class="col border">
+            <div class="row border">
+              <div class="col-6 text-right"></div>
+              <div class="col-3 rounded text-right">
+                <h1>Total</h1>
+              </div>
+              <div class="col-3 bg-dark  rounded text-left">
+                <h1 class="text-white">${{ formatPrice(total) }}</h1>
+                <!--<div
+                      class="input-group input-group-lg  "
+                      style="background-color:#fff;border:#fff"
+                    >
+                      <div class="input-group-prepend ">
+                        <span
+                          class="input-group-text text-white  "
+                          style="background-color:#fff;border:#fff"
+                          id="inputGroup-sizing-lg"
+                          >Total:
+                        </span>
+                      </div>
+                      <div class="input-group-prepend ">
+                        <span
+                          class="input-group-text text-success text-white "
+                          style="background-color:#fff;border:#fff"
+                          id="inputGroup-sizing-lg"
+                          >$ {{ formatPrice(total) }}
+                        </span>
+                      </div>
+                    </div>-->
+              </div>
+            </div>
+          </div>
         </div>
 
         <div class="row ">
           <!-- Carrito de venta -->
-          <div class="col-12 col-sm-12 col-md-12 col-lg-7 col-xl-7 p-1 ">
+          <!--<div class="col-12 col-sm-12 col-md-12 col-lg-7 col-xl-7 p-1 ">-->
+          <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 p-1 ">
             <div class="card border border-light p-1">
               <div>
                 <small v-if="mensajeCodigo" class="text-danger">{{
@@ -65,112 +108,117 @@
                   />
                 </div>
               </div>
-              <div class="card-body border  ">
-                <table class="table table-sm table-responsive ">
-                  <thead class="bg-light scroll-thead">
-                    <tr>
-                      <th scope="col">Articulo</th>
-                      <th scope="col">Cant.</th>
-                      <th scope="col">Importe</th>
-                      <th scope="col"></th>
-                    </tr>
-                  </thead>
-                  <!-- style="display: block;  height: 500px; overflow-y: scroll"-->
-                  <tbody class="scroll-tbody-y table-body">
-                    <tr v-for="detalle in listaDetalleVenta" :key="detalle.id">
-                      <td width="20%" class="text-left m-0 p-0">
-                        <div class="media">
-                          <img
-                            v-if="detalle.foto"
-                            alt
-                            :src="detalle.foto"
-                            class="pointer mr-3 rounded-circle"
-                            width="30"
-                            height="30"
-                          />
-                          <img
-                            v-else
-                            alt
-                            class="pointer mr-3 rounded-circle"
-                            width="30"
-                            height="30"
-                          />
-                          <div class="pointer media-body well">
-                            <h4 class="text-wrap" style="width: 16rem;">
-                              {{ detalle.articulo }}
-                            </h4>
-                            <small
-                              class="font-weight-normal text-wrap"
-                              style="width: 16rem;"
-                              >{{ detalle.descripcion }}</small
-                            >
-                            <h5>{{ detalle.marca }}</h5>
-                            <h5><i class="fas fa-trash text-danger" /></h5>
+              <div class="card-body border scroll">
+                <span
+                  v-for="(detalle, index) in listaDetalleVenta"
+                  :key="detalle.id"
+                >
+                
+                  <div
+                    :class="
+                      `row  border-bottom border-secondary pt-1 pb-1 ${index %
+                        2 !=
+                        0 && 'bg-pink'}`
+                    "
+                  >
+                  <div class="text-center col-1 ">
+                      <h5><i class="fas fa-trash text-danger" /></h5>
+                    </div>
+                    <div class="col-1">
+                      <img
+                        v-if="detalle.foto"
+                        alt
+                        :src="detalle.foto"
+                        class="pointer mr-3 "
+                        width="100"
+                      />
+                      <div
+                        v-else
+                        alt
+                        class="pointer border border-gray mr-3 bg-light"
+                        height="100"
+                      />
+                    </div>
+                    <div class="text-left col-7 ">
+                      <h4>
+                        {{ detalle.articulo }}
+                      </h4>
+                      <small class="font-weight-normal text-wrap">{{
+                        detalle.descripcion
+                      }}</small>
+                      <h5>{{ detalle.marca }}</h5>
+                    </div>
+                    <div class="text-left col-1 ">
+                      <i
+                        class="fas fa-minus pointer"
+                        @click="restarCantidad(detalle)"
+                      />
+                      <input
+                        id="inputCargo"
+                        type="number"
+                        v-model="detalle.cantidad"
+                        placeholder="Cantidad"
+                        style="width:30px;"
+                        min="1"
+                        max="999"
+                        maxlength="3"
+                      />
+                      <i
+                        class="fas fa-plus pointer"
+                        @click="sumarCantidad(detalle)"
+                      />
+                    </div>
+                    <div class="text-left col-1 ">
+                      <span class="h3">${{ formatPrice(detalle.precio) }}</span>
+                    </div>
+                    <div class="text-left col-1 ">
+                      <span class="h3"
+                        >${{ formatPrice(detalle.importe) }}</span
+                      >
+                    </div>
+                    
+                  </div>
+                </span>
+              </div>
+              <!--<div class="fixed-absolute ">-->
+              <!--<div class="fixed-sticky  ">
+                <div class="card bg-gray" style="background-color:#fff;">
+                  <div class="card-body">
+                    <div class="row">
+                      <div class="col-9 text-right">
+                        Articulos:
+                      </div>
+                      <div class="col-3  text-left">
+                        <div
+                          class="input-group input-group-lg "
+                          style="background-color:#716173;border:#716173"
+                        >
+                          <div class="input-group-prepend ">
+                            <span
+                              class="input-group-text text-white"
+                              style="background-color:#716173;border:#716173"
+                              id="inputGroup-sizing-lg"
+                              >Total:
+                            </span>
                           </div>
-                        </div>
-                      </td>
-                      <td>
-                        <i
-                          class="fas fa-minus pointer"
-                          @click="restarCantidad(detalle)"
-                        />
-                        <input
-                          id="inputCargo"
-                          type="number"
-                          v-model="detalle.cantidad"
-                          placeholder="Cantidad"
-                          style="width:30px;"
-                          min="1"
-                          max="999"
-                          maxlength="3"
-                        />
-                        <i
-                          class="fas fa-plus pointer"
-                          @click="sumarCantidad(detalle)"
-                        />
-                      </td>
-                      <td>${{ detalle.importe }}</td>
-                    </tr>
-                  </tbody>
-                </table>
-
-                <!--<div class="fixed-absolute ">-->
-                <div class="fixed-sticky ">
-                  <div class="card" style="background-color:#fff;">
-                    <div class="card-body">
-                      <div class="row">
-                        <div class="col-6 text-right"></div>
-                        <div class="col-6  text-left">
-                          <div
-                            class="input-group input-group-lg "
-                            style="background-color:#716173;border:#716173"
-                          >
-                            <div class="input-group-prepend ">
-                              <span
-                                class="input-group-text text-white"
-                                style="background-color:#716173;border:#716173"
-                                id="inputGroup-sizing-lg"
-                                >Total:
-                              </span>
-                            </div>
-                            <div class="input-group-prepend ">
-                              <span
-                                class="input-group-text text-white"
-                                style="background-color:#716173;border:#716173"
-                                id="inputGroup-sizing-lg"
-                                >$ {{ formatPrice(total) }}
-                              </span>
-                            </div>
+                          <div class="input-group-prepend ">
+                            <span
+                              class="input-group-text text-white"
+                              style="background-color:#716173;border:#716173"
+                              id="inputGroup-sizing-lg"
+                              >$ {{ formatPrice(total) }}
+                            </span>
                           </div>
                         </div>
                       </div>
                     </div>
                   </div>
                 </div>
-              </div>
+              </div>-->
             </div>
           </div>
           <!-- Catalogo de productos -->
+          <!--
           <div class="col-12 col-sm-12 col-md-12 col-lg-5 col-xl-5 p-1 ">
             <div class="card border border-light">
               <div>
@@ -205,8 +253,7 @@
                   </label>
                 </div>
               </div>
-              <div class="card-body border  ">
-              
+              <div class="card-body border  ">              
               
                 <div class="row">
                   <div
@@ -247,11 +294,123 @@
                   </div>
                 </div>
               </div>
+
             </div>
+          </div>
+          -->
+        </div>
+      </div>
+    </div>
+
+    <!-- buscar producto -->
+    <div
+      id="buscar-producto"
+      class="modal fade"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="myLargeModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-body">
+            <div class="card-body border  ">
+              <div class="input-group mb-3">
+                <input
+                  type="text"
+                  class="form-control"
+                  placeholder="Buscar por nombre.."
+                  v-model="criterioNombre"
+                  v-on:keyup.enter="buscarPorCriterioNombre()"
+                  aria-label="Buscar por nombre.."
+                  autofocus
+                />
+                <div class="input-group-append">
+                  <button
+                    class="btn btn-outline-secondary "
+                    type="button"
+                    v-on:click="buscarPorCriterioNombre()"
+                  >
+                    <i class="fas fa-search"></i>
+                  </button>
+                </div>
+              </div>
+              <div class="table-responsive">
+                <table class="table table-sm table-striped">
+                  <!-- style="display: block;  height: 500px; overflow-y: scroll"-->
+                  <tbody class="scroll-tbody-y table-body">
+                    <span class="text-muted" v-if="loaderBuscar"
+                      >Buscando..</span
+                    >
+                    <span
+                      class="text-muted"
+                      v-if="articulosEncontradosCriterio == null"
+                      >sin resultados</span
+                    >
+
+                    <tr
+                      v-for="prod in articulosEncontradosCriterio"
+                      :key="prod.id"
+                    >
+                      <td class="p-0 m-0 bg-gray">
+                        <img
+                          v-if="prod.foto"
+                          alt
+                          :src="prod.foto"
+                          class="pointer mr-3 border border-secondary"
+                          width="100"
+                        />
+                        <img
+                          v-else
+                          alt
+                          class="pointer mr-3 border border-light"
+                          width="100"
+                          height="80"
+                        />
+                      </td>
+                      <td class="text-left m-0 p-0">
+                        <h4 class="text-wrap">
+                          {{ prod.nombre }}
+                        </h4>
+                        <small class="font-weight-normal text-wrap">{{
+                          prod.descripcion
+                        }}</small>
+                        <h5>{{ prod.marca }}</h5>
+                      </td>
+                      <td class="m-0 h2">${{ formatPrice(prod.precio) }}</td>
+                      <td class="m-0 h2">Agregar</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              <!--<div class="fixed-absolute ">-->
+              <!--<div class="fixed-sticky ">
+                  <div class="card" style="background-color:#fff;">
+                    <div class="card-body">
+                      <div class="row">
+                        <div class="col-6 text-right"></div>
+                        <div class="col-6  text-left">
+                         
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>-->
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-dismiss="modal"
+            >
+              Cerrar
+            </button>
           </div>
         </div>
       </div>
     </div>
+    <!-- fuin buscar producto-->
   </div>
 </template>
 
@@ -289,11 +448,14 @@ export default {
       totalArticulos: 0,
       producto: new VeVentaDetalle(),
       catalogoArticulos: [],
+      articulosEncontradosCriterio: [],
       es: es,
       loader: false,
+      loaderBuscar: false,
       loaderCodigo: false,
       loaderCatalogo: false,
       mensajeCodigo: "",
+      criterioNombre: "",
       formatPrice: formatPrice
     };
   },
@@ -301,7 +463,7 @@ export default {
     console.log("##### INCIAR VENTA ####");
     this.usuarioSesion = getUsuarioSesion();
     this.$root.mostrarSidebar = false;
-    //this.init();
+    this.init();
   },
   methods: {
     async init() {
@@ -310,18 +472,39 @@ export default {
       this.ventaDetalle = new VeVentaDetalle();
       await this.cargarCatalogo();
     },
-
     salir() {
       this.$root.mostrarSidebar = true;
+    },
+    async cargarCategorias() {
+      this.loaderCatalogo = true;
+      console.log("@ccargarCategorias");
+      this.categoriaArticulos = await this.getAsync(
+        `${URL.CATEGORIA_ARTICULO}/${this.usuarioSesion.co_sucursal}`
+      );
+      this.loaderCatalogo = false;
     },
     async cargarCatalogo() {
       this.loaderCatalogo = true;
       console.log("@c@@@@argarCatalogo");
-      console.log(`${URL.ARTICULO}/sucursal/${this.usuarioSesion.co_sucursal}`)
+      console.log(`${URL.ARTICULO}/sucursal/${this.usuarioSesion.co_sucursal}`);
       this.catalogoArticulos = await this.getAsync(
         `${URL.ARTICULO}/sucursal/${this.usuarioSesion.co_sucursal}`
       );
       this.loaderCatalogo = false;
+    },
+    iniciarBuscarProducto() {
+      this.criterioNombre = "";
+      $("#buscar-producto").modal("show");
+    },
+    async buscarPorCriterioNombre() {
+      console.log("buscar por criterio " + this.criterioNombre);
+      this.loaderBuscar = true;
+      this.articulosEncontradosCriterio = await this.getAsync(
+        `${URL.ARTICULO}/nombre/${this.criterioNombre}/${
+          this.usuarioSesion.co_sucursal
+        }`
+      );
+      this.loaderBuscar = false;
     },
     async buscarCodigo() {
       console.log("buscar codigo" + this.codigo);
@@ -429,5 +612,10 @@ export default {
 
 .table-body {
   height: 500px /*fix height here*/;
+}
+
+.scroll {
+  height: 500px;
+  overflow-y: scroll;
 }
 </style>

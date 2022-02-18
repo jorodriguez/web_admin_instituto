@@ -20,7 +20,7 @@
     --blue: #5e72e4;
     --indigo: #5603ad;
     --purple: hsl(258, 66%, 64%);
-    --pink: #f3a4b5;
+    --pink: #F0DBEB;
     --red: #f5365c;
     --orange: #fb6340;
     --yellow: #ffd600;
@@ -468,7 +468,7 @@ mark {
 }
 code {
     font-size: 87.5%;
-    color: #f3a4b5;
+    color: #F0DBEB;
     word-break: break-word
 }
 a>code {
@@ -10647,7 +10647,7 @@ button.bg-purple:hover {
     background-color: #683bd7!important
 }
 .bg-pink {
-    background-color: #f3a4b5!important
+    background-color: #F0DBEB!important
 }
 a.bg-pink:focus,
 a.bg-pink:hover,
@@ -10764,7 +10764,7 @@ button.bg-lighter:hover {
     background: linear-gradient(87deg, #8965e0, #bc65e0)!important
 }
 .bg-gradient-pink {
-    background: linear-gradient(87deg, #f3a4b5, #f3b4a4)!important
+    background: linear-gradient(87deg, #F0DBEB, #f3b4a4)!important
 }
 .bg-gradient-red {
     background: linear-gradient(87deg, #f5365c, #f56036)!important
@@ -11577,7 +11577,7 @@ a.text-purple:hover {
     color: #683bd7!important
 }
 .text-pink {
-    color: #f3a4b5!important
+    color: #F0DBEB!important
 }
 a.text-pink:focus,
 a.text-pink:hover {
