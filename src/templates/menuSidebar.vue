@@ -1,7 +1,7 @@
 <template >
   <nav   
     class="navbar navbar-vertical fixed-left navbar-expand-md navbar-light bg-white"         
-    v-if="mostrarSideBar"
+    v-if="this.$root.mostrarSidebar"
     id="sidenav-main"
   >
     <div class="container-fluid">
@@ -86,7 +86,7 @@
         <!-- Collapse header -->
         <div class="navbar-collapse-header d-md-none">        
           <div class="row" v-if="usuarioSesion && usuarioSesion.logotipo_empresa">
-              <div class="col-6 collapse-brand" >
+            <div class="col-6 collapse-brand" >
               <img  :src="`${getLogo()}`" class="rounded-lg"  width="90" height="100" />                      
             </div>
             <div class="col-6 collapse-close">
@@ -209,8 +209,7 @@ export default {
   components: {},
   data() {
     return {      
-      usuarioSesion: null,      
-      mostrarSideBar:true,
+      usuarioSesion: null,            
       logotipoEmpresa:"",
       opciones:[]
     };

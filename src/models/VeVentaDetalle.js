@@ -15,6 +15,10 @@ export default class VeVentaDetalle {
     this.fecha_modifico = null;
 
     this.articulo = ''; // nombre del producto
+    this.descripcion = ''; // descripcione del producto
+    this.foto = ''; // foto del producto
+    this.marca = ''; // marca del producto
+    this.categoria = ''; // categoria del producto
     
   }
   setId(id) {
@@ -69,6 +73,32 @@ export default class VeVentaDetalle {
     this.fecha_modifico = fechaModifico;
     return this;
   }
+
+  setArticulo(articulo) {
+    this.articulo = articulo;
+    return this;
+  }
+
+
+  setDescripcion(descripcion) {
+    this.descripcion = descripcion;
+    return this;
+  }
+
+  setFoto(foto) {
+    this.foto = foto;
+    return this;
+  }
+
+  setMarca(marca) {
+    this.marca = marca;
+    return this;
+  }
+  setCategoria(categoria) {
+    this.categoria = categoria;
+    return this;
+  }
+
   build() {
     return {
       id: this.id,

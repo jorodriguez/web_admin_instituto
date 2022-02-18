@@ -19,6 +19,8 @@ const PERIODOS_CURSO = BASE + '/periodos-curso';
 const MATERIAS_ESPECIALIDAD = BASE + '/materias';
 const COBRANZA = BASE + '/cobranza';
 const VENTA = BASE + '/venta';
+const ARTICULO = BASE + '/articulo';
+const CATEGORIA_ARTICULO = BASE + '/categoria-articulo';
 
 
 const ASISTENCIA_BASE =  BASE + '/asistencia';
@@ -104,6 +106,8 @@ const URL = {
     REPORTES_BASE:REPORTES_BASE,
     COBRANZA:COBRANZA,
     VENTA:VENTA,
+    ARTICULO:ARTICULO,
+    CATEGORIA_ARTICULO:CATEGORIA_ARTICULO,
 
     USUARIO_BASE:  USUARIO_BASE,
     USUARIO_BUSCAR_ID:  USUARIO_BASE+'/buscar',//+id_usuario

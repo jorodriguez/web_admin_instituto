@@ -26,12 +26,15 @@ Vue.use(VueTimepicker);
 Vue.use(VuePageTransition);
 Vue.component('downloadExcel', JsonExcel)
 Vue.prototype.$notificacion = Notificaciones;
-Vue.prototype.$mostrarSidebar = true;
+//Vue.prototype.$mostrarSidebar = {value:true};
 //Vue.forceUpdate();
 Vue.config.productionTip = false
 
 /* eslint-disable */
 new Vue({
+  data:{
+      mostrarSidebar:true
+  },
   el: '#app',
   router,
   components: { App },

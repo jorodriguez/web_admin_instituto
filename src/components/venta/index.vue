@@ -1,98 +1,90 @@
 <template>
   <div class="ventas">
-    <!--<h1>Venta</h1>
-    <small>{{ usuarioSesion.nombre_sucursal }}</small>    
-    -->
-    <div class="row mt-1 ">
-      <nav aria-label="...">
-        <ul class="pagination pagination-lg">          
-          <li ><a class="page-link" href="#">Nueva</a></li>
-          <li ><a class="page-link" href="#">Cobrar</a></li>
-        </ul>
-      </nav>
-    </div>
+    <h2>Terminal de Venta</h2>
+    <!--<small>{{ usuarioSesion.nombre_sucursal }}</small>    -->
+    <ul class="nav nav-tabs nav-justified" id="pills-tab" role="tablist">
+      <li class="nav-item">
+        <a
+          class="nav-link active"
+          id="pills-home-tab"
+          data-toggle="pill"
+          href="#pills-home"
+          role="tab"
+          aria-controls="pills-home"
+          aria-selected="true"
+          >Venta</a
+        >
+      </li>
 
-    <div class="row border  border-success">
-      <!-- Carrito de venta -->
+      <li class="nav-item">
+        <a
+          class="nav-link"
+          id="pills-consultas-tab"
+          data-toggle="pill"
+          href="#pills-consultas"
+          role="tab"
+          aria-controls="pills-consultas"
+          aria-selected="false"
+        >
+          Consulta
+        </a>
+      </li>
+
+      <li class="nav-item">
+        <a
+          class="nav-link"
+          id="pills-movimientos-tab"
+          data-toggle="pill"
+          href="#pills-movimientos"
+          role="tab"
+          aria-controls="pills-movimientos"
+          aria-selected="false"
+          >Movimientos
+        </a>
+      </li>
+    </ul>
+    <div class="tab-content" id="pills-tabContent">
       <div
-        class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 p-1 "
+        class="tab-pane fade show active"
+        id="pills-home"
+        role="tabpanel"
+        aria-labelledby="pills-home-tab"
       >
-        <div class="card border border-info">
-          <div>
-            <div class="input-group ">
-              <div class="input-group-prepend mr-1">
-                <span class="input-group-text border-0" id="basic-addon1"
-                  >Cant</span
-                >
-                <input
-                  type="text"
-                  class="form-control ml-1 bg-secondary "
-                  style="width:50px"
-                  v-model="cantidad"
-                />
-              </div>
-              <div class="input-group-prepend">
-                <span class="input-group-text" id="inputGroup-sizing-default">
-                  <i class="fas fa-barcode"></i>
-                </span>
-              </div>
-              <input
-                type="text"
-                class="form-control"
-                aria-label="Default"
-                placeholder="Código"
-                v-model="codigo"
-                aria-describedby="inputGroup-sizing-default"
-              />
-            </div>
-          </div>
-          <div class="card-body border border-primary ">
-            Carrito de o
+        <div class="card">
+          <div class="card-body">
+            <!-- ventas -->
+            <Venta />
           </div>
         </div>
       </div>
-      <!-- Catalogo de productos -->
+      <!-- Consultas -->
       <div
-        class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 p-1 "
+        class="tab-pane fade"
+        id="pills-consultas"
+        role="tabpanel"
+        aria-labelledby="pills-consultas-tab"
       >
-        <div class="card border border-danger ">
-          <div>
-            <div class="btn-group btn-group-toggle" data-toggle="buttons">
-              <label class="btn btn-secondary active">
-                <input
-                  type="radio"
-                  name="options"
-                  id="option1"
-                  autocomplete="off"
-                  checked
-                />
-                Active
-              </label>
-              <label class="btn btn-secondary">
-                <input
-                  type="radio"
-                  name="options"
-                  id="option2"
-                  autocomplete="off"
-                />
-                Radio
-              </label>
-              <label class="btn btn-secondary">
-                <input
-                  type="radio"
-                  name="options"
-                  id="option3"
-                  autocomplete="off"
-                />
-                Radio
-              </label>
-            </div>
-          </div>
-          <div class="card-body border border-primary">
-            Productos
+        <div class="card">
+          <div class="card-body">
+            Consultas de ventas
           </div>
         </div>
       </div>
+      <!-- fin Consultas-->
+      <!-- Movimientos -->
+      <div
+        class="tab-pane fade"
+        id="pills-movimientos"
+        role="tabpanel"
+        aria-labelledby="pills-movimientos-tab"
+      >
+        <div class="card">
+          <div class="card-body">
+          Movimientos - cancelaciones de tickets 
+          </div>
+        </div>
+      </div>
+      <!-- fin Movimientos -->
     </div>
   </div>
 </template>
@@ -100,44 +92,33 @@
 <script>
 import { operacionesApi } from "../../helpers/OperacionesApi";
 import { getUsuarioSesion } from "../../helpers/Sesion";
-import VeVenta from "../../models/VeVenta";
-import VeVentaDetalle from "../../models/VeVentaDetalle";
 import URL from "../../helpers/Urls";
-import { en, es } from "vuejs-datepicker/dist/locale";
-import moment from "moment";
+import Venta from "./venta.vue";
 import Popup from "../../controller/Popup";
 
 export default {
   name: "tabla-alumnos",
   components: {
-    Popup
+    Popup,
+    Venta
   },
   mixins: [operacionesApi],
   props: ["listaInscripciones", "reload", "mostrar_acciones"],
   data() {
     return {
-      uidCurso: "",
       usuarioSesion: {},
       operacion: "",
-      venta:new VeVenta(),
-      listaDetalleVenta: [],
-      cantidad:1,
-      producto:new VeVentaDetalle(),
-      es: es,
       loader: false
     };
   },
   mounted() {
     console.log("##### INCIAR VENTA ####");
     this.usuarioSesion = getUsuarioSesion();
+
     //this.init();
   },
   methods: {
-    init(){
-      //--inciando venta
-      this.venta = new VeVenta();
-      this.ventaDetalle = new VeVentaDetalle();
-    }
+    init() {}
   }
 };
 </script>
