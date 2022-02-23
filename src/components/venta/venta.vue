@@ -6,7 +6,15 @@
           <div class="col border">
             <nav aria-label="...">
               <ul class="pagination pagination-lg border">
-                <li><a class="page-link" href="#">Nueva</a></li>
+                <li>
+                <button
+                    @click="iniciarNuevaVenta()"
+                    class="page-link"
+                    href="#"
+                  >
+                     Nueva
+                  </button>
+                </li>
                 <li>
                   <button
                     @click="iniciarBuscarProducto()"
@@ -27,33 +35,13 @@
           </div>
           <div class="col border">
             <div class="row border">
-              <div class="col-6 text-right"></div>
-              <div class="col-3 rounded text-right">
+              <div class="col-4 text-right"></div>
+              <div class="col-3  text-right">
                 <h1>Total</h1>
               </div>
-              <div class="col-3 bg-dark  rounded text-left">
+              <div class="col-5 bg-dark  rounded text-left">
                 <h1 class="text-white">${{ formatPrice(total) }}</h1>
-                <!--<div
-                      class="input-group input-group-lg  "
-                      style="background-color:#fff;border:#fff"
-                    >
-                      <div class="input-group-prepend ">
-                        <span
-                          class="input-group-text text-white  "
-                          style="background-color:#fff;border:#fff"
-                          id="inputGroup-sizing-lg"
-                          >Total:
-                        </span>
-                      </div>
-                      <div class="input-group-prepend ">
-                        <span
-                          class="input-group-text text-success text-white "
-                          style="background-color:#fff;border:#fff"
-                          id="inputGroup-sizing-lg"
-                          >$ {{ formatPrice(total) }}
-                        </span>
-                      </div>
-                    </div>-->
+                
               </div>
             </div>
           </div>
@@ -78,7 +66,7 @@
                       class="form-control ml-1 bg-secondary "
                       style="width:50px"
                       v-model="cantidad"
-                    />
+                    />                    
                   </div>
                   <div class="input-group-prepend">
                     <span
@@ -121,7 +109,7 @@
                         0 && 'bg-pink'}`
                     "
                   >
-                  <div class="text-center col-1 ">
+                  <div class="text-center col-1 " @click="eliminarDetalleCarrito(detalle)">
                       <h5><i class="fas fa-trash text-danger" /></h5>
                     </div>
                     <div class="col-1">
@@ -158,11 +146,13 @@
                         type="number"
                         v-model="detalle.cantidad"
                         placeholder="Cantidad"
-                        style="width:30px;"
+                        style="width:40px;"
                         min="1"
                         max="999"
                         maxlength="3"
-                      />
+                        v-on:keyup.enter="recalcularPorEnter(detalle)"
+                        @change="recalcularPorEnter(detalle)"
+                      />                      
                       <i
                         class="fas fa-plus pointer"
                         @click="sumarCantidad(detalle)"
@@ -180,124 +170,10 @@
                   </div>
                 </span>
               </div>
-              <!--<div class="fixed-absolute ">-->
-              <!--<div class="fixed-sticky  ">
-                <div class="card bg-gray" style="background-color:#fff;">
-                  <div class="card-body">
-                    <div class="row">
-                      <div class="col-9 text-right">
-                        Articulos:
-                      </div>
-                      <div class="col-3  text-left">
-                        <div
-                          class="input-group input-group-lg "
-                          style="background-color:#716173;border:#716173"
-                        >
-                          <div class="input-group-prepend ">
-                            <span
-                              class="input-group-text text-white"
-                              style="background-color:#716173;border:#716173"
-                              id="inputGroup-sizing-lg"
-                              >Total:
-                            </span>
-                          </div>
-                          <div class="input-group-prepend ">
-                            <span
-                              class="input-group-text text-white"
-                              style="background-color:#716173;border:#716173"
-                              id="inputGroup-sizing-lg"
-                              >$ {{ formatPrice(total) }}
-                            </span>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>-->
+             
             </div>
           </div>
-          <!-- Catalogo de productos -->
-          <!--
-          <div class="col-12 col-sm-12 col-md-12 col-lg-5 col-xl-5 p-1 ">
-            <div class="card border border-light">
-              <div>
-                <div class="btn-group btn-group-toggle" data-toggle="buttons">
-                  <label class="btn btn-light active">
-                    <input
-                      type="radio"
-                      name="options"
-                      id="option1"
-                      autocomplete="off"
-                      checked
-                    />
-                    Active
-                  </label>
-                  <label class="btn btn-secondary">
-                    <input
-                      type="radio"
-                      name="options"
-                      id="option2"
-                      autocomplete="off"
-                    />
-                    Radio
-                  </label>
-                  <label class="btn btn-secondary">
-                    <input
-                      type="radio"
-                      name="options"
-                      id="option3"
-                      autocomplete="off"
-                    />
-                    Radio
-                  </label>
-                </div>
-              </div>
-              <div class="card-body border  ">              
-              
-                <div class="row">
-                  <div
-                    class="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-4 m-0 p-1 card-group"
-                    v-for="producto in catalogoArticulos"
-                    :key="producto.id"
-                  >
-                    <div class="card border-light">
-                      <div class="d-flex justify-content-end m-2">
-                        <div class="btn-group" role="group">
-                          $ {{ producto.precio }}
-                        </div>
-                      </div>
-
-                      <img
-                        class="card-img-top pointer rounded-circle mx-auto"
-                        style="width:100px"
-                        :src="producto.foto"
-                        alt="Foto"
-                        title="seleccionar"
-                      />
-
-                      <div class="card-body p-1 pointer">
-                        <h4 class="card-text text-truncate">
-                          {{ producto.nombre }}
-                        </h4>
-                        <h5 class="card-text pt-0 small text-truncate">
-                           {{ producto.descripcion }}
-                        </h5>
-                        <h6 class="badge badge-info text-wrap">
-                          {{ producto.marca }}
-                        </h6>
-                        <small class="text-muted">{{
-                          producto.categoria
-                        }}</small>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-            </div>
-          </div>
-          -->
+         
         </div>
       </div>
     </div>
@@ -322,7 +198,7 @@
                   placeholder="Buscar por nombre.."
                   v-model="criterioNombre"
                   v-on:keyup.enter="buscarPorCriterioNombre()"
-                  aria-label="Buscar por nombre.."
+                  aria-label="Buscar articulo ..."
                   autofocus
                 />
                 <div class="input-group-append">
@@ -352,7 +228,7 @@
                       v-for="prod in articulosEncontradosCriterio"
                       :key="prod.id"
                     >
-                      <td class="p-0 m-0 bg-gray">
+                      <td class="p-0 m-0">
                         <img
                           v-if="prod.foto"
                           alt
@@ -377,8 +253,10 @@
                         }}</small>
                         <h5>{{ prod.marca }}</h5>
                       </td>
-                      <td class="m-0 h2">${{ formatPrice(prod.precio) }}</td>
-                      <td class="m-0 h2">Agregar</td>
+                      <td class="m-0 h2"><h2>${{ formatPrice(prod.precio) }}</h2></td>
+                      <td class="m-0 " @click="agregarProductoBusqueda(prod)">
+                        <h1><i class="fas fa-plus text-primary"></i></h1>
+                      </td>
                     </tr>
                   </tbody>
                 </table>
@@ -396,6 +274,44 @@
                     </div>
                   </div>
                 </div>-->
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-dismiss="modal"
+            >
+              Cerrar
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <!-- fuin buscar producto-->
+
+
+
+    <!-- Cobrar -->
+    <div
+      id="cobrar"
+      class="modal fade"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="myLargeModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content">
+          <div class="modal-body">
+            <div class="card-body border  ">          
+              <div class="table-responsive">
+                <table class="table table-sm table-striped">                
+                  <tbody class="scroll-tbody-y table-body">                    
+                        
+                  </tbody>
+                </table>
+              </div>          
             </div>
           </div>
           <div class="modal-footer">
@@ -496,6 +412,11 @@ export default {
       this.criterioNombre = "";
       $("#buscar-producto").modal("show");
     },
+    iniciarNuevaVenta(){
+      this.venta = new VeVenta();
+      this.ventaDetalle = new VeVentaDetalle();
+      this.listaDetalleVenta = [];
+    },
     async buscarPorCriterioNombre() {
       console.log("buscar por criterio " + this.criterioNombre);
       this.loaderBuscar = true;
@@ -505,6 +426,11 @@ export default {
         }`
       );
       this.loaderBuscar = false;
+    },
+    async agregarProductoBusqueda(item) {
+        this.cantidad = 1;
+        this.codigo = item.codigo;
+        await this.buscarCodigo();
     },
     async buscarCodigo() {
       console.log("buscar codigo" + this.codigo);
@@ -557,13 +483,23 @@ export default {
 
       this.loaderCodigo = false;
     },
+    recalcularPorEnter(detalle){
+      
+      const nuevoImporte = Number(detalle.cantidad * detalle.precio);
 
+      detalle.setImporte(nuevoImporte);
+      this.calcularTotal();
+    },  
+    eliminarDetalleCarrito(item){
+       this.listaDetalleVenta = removeItemArray(this.listaDetalleVenta,item);
+       this.calcularTotal();
+    },
     sumarCantidad(row) {
       this.modificarCantidad(row, AFECTACION.SUMAR);
     },
     restarCantidad(row) {
       this.modificarCantidad(row, AFECTACION.RESTAR);
-    },
+    },    
     modificarCantidad(row, afectacion) {
       if (this.cantidad == null || this.cantidad == 0) {
         this.$notificacion.warn("Escribe la Cantidad", "Escribe el Cantidad.");
@@ -573,14 +509,21 @@ export default {
       let nuevaCantidad;
 
       if (afectacion == AFECTACION.SUMAR) {
-        nuevaCantidad = row.cantidad + this.cantidad;
+        //nuevaCantidad = row.cantidad + this.cantidad;
+        nuevaCantidad =  row.cantidad +1;
       }
       if (afectacion == AFECTACION.RESTAR) {
-        nuevaCantidad = row.cantidad - this.cantidad;
+        //nuevaCantidad = row.cantidad - this.cantidad;
+        nuevaCantidad = row.cantidad-1;
       }
       const nuevoImporte = Number(nuevaCantidad * row.precio);
 
       row.setCantidad(nuevaCantidad).setImporte(nuevoImporte);
+      
+      this.calcularTotal();
+    },
+    iniciarCobrar(){
+
     },
     calcularTotal() {
       let totalTemp = 0;
@@ -597,6 +540,14 @@ export default {
     }
   }
 };
+
+function removeItemArray(arr, value) {
+  var index = arr.indexOf(value);
+  if (index > -1) {
+    arr.splice(index, 1);
+  }
+  return arr;
+}
 </script>
 
 <style scoped>
