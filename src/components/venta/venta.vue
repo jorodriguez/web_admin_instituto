@@ -24,7 +24,15 @@
                      Buscar
                   </button>
                 </li>
-                <li><a class="page-link" href="#">Cobrar</a></li>
+                <li>
+                <button
+                    @click="iniciarCobrar()"
+                    class="page-link"
+                    href="#"
+                  >
+                     Cobrar
+                  </button>
+                </li>
                 <li>
                   <a class="page-link text-red" @click="salir()" href="#"
                     >Salir</a
@@ -33,14 +41,21 @@
               </ul>
             </nav>
           </div>
-          <div class="col border">
-            <div class="row border">
+          <div class="col ">
+            <div class="row ">
               <div class="col-4 text-right"></div>
-              <div class="col-3  text-right">
+              <div class="col-3 align-items-center justify-content-center">
                 <h1>Total</h1>
               </div>
-              <div class="col-5 bg-dark  rounded text-left">
-                <h1 class="text-white">${{ formatPrice(total) }}</h1>
+              <div class="col-5  rounded text-left">
+                <!--<h1 class="text-white">${{ formatPrice(total) }}</h1>.-->                
+                      <input
+                          type="text"
+                          class="form-control form-control-lg bg-dark"                          
+                          :value="`$${formatPrice(total)}`"                          
+                           style="color:#fff;font-size:25px"           
+                          disabled                          
+                        />
                 
               </div>
             </div>
@@ -86,6 +101,7 @@
                   <input
                     type="text"
                     class="form-control font-weight-bold"
+                    ref="input_buscar_codigo"
                     aria-label="Default"
                     placeholder="Código"
                     :readonly="loaderCodigo"
@@ -195,6 +211,7 @@
                 <input
                   type="text"
                   class="form-control"
+                  ref="input_buscar_producto"
                   placeholder="Buscar por nombre.."
                   v-model="criterioNombre"
                   v-on:keyup.enter="buscarPorCriterioNombre()"
@@ -281,6 +298,7 @@
               type="button"
               class="btn btn-secondary"
               data-dismiss="modal"
+             @click="cerrarPopupYFocusBuscarCodigo()"
             >
               Cerrar
             </button>
@@ -294,31 +312,78 @@
 
     <!-- Cobrar -->
     <div
-      id="cobrar"
+      id="popup_cobrar"
       class="modal fade"
       tabindex="-1"
       role="dialog"
       aria-labelledby="myLargeModalLabel"
       aria-hidden="true"
     >
-      <div class="modal-dialog modal-lg modal-dialog-centered">
+      <div class="modal-dialog modal-sm modal-dialog-centered">
         <div class="modal-content">
           <div class="modal-body">
-            <div class="card-body border  ">          
-              <div class="table-responsive">
-                <table class="table table-sm table-striped">                
-                  <tbody class="scroll-tbody-y table-body">                    
+            <div class="card-body border  ">  
+            <div class="row d-flex align-items-center">
+              <div class="col col-sm-4 text-left h2">Total</div>
+              <div class="col">
+                    <input
+                        type="text"
+                          class="form-control form-control-lg bg-dark text-white"    
+                          style="color:#fff;font-size:30px"                                                
+                          :value="`$${formatPrice(total)}`"
+                          disabled             
+                       />
                         
-                  </tbody>
-                </table>
-              </div>          
+                    
+              </div>
             </div>
+            <div class="row d-flex align-items-center">
+              <div class="col col-sm-4  text-left h2">Recibe</div>
+              <div class="col">
+                    <input id="input_recibe"
+                          name="input_recibe"
+                          ref="input_recibe"
+                          type="number"
+                          class="form-control form-control-lg"                          
+                          style="color:#CF0476;font-size:30px"                      
+                          v-model="recibe"       
+                          @keyup.enter="cobrar()"
+                          :disabled="loaderCobro"
+                          autofocus 
+                        />
+              </div>
+            </div>
+            <div class="row d-flex align-items-center">
+              <div class="col col-sm-4 text-left  h2">Cambio</div>
+              <div class="col">
+                    <input
+                          type="text"
+                          class="form-control form-control-lg "                          
+                          style="font-size:30px"                      
+                          :value="`$${formatPrice(cambio)}`"
+                          disabled                          
+                        />
+              </div>
+            </div>                              
+            </div>
+            <span v-if="mensajeCobro" class="text-danger">{{mensajeCobro}}</span>
+            <span v-if="activarBotonCobro" class="text-primary">Oprime enter de nuevo para seguir</span>
           </div>
-          <div class="modal-footer">
+          <div class="modal-footer mx-auto">
+            <button
+              type="button"
+              class="btn btn-success btn-xl"
+              data-dismiss="modal"
+              :disabled="!activarBotonCobro || loaderCobro"
+            >
+             <span v-if="loaderCobro" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+              Cobrar
+            </button>
             <button
               type="button"
               class="btn btn-secondary"
               data-dismiss="modal"
+              @click="cerrarPopupYFocusBuscarCodigo()"
             >
               Cerrar
             </button>
@@ -370,9 +435,15 @@ export default {
       loaderBuscar: false,
       loaderCodigo: false,
       loaderCatalogo: false,
+      loaderCobro: false,
       mensajeCodigo: "",
+      mensajeCobro: "",
       criterioNombre: "",
-      formatPrice: formatPrice
+      recibe:0,
+      cambio:0,
+      formatPrice: formatPrice,
+      countEnterCobro:0,
+      activarBotonCobro:false,
     };
   },
   mounted() {
@@ -380,6 +451,10 @@ export default {
     this.usuarioSesion = getUsuarioSesion();
     this.$root.mostrarSidebar = false;
     this.init();
+    /*window.addEventListener("keypress", e => {
+      console.log("presiono tecla"+e);      
+      
+    });*/
   },
   methods: {
     async init() {
@@ -411,6 +486,9 @@ export default {
     iniciarBuscarProducto() {
       this.criterioNombre = "";
       $("#buscar-producto").modal("show");
+      setTimeout(x => {            
+            this.$nextTick(() => this.setFocusBuscar()); 
+      }, 500);   
     },
     iniciarNuevaVenta(){
       this.venta = new VeVenta();
@@ -522,7 +600,103 @@ export default {
       
       this.calcularTotal();
     },
+    setFocusRecibe(){
+          this.$refs.input_recibe.focus();
+    },
+    setFocusBuscar(){
+          this.$refs.input_buscar_producto.focus();
+    },
+    setFocusBuscarCodigo(){
+          this.$refs.input_buscar_codigo.focus();
+    },
+    cerrarPopupYFocusBuscarCodigo(){
+        setTimeout(x => {            
+            this.$nextTick(() => this.setFocusBuscarCodigo()); 
+        }, 500);       
+    },
     iniciarCobrar(){
+      this.mensajeCobro = "";
+      this.cambio = 0;
+      this.countEnterCobro = 0;
+      this.activarBotonCobro = false;
+       
+      if(this.total > 0 && this.totalArticulos > 0){
+        
+      /*$('#popup_cobrar').on('show.bs.modal', function (event) {        
+        let modal = $(this)                  
+          $('#input_recibe').focus()
+      });*/
+        
+        this.recibe = undefined;
+        $("#popup_cobrar").modal("show");              
+
+        setTimeout(x => {            
+            this.$nextTick(() => this.setFocusRecibe()); 
+        }, 700);       
+           
+      }else{
+          this.$notificacion.warn("Selecciona productos", "");
+      }      
+    },
+    async cobrar(){
+        this.mensajeCobro ="";
+
+        if(!this.recibe){
+            this.mensajeCobro = `Escribe la cantidad recibida.`;
+            return;
+        }
+        
+        //verificar lo recibido sea mayor al total
+        if(this.recibe < this.total){
+            this.mensajeCobro = `Lo recibido debe ser mayor a ${formatPrice(this.total)}`;
+            return;
+        }
+
+        this.cambio = (this.recibe - this.total);
+        
+        if(this.countEnterCobro > 1 ){ //confirmo el primer enter
+              this.mensajeCobrar ='Espere...';
+              this.loaderCobro = true;
+
+              //proceder a guardar el pago
+              const venta =  new VeVenta();
+                  venta.setTotal(this.total)
+                        .setCantidadArticulos(this.totalArticulos)
+                        .setRecibido(this.recibe)
+                        .setCoSucursal(this.usuarioSesion.co_sucursal)
+                        .setCoEmpresa(this.usuarioSesion.id_empresa)                        
+                        .setCambio(this.cambio)
+                        .setNotaVenta('')
+                        .setCatCliente(1)
+                        .setGenero(this.usuarioSesion.id)
+                        .buildForInsert();
+
+              const data = {
+                venta:venta,
+                detalleVenta: this.listaDetalleVenta,
+                co_empresa:this.usuarioSesion.id_empresa,
+                co_sucursal:this.usuarioSesion.co_sucursal,
+                genero : this.usuarioSesion.id
+              };
+
+            const ventaGuardada = await this.postAsync(`${URL.VENTA}`,data);
+             console.log(ventaGuardada);
+             if(ventaGuardada.error){
+                 this.mensajeCobro = `Ups¡ existió un error al guardar la venta, ponte en contacto con el equipo de soporte.`;  
+                 this.loaderCobro = true;
+             }else{
+                  this.mensajeCobrar ='Venta realizada';
+                  $("#popup_cobrar").modal("hide");              
+                  this.iniciarNuevaVenta();
+                  this.loaderCobro = false;
+                  this.cerrarPopupYFocusBuscarCodigo();
+                  //consultar ticker
+             }                       
+
+        }
+
+        this.countEnterCobro++;      
+        this.activarBotonCobro = true;  
 
     },
     calcularTotal() {

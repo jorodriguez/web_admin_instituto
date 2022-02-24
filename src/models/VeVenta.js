@@ -101,4 +101,17 @@ export default  class VeVenta {
       recibido: this.recibido
     };
   }
+  buildForInsert() {
+    return {      
+      co_empresa: this.co_empresa,
+      co_sucursal: this.co_sucursal,
+      cat_cliente: this.cat_cliente,
+      genero: this.genero,      
+      nota_venta: this.nota_venta,
+      cambio: this.cambio,            
+      total: this.total,            
+      cantidad_articulos: this.cantidad_articulos,
+      recibido: this.recibido
+    };
+  }
 }
