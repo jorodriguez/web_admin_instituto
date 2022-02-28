@@ -2,7 +2,7 @@
   <div class="ventas">
     <h2>Terminal de Venta</h2>
     <!--<small>{{ usuarioSesion.nombre_sucursal }}</small>    -->
-    <ul class="nav nav-tabs nav-justified" id="pills-tab" role="tablist">
+    <ul class="nav nav-tabs nav-justified " id="pills-tab" role="tablist">
       <li class="nav-item">
         <a
           class="nav-link active"
@@ -25,6 +25,7 @@
           role="tab"
           aria-controls="pills-consultas"
           aria-selected="false"
+          @click="clickConsulta()"
         >
           Consulta
         </a>
@@ -50,12 +51,10 @@
         role="tabpanel"
         aria-labelledby="pills-home-tab"
       >
-        <div class="card">
-          <div class="card-body">
+        
             <!-- ventas -->
             <Venta />
-          </div>
-        </div>
+        
       </div>
       <!-- Consultas -->
       <div
@@ -66,7 +65,8 @@
       >
         <div class="card">
           <div class="card-body">
-            Consultas de ventas
+              <div v-if="loader" class="spinner-border text-primary" role="status"/>
+            <VentasSucursal  :lista="listaVentas"/>
           </div>
         </div>
       </div>
@@ -94,21 +94,23 @@ import { operacionesApi } from "../../helpers/OperacionesApi";
 import { getUsuarioSesion } from "../../helpers/Sesion";
 import URL from "../../helpers/Urls";
 import Venta from "./venta.vue";
+import VentasSucursal from "./ventasSucursal.vue";
 import Popup from "../../controller/Popup";
 
 export default {
   name: "tabla-alumnos",
   components: {
     Popup,
-    Venta
+    Venta,
+    VentasSucursal
   },
-  mixins: [operacionesApi],
-  props: ["listaInscripciones", "reload", "mostrar_acciones"],
+  mixins: [operacionesApi],  
   data() {
     return {
       usuarioSesion: {},
       operacion: "",
-      loader: false
+      loader: false,
+      listaVentas:[]
     };
   },
   mounted() {
@@ -118,7 +120,16 @@ export default {
     //this.init();
   },
   methods: {
-    init() {}
+    init() {},
+    async clickConsulta(){
+      //  await this.cargarLista();
+    },
+    /*async cargarLista(){
+        this.loader =true;
+        this.listaVentas = await this.putAsync(`${URL.VENTA}/sucursal/${this.usuarioSesion.co_sucursal}`,{fecha:this.fecha});        
+        console.log(this.listaVentas)
+        this.loader =false;
+    }*/
   }
 };
 </script>

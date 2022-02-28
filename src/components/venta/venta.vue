@@ -1,197 +1,172 @@
 <template>
-  <div class="ventas">
-    <div class="card">
-      <div class="card-body ">
-        <div class="row mt-1 ">
-          <div class="col border">
-            <nav aria-label="...">
-              <ul class="pagination pagination-lg border">
-                <li>
-                <button
-                    @click="iniciarNuevaVenta()"
-                    class="page-link"
-                    href="#"
-                  >
-                     Nueva
-                  </button>
-                </li>
-                <li>
-                  <button
-                    @click="iniciarBuscarProducto()"
-                    class="page-link"
-                    href="#"
-                  >
-                     Buscar
-                  </button>
-                </li>
-                <li>
-                <button
-                    @click="iniciarCobrar()"
-                    class="page-link"
-                    href="#"
-                  >
-                     Cobrar
-                  </button>
-                </li>
-                <li>
-                  <a class="page-link text-red" @click="salir()" href="#"
-                    >Salir</a
-                  >
-                </li>
-              </ul>
-            </nav>
-          </div>
-          <div class="col ">
-            <div class="row ">
-              <div class="col-4 text-right"></div>
-              <div class="col-3 align-items-center justify-content-center">
-                <h1>Total</h1>
-              </div>
-              <div class="col-5  rounded text-left">
-                <!--<h1 class="text-white">${{ formatPrice(total) }}</h1>.-->                
-                      <input
-                          type="text"
-                          class="form-control form-control-lg bg-dark"                          
-                          :value="`$${formatPrice(total)}`"                          
-                           style="color:#fff;font-size:25px"           
-                          disabled                          
-                        />
-                
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <div class="row ">
-          <!-- Carrito de venta -->
-          <!--<div class="col-12 col-sm-12 col-md-12 col-lg-7 col-xl-7 p-1 ">-->
-          <div class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-12 p-1 ">
-            <div class="card border border-light p-1">
-              <div>
-                <small v-if="mensajeCodigo" class="text-danger">{{
-                  mensajeCodigo
-                }}</small>
-                <div class="input-group ">
-                  <div class="input-group-prepend mr-1">
-                    <span class="input-group-text border-0" id="basic-addon1"
-                      >Cant</span
-                    >
-                    <input
-                      type="number"
-                      class="form-control ml-1 bg-secondary "
-                      style="width:50px"
-                      v-model="cantidad"
-                    />                    
-                  </div>
-                  <div class="input-group-prepend">
-                    <span
-                      class="input-group-text"
-                      id="inputGroup-sizing-default"
-                    >
-                      <i
-                        :class="
-                          `fas fa-barcode ${loaderCodigo ? 'text-red' : ''}`
-                        "
-                      ></i>
-                      <!--<div v-if="loaderCodigo" class="spinner-border text-light" role="status">
-                          
-                      </div>-->
-                    </span>
-                  </div>
-                  <input
-                    type="text"
-                    class="form-control font-weight-bold"
-                    ref="input_buscar_codigo"
-                    aria-label="Default"
-                    placeholder="Código"
-                    :readonly="loaderCodigo"
-                    v-model="codigo"
-                    @keyup.enter="buscarCodigo()"
-                    aria-describedby="inputGroup-sizing-default"
-                    autofocus
-                  />
-                </div>
-              </div>
-              <div class="card-body border scroll">
-                <span
-                  v-for="(detalle, index) in listaDetalleVenta"
-                  :key="detalle.id"
-                >
-                
-                  <div
-                    :class="
-                      `row  border-bottom border-secondary pt-1 pb-1 ${index %
-                        2 !=
-                        0 && 'bg-pink'}`
-                    "
-                  >
-                  <div class="text-center col-1 " @click="eliminarDetalleCarrito(detalle)">
-                      <h5><i class="fas fa-trash text-danger" /></h5>
-                    </div>
-                    <div class="col-1">
-                      <img
-                        v-if="detalle.foto"
-                        alt
-                        :src="detalle.foto"
-                        class="pointer mr-3 "
-                        width="100"
-                      />
-                      <div
-                        v-else
-                        alt
-                        class="pointer border border-gray mr-3 bg-light"
-                        height="100"
-                      />
-                    </div>
-                    <div class="text-left col-7 ">
-                      <h4>
-                        {{ detalle.articulo }}
-                      </h4>
-                      <small class="font-weight-normal text-wrap">{{
-                        detalle.descripcion
-                      }}</small>
-                      <h5>{{ detalle.marca }}</h5>
-                    </div>
-                    <div class="text-left col-1 ">
-                      <i
-                        class="fas fa-minus pointer"
-                        @click="restarCantidad(detalle)"
-                      />
-                      <input
-                        id="inputCargo"
-                        type="number"
-                        v-model="detalle.cantidad"
-                        placeholder="Cantidad"
-                        style="width:40px;"
-                        min="1"
-                        max="999"
-                        maxlength="3"
-                        v-on:keyup.enter="recalcularPorEnter(detalle)"
-                        @change="recalcularPorEnter(detalle)"
-                      />                      
-                      <i
-                        class="fas fa-plus pointer"
-                        @click="sumarCantidad(detalle)"
-                      />
-                    </div>
-                    <div class="text-left col-1 ">
-                      <span class="h3">${{ formatPrice(detalle.precio) }}</span>
-                    </div>
-                    <div class="text-left col-1 ">
-                      <span class="h3"
-                        >${{ formatPrice(detalle.importe) }}</span
-                      >
-                    </div>
-                    
-                  </div>
-                </span>
-              </div>
-             
-            </div>
-          </div>
-         
+  <span>
+    <div class="row  mt-1 ">
+      <div class="col col-12 col-md-6 col-sm-6 col-xl-6  d-flex align-items-start justify-content-start  text-left ">
+        <div class="btn-group btn-group-lg" role="group" aria-label="...">
+          <button @click="iniciarNuevaVenta()" class="btn btn-light btn-lg" href="#">
+            Nueva
+          </button>
+          <button @click="iniciarBuscarProducto()" class="btn btn-light btn-lg" href="#">
+            Buscar
+          </button>
+          <button @click="iniciarCobrar()" class="btn btn-light btn-lg" href="#">
+            Cobrar
+          </button>
         </div>
       </div>
+      <div class="col col-12 col-md-6 col-sm-6 col-xl-6 ">
+        <div class="row ">          
+          <div
+            class="col-12 col-md-6 col-sm-6 col-xl-6  d-flex align-items-end  justify-content-end text-right"
+          >
+            <h1>Total</h1>
+          </div>
+          <div class="col-12 col-md-6 col-sm-12 col-xs-12 col-xl-6 rounded text-left">
+            <!--<h1 class="text-white">${{ formatPrice(total) }}</h1>.-->
+            <input
+              type="text"
+              class="form-control form-control-lg bg-dark"
+              :value="`$${formatPrice(total)}`"
+              style="color:#fff;font-size:25px"
+              disabled
+            />
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="row  ">
+      <!-- Carrito de venta -->
+      <!--<div class="col-12 col-sm-12 col-md-12 col-lg-7 col-xl-7 p-1 ">-->
+      
+        <div class="card-body border border-light p-1">
+          <div>
+            <small v-if="mensajeCodigo" class="text-danger">{{
+              mensajeCodigo
+            }}</small>
+            <div class="input-group ">
+              <div class="input-group-prepend mr-1">
+                <span class="input-group-text border-0" id="basic-addon1"
+                  >Cant</span
+                >
+                <input
+                  type="number"
+                  class="form-control ml-1 bg-secondary "
+                  style="width:50px"
+                  v-model="cantidad"
+                  disabled
+                />
+              </div>
+              <div class="input-group-prepend">
+                <span class="input-group-text" id="inputGroup-sizing-default">
+                  <i
+                    :class="`fas fa-barcode ${loaderCodigo ? 'text-red' : ''}`"
+                  ></i>
+                  <!--<div v-if="loaderCodigo" class="spinner-border text-light" role="status">
+                          
+                      </div>-->
+                </span>
+              </div>
+              <input
+                type="text"
+                class="form-control font-weight-bold"
+                ref="input_buscar_codigo"
+                aria-label="Default"
+                placeholder="Código"
+                :readonly="loaderCodigo"
+                v-model="codigo"
+                @keyup.enter="buscarCodigo()"
+                aria-describedby="inputGroup-sizing-default"
+                autofocus
+              />
+            </div>
+          </div>
+          <div class="card-body border scroll">
+            <span
+              v-for="(detalle, index) in listaDetalleVenta"
+              :key="detalle.id"
+            >
+              <div
+                :class="
+                  `row  border-bottom border-secondary pt-1 pb-1 ${index % 2 !=
+                    0 && 'bg-pink'}`
+                "
+              >
+                <div
+                  class="col-12 col-sm-12 col-md-12 col-lg-1 col-xl-1 d-flex align-items-center align-self-center justify-content-center "
+                  @click="confirmEliminarDetalle(detalle)"
+                >
+                  <h5><i class="fas fa-trash text-danger" /></h5>
+                </div>
+                <div class="col-12 col-sm-12 col-md-12 col-lg-1 col-xl-1 ">
+                  <img
+                    v-if="detalle.foto"
+                    alt
+                    :src="detalle.foto"
+                    class="pointer mr-3 "
+                    width="60"
+                  />
+                  <div
+                    v-else
+                    alt
+                    class="pointer border border-gray mr-3 bg-light"
+                    height="70"
+                  />
+                </div>
+                <div class="text-left col-12 col-sm-12 col-md-12 col-lg-1 col-xl-7  ">
+                  <h4>
+                    {{ detalle.articulo }}
+                  </h4>
+                  <small class="font-weight-normal text-wrap">{{
+                    detalle.descripcion
+                  }}</small>
+                  <h5>{{ detalle.marca }}</h5>
+                </div>
+                <div class="text-left col-12 col-sm-12 col-md-12 col-lg-1 col-xl-1 d-flex align-items-center align-self-center justify-content-center">
+                  <i
+                    :class="
+                      `fas fa-minus pointer ${detalle.cantidad == 1 &&
+                        'text-gray'}`
+                    "
+                    @click="
+                      () => {
+                        if (detalle.cantidad > 1) restarCantidad(detalle);
+                      }
+                    "
+                  />
+                  <input
+                    id="inputCargo"
+                    type="number"
+                    v-model="detalle.cantidad"
+                    placeholder="Cantidad"
+                    style="width:40px;"
+                    min="1"
+                    max="999"
+                    maxlength="3"
+                    oninput="validity.valid||(value='');"
+                    v-on:keyup.enter="recalcularPorEnter(detalle)"
+                    @change="() => recalcularPorEnter(detalle)"
+                  />
+                  <i
+                    class="fas fa-plus pointer"
+                    @click="sumarCantidad(detalle)"
+                  />
+                </div>
+                <div
+                  class="text-left col-12 col-sm-12 col-md-12 col-lg-1 col-xl-1  d-flex align-items-center align-self-center justify-content-center "
+                >
+                  <span class="h3">${{ formatPrice(detalle.precio) }}</span>
+                </div>
+                <div
+                  class="text-left col-12 col-sm-12 col-md-12 col-lg-1 col-xl-1  d-flex align-items-center align-self-center justify-content-center "
+                >
+                  <span class="h3">${{ formatPrice(detalle.importe) }}</span>
+                </div>
+              </div>
+            </span>
+          </div>
+        </div>
+      
     </div>
 
     <!-- buscar producto -->
@@ -270,7 +245,9 @@
                         }}</small>
                         <h5>{{ prod.marca }}</h5>
                       </td>
-                      <td class="m-0 h2"><h2>${{ formatPrice(prod.precio) }}</h2></td>
+                      <td class="m-0 h2">
+                        <h2>${{ formatPrice(prod.precio) }}</h2>
+                      </td>
                       <td class="m-0 " @click="agregarProductoBusqueda(prod)">
                         <h1><i class="fas fa-plus text-primary"></i></h1>
                       </td>
@@ -298,7 +275,7 @@
               type="button"
               class="btn btn-secondary"
               data-dismiss="modal"
-             @click="cerrarPopupYFocusBuscarCodigo()"
+              @click="cerrarPopupYFocusBuscarCodigo()"
             >
               Cerrar
             </button>
@@ -307,8 +284,6 @@
       </div>
     </div>
     <!-- fuin buscar producto-->
-
-
 
     <!-- Cobrar -->
     <div
@@ -322,52 +297,55 @@
       <div class="modal-dialog modal-sm modal-dialog-centered">
         <div class="modal-content">
           <div class="modal-body">
-            <div class="card-body border  ">  
-            <div class="row d-flex align-items-center">
-              <div class="col col-sm-4 text-left h2">Total</div>
-              <div class="col">
-                    <input
-                        type="text"
-                          class="form-control form-control-lg bg-dark text-white"    
-                          style="color:#fff;font-size:30px"                                                
-                          :value="`$${formatPrice(total)}`"
-                          disabled             
-                       />
-                        
-                    
+            <div class="card-body border  ">
+              <div class="row d-flex align-items-center">
+                <div class="col col-sm-4 text-left h2">Total</div>
+                <div class="col">
+                  <input
+                    type="text"
+                    class="form-control form-control-lg bg-dark text-white"
+                    style="color:#fff;font-size:30px"
+                    :value="`$${formatPrice(total)}`"
+                    disabled
+                  />
+                </div>
+              </div>
+              <div class="row d-flex align-items-center">
+                <div class="col col-sm-4  text-left h2">Recibe</div>
+                <div class="col">
+                  <input
+                    id="input_recibe"
+                    name="input_recibe"
+                    ref="input_recibe"
+                    type="number"
+                    class="form-control form-control-lg"
+                    style="color:#CF0476;font-size:30px"
+                    v-model="recibe"
+                    @keyup.enter="cobrar()"
+                    :disabled="loaderCobro"
+                    autofocus
+                  />
+                </div>
+              </div>
+              <div class="row d-flex align-items-center">
+                <div class="col col-sm-4 text-left  h2">Cambio</div>
+                <div class="col">
+                  <input
+                    type="text"
+                    class="form-control form-control-lg "
+                    style="font-size:30px"
+                    :value="`$${formatPrice(cambio)}`"
+                    disabled
+                  />
+                </div>
               </div>
             </div>
-            <div class="row d-flex align-items-center">
-              <div class="col col-sm-4  text-left h2">Recibe</div>
-              <div class="col">
-                    <input id="input_recibe"
-                          name="input_recibe"
-                          ref="input_recibe"
-                          type="number"
-                          class="form-control form-control-lg"                          
-                          style="color:#CF0476;font-size:30px"                      
-                          v-model="recibe"       
-                          @keyup.enter="cobrar()"
-                          :disabled="loaderCobro"
-                          autofocus 
-                        />
-              </div>
-            </div>
-            <div class="row d-flex align-items-center">
-              <div class="col col-sm-4 text-left  h2">Cambio</div>
-              <div class="col">
-                    <input
-                          type="text"
-                          class="form-control form-control-lg "                          
-                          style="font-size:30px"                      
-                          :value="`$${formatPrice(cambio)}`"
-                          disabled                          
-                        />
-              </div>
-            </div>                              
-            </div>
-            <span v-if="mensajeCobro" class="text-danger">{{mensajeCobro}}</span>
-            <span v-if="activarBotonCobro" class="text-primary">Oprime enter de nuevo para seguir</span>
+            <span v-if="mensajeCobro" class="text-danger">{{
+              mensajeCobro
+            }}</span>
+            <span v-if="activarBotonCobro" class="text-primary"
+              >Oprime enter de nuevo para seguir</span
+            >
           </div>
           <div class="modal-footer mx-auto">
             <button
@@ -376,7 +354,12 @@
               data-dismiss="modal"
               :disabled="!activarBotonCobro || loaderCobro"
             >
-             <span v-if="loaderCobro" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+              <span
+                v-if="loaderCobro"
+                class="spinner-border spinner-border-sm"
+                role="status"
+                aria-hidden="true"
+              ></span>
               Cobrar
             </button>
             <button
@@ -392,7 +375,7 @@
       </div>
     </div>
     <!-- fuin buscar producto-->
-  </div>
+  </span>
 </template>
 
 <script>
@@ -415,7 +398,6 @@ export default {
     Popup
   },
   mixins: [operacionesApi],
-  props: ["listaInscripciones", "reload", "mostrar_acciones"],
   data() {
     return {
       uidCurso: "",
@@ -439,11 +421,11 @@ export default {
       mensajeCodigo: "",
       mensajeCobro: "",
       criterioNombre: "",
-      recibe:0,
-      cambio:0,
+      recibe: 0,
+      cambio: 0,
       formatPrice: formatPrice,
-      countEnterCobro:0,
-      activarBotonCobro:false,
+      countEnterCobro: 0,
+      activarBotonCobro: false
     };
   },
   mounted() {
@@ -485,15 +467,21 @@ export default {
     },
     iniciarBuscarProducto() {
       this.criterioNombre = "";
+      this.articulosEncontradosCriterio = [];
       $("#buscar-producto").modal("show");
-      setTimeout(x => {            
-            this.$nextTick(() => this.setFocusBuscar()); 
-      }, 500);   
+      setTimeout(x => {
+        this.$nextTick(() => this.setFocusBuscar());
+      }, 500);
     },
-    iniciarNuevaVenta(){
+    iniciarNuevaVenta() {
       this.venta = new VeVenta();
       this.ventaDetalle = new VeVentaDetalle();
       this.listaDetalleVenta = [];
+      this.mensajeCobro = "";
+      this.cambio = 0;
+      this.total = 0;
+      this.countEnterCobro = 0;
+      this.activarBotonCobro = false;
     },
     async buscarPorCriterioNombre() {
       console.log("buscar por criterio " + this.criterioNombre);
@@ -506,9 +494,9 @@ export default {
       this.loaderBuscar = false;
     },
     async agregarProductoBusqueda(item) {
-        this.cantidad = 1;
-        this.codigo = item.codigo;
-        await this.buscarCodigo();
+      this.cantidad = 1;
+      this.codigo = item.codigo;
+      await this.buscarCodigo();
     },
     async buscarCodigo() {
       console.log("buscar codigo" + this.codigo);
@@ -561,25 +549,30 @@ export default {
 
       this.loaderCodigo = false;
     },
-    recalcularPorEnter(detalle){
-      
+    recalcularPorEnter(detalle) {
+      console.log("recalcular por enter");
+      if (detalle.cantidad <= 0) {
+        detalle.cantidad = 1;
+      }
+
       const nuevoImporte = Number(detalle.cantidad * detalle.precio);
 
       detalle.setImporte(nuevoImporte);
       this.calcularTotal();
-    },  
-    eliminarDetalleCarrito(item){
-       this.listaDetalleVenta = removeItemArray(this.listaDetalleVenta,item);
-       this.calcularTotal();
+    },
+    eliminarDetalleCarrito(item) {
+      this.listaDetalleVenta = removeItemArray(this.listaDetalleVenta, item);
+      this.calcularTotal();
     },
     sumarCantidad(row) {
       this.modificarCantidad(row, AFECTACION.SUMAR);
     },
     restarCantidad(row) {
       this.modificarCantidad(row, AFECTACION.RESTAR);
-    },    
+    },
     modificarCantidad(row, afectacion) {
-      if (this.cantidad == null || this.cantidad == 0) {
+      if (row.cantidad == null || row.cantidad <= 0) {
+        row.cantidad = 1;
         this.$notificacion.warn("Escribe la Cantidad", "Escribe el Cantidad.");
         return;
       }
@@ -588,116 +581,129 @@ export default {
 
       if (afectacion == AFECTACION.SUMAR) {
         //nuevaCantidad = row.cantidad + this.cantidad;
-        nuevaCantidad =  row.cantidad +1;
+        nuevaCantidad = row.cantidad + 1;
       }
       if (afectacion == AFECTACION.RESTAR) {
         //nuevaCantidad = row.cantidad - this.cantidad;
-        nuevaCantidad = row.cantidad-1;
+        nuevaCantidad = row.cantidad - 1;
       }
       const nuevoImporte = Number(nuevaCantidad * row.precio);
 
       row.setCantidad(nuevaCantidad).setImporte(nuevoImporte);
-      
+
       this.calcularTotal();
     },
-    setFocusRecibe(){
-          this.$refs.input_recibe.focus();
+    setFocusRecibe() {
+      this.$refs.input_recibe.focus();
     },
-    setFocusBuscar(){
-          this.$refs.input_buscar_producto.focus();
+    setFocusBuscar() {
+      this.$refs.input_buscar_producto.focus();
     },
-    setFocusBuscarCodigo(){
-          this.$refs.input_buscar_codigo.focus();
+    setFocusBuscarCodigo() {
+      this.$refs.input_buscar_codigo.focus();
     },
-    cerrarPopupYFocusBuscarCodigo(){
-        setTimeout(x => {            
-            this.$nextTick(() => this.setFocusBuscarCodigo()); 
-        }, 500);       
+    cerrarPopupYFocusBuscarCodigo() {
+      setTimeout(x => {
+        this.$nextTick(() => this.setFocusBuscarCodigo());
+      }, 500);
     },
-    iniciarCobrar(){
+    confirmEliminarDetalle(detalle){
+       if (confirm(`¿Esta seguro de quitar el articulo ${detalle.articulo}?`) == true){  
+           this.eliminarDetalleCarrito(detalle);
+      } else { text = "You canceled!"; }
+    },
+    iniciarCobrar() {
       this.mensajeCobro = "";
       this.cambio = 0;
       this.countEnterCobro = 0;
       this.activarBotonCobro = false;
-       
-      if(this.total > 0 && this.totalArticulos > 0){
-        
-      /*$('#popup_cobrar').on('show.bs.modal', function (event) {        
+
+      const procedeCobro =
+        this.listaDetalleVenta.length > 0 &&
+        this.total > 0 &&
+        this.totalArticulos > 0;
+
+      if (procedeCobro) {
+        /*$('#popup_cobrar').on('show.bs.modal', function (event) {        
         let modal = $(this)                  
           $('#input_recibe').focus()
       });*/
-        
+
         this.recibe = undefined;
-        $("#popup_cobrar").modal("show");              
+        $("#popup_cobrar").modal("show");
 
-        setTimeout(x => {            
-            this.$nextTick(() => this.setFocusRecibe()); 
-        }, 700);       
-           
-      }else{
-          this.$notificacion.warn("Selecciona productos", "");
-      }      
+        setTimeout(x => {
+          this.$nextTick(() => this.setFocusRecibe());
+        }, 700);
+      } else {
+        this.$notificacion.warn("Selecciona productos", "");
+      }
     },
-    async cobrar(){
-        this.mensajeCobro ="";
+    async cobrar() {
+      this.mensajeCobro = "";
 
-        if(!this.recibe){
-            this.mensajeCobro = `Escribe la cantidad recibida.`;
-            return;
+      if (!this.recibe) {
+        this.mensajeCobro = `Escribe la cantidad recibida.`;
+        return;
+      }
+
+      //verificar lo recibido sea mayor al total
+      if (this.recibe < this.total) {
+        this.mensajeCobro = `Lo recibido debe ser mayor a ${formatPrice(
+          this.total
+        )}`;
+        return;
+      }
+
+      this.cambio = this.recibe - this.total;
+
+      if (this.countEnterCobro > 1) {
+        //confirmo el primer enter
+        this.mensajeCobrar = "Espere...";
+        this.loaderCobro = true;
+
+        //proceder a guardar el pago
+        const venta = new VeVenta();
+        venta
+          .setTotal(this.total)
+          .setCantidadArticulos(this.totalArticulos)
+          .setRecibido(this.recibe)
+          .setCoSucursal(this.usuarioSesion.co_sucursal)
+          .setCoEmpresa(this.usuarioSesion.id_empresa)
+          .setCambio(this.cambio)
+          .setNotaVenta("")
+          .setCatCliente(1)
+          .setGenero(this.usuarioSesion.id)
+          .buildForInsert();
+
+        const data = {
+          venta: venta,
+          detalleVenta: this.listaDetalleVenta,
+          co_empresa: this.usuarioSesion.id_empresa,
+          co_sucursal: this.usuarioSesion.co_sucursal,
+          genero: this.usuarioSesion.id
+        };
+
+        const ventaGuardada = await this.postAsync(`${URL.VENTA}`, data);
+        console.log(ventaGuardada);
+        if (ventaGuardada.error) {
+          this.mensajeCobro = `Ups¡ existió un error al guardar la venta, ponte en contacto con el equipo de soporte.`;
+          this.loaderCobro = true;
+        } else {
+          this.mensajeCobrar = "Venta realizada";
+          $("#popup_cobrar").modal("hide");
+          this.iniciarNuevaVenta();
+          this.loaderCobro = false;
+          this.cerrarPopupYFocusBuscarCodigo();
+
+          //consultar ticker
+          const { venta } = ventaGuardada;
+          await this.imprimirTicket(venta.id);
         }
-        
-        //verificar lo recibido sea mayor al total
-        if(this.recibe < this.total){
-            this.mensajeCobro = `Lo recibido debe ser mayor a ${formatPrice(this.total)}`;
-            return;
-        }
+      }
 
-        this.cambio = (this.recibe - this.total);
-        
-        if(this.countEnterCobro > 1 ){ //confirmo el primer enter
-              this.mensajeCobrar ='Espere...';
-              this.loaderCobro = true;
-
-              //proceder a guardar el pago
-              const venta =  new VeVenta();
-                  venta.setTotal(this.total)
-                        .setCantidadArticulos(this.totalArticulos)
-                        .setRecibido(this.recibe)
-                        .setCoSucursal(this.usuarioSesion.co_sucursal)
-                        .setCoEmpresa(this.usuarioSesion.id_empresa)                        
-                        .setCambio(this.cambio)
-                        .setNotaVenta('')
-                        .setCatCliente(1)
-                        .setGenero(this.usuarioSesion.id)
-                        .buildForInsert();
-
-              const data = {
-                venta:venta,
-                detalleVenta: this.listaDetalleVenta,
-                co_empresa:this.usuarioSesion.id_empresa,
-                co_sucursal:this.usuarioSesion.co_sucursal,
-                genero : this.usuarioSesion.id
-              };
-
-            const ventaGuardada = await this.postAsync(`${URL.VENTA}`,data);
-             console.log(ventaGuardada);
-             if(ventaGuardada.error){
-                 this.mensajeCobro = `Ups¡ existió un error al guardar la venta, ponte en contacto con el equipo de soporte.`;  
-                 this.loaderCobro = true;
-             }else{
-                  this.mensajeCobrar ='Venta realizada';
-                  $("#popup_cobrar").modal("hide");              
-                  this.iniciarNuevaVenta();
-                  this.loaderCobro = false;
-                  this.cerrarPopupYFocusBuscarCodigo();
-                  //consultar ticker
-             }                       
-
-        }
-
-        this.countEnterCobro++;      
-        this.activarBotonCobro = true;  
-
+      this.countEnterCobro++;
+      this.activarBotonCobro = true;
     },
     calcularTotal() {
       let totalTemp = 0;
@@ -711,6 +717,23 @@ export default {
       }
       this.total = totalTemp;
       this.totalArticulos = totalArticulosTemp;
+    },
+    async imprimirTicket(id) {
+      console.log("@imprimir ticket " + id);
+      const html = await this.getAsync(URL.VENTA + "/ticket/" + id);
+
+      const WinPrint = window.open("", "", "width=800,height=900");
+
+      WinPrint.document.write(`
+             <center>
+              ${html}
+              </center>
+          `);
+
+      WinPrint.document.close();
+      WinPrint.focus();
+      WinPrint.print();
+      WinPrint.close();
     }
   }
 };
