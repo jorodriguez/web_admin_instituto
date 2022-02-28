@@ -9,9 +9,9 @@
     </div>-->
     <span v-for="item in lista" :key="item.id" :disabled="loader">
       <div class="card border-light border-bottom-2 mb-3">
-        <div class="card-header bg-transparent border-light">
+        <div class="card-header bg-transparent border-light">          
           <div class="row">
-            <div class="col-1">
+            <div class="col-2">
               <img
                 v-if="item.foto_curso"
                 class="img-fluid rounded"
@@ -21,6 +21,9 @@
             </div>
             <div class="col">
               <h3>{{ item.especialidad }}</h3>
+            </div>
+            <div class="col-1">              
+              <PupupBajaAlumno :idAlumno="item.id_alumno" :callback="regresarCatalogoAlumnos" />
             </div>
           </div>
         </div>
@@ -183,13 +186,16 @@ import { en, es } from "vuejs-datepicker/dist/locale";
 import Loader from "../components_utils/Loader";
 import moment from "moment";
 import Popup from "../controller/Popup";
+import PupupBajaAlumno from "../components/fragmentos/baja/pupupBajaAlumno.vue";
+
 
 export default {
   name: "datos-alumno",
   components: {
     Datepicker,
     Loader,
-    Popup
+    Popup,
+    PupupBajaAlumno
   },
   props: ["lista"],
   mixins: [operacionesApi],
@@ -361,6 +367,9 @@ export default {
         (e) => e.id == this.input.cat_genero
       );
       return elemento.foto;
+    },
+    regresarCatalogoAlumnos(row) {
+      this.$router.push({ name: "CatAlumno", params: {  } });
     },
   },
 };
