@@ -4,9 +4,7 @@ import configEnv from '../../config/configEnv';
 const BASE = configEnv.BASE || "http://localhost:5000";
 //const BASE = process.env.URL_API || 'https://instituto-api-dev.herokuapp.com'
 //const BASE = process.env.URL_API || 'https://api-admin-paris.herokuapp.com';
-
-export const BRANCH = "2202-ventas";
-
+export const BRANCH = "220225-hotfix-baja-alumno";
 
 const CURSO = BASE + '/curso';
 const ALUMNOS_BASE = BASE + '/alumnos';
@@ -31,7 +29,6 @@ const CAMBIO_SUCURSAL_BASE = BASE +'/cambio_sucursal';
 const PAGOS_BASE = BASE +'/pagos';
 const CARGOS_BASE = BASE +'/cargos';
 const FORMAS_PAGO_BASE = BASE +'/formas_pagos';
-const GRUPOS_BASE = BASE + '/grupos';
 const GASTOS_BASE = BASE + '/gastos';
 const USUARIO_BASE = BASE+'/usuario';
 const REPORTES_BASE =  BASE + '/reportes';
@@ -111,9 +108,7 @@ const URL = {
 
     USUARIO_BASE:  USUARIO_BASE,
     USUARIO_BUSCAR_ID:  USUARIO_BASE+'/buscar',//+id_usuario
-    
-      
-    
+        
     BALANCE_BASE : BALANCE_BASE,
     SUCURSAL_BASE : SUCURSAL_BASE,
     CAMBIO_SUCURSAL_BASE : CAMBIO_SUCURSAL_BASE,
