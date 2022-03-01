@@ -26,6 +26,10 @@ export const validacionDatosAlumno = (alumno,incluirEspecialidad) => {
       Vue.prototype.$notificacion.error('Escribe el teléfono', 'El teléfono es requerido.');
       return false;
     }
+    if (alumno.correo == '') {      
+      Vue.prototype.$notificacion.error('Escribe el correo', 'El correo es requerido.');
+      return false;
+    }
     if (alumno.apellidos == '') {
       //this.mensaje = "* Escribe el apellido";
       Vue.prototype.$notificacion.error('Escribe el apellido', 'El apellido es requerido.');

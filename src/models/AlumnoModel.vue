@@ -12,6 +12,7 @@ var Alumno = new Vue({
         nombre: "",
         adeuda:false,        
         apellidos: "",
+        correo: "",
         nombre_carino:"",
         direccion:"",
         mostrar_nombre_carino:false,        

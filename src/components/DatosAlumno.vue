@@ -25,14 +25,26 @@
           />
         </div>
       </div>
-      <div class="form-row">
-        <div class="form-group form-group col-sm-6 col-md-6 col-lg-6 col-xl-6">
-          <label>Dirección</label>
+      
+        <div class="form-group">
+          <label>Dirección <span class="text-danger">*</span></label>
           <input
             type="text"
             v-model="input.direccion"
             class="form-control"
             placeholder="Dirección "
+          />
+        </div>        
+      
+
+        <div class="form-row">
+        <div class="form-group form-group col-sm-6 col-md-6 col-lg-6 col-xl-6">
+          <label>Correo <span class="text-danger">*</span></label>
+          <input
+            type="text"
+            v-model="input.correo"
+            class="form-control"
+            placeholder="Correo "
           />
         </div>
         <div class="form-group form-group col-sm-6 col-md-6 col-lg-6 col-xl-6">

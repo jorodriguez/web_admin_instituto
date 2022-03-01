@@ -4,7 +4,7 @@ import configEnv from '../../config/configEnv';
 const BASE = configEnv.BASE || "http://localhost:5000";
 //const BASE = process.env.URL_API || 'https://instituto-api-dev.herokuapp.com'
 //const BASE = process.env.URL_API || 'https://api-admin-paris.herokuapp.com';
-export const BRANCH = "220225-hotfix-baja-alumno";
+export const BRANCH = "2203-comprobante-correo";
 
 const CURSO = BASE + '/curso';
 const ALUMNOS_BASE = BASE + '/alumnos';
