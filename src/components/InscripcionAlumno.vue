@@ -379,6 +379,7 @@ export default {
         apellidos: this.input.apellidos,
         direccion: this.input.direccion,
         telefono: this.input.telefono,
+        correo: this.input.correo,
         fecha_nacimiento: this.input.fecha_nacimiento,
         nota: this.input.nota,
         costo_colegiatura: this.input.costo_colegiatura,

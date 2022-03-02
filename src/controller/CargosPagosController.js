@@ -65,7 +65,8 @@ export default {
       loader_reenvio: false,
       mensaje_reenvio: "",
       limite: "20",
-      loaderCargos: false
+      loaderCargos: false,
+      loaderEnvioComprobante:false
 
     };
   },
@@ -570,32 +571,23 @@ export default {
             }
             
           }
-
-          /*this.post(
-            URL.PAGOS_REGISTRAR,
-            objEnvio,
-            (result) => {
-              if (result.data != null) {
-                console.log("" + result.data);
-                this.$notificacion.warn("Se agregó el pago ", "");
-                this.seleccionTodos = false;
-                //this.loadFunctionCargosAlumno();
-                this.cargarCargos();                
-                this.listaCargosAlumnosSeleccionados=[];
-                tis.loadFunctionActualizarCargoGeneral();
-                $("#modal_pago").modal("hide");
-              }
-            }
-          );*/
+        
         }
       }
     },
-    verDetalleCargo(item) {
+   async verDetalleCargo(item) {
 
       console.log("Ver detalle cargo " + item.id_cargo_balance_alumno);
 
+      await this.cargarInfoAlumno();
+
       this.cargoSeleccionado = item;
-      this.get(
+
+      this.listaPagosCargo = await this.getAsync(`${URL.PAGOS_BASE}/${this.cargoSeleccionado.id_cargo_balance_alumno}`);
+
+      $("#modal_detalle_cargo").modal("show");
+
+      /*this.get(
         URL.PAGOS_BASE + "/" + this.cargoSeleccionado.id_cargo_balance_alumno,
         result => {
           if (result.data != null) {
@@ -604,7 +596,7 @@ export default {
             $("#modal_detalle_cargo").modal("show");
           }
         }
-      );
+      );*/
     },
     seleccionarTodoPagos() {
 
@@ -690,6 +682,14 @@ export default {
     },
     getLinkReciboPago(id) {
       return { path: '/ReciboPago', params: { id_pago: row.id_pago } };
+    },
+    async reenviarCompronatePago(idPago) {
+       this.loaderEnvioComprobante = true;
+
+       const result  = await this.putAsync(URL.PAGOS_BASE + "/reenviar_comprobante",{id_pago:idPago});
+       
+       console.log(result);
+       this.loaderEnvioComprobante = false;
     }
   },
 };
