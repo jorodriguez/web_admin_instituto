@@ -75,8 +75,11 @@ export default {
         this.init();
 
         this.$root.$on(Emit.ACTUALIZAR_ALUMNO,async text => {
-            console.log("Actualizar perfil de alumno " + text);
-            await this.cargarInformacionAlumno();
+            console.log("Actualizar perfil de alumno " + text);            
+            setTimeout(async()=>{
+                await this.cargarInformacionAlumno();
+            },600);
+            
         });
 
         //---mostrar tab cobranza debe tener el rol COBRANZA

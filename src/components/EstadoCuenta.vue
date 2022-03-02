@@ -19,12 +19,24 @@
 
       <div slot="content" v-if="this.estadoCuenta" style="color:#000">        
         <div class="row">
-          <table class="table">            
+          <table  class="table table-sm">            
             <tr align="left">
-              <td>Correos</td>
-              <td>
+              <td width="10%" >Correos</td>
+              <td>              
                   {{ this.estadoCuenta.alumno.correo ? this.estadoCuenta.alumno.correo : ''}}
                   <span class="text-danger" v-if="!this.estadoCuenta.alumno.correo"> No tiene correo </span>
+              </td>
+            </tr>
+            <tr align="left">
+              <td>Correos Anexos</td>
+              <td>              
+                   <input
+                      type="text"
+                      v-model="correo_anexo"
+                      :disabled="!this.estadoCuenta.alumno.correo"
+                      :class="`form-control form-control-sm ${!this.estadoCuenta.alumno.correo ? 'disabled':''} `"
+                      placeholder="Correo "
+                    />                  
               </td>
             </tr>
           </table>
@@ -72,7 +84,8 @@ export default {
       estadoCuenta: null,
       loading: false,
       loadingPage: false,
-      pagePreview: null
+      pagePreview: null,
+      correo_anexo:""
     };
   },
   mounted() {
@@ -97,7 +110,8 @@ export default {
       this.post(
         URL.ESTADO_CUENTA_ENVIAR,
         {
-          id_alumno: this.idAlumno
+          id_alumno: this.idAlumno,
+          correo_anexo:this.correo_anexo
         },
         result => {
           let respuesta = result.data;

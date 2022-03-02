@@ -653,8 +653,8 @@
                    <!--<router-link :to="{path:'ReciboPago', params:{id_pago:row.id_pago}}"   class="btn btn-link ">
                         Imprimir
                     </router-link>    -->
-                  <a class="text-primary pointer" @click="imprimirPago(row.id_pago)" title="Imprimir" > <i class="fas fa-print"></i> </a>                  
-                  <a class="text-primary pointer" v-if="alumno.correo" @click="reenviarCompronatePago(row.id_pago)" title="Enviar por correo">
+                  <a class="text-primary pointer pr-1" @click="imprimirPago(row.id_pago)" title="Imprimir" > <i class="fas fa-print"></i> </a>                  
+                  <a class="text-primary pointer pl-1" v-if="alumno.correo" @click="reenviarCompronatePago(row.id_pago)" title="Enviar por correo">
                       <i class="fas fa-envelope"></i>                      
                       <span v-if="loaderEnvioComprobante" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                   </a>                     

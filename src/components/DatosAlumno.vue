@@ -43,9 +43,12 @@
           <input
             type="text"
             v-model="input.correo"
-            class="form-control"
+            :class="`form-control ${!input.correo ? 'is-invalid':''} `"
             placeholder="Correo "
           />
+          <div v-if="!input.correo" class="invalid-feedback">
+                Por favor escribe el correo
+          </div>
         </div>
         <div class="form-group form-group col-sm-6 col-md-6 col-lg-6 col-xl-6">
           <label>Télefono<span class="text-danger">*</span></label>

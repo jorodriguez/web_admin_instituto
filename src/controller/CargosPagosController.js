@@ -688,7 +688,11 @@ export default {
 
        const result  = await this.putAsync(URL.PAGOS_BASE + "/reenviar_comprobante",{id_pago:idPago});
        
-       console.log(result);
+       if(result.error){
+          this.$notificacion.error('Existió un error al enviar el email', 'Existió un error al enviar el correo, por favor verifique los datos del alumno.');
+       }else{
+          this.$notificacion.info('Correo enviado', 'Se envió el correo exitosamente.');
+       }
        this.loaderEnvioComprobante = false;
     }
   },
