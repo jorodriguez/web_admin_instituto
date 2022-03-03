@@ -99,8 +99,13 @@
                   :reload="this.cargarAlumnosCurso"
                   :mostrar_acciones="true"
                 >
-                 <span slot="acciones"  >                 
-                      
+                 <!--<template v-slot="{alumnoRow}"  >                 
+                      <PopupBajaAlumno :idAlumno="alumnoRow.id_alumno" :callback="cargarCurso" />
+                 </template>
+                 -->
+                 <span slot="acciones"  >                                
+                 
+                 
                  </span>
                 </TablaAlumnos>
               </div>
@@ -512,6 +517,7 @@ import RowCurso from "./fragmentos/curso/RowCurso";
 import TablaAlumnos from "./fragmentos/inscripciones/TablaAlumnos";
 import InscripcionAlumno from "./InscripcionAlumno.vue";
 import VueTimepicker from "vue2-timepicker";
+//import PopupBajaAlumno from './fragmentos/baja/pupupBajaAlumno.vue'
 
 export default {
   name: "detalle-curso",
@@ -522,7 +528,8 @@ export default {
     RowCurso,
     TablaAlumnos,
     InscripcionAlumno,
-    VueTimepicker
+    VueTimepicker,
+  //  PopupBajaAlumno
   },
   mixins: [operacionesApi],
   data() {

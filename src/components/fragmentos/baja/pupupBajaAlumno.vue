@@ -2,10 +2,11 @@
   <span>
     <button
       type="button"
-      class="btn btn-sm btn-link"
+      class="btn btn-sm btn-link text-danger"
       v-on:click="iniciarBaja()"
     >
-      Iniciar Baja{{idAlumno}}
+      Iniciar Baja
+       <span  v-if="loading" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
     </button>
 
     <div
@@ -33,9 +34,10 @@
               <span aria-hidden="true">&times;</span>
             </button>
           </div>
-          <div class="modal-body">
-            <h4 v-if="alumno">
-              <strong>{{ alumno.nombre }} {{ alumno.apellidos }}</strong>
+          <div class="modal-body pt-0" >
+          
+            <h4 v-if="alumno"  class="text-left">            
+              <strong>Alumno : {{ alumno.nombre_alumno }} {{ alumno.apellidos_alumno }}</strong>
             </h4>
             <div class="form-group text-left">
               <label for="fecha_baja">Fecha de baja</label>
@@ -121,35 +123,42 @@ export default {
      if (this.idAlumno != 0) {        
         this.loading = true;
         const result  = await this.getAsync(`${URL.ESTADO_CUENTA}${this.idAlumno}`);
+        console.log(result);
         this.alumno = result && result.alumno;
         console.log(" ALUMNO"+ JSON.stringify(this.alumno));
         this.loading = false;        
     }     
+
+    console.log(this.alumno);
         
-    if (this.alumno != null && this.alumno != undefined && this.alumno.total_adeudo > 0) {        
+    if (this.alumno == null || this.alumno == undefined || this.alumno.adeuda) {    
+
         this.$notificacion.warn('Baja de alumno', 'No es posible dar de baja el alumno por motivos de deuda activa.');
-        return;
+        
       } else {
         $("#modal_eliminar_alumno").modal("show");
       }
       
     },
     eliminar() {
-      console.log("Modificar el id " + this.input.id);
+      console.log("Modificar el id " + this.idAlumno);
       const params = {
         fechaBaja: this.fechaBaja,
         observaciones: this.observacionesBaja,
         genero: this.usuarioSesion.id
       };
 
-      this.put(URL.ALUMNOS_BASE + "/baja/" + this.input.id, params, result => {
+      this.put(URL.ALUMNOS_BASE + "/baja/" + this.idAlumno, params, result => {
         console.log(" " + result.data);
         if (result.data != null) {       
           this.$notificacion.error(
             "Registro de Baja de alumno",
-            "Se registro la baja del alumno " + this.input.nombre + "."
+            "Se registro la baja del alumno ."
           );
-          this.loadFunction();
+
+          if(this.callback){
+              this.callback();
+          }
         }
       });
     },

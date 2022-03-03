@@ -14,10 +14,10 @@
         
          <div class="row justify-content-between">
           <div class="col-3 h4 text-left">
-             Fecha
+             Fecha Inicio
              <datepicker
                 name="fecha" 
-                v-model="fecha"
+                v-model="fechaInicio"
                 input-class="form-control"
                 :bootstrap-styling="true"
                 :language="es"            
@@ -25,7 +25,19 @@
                 format="yyyy-MM-dd"
               ></datepicker>            
           </div>    
-          <div class="col-3 text-right">
+          <div class="col-3 h4 text-left">
+             Fecha Fin
+             <datepicker
+                name="fecha" 
+                v-model="fechaFin"
+                input-class="form-control"
+                :bootstrap-styling="true"
+                :language="es"            
+                @selected="cambiarFecha"
+                format="yyyy-MM-dd"
+              ></datepicker>            
+          </div>    
+          <div class="col-3 text-right d-flex align-items-center ">
                 <button :disabled="loading" @click="imprimir()" class="btn btn-outline-primary"><i class="fas fa-print"></i> Imprimir</button>
           </div>      
          </div>
@@ -198,7 +210,8 @@ export default {
     return {      
       usuarioSesion: {},
      // sesion: {}, 
-      fecha:Date,
+      fechaInicio:Date,
+      fechaFin:Date,
       lista: [],                                    
       listaGastos: [],                                    
       corte:undefined,  
@@ -360,7 +373,8 @@ export default {
     console.log("====iniciando el componente reporte de corte diario ===");
     
     this.usuarioSesion = getUsuarioSesion();
-    this.fecha = new Date();
+    this.fechaInicio = new Date();
+    this.fechaFin = new Date();
     this.TABLE_CONFIG.PAGINATION_OPTIONS.perPage = 50;   
     this.columnasFiltradas = this.columnsExport;
     this.init();    
@@ -375,7 +389,7 @@ export default {
        this.loading = true;
        console.log(URL.REPORTES_BASE +'/corte/dia/sucursal/'+this.usuarioSesion.co_sucursal);
        this.corte =  await this.putAsync(URL.REPORTES_BASE +'/corte/dia/sucursal/'+this.usuarioSesion.co_sucursal,
-       { fecha:this.fecha,id_usuario:this.usuarioSesion.id });
+       { fechaInicio:this.fechaInicio,fechaFin:this.fechaFin,id_usuario:this.usuarioSesion.id });
        this.lista = this.corte.detalleIngreso;
        this.listaGastos = this.corte.detalleGasto;
        
@@ -383,7 +397,7 @@ export default {
     },
     async imprimir() {
       const html =  await this.putAsync(URL.REPORTES_BASE +'/corte/dia/sucursal/imprimir/'+this.usuarioSesion.co_sucursal,
-            { fecha:this.fecha,id_usuario:this.usuarioSesion.id });
+            { fechaInicio:this.fechaInicio,fechaFin:this.fechaFin,id_usuario:this.usuarioSesion.id });
 
       const WinPrint = window.open('', '', 'width=800,height=900');
 
@@ -400,7 +414,7 @@ export default {
     },
        cambiarFecha(){
          this.$nextTick(() => {
-           console.log(this.fecha)
+           console.log(this.fechaInicio)
            this.loadFunction();
          });        
     },

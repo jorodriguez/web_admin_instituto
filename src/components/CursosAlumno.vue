@@ -22,7 +22,7 @@
             <div class="col">
               <h3>{{ item.especialidad }}</h3>
             </div>
-            <div class="col-1">              
+            <div class="col-2">              
               <PupupBajaAlumno :idAlumno="item.id_alumno" :callback="regresarCatalogoAlumnos" />
             </div>
           </div>
@@ -238,64 +238,7 @@ export default {
         );
       }
     },
-    /* async guardar() {
-      console.log("@guardar");
-      const NO_VALIDAR_ESPECIALIDAD = false;
-
-      if (!validacionDatosAlumno(this.input, NO_VALIDAR_ESPECIALIDAD)) {
-        console.log("No paso la validacion");
-        return;
-      }
-
-      let values = this.getValues();
-
-      this.loader = true;
-      console.log("inciando id alumno " + this.input.id);
-
-      const respuesta = await this.putAsync(
-        `${URL.ALUMNOS_BASE}/${this.input.id}`,
-        values
-      );
-
-      console.log(respuesta);
-      if (respuesta) {
-        this.$notificacion.info(
-          `Inscripción realizada`,
-          `Se modificó el alumno`
-        );
-
-        this.$root.$emit(Emit.ACTUALIZAR_ALUMNO, Emit.ACTUALIZAR_ALUMNO);
-      } else {
-        this.$notificacion.error(
-          "Ups!",
-          "Algo sucedió al intentar guardar el alumno, ponte en contacto con soporte técnico."
-        );
-        this.$router.push({
-          name: "PerfilAlumno",
-          params: { uid: this.input.uid }
-        });
-      }
-      this.loader = false;
-    },
-    getValues() {
-      return {
-        //co_curso: this.input.co_curso,
-        cat_genero: this.input.cat_genero,
-        nombre: this.input.nombre,
-        apellidos: this.input.apellidos,
-        direccion: this.input.direccion,
-        telefono: this.input.telefono,
-        fecha_nacimiento: this.input.fecha_nacimiento,
-        nota: this.input.nota,
-        //costo_colegiatura: this.input.costo_colegiatura,
-        //costo_inscripcion: this.input.costo_inscripcion,
-        foto: this.getFoto(),
-        fecha_nacimiento: moment(this.input.fecha_nacimiento).format(
-          "YYYY-MM-DD"
-        ),
-        genero: this.usuarioSesion.id
-      };
-    },*/
+ 
     iniciarModificacion(row) {      
     
       this.input = Object.assign({}, row);

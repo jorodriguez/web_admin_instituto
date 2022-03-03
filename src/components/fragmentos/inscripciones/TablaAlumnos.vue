@@ -43,10 +43,10 @@
                       <p class="text-gray small text-wrap" style="width: 10rem;">{{row.nota_inscripcion}}</p>
                   </td>
 
-                  <td class="text-right ">                  
+                  <td class="text-right ">                     
                     <slot :alumnoRow="row" />
-                    <slot name="acciones">
-                    
+                    <slot name="acciones">                    
+                        
                     </slot> 
                   </td>                  
                 </tr>                
