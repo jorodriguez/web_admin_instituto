@@ -74,11 +74,11 @@ export default {
                
         this.init();
 
-        this.$root.$on(Emit.ACTUALIZAR_ALUMNO,async text => {
+        this.$root.$on(Emit.ACTUALIZAR_ALUMNO, async text => {
             console.log("Actualizar perfil de alumno " + text);            
-            setTimeout(async()=>{
-                await this.cargarInformacionAlumno();
-            },600);
+            //setTimeout(async()=>{
+              await this.cargarInformacionAlumno();
+            //},600);
             
         });
 

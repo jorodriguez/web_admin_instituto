@@ -17,24 +17,25 @@ export const validacionDatosAlumno = (alumno,incluirEspecialidad) => {
     if (alumno.nombre == '') {      
       Vue.prototype.$notificacion.error('Escribe el nombre', 'El nombre es requerido.');
       return false;
-    }
-    if (alumno.direccion == '') {      
-      Vue.prototype.$notificacion.error('Escribe la dirección', 'La dirección es requerida.');
-      return false;
-    }
-    if (alumno.telefono == '') {      
-      Vue.prototype.$notificacion.error('Escribe el teléfono', 'El teléfono es requerido.');
+    }    
+    if (alumno.apellidos == '') {
+      //this.mensaje = "* Escribe el apellido";
+      Vue.prototype.$notificacion.error('Escribe el apellido', 'El apellido es requerido.');
       return false;
     }
     if (alumno.correo == '') {      
       Vue.prototype.$notificacion.error('Escribe el correo', 'El correo es requerido.');
       return false;
     }
-    if (alumno.apellidos == '') {
-      //this.mensaje = "* Escribe el apellido";
-      Vue.prototype.$notificacion.error('Escribe el apellido', 'El apellido es requerido.');
+    if (alumno.telefono == '') {      
+      Vue.prototype.$notificacion.error('Escribe el teléfono', 'El teléfono es requerido.');
       return false;
     }
+    if (alumno.direccion == '') {      
+      Vue.prototype.$notificacion.error('Escribe la dirección', 'La dirección es requerida.');
+      return false;
+    }    
+    
     if (alumno.cat_genero == -1) {
       //this.mensaje = "* Selecciona el sexo";
       Vue.prototype.$notificacion.error('Seleciona el sexo', 'El dato de sexo es requerido.');

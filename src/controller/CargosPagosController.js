@@ -112,7 +112,7 @@ export default {
     };
 
     this.loadFunctionActualizarCargoGeneral = function () {
-      this.$root.$emit(Emit.ACTUALIZAR_ALUMNO, 'ACTUALIZAR');
+      this.$root.$emit(Emit.ACTUALIZAR_ALUMNO, 'ACTUALIZAR FROM CARGOS');
     }
 
     if (this.uidalumno) {

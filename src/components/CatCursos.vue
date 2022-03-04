@@ -548,8 +548,7 @@ export default {
           `Se ${isModificacion ? "modificado" : "registró"} el curso`
         );
         this.cargarCursos();
-        $("#popup_curso").modal("hide");
-        //this.$root.$emit(Emit.ACTUALIZAR_ALUMNO, Emit.ACTUALIZAR_ALUMNO);
+        $("#popup_curso").modal("hide");        
       } else {
         this.$notificacion.error(
           "Ups!",

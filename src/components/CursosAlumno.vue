@@ -312,7 +312,8 @@ export default {
       return elemento.foto;
     },
     regresarCatalogoAlumnos(row) {
-      this.$router.push({ name: "CatAlumno", params: {  } });
+      this.$router.go(-1);
+      //this.$router.push({ name: "CatAlumno", params: {  } });
     },
   },
 };

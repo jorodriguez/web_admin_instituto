@@ -265,8 +265,8 @@ export default {
         $("#popup_confirmar_inscripcion").modal("hide");        
 
         await this.reload();
-                 
-        //this.$root.$emit(Emit.ACTUALIZAR_ALUMNO, Emit.ACTUALIZAR_ALUMNO);
+                
+        
       } else {
         this.$notificacion.error("Ups!","Algo sucedió al intentar confirmar la inscripción, ponte en contacto con soporte técnico.");  
       }

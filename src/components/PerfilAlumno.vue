@@ -1,6 +1,9 @@
 <template>
   <div class="perfil container">
     <div class="text-info">{{ mensaje }}</div>
+    <!--<div v-if="display && !alumno.correo" class="alert alert-info" role="alert">
+              * Agrega el correo 
+    </div>-->
     
     <div v-if="display == true" class="text-left">
       <div class="row">
@@ -14,7 +17,8 @@
             <i class="fas fa-arrow-circle-left text-gray"></i>
           </router-link>     
           -->
-        </div>
+        </div>       
+        
         
         <div class="col text-center">          
           <img
@@ -34,8 +38,7 @@
           
           <h2 v-if="alumno.is_cumpleanos" class="text-orange ">
             🥳¡Felíz cumpleaños!🎂
-          </h2>
-          
+          </h2>         
         </div>
         <div class="col text-center">
           <div class="text-danger card font-weight-bold h6">
@@ -110,6 +113,7 @@
               <div class="card">
                 <div class="card-body">                  
                   <DatosAlumno :uuidAlumno="alumno.uid"/>               
+                  
                 </div>
               </div>
             </div>

@@ -372,11 +372,34 @@
           </div>
         </div>
 
-        <div class="form-row">
+
+      <div class="form-row">
+        <div class="form-group form-group col-sm-6 col-md-6 col-lg-6 col-xl-6">
+          <label>Correo<span class="text-danger">*</span></label>
+          <input
+            type="text"
+            v-model="input.correo"
+            class="form-control"
+            placeholder="Correo "
+          />
+        </div>
+        <div class="form-group form-group col-sm-6 col-md-6 col-lg-6 col-xl-6">
+          <label>Télefono/Whatsapp<span class="text-danger">*</span></label>
+          <input
+            type="text"
+            v-model="input.telefono"
+            class="form-control"
+            placeholder="(52)"
+            required
+          />
+        </div>
+      </div>
+
+
           <div
-            class="form-group form-group col-sm-6 col-md-6 col-lg-6 col-xl-6"
+            class="form-group form-group"
           >
-            <label>Dirección</label>
+            <label>Dirección<span class="text-danger">*</span></label>
             <input
               type="text"
               v-model="input.direccion"
@@ -384,19 +407,7 @@
               placeholder="Dirección "
             />
           </div>
-          <div
-            class="form-group form-group col-sm-6 col-md-6 col-lg-6 col-xl-6"
-          >
-            <label>Télefono/Whatsapp<span class="text-danger">*</span></label>
-            <input
-              type="text"
-              v-model="input.telefono"
-              class="form-control"
-              placeholder="(52)"
-              required
-            />
-          </div>
-        </div>
+          
 
         <div class="form-row">
           <div class="form-group col-sm-6 col-md-6 col-lg-6 col-xl-6">
@@ -730,6 +741,7 @@ export default {
         apellidos: "",
         direccion: "",
         telefono: "",
+        correo: "",
         cat_genero: -1,
         nombre_grupo: "",
         nombre_sucursal: "",
@@ -811,6 +823,7 @@ export default {
         apellidos: this.input.apellidos,
         direccion: this.input.direccion,
         telefono: this.input.telefono,
+        correo: this.input.correo,
         fecha_nacimiento: this.input.fecha_nacimiento,
         nota: this.input.nota,
         costo_colegiatura: this.input.costo_colegiatura,
