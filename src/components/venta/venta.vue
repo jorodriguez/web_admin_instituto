@@ -87,13 +87,10 @@
               :key="detalle.id"
             >
               <div
-                :class="
-                  `row  border-bottom border-secondary pt-1 pb-1 ${index % 2 !=
-                    0 && 'bg-pink'}`
-                "
+                :class="`row  border-bottom border-secondary pt-1 pb-1 ${index % 2 != 0 && 'bg-pink'}`"
               >
                 <div
-                  class="col-12 col-sm-12 col-md-12 col-lg-1 col-xl-1 d-flex align-items-center align-self-center justify-content-center "
+                  class="col-12 col-sm-12 col-md-12 col-lg-1 col-xl-1 d-flex align-items-center align-self-center justify-content-center pointer"
                   @click="confirmEliminarDetalle(detalle)"
                 >
                   <h5><i class="fas fa-trash text-danger" /></h5>
@@ -113,7 +110,7 @@
                     height="70"
                   />
                 </div>
-                <div class="text-left col-12 col-sm-12 col-md-12 col-lg-1 col-xl-7  ">
+                <div class="text-left col-12 col-sm-12 col-md-12 col-lg-7 col-xl-7  ">
                   <h4>
                     {{ detalle.articulo }}
                   </h4>
@@ -220,7 +217,7 @@
                       v-for="prod in articulosEncontradosCriterio"
                       :key="prod.id"
                     >
-                      <td class="p-0 m-0">
+                      <td class="p-0 m-0 col-12 col-sm-12 col-md-12 col-lg-1 col-xl-1 ">
                         <img
                           v-if="prod.foto"
                           alt
@@ -236,7 +233,7 @@
                           height="80"
                         />
                       </td>
-                      <td class="text-left m-0 p-0">
+                      <td class="text-left m-0 p-0 text-left col-12 col-sm-12 col-md-12 col-lg-7 col-xl-7 ">
                         <h4 class="text-wrap">
                           {{ prod.nombre }}
                         </h4>
@@ -245,10 +242,10 @@
                         }}</small>
                         <h5>{{ prod.marca }}</h5>
                       </td>
-                      <td class="m-0 h2">
+                      <td class="m-0 h2 col-12 col-sm-12 col-md-12 col-lg-1 col-xl-1 d-flex align-items-center align-self-center justify-content-center">
                         <h2>${{ formatPrice(prod.precio) }}</h2>
                       </td>
-                      <td class="m-0 " @click="agregarProductoBusqueda(prod)">
+                      <td class="m-0 pointer col-12 col-sm-12 col-md-12 col-lg-1 col-xl-1" @click="agregarProductoBusqueda(prod)">
                         <h1><i class="fas fa-plus text-primary"></i></h1>
                       </td>
                     </tr>
@@ -485,6 +482,12 @@ export default {
     },
     async buscarPorCriterioNombre() {
       console.log("buscar por criterio " + this.criterioNombre);
+      
+      if(!this.criterioNombre){
+        this.$notificacion.warn("Escribe un nombre","Escribe un nombre o una parte del nombre del articulo");
+        return;
+      }
+
       this.loaderBuscar = true;
       this.articulosEncontradosCriterio = await this.getAsync(
         `${URL.ARTICULO}/nombre/${this.criterioNombre}/${
