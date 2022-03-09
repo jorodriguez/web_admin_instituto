@@ -66,7 +66,7 @@
         <div class="card">
           <div class="card-body">
               <div v-if="loader" class="spinner-border text-primary" role="status"/>
-            <VentasSucursal  :lista="listaVentas"/>
+              <VentasSucursal  :lista="listaVentas"/>
           </div>
         </div>
       </div>

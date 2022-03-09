@@ -1,3 +1,4 @@
+/* eslint-disable vue/valid-v-model */
 <template>
   <span>
     <div class="row  mt-1 ">
@@ -36,8 +37,78 @@
     </div>
 
     <div class="row  ">
+     <!-- Catalogo de productos -->          
+          <div class="col-12 col-sm-12 col-md-12 col-lg-5 col-xl-5 p-1 ">
+            <div class="card border border-light">                                     
+              <div class="pt-1">                
+                <div class="btn-group " >
+                 <button @click="cargarCatalogo()" type="button" class="btn btn-primary btn-sm">
+                  Todos
+                 </button>
+                 <button type="button" :class="`btn btn-primary btn-sm`"
+                       v-for="categoria in categoriaArticulos"
+                      :key="categoria.cat_categoria"
+                      @click="filtrarArticulosPorCategoria(categoria)"
+                      >
+                    {{categoria.categoria}} 
+                    <span class="badge badge-pill badge-light">{{categoria.numero_articulos}}</span>
+                 </button>                  
+                </div>
+              </div>
+              <div class="card-body border scroll-productos  "  >                            
+                
+                <span v-if="loaderCatalogo" class="spinner-border spinner-border text-primary" role="status" aria-hidden="true"></span>
+   
+                <div class="row">
+                  <div
+                    class="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-4 m-0 p-1 card-group"
+                    v-for="producto in catalogoArticulos"
+                    :key="producto.id"
+                    @click="agregarProductoBusqueda(producto)"
+                  >
+                    <div class="card border-light">                                        
+                      <div class=" d-flex justify-content-end m-2">                        
+                          ${{ formatPrice(producto.precio) }}                         
+                      </div>
+                      <div class="card-body p-1">
+                      <img
+                        v-if="producto.foto"
+                        class="img-fluid  mx-auto"
+                        style="width:100px;min-height:70px;height:90px"
+                        :src="producto.foto"
+                        alt="Foto"
+                        title="seleccionar"
+                      />
+                      
+                      <div
+                       v-else
+                        class="img-thumbnail   mx-auto"
+                        style="width:100px;min-height:70px;height:90px"
+                        alt="Foto"                        
+                      />
+                      </div>
+                      <small style="font-size:10px;" class="text-muted m-0" >{{producto.codigo}}</small>
+                      <div class="card-body p-1">
+                        <h4 class="card-title m-0 text-truncate pb-0 ">
+                          {{ producto.nombre }}
+                        </h4>
+                        <p class="card-text text-xs pt-0 m-0 small text-truncate  ">
+                           {{ producto.descripcion }}
+                        </p>                        
+                      </div>
+                      <div class="card-footer p-0 mb-0">
+                          <span class="text-muted  text-xs">{{producto.categoria}} | {{producto.marca}} </span>                      
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
       <!-- Carrito de venta -->
-      <!--<div class="col-12 col-sm-12 col-md-12 col-lg-7 col-xl-7 p-1 ">-->
+      <div class="col-12 col-sm-12 col-md-12 col-lg-7 col-xl-7 p-1 ">
       
         <div class="card-body border border-light p-1">
           <div>
@@ -89,28 +160,29 @@
               <div
                 :class="`row  border-bottom border-secondary pt-1 pb-1 ${index % 2 != 0 && 'bg-pink'}`"
               >
-                <div
+                <!--<div
                   class="col-12 col-sm-12 col-md-12 col-lg-1 col-xl-1 d-flex align-items-center align-self-center justify-content-center pointer"
                   @click="confirmEliminarDetalle(detalle)"
                 >
                   <h5><i class="fas fa-trash text-danger" /></h5>
-                </div>
+                </div>-->
                 <div class="col-12 col-sm-12 col-md-12 col-lg-1 col-xl-1 ">
                   <img
                     v-if="detalle.foto"
                     alt
                     :src="detalle.foto"
                     class="pointer mr-3 "
-                    width="60"
+                    width="50"
                   />
                   <div
                     v-else
                     alt
                     class="pointer border border-gray mr-3 bg-light"
-                    height="70"
+                    height="60"
                   />
+                  <h5 class="text-center btn pointer" @click="confirmEliminarDetalle(detalle)"><i class="fas fa-trash text-danger pt-1 " /></h5>
                 </div>
-                <div class="text-left col-12 col-sm-12 col-md-12 col-lg-7 col-xl-7  ">
+                <div class="text-left col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6  ">
                   <h4>
                     {{ detalle.articulo }}
                   </h4>
@@ -119,7 +191,7 @@
                   }}</small>
                   <h5>{{ detalle.marca }}</h5>
                 </div>
-                <div class="text-left col-12 col-sm-12 col-md-12 col-lg-1 col-xl-1 d-flex align-items-center align-self-center justify-content-center">
+                <div class="text-left col-12 col-sm-12 col-md-12 col-lg-2 col-xl-2 d-flex align-items-center align-self-center justify-content-center">
                   <i
                     :class="
                       `fas fa-minus pointer ${detalle.cantidad == 1 &&
@@ -150,7 +222,7 @@
                   />
                 </div>
                 <div
-                  class="text-left col-12 col-sm-12 col-md-12 col-lg-1 col-xl-1  d-flex align-items-center align-self-center justify-content-center "
+                  class="text-left col-12 col-sm-12 col-md-12 col-lg-2 col-xl-2  d-flex align-items-center align-self-center justify-content-center "
                 >
                   <span class="h3">${{ formatPrice(detalle.precio) }}</span>
                 </div>
@@ -163,9 +235,12 @@
             </span>
           </div>
         </div>
+        </div>
+        <!-- Fin de carrito de ventas -->
+        
       
     </div>
-
+     
     <!-- buscar producto -->
     <div
       id="buscar-producto"
@@ -408,6 +483,7 @@ export default {
       totalArticulos: 0,
       producto: new VeVentaDetalle(),
       catalogoArticulos: [],
+      categoriaArticulos:[],
       articulosEncontradosCriterio: [],
       es: es,
       loader: false,
@@ -422,7 +498,8 @@ export default {
       cambio: 0,
       formatPrice: formatPrice,
       countEnterCobro: 0,
-      activarBotonCobro: false
+      activarBotonCobro: false,
+      categoriaSeleccionada:{id:-1}
     };
   },
   mounted() {
@@ -441,6 +518,7 @@ export default {
       this.venta = new VeVenta();
       this.ventaDetalle = new VeVentaDetalle();
       await this.cargarCatalogo();
+      await this.cargarCategorias();
     },
     salir() {
       this.$root.mostrarSidebar = true;
@@ -450,6 +528,21 @@ export default {
       console.log("@ccargarCategorias");
       this.categoriaArticulos = await this.getAsync(
         `${URL.CATEGORIA_ARTICULO}/${this.usuarioSesion.co_sucursal}`
+      );
+      this.loaderCatalogo = false;
+    },
+    async filtrarArticulosPorCategoria(categoria){
+      this.categoriaSeleccionada = categoria;
+      console.log(" Categoria seleccionada "+JSON.stringify(this.categoriaSeleccionada));
+      if(!this.categoriaSeleccionada){
+
+        return;
+      }
+      this.loaderCatalogo = true;
+      console.log("@c@@@@argarCatalogo por categoria");
+      console.log(`${URL.ARTICULO}/sucursal/${this.usuarioSesion.co_sucursal}`);
+      this.catalogoArticulos = await this.getAsync(
+        `${URL.ARTICULO}/categoria/${categoria.cat_categoria}/${this.usuarioSesion.co_sucursal}`
       );
       this.loaderCatalogo = false;
     },
@@ -498,6 +591,7 @@ export default {
     },
     async agregarProductoBusqueda(item) {
       this.cantidad = 1;
+      console.log("SELECCION"+JSON.stringify(item));
       this.codigo = item.codigo;
       await this.buscarCodigo();
     },
@@ -513,7 +607,7 @@ export default {
       if (this.codigo == null || this.codigo == "") {
         this.$notificacion.warn(
           "Escribe el Código",
-          "Escribe el código y oprime enter para buscarlo."
+          "Escribe el código ."
         );
         return;
       }
@@ -767,6 +861,11 @@ function removeItemArray(arr, value) {
 
 .scroll {
   height: 500px;
+  overflow-y: scroll;
+}
+
+.scroll-productos {
+  height: 700px;
   overflow-y: scroll;
 }
 </style>
