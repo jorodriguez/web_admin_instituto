@@ -48,17 +48,20 @@
             <span v-else-if="props.column.field == 'cambio'">              
                   <span>${{props.row.cambio}}</span>                  
             </span>
+            <span v-else-if="props.column.field == 'estatus'">              
+                  <span :class="` ${props.row.id_estatus == 1 ? 'badge  badge-success':'badge  badge-secondary'}`">{{props.row.estatus}}</span>                  
+            </span>
 
             <span v-else-if="props.column.field == 'acciones'">   
             <div class="btn-group" role="group" aria-label="Basic example">         
-                <button type="button" class="btn btn-link btn-sm text-danger">
-                  <i class="fas fa-reply" title="Cancelar venta"></i>
-                </button>
-                <button type="button" class="btn btn-link btn-sm">
-                  <i class="fas fa-edit" title="Editar venta"></i>
-                </button>
-                <button type="button" class="btn btn-link btn-sm text-gray" @click="imprimirTicket(props.row.id)">
+                <button type="button" class="btn btn-link btn-sm text-warning">
+                  <i class="fas fa-reply" title="Devolver venta"></i>
+                </button>                
+                <button type="button" class="btn btn-link btn-sm text-primary" @click="imprimirTicket(props.row.id)">
                   <i class="fas fa-print" title="Reimprimir"></i>
+                </button>
+                <button type="button" class="btn btn-link text-danger btn-sm">
+                  <i class="fas fa-trash" title="Editar venta"></i>
                 </button>
             </div>
             </span>                                           
@@ -66,8 +69,29 @@
           </template>
         </vue-good-table>
            
+      </div>    
+    </div>  
+
+    <!-- popup para cancelar la venta -->
+     <Popup id="popup_cancelar_venta" size="md" :show_button_close="true">
+      <div slot="header">
+        Cancelar Venta        
+      </div>    
+
+      <div slot="content" >        
+        <div class="row">
+          
+        </div>        
       </div>
-    </div>   
+      <div slot="footer">
+        <button
+          class="btn btn-primary"                              
+        >
+          Confirmar
+        </button>
+      </div>
+    </Popup> 
+
   </div>
 </template>
 
@@ -101,10 +125,12 @@ export default {
       operacion: "",
       TABLE_CONFIG:TABLE_CONFIG,
       loader:false,
+      ventaSeleccionada:VeVenta,
       es: es,
 
       fecha:Date,
       lista:[],
+      listaEstatus:[],
       columnas:[
       {
         label: 'Id',
@@ -176,6 +202,14 @@ export default {
         hidden: false
       },            
       {
+        label: 'Estado',
+        field: 'estatus',
+        filterable: false,
+        thClass: 'text-center',
+        tdClass: 'text-center',
+        hidden: false
+      },            
+      {
         label: '',
         field: 'acciones',
         filterable: true,
@@ -213,6 +247,16 @@ export default {
       WinPrint.focus();
       WinPrint.print();
       WinPrint.close();
+    },
+    async iniciarCancelacionVenta(id){      
+
+      if(this.listaEstatus.length == 0){
+          this.listaEstatus = await this.getAsync(`${URL.ESTATUS}`);        
+      }      
+
+    
+
+
     },
     cambiarFecha(){
          this.$nextTick(async () => {

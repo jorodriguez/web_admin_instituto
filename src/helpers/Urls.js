@@ -19,6 +19,7 @@ const COBRANZA = BASE + '/cobranza';
 const VENTA = BASE + '/venta';
 const ARTICULO = BASE + '/articulo';
 const CATEGORIA_ARTICULO = BASE + '/categoria-articulo';
+const ESTATUS= BASE + '/estatus';
 
 
 const ASISTENCIA_BASE =  BASE + '/asistencia';
@@ -105,6 +106,7 @@ const URL = {
     VENTA:VENTA,
     ARTICULO:ARTICULO,
     CATEGORIA_ARTICULO:CATEGORIA_ARTICULO,
+    ESTATUS:ESTATUS,
 
     USUARIO_BASE:  USUARIO_BASE,
     USUARIO_BUSCAR_ID:  USUARIO_BASE+'/buscar',//+id_usuario

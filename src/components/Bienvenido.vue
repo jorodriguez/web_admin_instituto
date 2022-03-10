@@ -5,7 +5,7 @@
     <div class="main-content">
       <MenuEncabezado />
       <Header />
-      <div class="container-fluid">
+      <div class="container-fluid" style="padding-left:10px !important;padding-right:10px !important">
         <div class="col-xl-12 mb-12 mb-xl-0">
           <vue-page-transition name="fade-in-up">          
           <router-view />

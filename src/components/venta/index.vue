@@ -1,6 +1,6 @@
 <template>
-  <div class="ventas">
-    <h2>Terminal de Venta</h2>
+  <div class="ventas pt-3">
+    <!--<h2>Terminal de Venta</h2>-->
     <!--<small>{{ usuarioSesion.nombre_sucursal }}</small>    -->
     <ul class="nav nav-tabs nav-justified " id="pills-tab" role="tablist">
       <li class="nav-item">
@@ -12,7 +12,7 @@
           role="tab"
           aria-controls="pills-home"
           aria-selected="true"
-          >Venta</a
+          ><strong>Terminal de Venta</strong></a
         >
       </li>
 
@@ -40,7 +40,7 @@
           role="tab"
           aria-controls="pills-movimientos"
           aria-selected="false"
-          >Movimientos
+          >Productos
         </a>
       </li>
     </ul>
@@ -80,7 +80,7 @@
       >
         <div class="card">
           <div class="card-body">
-          Movimientos - cancelaciones de tickets 
+              Catalogo de productos
           </div>
         </div>
       </div>

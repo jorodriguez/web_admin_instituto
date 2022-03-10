@@ -1,6 +1,6 @@
-/* eslint-disable vue/valid-v-model */
 <template>
-  <span>
+  <span>  
+  <!--
     <div class="row  mt-1 ">
       <div class="col col-12 col-md-6 col-sm-6 col-xl-6  d-flex align-items-start justify-content-start  text-left ">
         <div class="btn-group btn-group-lg" role="group" aria-label="...">
@@ -22,8 +22,7 @@
           >
             <h1>Total</h1>
           </div>
-          <div class="col-12 col-md-6 col-sm-12 col-xs-12 col-xl-6 rounded text-left">
-            <!--<h1 class="text-white">${{ formatPrice(total) }}</h1>.-->
+          <div class="col-12 col-md-6 col-sm-12 col-xs-12 col-xl-6 rounded text-left">            
             <input
               type="text"
               class="form-control form-control-lg bg-dark"
@@ -35,86 +34,19 @@
         </div>
       </div>
     </div>
+    -->
 
-    <div class="row  ">
-     <!-- Catalogo de productos -->          
-          <div class="col-12 col-sm-12 col-md-12 col-lg-5 col-xl-5 p-1 ">
-            <div class="card border border-light">                                     
-              <div class="pt-1">                
-                <div class="btn-group " >
-                 <button @click="cargarCatalogo()" type="button" class="btn btn-primary btn-sm">
-                  Todos
-                 </button>
-                 <button type="button" :class="`btn btn-primary btn-sm`"
-                       v-for="categoria in categoriaArticulos"
-                      :key="categoria.cat_categoria"
-                      @click="filtrarArticulosPorCategoria(categoria)"
-                      >
-                    {{categoria.categoria}} 
-                    <span class="badge badge-pill badge-light">{{categoria.numero_articulos}}</span>
-                 </button>                  
-                </div>
-              </div>
-              <div class="card-body border scroll-productos  "  >                            
-                
-                <span v-if="loaderCatalogo" class="spinner-border spinner-border text-primary" role="status" aria-hidden="true"></span>
-   
-                <div class="row">
-                  <div
-                    class="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-4 m-0 p-1 card-group"
-                    v-for="producto in catalogoArticulos"
-                    :key="producto.id"
-                    @click="agregarProductoBusqueda(producto)"
-                  >
-                    <div class="card border-light">                                        
-                      <div class=" d-flex justify-content-end m-2">                        
-                          ${{ formatPrice(producto.precio) }}                         
-                      </div>
-                      <div class="card-body p-1">
-                      <img
-                        v-if="producto.foto"
-                        class="img-fluid  mx-auto"
-                        style="width:100px;min-height:70px;height:90px"
-                        :src="producto.foto"
-                        alt="Foto"
-                        title="seleccionar"
-                      />
-                      
-                      <div
-                       v-else
-                        class="img-thumbnail   mx-auto"
-                        style="width:100px;min-height:70px;height:90px"
-                        alt="Foto"                        
-                      />
-                      </div>
-                      <small style="font-size:10px;" class="text-muted m-0" >{{producto.codigo}}</small>
-                      <div class="card-body p-1">
-                        <h4 class="card-title m-0 text-truncate pb-0 ">
-                          {{ producto.nombre }}
-                        </h4>
-                        <p class="card-text text-xs pt-0 m-0 small text-truncate  ">
-                           {{ producto.descripcion }}
-                        </p>                        
-                      </div>
-                      <div class="card-footer p-0 mb-0">
-                          <span class="text-muted  text-xs">{{producto.categoria}} | {{producto.marca}} </span>                      
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-
-            </div>
-          </div>
+    <div class="row  ">   
 
       <!-- Carrito de venta -->
-      <div class="col-12 col-sm-12 col-md-12 col-lg-7 col-xl-7 p-1 ">
+      <div class="col-12 col-sm-12 col-md-12 col-lg-7 col-xl-7  ">
       
-        <div class="card-body border border-light p-1">
+        <div class="card-body bg-white p-0">
           <div>
             <small v-if="mensajeCodigo" class="text-danger">{{
               mensajeCodigo
             }}</small>
+            <!-- Si funciona la busqueda por codigo
             <div class="input-group ">
               <div class="input-group-prepend mr-1">
                 <span class="input-group-text border-0" id="basic-addon1"
@@ -132,10 +64,7 @@
                 <span class="input-group-text" id="inputGroup-sizing-default">
                   <i
                     :class="`fas fa-barcode ${loaderCodigo ? 'text-red' : ''}`"
-                  ></i>
-                  <!--<div v-if="loaderCodigo" class="spinner-border text-light" role="status">
-                          
-                      </div>-->
+                  ></i>                  
                 </span>
               </div>
               <input
@@ -151,21 +80,43 @@
                 autofocus
               />
             </div>
+            -->
           </div>
-          <div class="card-body border scroll">
+            <div
+                class="row border border-gray pt-1 m-0 bg-secondary  "
+              >              
+                <div class="col-12 col-sm-12 col-md-12 col-lg-1 col-xl-1 ">
+                  
+                </div>
+                <div class="text-left col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6 ">
+                  <h4> Articulo </h4>                                    
+                </div>
+                <div class="text-left col-12 col-sm-12 col-md-12 col-lg-2 col-xl-2 d-flex align-items-center align-self-center justify-content-center  ">
+                  <h4>Cant.</h4>
+                </div>
+                <div
+                  class="text-left col-12 col-sm-12 col-md-12 col-lg-2 col-xl-2  d-flex align-items-center align-self-center justify-content-center  "
+                >
+                  <span class="h4">Precio</span>
+                </div>
+                <div
+                  class="text-left col-12 col-sm-12 col-md-12 col-lg-1 col-xl-1  d-flex align-items-center align-self-center justify-content-center "
+                >
+                  <span class="h4">Importe</span>
+                </div>
+              </div>
+          <div class="card-body pl-0 pr-0 pt-0 " :style="`height:${screenHeight-460}px;overflow-y:scroll;`">
+          
+          
+
+            <!-- Lista del carrito de vent--->
             <span
               v-for="(detalle, index) in listaDetalleVenta"
               :key="detalle.id"
             >
               <div
-                :class="`row  border-bottom border-secondary pt-1 pb-1 ${index % 2 != 0 && 'bg-pink'}`"
-              >
-                <!--<div
-                  class="col-12 col-sm-12 col-md-12 col-lg-1 col-xl-1 d-flex align-items-center align-self-center justify-content-center pointer"
-                  @click="confirmEliminarDetalle(detalle)"
-                >
-                  <h5><i class="fas fa-trash text-danger" /></h5>
-                </div>-->
+                :class="`row m-0  border-bottom border-gray pt-1 pb-1 ${index % 2 != 0 && 'bg-pink'}`"
+              >              
                 <div class="col-12 col-sm-12 col-md-12 col-lg-1 col-xl-1 ">
                   <img
                     v-if="detalle.foto"
@@ -234,11 +185,108 @@
               </div>
             </span>
           </div>
+          <div class="card-footer  border-top  border-light ">
+            <div class="row">
+              <div class="col-8 border-right border-success ">
+              </div>
+              <div class="col-4">
+              Total <h1>${{formatPrice(total)}}</h1>           
+              <button @click="iniciarCobrar()" class="btn btn-success btn-block" href="#">
+                Cobrar
+              </button>
+              </div>
+            </div>            
+          </div>
         </div>
         </div>
         <!-- Fin de carrito de ventas -->
         
-      
+         <!-- Catalogo de productos -->          
+          <div class="col-12 col-sm-12 col-md-12 col-lg-5 col-xl-5 p-1 bg-secondary">
+            <div class="card  bg-secondary" >                                                 
+                <div class="input-group ">
+                      <input type="text" v-model="criterioNombre" v-on:keyup.enter="buscarPorCriterioNombreCarrito()" class="form-control " placeholder="Buscar por nombre.."  aria-describedby="button-addon2">
+                      <div class="input-group-append">
+                           <button class="btn btn-secondary " @click="buscarPorCriterioNombreCarrito()" type="button" id="button-addon2">
+                           <i class="fas fa-search"></i>
+                           </button>
+                         <!--<button class="btn btn-secondary  btn" @click="buscarPorCriterioNombreCarrito()" type="button" id="button-addon2" title="Agregar un producto nuevo">
+                           <i class="fas fa-plus text-primary"></i>
+                        </button>-->
+                </div>
+                </div>
+                
+              <div class="pt-1 d-sm-none d-lg-block">                            
+                <div class="btn-group " >
+                 <button @click="cargarCatalogo()" type="button" class="btn bg-pink ">
+                  Todos
+                 </button>
+                 <button type="button" :class="`btn bg-pink `"
+                       v-for="categoria in categoriaArticulos"
+                      :key="categoria.cat_categoria"
+                      @click="filtrarArticulosPorCategoria(categoria)"
+                      >
+                    {{categoria.categoria}} 
+                    <span class="badge badge-pill badge-light ">{{categoria.numero_articulos}}</span>
+                 </button>                   
+                </div>                
+              </div>              
+              <small class="text-sm text-muted align-middle">{{categoriaSeleccionada && categoriaSeleccionada.categoria}}</small>
+              
+              <div class="card-body pt-0" :style="`height:${screenHeight-(screenHeight/2.7)}px;overflow-y:scroll;`"  >                            
+
+                <span class="text-sm text-warning" v-if="mensajeBusquedaProducto">{{mensajeBusquedaProducto}}</span>
+
+                <span v-if="loaderCatalogo" class="spinner-border spinner-border text-primary" role="status" aria-hidden="true"></span>
+   
+            <!-- class="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-4 m-0 p-1 card-group "                    -->
+                <div class="row">
+                  <div
+                   class="col-12 col-sm-4 col-md-2 col-lg-6 col-xl-3 mt-1 p-1"                    
+                   v-for="producto in catalogoArticulos"
+                    :key="producto.id"
+                  >
+                    <div class="card border-light bg-white  "                     
+                      @click="agregarProductoBusqueda(producto)">                                        
+                      <div class=" d-flex justify-content-end mt-1 mr-1" :title="`${producto.nombre}  `">                        
+                         <span class="badge badge-secondary">${{ formatPrice(producto.precio) }}</span>
+                      </div>
+                      <div class="card-body p-0">
+                      <img
+                        v-if="producto.foto"
+                        class="img-fluid  mx-auto"
+                        style="width:100px;min-height:70px;height:90px"
+                        :src="producto.foto"
+                        alt="Foto"
+                        :title="`${producto.nombre}  `"
+                      />
+                      
+                      <div
+                       v-else
+                        class="img-thumbnail   mx-auto"
+                        style="width:100px;min-height:70px;height:90px"
+                        alt="Foto"                        
+                        :title="`${producto.nombre}  `"
+                      />
+                      </div>
+                      <!--<small style="font-size:10px;" class="text-muted m-0" >{{producto.codigo}}</small>-->
+                      <div class="card-body p-1">
+                        <h4 class="card-title m-0 text-truncate  pb-0 " :title="`${producto.nombre}  `">
+                         <span class="text-sm "> {{ producto.nombre }}</span>
+                        </h4>
+                        <!--<p class="card-text text-xs pt-0 m-0 small text-truncate  ">
+                           {{ producto.descripcion }}
+                        </p>   -->                     
+                      </div>
+                      <!--<div class="card-footer p-0 mb-0">
+                          <span class="text-muted  text-xs">{{producto.categoria}} | {{producto.marca}} </span>                      
+                      </div>-->
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>      
     </div>
      
     <!-- buscar producto -->
@@ -499,7 +547,8 @@ export default {
       formatPrice: formatPrice,
       countEnterCobro: 0,
       activarBotonCobro: false,
-      categoriaSeleccionada:{id:-1}
+      categoriaSeleccionada:{id:-1,categoria:"Todos"},
+      screenHeight:0
     };
   },
   mounted() {
@@ -507,6 +556,7 @@ export default {
     this.usuarioSesion = getUsuarioSesion();
     this.$root.mostrarSidebar = false;
     this.init();
+    this.ajustarAltoPantalla();
     /*window.addEventListener("keypress", e => {
       console.log("presiono tecla"+e);      
       
@@ -524,20 +574,41 @@ export default {
       this.$root.mostrarSidebar = true;
     },
     async cargarCategorias() {
-      this.loaderCatalogo = true;
+      this.loaderCatalogo = true;            
       console.log("@ccargarCategorias");
       this.categoriaArticulos = await this.getAsync(
         `${URL.CATEGORIA_ARTICULO}/${this.usuarioSesion.co_sucursal}`
       );
       this.loaderCatalogo = false;
     },
+    async buscarPorCriterioNombreCarrito(){
+      this.mensajeBusquedaProducto = "";      
+      if(!this.criterioNombre){
+        this.$notificacion.warn("Escribe un nombre","Escribe un nombre o una parte del nombre del articulo");
+        return;
+      }
+      this.loaderCatalogo = true;      
+      this.catalogoArticulos = await this.getAsync(
+        `${URL.ARTICULO}/nombre/${this.criterioNombre}/${
+          this.usuarioSesion.co_sucursal
+        }`
+      );
+
+      if(this.catalogoArticulos == null || this.catalogoArticulos.length == 0){
+         this.mensajeBusquedaProducto = `Ningún producto conincide con '${this.criterioNombre}'..`;
+      }
+      this.loaderCatalogo = false;
+
+    },
     async filtrarArticulosPorCategoria(categoria){
       this.categoriaSeleccionada = categoria;
       console.log(" Categoria seleccionada "+JSON.stringify(this.categoriaSeleccionada));
+      this.mensajeBusquedaProducto = "";
+      this.criterioNombre = "";      
       if(!this.categoriaSeleccionada){
 
         return;
-      }
+      }      
       this.loaderCatalogo = true;
       console.log("@c@@@@argarCatalogo por categoria");
       console.log(`${URL.ARTICULO}/sucursal/${this.usuarioSesion.co_sucursal}`);
@@ -553,6 +624,7 @@ export default {
       this.catalogoArticulos = await this.getAsync(
         `${URL.ARTICULO}/sucursal/${this.usuarioSesion.co_sucursal}`
       );
+      this.categoriaSeleccionada = {id:-1,categoria:"Todos"};
       this.loaderCatalogo = false;
     },
     iniciarBuscarProducto() {
@@ -580,13 +652,12 @@ export default {
         this.$notificacion.warn("Escribe un nombre","Escribe un nombre o una parte del nombre del articulo");
         return;
       }
-
       this.loaderBuscar = true;
       this.articulosEncontradosCriterio = await this.getAsync(
         `${URL.ARTICULO}/nombre/${this.criterioNombre}/${
           this.usuarioSesion.co_sucursal
         }`
-      );
+      );      
       this.loaderBuscar = false;
     },
     async agregarProductoBusqueda(item) {
@@ -832,6 +903,10 @@ export default {
       WinPrint.print();
       WinPrint.close();
     }
+    ,
+    ajustarAltoPantalla(){
+      this.screenHeight = screen.height;
+    }
   }
 };
 
@@ -860,7 +935,7 @@ function removeItemArray(arr, value) {
 }
 
 .scroll {
-  height: 500px;
+  height: 600px;
   overflow-y: scroll;
 }
 
