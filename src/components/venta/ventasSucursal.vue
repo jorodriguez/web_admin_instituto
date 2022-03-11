@@ -2,10 +2,11 @@
   <div class="ventas">
     <div class="card ">
       <div class="card-body  ">
-        <div class="row  ">          
-           <div class="col-3 h4 text-left">
-             Fecha
-             <datepicker
+        
+          <div class="form-group row">
+            <label for="fecha" class="sr-only">Fecha</label>
+             <div class="col-3">
+              <datepicker
                 name="fecha" 
                 v-model="fecha"
                 input-class="form-control"
@@ -13,12 +14,11 @@
                 :language="es"            
                 @selected="cambiarFecha"
                 format="yyyy-MM-dd"
-              ></datepicker>                      
-          </div>         
-          <div class="col border">
-           No. Ticket
-          </div>         
-        </div>
+              ></datepicker>        
+             </div>                            
+              <button class="btn btn-primary" @change="cargarLista()">Cargar</button>
+          </div>
+        
 
         <vue-good-table
           :columns="columnas"
@@ -55,7 +55,7 @@
             <span v-else-if="props.column.field == 'acciones'">   
             <div class="btn-group" role="group" aria-label="Basic example">         
                 <button type="button" class="btn btn-link btn-sm text-warning">
-                  <i class="fas fa-reply" title="Devolver venta"></i>
+                  <i class="fas fa-reply" title="Devolver venta" @click="iniciarCancelacionVenta(props.row)"></i>
                 </button>                
                 <button type="button" class="btn btn-link btn-sm text-primary" @click="imprimirTicket(props.row.id)">
                   <i class="fas fa-print" title="Reimprimir"></i>
@@ -73,19 +73,40 @@
     </div>  
 
     <!-- popup para cancelar la venta -->
-     <Popup id="popup_cancelar_venta" size="md" :show_button_close="true">
+     <Popup id="popup_cancelar_venta" size="lg" :show_button_close="true">
       <div slot="header">
-        Cancelar Venta        
+        Cancelar Venta {{ventaSeleccionada.folio}}
       </div>    
 
       <div slot="content" >        
         <div class="row">
+          <div class="col-8">
+           <div class="form-group">
+        <label>Actividad</label>
+            <select
+                v-model="idEstatusSeleccionado"
+                class="form-control"
+                placeholder="Grupo"
+                required
+                autofocus
+            >
+              <option
+                v-for="estatusItem in listaEstatus"
+                v-bind:value="estatusItem.id"
+                v-bind:key="estatusItem.id"
+              >{{ estatusItem.nombre }}</option>
+            </select>
+      </div>
           
+          </div>          
+          <div class="col-4 p-1 border border-light "  :style="`height:500px;overflow-y:scroll;`">
+              <span v-html="htmlTicket"></span>
+          </div>          
         </div>        
       </div>
       <div slot="footer">
         <button
-          class="btn btn-primary"                              
+          class="btn btn-danger"                              
         >
           Confirmar
         </button>
@@ -125,7 +146,9 @@ export default {
       operacion: "",
       TABLE_CONFIG:TABLE_CONFIG,
       loader:false,
-      ventaSeleccionada:VeVenta,
+      idEstatusSeleccionado:-1,
+      ventaSeleccionada:VeVenta,      
+      htmlTicket:"",
       es: es,
 
       fecha:Date,
@@ -230,8 +253,28 @@ export default {
   methods: {
     async init() {
         await this.cargarLista();
-    },  
-     async imprimirTicket(id) {
+    }, 
+    async iniciarCancelacionVenta(itemVenta){      
+
+    console.log("iniciarCancelacionVenta");
+
+      if(this.listaEstatus.length == 0){
+          this.listaEstatus = await this.getAsync(`${URL.ESTATUS}`);        
+      }      
+
+      //ir por la informacion de la venta
+      //const ventaData = await this.getAsync(URL.VENTA + "/venta/" + id);
+      const ventaSeleccionada = Object.assign({},itemVenta);
+      
+      if(ventaSeleccionada && ventaSeleccionada.id_estatus == 1){
+          
+          this.htmlTicket = await this.getAsync(URL.VENTA + "/ticket/" + ventaSeleccionada.id);
+                      
+          $("#popup_cancelar_venta").modal('show');
+      }
+
+    },
+    async imprimirTicket(id) {
       console.log("@imprimir ticket "+id);
       const html = await this.getAsync(URL.VENTA + "/ticket/" + id);
 
@@ -247,16 +290,6 @@ export default {
       WinPrint.focus();
       WinPrint.print();
       WinPrint.close();
-    },
-    async iniciarCancelacionVenta(id){      
-
-      if(this.listaEstatus.length == 0){
-          this.listaEstatus = await this.getAsync(`${URL.ESTATUS}`);        
-      }      
-
-    
-
-
     },
     cambiarFecha(){
          this.$nextTick(async () => {
