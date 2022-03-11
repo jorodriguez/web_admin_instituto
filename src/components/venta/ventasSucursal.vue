@@ -16,13 +16,17 @@
                 format="yyyy-MM-dd"
               ></datepicker>        
              </div>                            
-              <button class="btn btn-primary" @change="cargarLista()">Cargar</button>
+              <button class="btn btn-primary" @click="cargarLista()">
+               <div v-if="loader" class="spinner-border spinner-border-sm " role="status"/>                  
+                Cargar
+              </button>
           </div>
         
 
         <vue-good-table
           :columns="columnas"
-          :rows="lista"
+          :rows="lista"          
+          :isLoading="loader"
           :line-numbers="true"        
           :search-options="TABLE_CONFIG.SEARCH_OPTIONS"
           :pagination-options="TABLE_CONFIG.PAGINATION_OPTIONS"          
@@ -32,40 +36,57 @@
   	          enabled: false,               
           }"
         >
+        <template slot="loadingContent">              
+               <div  class="spinner-border text-info" role="status">
+                  
+              </div>
+        </template>
           <template slot="table-header-row" slot-scope="props">
-            <span class="font-weight-bold text-info h5">{{ props.row.label }}</span>
+                <span v-if="props.row.id_estatus == 1" class="font-weight-bold text-info h5">{{ props.row.label }}</span>
+                <span v-else class="font-weight-bold text-info h5">{{ props.row.label }}</span>
           </template>
 
           <template slot="table-row" slot-scope="props">            
             <span v-if="props.column.field == 'total'">              
-                  <h4>${{props.row.total}}</h4>                  
+                  <h4 v-if="props.row.id_estatus == 1">${{props.row.total}}</h4>                  
+                  <h4 class="text-danger" v-else><del>${{props.row.total}}</del></h4>                  
             </span>
 
             <span v-else-if="props.column.field == 'recibido'">              
-                  <span>${{props.row.recibido}}</span>                  
+                  <span  v-if="props.row.id_estatus == 1">${{props.row.recibido}}</span>               
+                  <span class="text-danger" v-else><del>${{props.row.recibido}}</del></span>                     
             </span>
 
             <span v-else-if="props.column.field == 'cambio'">              
-                  <span>${{props.row.cambio}}</span>                  
+                  <span  v-if="props.row.id_estatus == 1">${{props.row.cambio}}</span>                  
+                  <span class="text-danger" v-else><del>${{props.row.cambio}}</del></span>                     
             </span>
+
             <span v-else-if="props.column.field == 'estatus'">              
-                  <span :class="` ${props.row.id_estatus == 1 ? 'badge  badge-success':'badge  badge-secondary'}`">{{props.row.estatus}}</span>                  
+                  <span v-if="props.row.id_estatus == 1" :class="` ${'badge  badge-success'}`">{{props.row.estatus}}</span>                  
+                  <span v-else-if="props.row.id_estatus == 2" :class="` ${'badge  badge-warning'}`">{{props.row.estatus}}</span>                  
+                  <span v-else-if="props.row.id_estatus == 3" :class="` ${'badge  badge-danger'}`">{{props.row.estatus}}</span>                  
+                  <span v-else :class="`'badge  badge-secondary'}`">{{props.row.estatus}}</span>                  
             </span>
 
             <span v-else-if="props.column.field == 'acciones'">   
-            <div class="btn-group" role="group" aria-label="Basic example">         
+            <div v-if="props.row.id_estatus == 1" class="btn-group" role="group" aria-label="Basic example">                                      
+
                 <button type="button" class="btn btn-link btn-sm text-warning">
                   <i class="fas fa-reply" title="Devolver venta" @click="iniciarCancelacionVenta(props.row)"></i>
                 </button>                
                 <button type="button" class="btn btn-link btn-sm text-primary" @click="imprimirTicket(props.row.id)">
                   <i class="fas fa-print" title="Reimprimir"></i>
                 </button>
-                <button type="button" class="btn btn-link text-danger btn-sm">
+                <!--<button type="button" class="btn btn-link text-danger btn-sm">
                   <i class="fas fa-trash" title="Editar venta"></i>
-                </button>
+                </button>-->
             </div>
             </span>                                           
-            <span v-else>{{props.formattedRow[props.column.field]}}</span>
+            <span v-else>
+                  <span  v-if="props.row.id_estatus == 1">{{props.formattedRow[props.column.field]}}</span>
+                  <span  v-else class="text-danger" ><del> {{props.formattedRow[props.column.field]}}</del></span>
+            </span>
           </template>
         </vue-good-table>
            
@@ -79,36 +100,49 @@
       </div>    
 
       <div slot="content" >        
+      
         <div class="row">
-          <div class="col-8">
+          <div class="col-7 text-left">
            <div class="form-group">
-        <label>Actividad</label>
-            <select
+            <label>Selecciona el movimiento</label>
+              <select
                 v-model="idEstatusSeleccionado"
                 class="form-control"
                 placeholder="Grupo"
                 required
                 autofocus
-            >
+              >
               <option
                 v-for="estatusItem in listaEstatus"
                 v-bind:value="estatusItem.id"
                 v-bind:key="estatusItem.id"
               >{{ estatusItem.nombre }}</option>
             </select>
-      </div>
+          </div>
+
+          <div v-if="idEstatusSeleccionado != idEstatusSeleccionadoAnterior"  class="form-group">
+              <label>Motivo <span class="text-danger">*</span></label>
+             <textarea v-model="motivo" placeholder="Escribe el motivo .." class="form-control border border-warning" rows="4">
+              </textarea>
+          </div>
           
           </div>          
-          <div class="col-4 p-1 border border-light "  :style="`height:500px;overflow-y:scroll;`">
+          <div :class="`col-5 p-1  border border-light ${loaderTicketPreview && 'bg-light'}`"  :style="`height:500px;overflow-y:scroll;`">
+              <div v-if="loaderTicketPreview" class="spinner-border text-info" role="status">
+                  <span class="sr-only">Loading...</span>
+              </div>
               <span v-html="htmlTicket"></span>
+
           </div>          
         </div>        
       </div>
       <div slot="footer">
         <button
           class="btn btn-danger"                              
+          :disabled="(idEstatusSeleccionado == idEstatusSeleccionadoAnterior) || loaderConfirmacion"
+           @click="confirmarCancelacion()"
         >
-          Confirmar
+          <div v-if="loaderConfirmacion" class="spinner-border spinner-border-sm" role="status"/> Confirmar
         </button>
       </div>
     </Popup> 
@@ -145,8 +179,12 @@ export default {
       usuarioSesion: {},
       operacion: "",
       TABLE_CONFIG:TABLE_CONFIG,
+      loaderConfirmacion:false,
       loader:false,
+      loaderTicketPreview:false,
       idEstatusSeleccionado:-1,
+      idEstatusSeleccionadoAnterior:-1,
+      motivo:"",
       ventaSeleccionada:VeVenta,      
       htmlTicket:"",
       es: es,
@@ -255,23 +293,62 @@ export default {
         await this.cargarLista();
     }, 
     async iniciarCancelacionVenta(itemVenta){      
+      
+      console.log("iniciarCancelacionVenta");
 
-    console.log("iniciarCancelacionVenta");
+    this.htmlTicket = "";
 
       if(this.listaEstatus.length == 0){
+        console.log(`${URL.ESTATUS}`);
           this.listaEstatus = await this.getAsync(`${URL.ESTATUS}`);        
       }      
 
       //ir por la informacion de la venta
       //const ventaData = await this.getAsync(URL.VENTA + "/venta/" + id);
-      const ventaSeleccionada = Object.assign({},itemVenta);
+      this.ventaSeleccionada = Object.assign({},itemVenta);
+      this.idEstatusSeleccionado = this.ventaSeleccionada.id_estatus;
+      this.idEstatusSeleccionadoAnterior = this.ventaSeleccionada.id_estatus;
       
-      if(ventaSeleccionada && ventaSeleccionada.id_estatus == 1){
+      if(this.ventaSeleccionada && this.ventaSeleccionada.id_estatus == 1){
+          this.loaderTicketPreview=true;
+          setTimeout(async() => {
+            this.htmlTicket = await this.getAsync(URL.VENTA + "/ticket/" + this.ventaSeleccionada.id);  
+            this.loaderTicketPreview=false;
+          },800);
           
-          this.htmlTicket = await this.getAsync(URL.VENTA + "/ticket/" + ventaSeleccionada.id);
                       
           $("#popup_cancelar_venta").modal('show');
       }
+
+    },
+    async confirmarCancelacion(){
+      this.loaderConfirmacion = true;
+
+      if(this.idEstatusSeleccionadoAnterior == this.idEstatusSeleccionado){
+          this.$notificacion.warn("Selecciona un movimiento","Selecciona un movimiento de la lista .");
+          this.loaderConfirmacion = false;
+          return;
+      }
+
+      if(this.idEstatusSeleccionadoAnterior != this.idEstatusSeleccionado && !this.motivo){
+          this.$notificacion.warn("Escribe el motivo","Escribe el motivo.");
+          this.loaderConfirmacion = false;
+          return;
+      }
+
+     const data = await  this.putAsync(`${URL.VENTA}/cancelar`,  {
+                    id_venta:this.ventaSeleccionada.id,
+                    id_estatus:this.idEstatusSeleccionado,
+                    motivo:this.motivo,
+                    genero:this.usuarioSesion.id});
+    
+    if(data){
+
+        $("#popup_cancelar_venta").modal('hide');
+        await this.cargarLista();
+    }   
+    this.loaderConfirmacion = false;
+    
 
     },
     async imprimirTicket(id) {
@@ -297,13 +374,15 @@ export default {
            await this.cargarLista();
          });        
     },
-     async cargarLista(){
+    async cargarLista(){
         this.loader =true;
-        this.lista = await this.putAsync(`${URL.VENTA}/sucursal/${this.usuarioSesion.co_sucursal}`,{fecha:this.fecha});        
-        console.log("this.lista");
-        console.log(this.lista);
-        this.loader =false;
-    }
+        setTimeout(async()=>{
+            this.lista = await this.putAsync(`${URL.VENTA}/sucursal/${this.usuarioSesion.co_sucursal}`,{fecha:this.fecha});        
+             this.loader =false;
+        },800);                
+    },
+    
+
   } // methods
    
 };
