@@ -1,5 +1,6 @@
 <template>
   <div class="cat_alumno">
+    <PopupPagoPendiente/>
     <h1>Inscripción Alumno</h1>
     <small>{{ usuarioSesion.nombre_sucursal }}</small>
     <div class="row">
@@ -240,12 +241,14 @@ import { validacionDatosAlumno } from "../helpers/AlumnoValidacion";
 import { en, es } from "vuejs-datepicker/dist/locale";
 import Loader from "../components_utils/Loader";
 import moment from "moment";
+import  PopupPagoPendiente  from "./PopupPagoPendiente.vue";
 
 export default {
   name: "inscripcion-alumno",
   components: {
     Datepicker,
-    Loader
+    Loader,
+    PopupPagoPendiente
   },
   mixins: [operacionesApi],
   data() {
