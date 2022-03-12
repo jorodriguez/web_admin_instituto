@@ -6,13 +6,15 @@ import { VueGoodTable } from 'vue-good-table';
 import { operacionesApi } from "../helpers/OperacionesApi";
 import URL from "../helpers/Urls";
 import {getUsuarioSesion} from '../helpers/Sesion';
+import  PopupPagoPendiente  from "../components/PopupPagoPendiente";
 
 export default {
   name: "gastos",
   mixins: [operacionesApi],  
   components: {
     Datepicker,
-    VueGoodTable
+    VueGoodTable,
+    PopupPagoPendiente
   },
   data() {
     return {      

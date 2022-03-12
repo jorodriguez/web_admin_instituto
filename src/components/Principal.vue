@@ -4,7 +4,7 @@
     <div class="row"></div>
       <div class="scroll-panel-salida-div rounded border">
       <div class="row">                
-       
+       <PopupPagoPendiente/>
       </div>      
     </div>   
   </div>
@@ -14,10 +14,12 @@
 import URL from "../helpers/Urls";
 import { operacionesApi } from "../helpers/OperacionesApi";
 import { getUsuarioSesion } from "../helpers/Sesion";
+import  PopupPagoPendiente  from "./PopupPagoPendiente.vue";
+
 
 export default {
   name: "principal",
-  components: {  },
+  components: { PopupPagoPendiente },
   mixins: [operacionesApi],
   data() {
     return {      

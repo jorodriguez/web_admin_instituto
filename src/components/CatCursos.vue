@@ -1,5 +1,6 @@
 <template>
   <div class="cat_curso">
+    <PopupPagoPendiente/>
     <h1>Talleres ({{ lista ? lista.length : 0 }})</h1>
     <small>{{ usuarioSesion.nombre_sucursal }}</small>
     <div class="row">
@@ -370,6 +371,7 @@ import Popup from "../controller/Popup";
 import InscripcionAlumno from "./InscripcionAlumno.vue";
 import RowCurso from "./fragmentos/curso/RowCurso";
 import VueTimepicker from "vue2-timepicker";
+import  PopupPagoPendiente  from "./PopupPagoPendiente.vue";
 
 export default {
   name: "cat-cursos",
@@ -379,7 +381,8 @@ export default {
     Popup,
     InscripcionAlumno,
     RowCurso,
-    VueTimepicker
+    VueTimepicker,
+    PopupPagoPendiente
   },
   mixins: [operacionesApi],
   data() {

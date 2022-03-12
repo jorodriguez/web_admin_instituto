@@ -1,5 +1,6 @@
 <template>
   <div id="id_gastos" >
+    <PopupPagoPendiente/>
     <h1>Gastos</h1>
     <small>{{usuarioSesion.nombre_sucursal}}</small> 
     <div class="row">

@@ -6,14 +6,14 @@
       <MenuEncabezado />
       <Header />
       <div class="container-fluid">
-        <div class="col-xl-12 mb-12 mb-xl-0">
+        <div class="col-xl-12 mb-12 mb-xl-0">         
+         
           <vue-page-transition name="fade-in-up">          
           <router-view />
           </vue-page-transition>
         </div>
       </div>
-    </div>    
-
+    </div>       
   </span>
 </template>
 
@@ -23,7 +23,8 @@ import MenuEncabezado from "../templates/menuEncabezado";
 import MenuSidebar from "../templates/menuSidebar";
 import Header from "../templates/header";
 import MonitorRed from "../componentes_generales/MonitorRed";
-import { usuarioSesion, clearSesion } from "../helpers/Sesion";
+import {  clearSesion } from "../helpers/Sesion";
+import { getUsuarioSesion } from "../helpers/Sesion";
 
 export default {  
   components: {
@@ -34,6 +35,15 @@ export default {
     MonitorRed
   },
   name: "Bienvenido",
+   data() {
+    return {      
+      usuarioSesion: {}      
+    };
+  },
+  mounted() {
+    console.log("##### pagina bienvenido ####");
+    this.usuarioSesion = getUsuarioSesion();    
+  },
   methods: {
     signout() {
       console.log("Signout ");

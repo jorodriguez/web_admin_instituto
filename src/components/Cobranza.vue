@@ -1,5 +1,6 @@
 <template>
   <div class="cat_alumno">
+    <PopupPagoPendiente/>
     <h1>Cobranza </h1>
     <small>{{ usuarioSesion.nombre_sucursal }}</small>
     <div class="row">
@@ -113,11 +114,12 @@ import moment from 'moment';
 import {formatPrice} from '../helpers/Utils';
 import TABLE_CONFIG from "../helpers/DatatableConfig";
 import { VueGoodTable } from 'vue-good-table';
+import  PopupPagoPendiente  from "./PopupPagoPendiente.vue";
 
 export default {
   name: "Cobranza",
   components: {
-    Datepicker,Loader,VueGoodTable
+    Datepicker,Loader,VueGoodTable,PopupPagoPendiente
   },
   mixins: [operacionesApi],
   data() {

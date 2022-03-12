@@ -1,5 +1,6 @@
 <template>
   <span id="corte-dia" >   
+    <PopupPagoPendiente/>
    <h1>Cierres por día </h1>
     <small>{{ usuarioSesion.nombre_sucursal }}</small> 
     
@@ -199,11 +200,12 @@ import TABLE_CONFIG from "../../helpers/DatatableConfig";
 import {getUsuarioSesion} from '../../helpers/Sesion';
 import {formatPrice} from '../../helpers/Utils';
 import moment from 'moment';
+import  PopupPagoPendiente  from "../PopupPagoPendiente.vue";
 
 export default {
   name: "corte-dia",
   components: {
-    Datepicker,VueGoodTable
+    Datepicker,VueGoodTable,PopupPagoPendiente
   },
   mixins:[operacionesApi],
   data() {
