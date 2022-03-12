@@ -7,12 +7,12 @@ import { en, es } from 'vuejs-datepicker/dist/locale'
 import { getUsuarioSesion } from '../helpers/Sesion';
 import Loader from '../components_utils/Loader';
 import moment from 'moment'
-
+import  PopupPagoPendiente  from "../components/PopupPagoPendiente";
 
 export default {
   name: "Alumno",
   components: {
-    Datepicker,Loader
+    Datepicker,Loader,PopupPagoPendiente
   },
   mixins: [operacionesApi],
   data() {

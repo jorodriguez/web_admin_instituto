@@ -1,5 +1,6 @@
 <template>
   <div class="cat_alumno">
+    <PopupPagoPendiente/>
     <h1>Alumnos </h1>
     <small>{{ usuarioSesion.nombre_sucursal }}</small>
     <div class="row">
