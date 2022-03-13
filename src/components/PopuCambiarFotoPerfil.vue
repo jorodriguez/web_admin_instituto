@@ -181,10 +181,10 @@ export default {
   },
   mixins: [operacionesApi],
   name: "foto-perfil",
-  props:["id"],
+  props:["uid"],
   data() {
     return {
-      id: 0,
+      uid: "",
       resultado: {},
       usuarioSesion: {},
       criterioNombre: "",
@@ -198,10 +198,12 @@ export default {
       loadingUpload: false
     };
   },
-  mounted() {
-    //this.id = this.$route.params.id;
-    //console.log("@ide recibido " + this.id);
-    //this.cargarAlumno();
+ async mounted() {
+    this.uid = this.$route.params.uid;
+
+    console.log(` -----this.$route.params.uid ${this.$route.params}`);
+    console.log("@ide recibido " + this.uid);
+    await this.cargarAlumno();
   },
   methods: {
     onInit() {
@@ -234,11 +236,20 @@ export default {
         console.log("La lista ya se encuentra cargada");
       }
     },
-    cargarAlumno() {
-      this.get(URL.ALUMNOS_BASE + "/id/" + this.id, result => {
+    async cargarAlumno() {
+      if(!this.uid){
+        this.$notificacion.info(
+            "No se encontró el alumno",
+            "No se encontro el alumno."
+          );
+          return;
+      }
+      this.alumno = await this.getAsync(`${URL.ALUMNOS_BASE}/id/${this.uid}`);
+      this.loadingUpload = false;
+      /*this.get(URL.ALUMNOS_BASE + "/id/" + this.id, result => {
         this.alumno = result.data;
         this.loadingUpload = false;
-      });
+      });*/
     },
     seleccionarAlumno(row) {
       console.log("seleccion " + JSON.stringify(row));

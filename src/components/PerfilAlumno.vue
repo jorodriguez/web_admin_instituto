@@ -28,7 +28,7 @@
             height="50"
             style="cursor:pointer"
             title="Actualizar foto de perfil"
-            @click="subirFotoPerfil(alumno.id)"
+            @click="subirFotoPerfil(alumno.uid)"
           />
           <p class="m-0 p-0">{{alumno.matricula}}</p>
           <p class="font-weight-bold h4">

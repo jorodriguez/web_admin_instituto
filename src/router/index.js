@@ -67,7 +67,7 @@ const router = new Router({
         { path: '/PerfilAlumno/:uid', name: 'PerfilAlumno', component: PerfilAlumno, meta: { requiresAuth: true, validar: false } },
         { path: '/ReciboPago/:id_pago', name: 'ReciboPago', component: ReciboPago, meta: { requiresAuth: true, validar: false } },
         { path: '/Corte', name: 'Corte', component: CorteDia, meta: { requiresAuth: true, validar: false } },
-        { path: '/SubirFotoAlumno/:id', name: 'SubirFotoAlumno', component: SubirFotoAlumno, meta: { requiresAuth: true, validar: false } },        
+        { path: '/SubirFotoAlumno/:uid', name: 'SubirFotoAlumno', component: SubirFotoAlumno, meta: { requiresAuth: true, validar: false } },        
         //{ path: '/Asistencia', name: 'Asistencia', component: Asistencia, meta: { requiresAuth: true, validar: false } },
         //{ path: '/Actividades', name: 'Actividades', component: RegistroActividad, meta: { requiresAuth: true, validar: false } },
         { path: '/Gastos', name: 'Gastos', component: Gastos, meta: { requiresAuth: true, validar: false } },

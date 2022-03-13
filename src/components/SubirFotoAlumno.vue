@@ -1,9 +1,10 @@
 
 <template>
   <div>
-    <div class="row mb-3">
+    <h1>Foto del perfil </h1>
+    <div class="row mb-3">      
       <router-link
-        :to="{ name: 'CatAlumno', params: {} }"
+        :to="{ name: path_retorno, params: {uid:alumno.uid} }"
         class="btn btn-secondary btn-lg"
         v-if="!usuarioSesion.permiso_gerente"
       >
@@ -11,92 +12,29 @@
       </router-link>
     </div>
     <div class="row">
-      <div class="col-3">
-        <table class="table text-left">
+      <div class="col-4">
+        <table class="table text-left">          
+          <tr>
+            <td>
+                <img style="border-radius:100px;width:200px;heigth:200px" class="mb-1" :src="alumno.foto" /> 
+            </td>            
+          </tr>
+          <tr>            
+            <td>
+              <h4>{{this.alumno.matricula}}</h4>
+            </td>
+          </tr>
           <tr>
             <td>
               <h4>{{this.alumno.nombre}} {{this.alumno.apellidos}}</h4>
             </td>
-          </tr>
+          </tr>                   
           <tr>
-            <td>
-              <h4>{{this.alumno.nombre_sucursal}}</h4>
+            <td >
+              <h4>{{alumno.telefono}}</h4>
             </td>
-          </tr>
-          <tr>
-            <td>
-              <h4>{{this.alumno.nombre_grupo}}</h4>
-            </td>
-          </tr>
+          </tr>                             
         </table>
-<!--
-        <div id="accordion">
-          <div class="card">
-            <div class="card-header" id="headingOne">
-              <h5 class="mb-0">
-                <button
-                  class="btn btn-link"
-                  data-toggle="collapse"
-                  data-target="#collapseOne"
-                  aria-expanded="true"
-                  aria-controls="collapseOne"
-                  @click="cargarCatalogoAlumnos()"
-                >Seleccionar otro alumno</button>
-              </h5>
-            </div>
-            <div
-              id="collapseOne"
-              class="collapse"
-              aria-labelledby="headingOne"
-              data-parent="#accordion"
-            >
-              <label v-if="loadingCatalogo" class="text-muted">Cargando...</label>
-              <div class="card-body" v-if="listaAlumnos.length > 0">
-                <div class="input-group mb-3">
-                  <input
-                    type="text"
-                    class="form-control"
-                    placeholder="Buscar por nombre.."
-                    v-model="criterioNombre"
-                    v-on:keyup.enter="buscarPorNombre()"
-                    aria-label="Buscar por nombre.."
-                    aria-describedby="basic-addon2"
-                  />
-                  <div class="input-group-append">
-                    <button
-                      class="btn btn-outline-secondary border"
-                      type="button"
-                      v-on:click="buscarPorNombre()"
-                    >
-                      <i class="fas fa-search"></i>
-                    </button>
-                  </div>
-                </div>
-
-                <div class="table-responsive">
-                  <table class="table">
-                    <tr v-for="row in lista" :key="row.id">
-                      <td
-                        class="text-left"
-                        style="fontsize:18px, padding-left:2px;padding-right:2px;"
-                      >
-                        <ItemCapsulaAlumno
-                          :texto="row.nombre + (row.mostrar_nombre_carino ? ' ('+row.nombre_carino+')':'')"
-                          :foto="row.foto"
-                          :color="row.color"
-                          :seleccion="()=>{seleccionarAlumno(row)}"                          
-                        >
-                          <span slot="cuerpo"></span>
-                        </ItemCapsulaAlumno>
-                      </td>
-                    </tr>
-                  </table>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-        -->
       </div>
 
       <div class="col-3">
@@ -106,7 +44,7 @@
               <croppa
                 v-model="myCroppa"
                 canvas-color="transparent"
-                :initial-image="`${this.alumno.foto}`"
+                :initial-image="`${alumno.foto}`"
                 @init="onInit"
                 :width="200"
                 :height="200"
@@ -205,18 +143,7 @@
         </div>
       </div>
 
-      <div class="col-3">
-        <img style="border-radius:100px;width:200px;heigth:200px" class="mb-1" :src="alumno.foto" />
-        <div class="mb-4">
-          <ItemCapsulaAlumno :texto="alumno.nombre" :foto="alumno.foto" :color="alumno.color">
-            <span slot="cuerpo">
-              <button type="button" class="btn btn-link btn-xs text-white">
-                <span class="badge badge-pill badge-danger">x</span>
-              </button>
-            </span>
-          </ItemCapsulaAlumno>
-        </div>
-      </div>
+   
     </div>
   </div>
 </template>
@@ -243,7 +170,8 @@ export default {
   name: "upload",
   data() {
     return {
-      id: 0,
+      uid: "",
+      path_retorno: "",
       resultado: {},
       usuarioSesion: {},
       criterioNombre: "",
@@ -258,14 +186,16 @@ export default {
     };
   },
   beforeRouteUpdate(to) {
-    console.log("id = " + this.id);
+    console.log("uid = " + this.uid);
     console.log(" " + to);
-    this.id = to.params.id;
+    this.uid = to.params.uid;
+    this.path_retorno = to.params.path_retorno;
   },
-  mounted() {
-    this.id = this.$route.params.id;
-    console.log("@ide recibido " + this.id);
-    this.cargarAlumno();
+  async mounted() {
+    this.uid = this.$route.params.uid;    
+    console.log("@ide recibido " + this.uid);
+    await this.cargarAlumno();
+    this.path_retorno = this.$route.params.path_retorno;
   },
   methods: {
     onInit() {
@@ -305,11 +235,16 @@ export default {
         console.log("La lista ya se encuentra cargada");
       }
     },
-    cargarAlumno() {
-      this.get(URL.ALUMNOS_BASE + "/id/" + this.id, result => {
-        this.alumno = result.data;
-        this.loadingUpload = false;
-      });
+    async cargarAlumno() {
+        if(!this.uid){
+            this.$notificacion.error(
+            "No se encotro el alumno",
+            "Al parecer no encontramos al alumno que busca."
+          );
+          return;
+        }
+      this.alumno = await this.getAsync(`${URL.ALUMNOS_BASE}/id/${this.uid}`);
+        this.loadingUpload = false;      
     },
     seleccionarAlumno(row) {
       console.log("seleccion " + JSON.stringify(row));
