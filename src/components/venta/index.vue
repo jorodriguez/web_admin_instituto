@@ -80,7 +80,7 @@
       >
         <div class="card">
           <div class="card-body">
-              Catalogo de productos
+              <CatalogoProductos/>
           </div>
         </div>
       </div>
@@ -95,6 +95,7 @@ import { getUsuarioSesion } from "../../helpers/Sesion";
 import URL from "../../helpers/Urls";
 import Venta from "./venta.vue";
 import VentasSucursal from "./ventasSucursal.vue";
+import CatalogoProductos from "./catalogo_productos.vue";
 import Popup from "../../controller/Popup";
 
 export default {
@@ -102,7 +103,8 @@ export default {
   components: {
     Popup,
     Venta,
-    VentasSucursal
+    VentasSucursal,
+    CatalogoProductos
   },
   mixins: [operacionesApi],  
   data() {

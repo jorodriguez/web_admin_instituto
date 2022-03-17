@@ -4,7 +4,7 @@ import configEnv from '../../config/configEnv';
 const BASE = configEnv.BASE || "http://localhost:5000";
 //const BASE = process.env.URL_API || 'https://instituto-api-dev.herokuapp.com'
 //const BASE = process.env.URL_API || 'https://api-admin-paris.herokuapp.com';
-export const BRANCH = "2202-ventas";
+export const BRANCH = "2203-productos";
 
 const CURSO = BASE + '/curso';
 const ALUMNOS_BASE = BASE + '/alumnos';
@@ -19,8 +19,8 @@ const COBRANZA = BASE + '/cobranza';
 const VENTA = BASE + '/venta';
 const ARTICULO = BASE + '/articulo';
 const CATEGORIA_ARTICULO = BASE + '/categoria-articulo';
+const MARCA_ARTICULO = BASE + '/marca-articulo';
 const ESTATUS= BASE + '/estatus';
-
 
 const ASISTENCIA_BASE =  BASE + '/asistencia';
 const ASISTENCIA_USUARIO_BASE =  BASE + '/asistencia_usuarios';
@@ -68,7 +68,6 @@ const REPORTE_GASTOS_GLOBAL = BASE + '/reporte_gastos_global';
 const REPORTE_MENSUALIDADES = BASE + '/reporte_mensualidades';
 const REPORTE_MENSUALIDADES_MES_ACTUAL = BASE + '/reporte_mensualidades_mes_actual';
 
-
 //-recordatorio
 const INFO_CORREO_ALUMNOS = BASE + '/getInfoCorreoAlumnos';
 
@@ -106,6 +105,7 @@ const URL = {
     VENTA:VENTA,
     ARTICULO:ARTICULO,
     CATEGORIA_ARTICULO:CATEGORIA_ARTICULO,
+    MARCA_ARTICULO:MARCA_ARTICULO,
     ESTATUS:ESTATUS,
 
     USUARIO_BASE:  USUARIO_BASE,

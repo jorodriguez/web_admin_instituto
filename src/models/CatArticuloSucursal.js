@@ -1,4 +1,4 @@
-class CatArticuloSucursal {
+export default class CatArticuloSucursal {
   constructor() {
     this.id = null;
     this.co_empresa = null;
@@ -14,9 +14,40 @@ class CatArticuloSucursal {
     this.eliminado = null;
     this.costo_base = null;
     this.stock_minimo = null;    
+
+    this.foto=null;
+    this.codigo=null;    
+    this.cat_marca=null;
+    this.cat_categoria=null;
+    this.nombre ="";
+    this.descripcion=""
   }
   setId(id) {
     this.id = id;
+    return this;
+  }
+  setFoto(foto) {
+    this.foto = foto;
+    return this;
+  }
+  setCodigo(codigo) {
+    this.codigo = codigo;
+    return this;
+  }
+  setCatMarca(catMarca) {
+    this.catMarca = catMarca;
+    return this;
+  }
+  setCatCategoria(catCategoria) {
+    this.catCategoria = catCategoria;
+    return this;
+  }
+  setNombre(nombre) {
+    this.nombre = nombre;
+    return this;
+  }
+  setDescripcion(descripcion) {
+    this.descripcion = descripcion;
     return this;
   }
   setCoEmpresa(coEmpresa) {
@@ -71,22 +102,40 @@ class CatArticuloSucursal {
     this.stock_minimo = stockMinimo;
     return this;
   }
-  build() {
-    return {
-      id: this.id,
+  buildForInsert() {
+    return {      
       co_empresa: this.co_empresa,
       co_sucursal: this.co_sucursal,
       cat_articulo: this.cat_articulo,
       genero: this.genero,
       modifico: this.modifico,
-      precio: this.precio,
-      fecha_genero: this.fecha_genero,
-      fecha_modifico: this.fecha_modifico,
+      precio: this.precio,            
       cantidad_existencia: this.cantidad_existencia,
-      nota_interna: this.nota_interna,
-      eliminado: this.eliminado,
+      nota_interna: this.nota_interna,      
       costo_base: this.costo_base,
-      stock_minimo: this.stock_minimo
+      stock_minimo: this.stock_minimo,
+      foto:this.foto,
+      codigo:this.codigo,
+      cat_marca:this.cat_marca,
+      cat_categoria:this.cat_categoria,
+      nombre:this.nombre,
+      descripcion:this.descripcion
+    };
+  }
+
+  buildForUpdate() {
+    return {           
+      /*codigo:this.codigo,*/
+      cat_articulo: this.cat_articulo,      
+      precio: this.precio,                  
+      nota_interna: this.nota_interna,      
+      costo_base: this.costo_base,
+      stock_minimo: this.stock_minimo,            
+      cat_marca:this.cat_marca,
+      cat_categoria:this.cat_categoria,
+      nombre:this.nombre,
+      descripcion:this.descripcion,
+      modifico: this.modifico,
     };
   }
 }

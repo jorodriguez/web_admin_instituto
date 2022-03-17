@@ -1,7 +1,7 @@
 <template>
   <div class="ventas">
     <div class="card ">
-      <div class="card-body  ">
+      <div class="card-body pl-0 pr-0 ">
         
           <div class="form-group row">
             <label for="fecha" class="sr-only">Fecha</label>
