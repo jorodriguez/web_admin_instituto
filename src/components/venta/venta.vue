@@ -141,6 +141,7 @@
                     detalle.descripcion
                   }}</small>
                   <h5>{{ detalle.marca }}</h5>
+                  <small> {{ detalle.unidad_medida }}</small>
                 </div>
                 <div class="text-left col-12 col-sm-12 col-md-12 col-lg-2 col-xl-2 d-flex align-items-center align-self-center justify-content-center">
                   <i
@@ -704,6 +705,7 @@ export default {
         .setArticulo(producto.nombre)
         .setDescripcion(producto.descripcion)
         .setMarca(producto.marca)
+        .setUnidadMedida(producto.unidad_medida)
         .setCategoria(producto.categoria)
         .setPrecio(producto.precio)
         .setCantidad(this.cantidad)

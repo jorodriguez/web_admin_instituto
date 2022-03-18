@@ -3,6 +3,7 @@ class CatArticulo {
     this.id = null;
     this.co_empresa = null;
     this.cat_marca = null;
+    this.cat_unidad_medida=null;
     this.genero = null;
     this.modifico = null;
     this.nombre = "";
@@ -23,6 +24,10 @@ class CatArticulo {
   }
   setCatMarca(catMarca) {
     this.cat_marca = catMarca;
+    return this;
+  }
+  setCatUnidadMedida(catUnidadMedida){
+    this.cat_unidad_medida = catUnidadMedida;
     return this;
   }
   setGenero(genero) {

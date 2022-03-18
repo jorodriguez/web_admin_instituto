@@ -20,6 +20,7 @@ const VENTA = BASE + '/venta';
 const ARTICULO = BASE + '/articulo';
 const CATEGORIA_ARTICULO = BASE + '/categoria-articulo';
 const MARCA_ARTICULO = BASE + '/marca-articulo';
+const UNIDAD_MEDIDA = BASE + '/unidad-medida-articulo';
 const ESTATUS= BASE + '/estatus';
 
 const ASISTENCIA_BASE =  BASE + '/asistencia';
@@ -106,6 +107,7 @@ const URL = {
     ARTICULO:ARTICULO,
     CATEGORIA_ARTICULO:CATEGORIA_ARTICULO,
     MARCA_ARTICULO:MARCA_ARTICULO,
+    UNIDAD_MEDIDA,
     ESTATUS:ESTATUS,
 
     USUARIO_BASE:  USUARIO_BASE,

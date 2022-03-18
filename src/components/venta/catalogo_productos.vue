@@ -4,11 +4,21 @@
       <div class="col col-12 col-md-6 col-sm-6 col-xl-6  d-flex align-items-start justify-content-start  text-left ">
         <div class="btn-group btn-group-lg" role="group" aria-label="...">
           <button  class="btn btn-primary " @click="iniciarNuevo()">
-            Nueva
-          </button>          
-          <!--<button @click="iniciarCobrar()" class="btn btn-light btn-lg" >
-            Cobrar
-          </button>-->
+            <span class="fa fa-plus"/> Nuevo artículo
+          </button>                    
+        </div>
+      </div>
+      <div class="col col-12 col-md-6 col-sm-6 col-xl-6  d-flex align-items-end justify-content-end  text-left ">
+        <div class="btn-group btn-group-lg" role="group" aria-label="...">
+          <button  class="btn btn-outline-primary " @click="iniciarNuevaCategoria()" >
+            <span class="fa fa-plus"/> Categoria
+          </button>                    
+          <button  class="btn btn-outline-primary ">
+            <span class="fa fa-plus"/> Marca
+          </button>                    
+          <button  class="btn btn-outline-primary ">
+            <span class="fa fa-plus"/> Medida
+          </button>                    
         </div>
       </div>
    </div>  
@@ -93,7 +103,8 @@
                   />
            </div>                    
 
-           <div class="form-group">
+        <div class="form-row">             
+           <div class="form-group col-8">
             <label>Artículo <span class="text-danger">*</span></label>
              <input
                     type="text"
@@ -101,11 +112,30 @@
                     class="form-control"                    
                     v-model="articulo.nombre"                    
                   />
-           </div>    
+           </div>              
+        
+           <div class="form-group col-4">
+            <label>Medida <span class="text-danger">*</span></label>
+              <select
+                v-model="articulo.cat_unidad_medida"
+                class="form-control"
+                ref="input_medida"
+                placeholder="Medida"                                
+              >
+              <option
+                v-for="unidadMedida in unidadMedidas"
+                v-bind:value="unidadMedida.id"
+                v-bind:key="unidadMedida.id"
+              >{{ unidadMedida.nombre }}</option>
+            </select>                        
+        </div> 
+        </div>
+
             <div class="form-group ">
               <label>Descripción</label>
               <textarea cols="2" v-model="articulo.descripcion" class="form-control form-control-sm" />
             </div>
+            
       
           
           <div class="form-row">     
@@ -200,6 +230,66 @@
       </div>
     </Popup> 
 
+    <!-- catalogo de categoria -->    
+     <Popup id="popup_categoria" size="lg" :show_button_close="true">
+      <div slot="header">
+        Categorias
+      </div>    
+      <div slot="content" class="text-left " >                       
+          <div class="form-inline">           
+             <label>Nombre <span class="text-danger">*</span></label>
+             <input
+                    ref="input_nombre_categoria"
+                    type="text"
+                    class="form-control col-4"                    
+                    v-model="nombreCategoria"                    
+             />                                       
+              <button class="btn btn-primary ">Agregar</button>                       
+          </div>
+         <vue-good-table
+          :columns="columnasCatalogos"
+          :rows="categorias"          
+          :isLoading="loader"
+          :line-numbers="false"        
+          :search-options="TABLE_CONFIG.SEARCH_OPTIONS"
+          :pagination-options="TABLE_CONFIG.PAGINATION_OPTIONS"          
+          :selectOptions="TABLE_CONFIG.NO_SELECT_OPTIONS"          
+          class="table-striped"
+          :groupOptions="{
+  	          enabled: false,               
+          }"
+        >
+        <template slot="loadingContent">              
+              <div  class="spinner-border text-info" role="status"/>                                
+        </template>
+          <template slot="table-header-row" slot-scope="props">
+                <span class="font-weight-bold text-info h5">{{ props.row.label }}</span>                
+          </template>
+
+          <template slot="table-row" slot-scope="props">                        
+            <span v-if="props.column.field == 'nombre'">                                
+                  <p class="text-sm" >{{props.row.categoria}}</p>                                 
+            </span>           
+
+            <span v-else-if="props.column.field == 'acciones'">   
+              <div class="btn-group" role="group" aria-label="Basic example">                                      
+                <button type="button" class="btn btn-link btn-sm text-danger">
+                  <i class="fas fa-trash" title="Eliminar" ></i>
+                </button>                                
+            </div>
+            </span>                                           
+            <span v-else>
+                  <span  >{{props.formattedRow[props.column.field]}}</span>                  
+            </span>
+          </template>
+        </vue-good-table>                   
+           
+      </div>
+      <div slot="footer">
+        
+      </div>
+    </Popup> 
+
   </span>
 </template>
 
@@ -208,8 +298,6 @@ import Vue from "vue";
 import { operacionesApi } from "../../helpers/OperacionesApi";
 import { formatPrice } from "../../helpers/Utils";
 import { getUsuarioSesion } from "../../helpers/Sesion";
-import VeVenta from "../../models/VeVenta";
-import VeVentaDetalle from "../../models/VeVentaDetalle";
 import CatArticuloSucursal from "../../models/CatArticuloSucursal";
 import URL from "../../helpers/Urls";
 import { en, es } from "vuejs-datepicker/dist/locale";
@@ -243,6 +331,30 @@ export default {
       lista:[],
       categorias:[],
       marcas:[],
+      unidadMedidas:[],
+      columnasCatalogos:[
+      {
+        label: 'Id',
+        field: 'id',
+        hidden: true
+      },
+      {
+        label: 'Nombre',
+        field: 'nombre',
+        filterable: false,
+        thClass: 'text-left',
+        tdClass: 'text-left',
+        hidden: false
+      },
+      {
+        label: '',
+        field: 'acciones',
+        filterable: true,
+        thClass: 'text-center',
+        tdClass: 'text-left',
+        hidden:false
+      },
+      ],
       columnas:[
       {
         label: 'Id',
@@ -284,6 +396,14 @@ export default {
       {
         label: 'Categoria',
         field: 'categoria',
+        filterable: false,
+        thClass: 'text-center',
+        tdClass: 'text-center text-sm',
+        hidden: false
+      },
+      {
+        label: 'Unidad',
+        field: 'unidad_medida',
         filterable: false,
         thClass: 'text-center',
         tdClass: 'text-center text-sm',
@@ -345,6 +465,7 @@ export default {
   mounted() {
     console.log("##### INCIAR LISTA DE PRODUCTOS ####");
     this.usuarioSesion = getUsuarioSesion();        
+    this.TABLE_CONFIG.PAGINATION_OPTIONS.perPage = 5;
     this.init();    
   },
   methods: {
@@ -363,8 +484,9 @@ export default {
       this.loader = false;
     },       
     async cargarCatalogosAlta(){
-        this.categorias = await this.getAsync(`${URL.CATEGORIA_ARTICULO}/${this.usuarioSesion.co_sucursal}`);
-        this.marcas = await this.getAsync(`${URL.MARCA_ARTICULO}/${this.usuarioSesion.co_sucursal}`);
+        this.categorias = await this.getAsync(`${URL.CATEGORIA_ARTICULO}/${this.usuarioSesion.id_empresa}`);
+        this.marcas = await this.getAsync(`${URL.MARCA_ARTICULO}/${this.usuarioSesion.id_empresa}`);
+        this.unidadMedidas = await this.getAsync(`${URL.UNIDAD_MEDIDA}/${this.usuarioSesion.id_empresa}`);
     },
     async iniciarNuevo(){
         this.articulo = new CatArticuloSucursal();
@@ -393,7 +515,7 @@ export default {
           this.$notificacion.error(results.mensaje,"");
           
         }else{          
-          $("#popup_agregar").modal("show");
+          $("#popup_agregar").modal("hide");
           await this.cargarCatalogo();
         }
         this.loaderGuardar=false;
@@ -425,6 +547,12 @@ export default {
           return false;
       }
 
+      if(!this.articulo.cat_unidad_medida){
+          this.$notificacion.warn("Seleccionar una Medida","");
+          this.$refs.input_unidad.focus();          
+          return false;
+      }
+
       if(!this.articulo.precio){
           this.$notificacion.warn("Escribe el precio","");
           this.$refs.input_precio.focus();          
@@ -451,6 +579,10 @@ export default {
 
       return true;     
 
+    },
+    async iniciarNuevaCategoria(){
+      this.categorias = await this.getAsync(`${URL.CATEGORIA_ARTICULO}/${this.usuarioSesion.id_empresa}`);
+      $("#popup_categoria").modal("show");
     }
   } 
    

@@ -19,6 +19,7 @@ export default class VeVentaDetalle {
     this.foto = ''; // foto del producto
     this.marca = ''; // marca del producto
     this.categoria = ''; // categoria del producto
+    this.unidad_medida = ''; // unidad medida del producto
     
   }
   setId(id) {
@@ -99,6 +100,10 @@ export default class VeVentaDetalle {
     return this;
   }
 
+  setUnidadMedida(unidadMedida) {
+    this.unidad_medida = unidadMedida;
+    return this;
+  }
   build() {
     return {
       id: this.id,

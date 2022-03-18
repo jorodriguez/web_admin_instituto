@@ -54,6 +54,10 @@ export default class CatArticuloSucursal {
     this.co_empresa = coEmpresa;
     return this;
   }
+  setCatUnidadMedia(catUnidadMedida){
+    this.cat_unidad_medida = catUnidadMedida;
+    return this;
+  }
   setCoSucursal(coSucursal) {
     this.co_sucursal = coSucursal;
     return this;
@@ -118,6 +122,7 @@ export default class CatArticuloSucursal {
       codigo:this.codigo,
       cat_marca:this.cat_marca,
       cat_categoria:this.cat_categoria,
+      cat_unidad_medida:this.cat_unidad_medida,
       nombre:this.nombre,
       descripcion:this.descripcion
     };
@@ -133,6 +138,7 @@ export default class CatArticuloSucursal {
       stock_minimo: this.stock_minimo,            
       cat_marca:this.cat_marca,
       cat_categoria:this.cat_categoria,
+      cat_unidad_medida:this.cat_unidad_medida,
       nombre:this.nombre,
       descripcion:this.descripcion,
       modifico: this.modifico,
