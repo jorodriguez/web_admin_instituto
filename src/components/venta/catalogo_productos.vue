@@ -233,15 +233,16 @@
     <!-- catalogo de categoria -->    
      <Popup id="popup_categoria" size="lg" :show_button_close="true">
       <div slot="header">
-        Categorias
+       Catalogo de Categorias
       </div>    
       <div slot="content" class="text-left " >                       
-          <div class="form-inline">           
+      
+         <div class="form-inline">           
              <label>Nombre <span class="text-danger">*</span></label>
              <input
                     ref="input_nombre_categoria"
                     type="text"
-                    class="form-control col-4"                    
+                    class="form-control col-6"                    
                     v-model="nombreCategoria"                    
              />                                       
               <button class="btn btn-primary ">Agregar</button>                       
