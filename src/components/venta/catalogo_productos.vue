@@ -1,5 +1,7 @@
 <template>
   <span class="productos">
+   <h1>Inventario</h1>   
+   <small>{{usuarioSesion.nombre_sucursal}}</small> 
    <div class="row  mt-1 ">
       <div class="col col-12 col-md-6 col-sm-6 col-xl-6  d-flex align-items-start justify-content-start  text-left ">
         <div class="btn-group btn-group-lg" role="group" aria-label="...">
@@ -8,18 +10,25 @@
           </button>                    
         </div>
       </div>
+
       <div class="col col-12 col-md-6 col-sm-6 col-xl-6  d-flex align-items-end justify-content-end  text-left ">
-        <div class="btn-group btn-group-lg" role="group" aria-label="...">
-          <button  class="btn btn-outline-primary " @click="iniciarNuevaCategoria()" >
-            <span class="fa fa-plus"/> Categoria
-          </button>                    
-          <button  class="btn btn-outline-primary ">
-            <span class="fa fa-plus"/> Marca
-          </button>                    
-          <button  class="btn btn-outline-primary ">
-            <span class="fa fa-plus"/> Medida
-          </button>                    
+      <div class="btn-group btn-group-lg" role="group" aria-label="...">
+          <button  class="btn btn-outline-primary " >
+            <span class="fa fa-plus"/> Movimiento
+          </button>                              
+      </div>
+
+      <div class="dropdown btn-group-lg">
+          <button class="btn btn-outline-primary  dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Catalogos
+          </button>
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">          
+            <button class="btn btn-link dropdown-item" @click="iniciarNuevaCategoria()" >Categoria</button>
+            <button class="btn btn-link dropdown-item" href="#">Marca</button>
+            <button class="btn btn-link dropdown-item" href="#">Medidas</button>
         </div>
+      </div>
+        
       </div>
    </div>  
     <div class="card ">
@@ -165,9 +174,9 @@
               >
               <option
                 v-for="categoriaItem in categorias"
-                v-bind:value="categoriaItem.cat_categoria"
-                v-bind:key="categoriaItem.cat_categoria"
-              >{{ categoriaItem.categoria }}</option>
+                v-bind:value="categoriaItem.id"
+                v-bind:key="categoriaItem.id"
+              >{{ categoriaItem.nombre }}</option>
             </select>                        
         </div>        
             </div>
@@ -231,7 +240,7 @@
     </Popup> 
 
     <!-- catalogo de categoria -->    
-     <Popup id="popup_categoria" size="lg" :show_button_close="true">
+     <Popup id="popup_categoria" size="md" :show_button_close="true">
       <div slot="header">
        Catalogo de Categorias
       </div>    
@@ -247,6 +256,7 @@
              />                                       
               <button class="btn btn-primary ">Agregar</button>                       
           </div>
+
          <vue-good-table
           :columns="columnasCatalogos"
           :rows="categorias"          
@@ -269,16 +279,18 @@
 
           <template slot="table-row" slot-scope="props">                        
             <span v-if="props.column.field == 'nombre'">                                
-                  <p class="text-sm" >{{props.row.categoria}}</p>                                 
+                  <!--<p class="text-sm" >{{props.row.categoria}}</p>                                 -->                                    
+                  <ModificarCategoria :id="props.row.id" :nombre="props.row.nombre" />
             </span>           
 
-            <span v-else-if="props.column.field == 'acciones'">   
+            <!--<span v-else-if="props.column.field == 'acciones'">   
               <div class="btn-group" role="group" aria-label="Basic example">                                      
                 <button type="button" class="btn btn-link btn-sm text-danger">
                   <i class="fas fa-trash" title="Eliminar" ></i>
                 </button>                                
             </div>
             </span>                                           
+            -->
             <span v-else>
                   <span  >{{props.formattedRow[props.column.field]}}</span>                  
             </span>
@@ -306,14 +318,14 @@ import moment from "moment";
 import Popup from "../../controller/Popup";
 import TABLE_CONFIG from "../../helpers/DatatableConfig";
 import { VueGoodTable } from 'vue-good-table';
-
+import ModificarCategoria from "../fragmentos/catalogos/modificarCategoria.vue";
 import Datepicker from 'vuejs-datepicker';
 
 
 export default {
   name: "productos",
   components: {
-    Popup,VueGoodTable, Datepicker
+    Popup,VueGoodTable, Datepicker,ModificarCategoria
   },
   mixins: [operacionesApi],  
     data() {
@@ -330,6 +342,7 @@ export default {
       htmlTicket:"",
       es: es,     
       lista:[],
+      nombreCategoria:"",
       categorias:[],
       marcas:[],
       unidadMedidas:[],
@@ -346,15 +359,7 @@ export default {
         thClass: 'text-left',
         tdClass: 'text-left',
         hidden: false
-      },
-      {
-        label: '',
-        field: 'acciones',
-        filterable: true,
-        thClass: 'text-center',
-        tdClass: 'text-left',
-        hidden:false
-      },
+      },      
       ],
       columnas:[
       {
@@ -467,6 +472,7 @@ export default {
     console.log("##### INCIAR LISTA DE PRODUCTOS ####");
     this.usuarioSesion = getUsuarioSesion();        
     this.TABLE_CONFIG.PAGINATION_OPTIONS.perPage = 5;
+    this.TABLE_CONFIG.SEARCH_OPTIONS.enabled = false;
     this.init();    
   },
   methods: {
@@ -485,7 +491,8 @@ export default {
       this.loader = false;
     },       
     async cargarCatalogosAlta(){
-        this.categorias = await this.getAsync(`${URL.CATEGORIA_ARTICULO}/${this.usuarioSesion.id_empresa}`);
+        //this.categorias = await this.getAsync(`${URL.CATEGORIA_ARTICULO}/${this.usuarioSesion.id_empresa}`);
+        this.categorias = await this.getAsync(`${URL.CATALOGO_CATEGORIA}/${this.usuarioSesion.id_empresa}`);
         this.marcas = await this.getAsync(`${URL.MARCA_ARTICULO}/${this.usuarioSesion.id_empresa}`);
         this.unidadMedidas = await this.getAsync(`${URL.UNIDAD_MEDIDA}/${this.usuarioSesion.id_empresa}`);
     },
@@ -582,7 +589,7 @@ export default {
 
     },
     async iniciarNuevaCategoria(){
-      this.categorias = await this.getAsync(`${URL.CATEGORIA_ARTICULO}/${this.usuarioSesion.id_empresa}`);
+      this.categorias = await this.getAsync(`${URL.CATALOGO_CATEGORIA}/${this.usuarioSesion.id_empresa}`);
       $("#popup_categoria").modal("show");
     }
   } 

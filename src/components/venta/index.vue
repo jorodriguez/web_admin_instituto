@@ -1,8 +1,11 @@
 <template>
   <div class="ventas pt-3">
-    <!--<h2>Terminal de Venta</h2>-->
-    <!--<small>{{ usuarioSesion.nombre_sucursal }}</small>    -->
-    <ul class="nav nav-tabs nav-justified " id="pills-tab" role="tablist">
+    <h2>Terminal de Venta </h2>  
+    
+
+    <Venta/>        
+    
+   <!-- <ul class="nav nav-tabs nav-justified " id="pills-tab" role="tablist">
       <li class="nav-item">
         <a
           class="nav-link active"
@@ -40,24 +43,25 @@
           role="tab"
           aria-controls="pills-movimientos"
           aria-selected="false"
-          >Productos
+          >Productos/Movimientos
         </a>
       </li>
+    
     </ul>
     <div class="tab-content" id="pills-tabContent">
-      <div
+    -->
+      <!--<div
         class="tab-pane fade show active"
         id="pills-home"
         role="tabpanel"
         aria-labelledby="pills-home-tab"
-      >
-        
-            <!-- ventas -->
-            <Venta />
-        
+      >       
+            
+            <Venta/>        
       </div>
+      -->
       <!-- Consultas -->
-      <div
+      <!--<div
         class="tab-pane fade"
         id="pills-consultas"
         role="tabpanel"
@@ -69,10 +73,10 @@
               <VentasSucursal  :lista="listaVentas"/>
           </div>
         </div>
-      </div>
+      </div>-->
       <!-- fin Consultas-->
       <!-- Movimientos -->
-      <div
+      <!--<div
         class="tab-pane fade"
         id="pills-movimientos"
         role="tabpanel"
@@ -83,9 +87,10 @@
               <CatalogoProductos/>
           </div>
         </div>
-      </div>
-      <!-- fin Movimientos -->
-    </div>
+      </div>-->
+      <!-- fin Movimientos -->   
+
+    <!--</div>-->
   </div>
 </template>
 

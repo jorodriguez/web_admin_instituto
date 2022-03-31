@@ -1,5 +1,7 @@
 <template>
   <div class="ventas">
+  <h1>Ventas Sucursal</h1>   
+  <small>{{usuarioSesion.nombre_sucursal}}</small> 
     <div class="card ">
       <div class="card-body pl-0 pr-0 ">
         

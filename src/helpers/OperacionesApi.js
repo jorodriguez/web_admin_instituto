@@ -120,6 +120,20 @@ const removeAsync = async (url) => {
   }
 };
 
+const patchAsync = async (url, params) => {
+  try {
+    const response = await axios.patch(url, params, {
+      headers: { "x-access-token": getToken() }
+    });
+    return response.data;
+  } catch (error) {
+    console.error(error);
+    console.log("Revisando la sesion " + JSON.stringify(error));
+    lanzarAvisoExpiracionSesion(error);
+  }
+};
+
+
 
 const lanzarAvisoExpiracionSesion = function(error) {
   console.log("lanzar aviso");
@@ -160,7 +174,8 @@ const operacionesApi = {
     getAsync,
     postAsync,
     putAsync,
-    removeAsync
+    removeAsync,
+    patchAsync
   }  
 
 };
