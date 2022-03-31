@@ -8,7 +8,7 @@
             <div class="col-lg-5">
               <div class="card bg-secondary shadow border-0">
                 <div class="card-header bg-white pb-5 text-center">                  
-                  <img src="https://res.cloudinary.com/dwttlkcmu/image/upload/v1640639519/static/thumbnail_LOGO_PARIS_aw1o2o.png" height="80" width="140" />                  
+                  <img src="https://res.cloudinary.com/dwttlkcmu/image/upload/v1648755017/static/luxury_vnsnib.png" height="80" width="140" />                  
                 
                 </div>
                 <div class="card-body px-lg-5 py-lg-5">
