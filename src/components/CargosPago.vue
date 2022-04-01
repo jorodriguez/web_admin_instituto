@@ -518,8 +518,8 @@
         >
           Cerrar
         </button>
-        <button class="btn btn-lg btn-primary" v-on:click="guardarPago()">
-          Pagar
+        <button class="btn btn-lg btn-primary" :disabled="loaderGuardarPago"  v-on:click="guardarPago()">
+          <div class="spinner-border spinner-border-sm" v-if="loaderGuardarPago"  role="status"/> Pagar
         </button>
       </div>
     </Popup>

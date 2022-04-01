@@ -24,8 +24,8 @@
           </button>
         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">          
             <button class="btn btn-link dropdown-item" @click="iniciarNuevaCategoria()" >Categoria</button>
-            <button class="btn btn-link dropdown-item" href="#">Marca</button>
-            <button class="btn btn-link dropdown-item" href="#">Medidas</button>
+            <button class="btn btn-link dropdown-item" @click="iniciarNuevaMarca()">Marca</button>
+            <button class="btn btn-link dropdown-item" @click="iniciarNuevaUnidadMedida()">Medidas</button>
         </div>
       </div>
         
@@ -144,8 +144,7 @@
               <label>Descripción</label>
               <textarea cols="2" v-model="articulo.descripcion" class="form-control form-control-sm" />
             </div>
-            
-      
+                 
           
           <div class="form-row">     
         
@@ -244,27 +243,27 @@
       <div slot="header">
        Catalogo de Categorias
       </div>    
-      <div slot="content" class="text-left " >                       
-      
-         <div class="form-inline">           
-             <label>Nombre <span class="text-danger">*</span></label>
-             <input
-                    ref="input_nombre_categoria"
+      <div slot="content" class="text-left" >                       
+        
+         <div class="form-inline pb-1">           
+             <label>Categoria <span class="text-danger">*</span></label>
+             <input                    
                     type="text"
-                    class="form-control col-6"                    
-                    v-model="nombreCategoria"                    
+                    class="form-control  "        
+                    placeholder="Escribe el nombre"            
+                    v-model="nombre"                    
              />                                       
-              <button class="btn btn-primary ">Agregar</button>                       
+              <button class="btn btn-primary " @click="guardarCategoria()">Agregar</button>                       
           </div>
-
+      
          <vue-good-table
           :columns="columnasCatalogos"
           :rows="categorias"          
           :isLoading="loader"
           :line-numbers="false"        
-          :search-options="TABLE_CONFIG.SEARCH_OPTIONS"
+          :search-options="{enabled:false}"
           :pagination-options="TABLE_CONFIG.PAGINATION_OPTIONS"          
-          :selectOptions="TABLE_CONFIG.NO_SELECT_OPTIONS"          
+          :selectOptions="TABLE_CONFIG.NO_SELECT_OPTIONS"               
           class="table-striped"
           :groupOptions="{
   	          enabled: false,               
@@ -280,7 +279,7 @@
           <template slot="table-row" slot-scope="props">                        
             <span v-if="props.column.field == 'nombre'">                                
                   <!--<p class="text-sm" >{{props.row.categoria}}</p>                                 -->                                    
-                  <ModificarCategoria :id="props.row.id" :nombre="props.row.nombre" />
+                  <ModificarCatalogo :id="props.row.id" :nombre="props.row.nombre" :url_catalogo="URL.CATALOGO_CATEGORIA"  />
             </span>           
 
             <!--<span v-else-if="props.column.field == 'acciones'">   
@@ -303,6 +302,117 @@
       </div>
     </Popup> 
 
+
+    <!-- CATALOGO MARCAS -->    
+     <Popup id="popup_marca" size="md" :show_button_close="true">
+      <div slot="header">
+       Catalogo de Marcas
+      </div>    
+      <div slot="content" class="text-left" >                       
+        
+         <div class="form-inline pb-1">           
+             <label>Marca <span class="text-danger">*</span></label>
+             <input                    
+                    type="text"
+                    class="form-control  "        
+                    placeholder="Escribe el nombre"            
+                    v-model="nombre"                    
+             />                                       
+              <button class="btn btn-primary " @click="guardarMarca()">Agregar</button>                       
+          </div>
+      
+         <vue-good-table
+          :columns="columnasCatalogos"
+          :rows="marcas"          
+          :isLoading="loader"
+          :line-numbers="false"        
+          :search-options="{enabled:false}"
+          :pagination-options="TABLE_CONFIG.PAGINATION_OPTIONS"          
+          :selectOptions="TABLE_CONFIG.NO_SELECT_OPTIONS"            
+          class="table-striped"
+          :groupOptions="{
+  	          enabled: false,               
+          }"
+        >
+        <template slot="loadingContent">              
+              <div  class="spinner-border text-info" role="status"/>                                
+        </template>
+          <template slot="table-header-row" slot-scope="props">
+                <span class="font-weight-bold text-info h5">{{ props.row.label }}</span>                
+          </template>
+
+          <template slot="table-row" slot-scope="props">                        
+            <span v-if="props.column.field == 'nombre'">                                                  
+                  <ModificarCatalogo :id="props.row.id" :nombre="props.row.nombre" :url_catalogo="URL.CATALOGO_MARCA"  />
+            </span>                       
+            <span v-else>
+                  <span  >{{props.formattedRow[props.column.field]}}</span>                  
+            </span>
+          </template>
+        </vue-good-table>                   
+           
+      </div>
+      <div slot="footer">
+        
+      </div>
+    </Popup> 
+    <!-- FIN CATALOGO-MARCAS-->
+
+    <!-- UNIDAD MEDIDA -->
+    <Popup id="popup_unidad_medida" size="md" :show_button_close="true">
+      <div slot="header">
+       Catalogo de Unidades de medida
+      </div>    
+      <div slot="content" class="text-left" >                       
+        
+         <div class="form-inline pb-1">           
+             <label>Unidad Medida <span class="text-danger">*</span></label>
+             <input                    
+                    type="text"
+                    class="form-control  "        
+                    placeholder="Escribe el nombre"            
+                    v-model="nombre"                    
+             />                                       
+              <button class="btn btn-primary " @click="guardarUnidadMedida()">Agregar</button>                       
+          </div>
+      
+         <vue-good-table
+          :columns="columnasCatalogos"
+          :rows="unidadMedidas"          
+          :isLoading="loader"
+          :line-numbers="false"        
+          :search-options="{enabled:false}"
+          :pagination-options="TABLE_CONFIG.PAGINATION_OPTIONS"          
+          :selectOptions="TABLE_CONFIG.NO_SELECT_OPTIONS"          
+          class="table-striped"
+          :groupOptions="{
+  	          enabled: false,               
+          }"
+        >
+        <template slot="loadingContent">              
+              <div  class="spinner-border text-info" role="status"/>                                
+        </template>
+          <template slot="table-header-row" slot-scope="props">
+                <span class="font-weight-bold text-info h5">{{ props.row.label }}</span>                
+          </template>
+
+          <template slot="table-row" slot-scope="props">                        
+            <span v-if="props.column.field == 'nombre'">                                                  
+                  <ModificarCatalogo :id="props.row.id" :nombre="props.row.nombre" :url_catalogo="URL.CATALOGO_UNIDAD_MEDIDA"  />
+            </span>                       
+            <span v-else>
+                  <span  >{{props.formattedRow[props.column.field]}}</span>                  
+            </span>
+          </template>
+        </vue-good-table>                   
+           
+      </div>
+      <div slot="footer">
+        
+      </div>
+    </Popup> 
+    <!-- FIN UNIDAD MEDIDA-->
+
   </span>
 </template>
 
@@ -318,14 +428,14 @@ import moment from "moment";
 import Popup from "../../controller/Popup";
 import TABLE_CONFIG from "../../helpers/DatatableConfig";
 import { VueGoodTable } from 'vue-good-table';
-import ModificarCategoria from "../fragmentos/catalogos/modificarCategoria.vue";
+import ModificarCatalogo from "../fragmentos/catalogos/modificarCatalogo.vue";
 import Datepicker from 'vuejs-datepicker';
 
 
 export default {
   name: "productos",
   components: {
-    Popup,VueGoodTable, Datepicker,ModificarCategoria
+    Popup,VueGoodTable, Datepicker,ModificarCatalogo
   },
   mixins: [operacionesApi],  
     data() {
@@ -333,16 +443,17 @@ export default {
       uidCurso: "",
       usuarioSesion: {},
       operacion: "",
-      TABLE_CONFIG:TABLE_CONFIG,
+      TABLE_CONFIG:TABLE_CONFIG,      
       loaderConfirmacion:false,
       loader:false,  
+      URL,
       loaderGuardar:false,  
       articulo:CatArticuloSucursal,
       motivo:"",      
       htmlTicket:"",
       es: es,     
       lista:[],
-      nombreCategoria:"",
+      nombre:"",
       categorias:[],
       marcas:[],
       unidadMedidas:[],
@@ -472,7 +583,7 @@ export default {
     console.log("##### INCIAR LISTA DE PRODUCTOS ####");
     this.usuarioSesion = getUsuarioSesion();        
     this.TABLE_CONFIG.PAGINATION_OPTIONS.perPage = 5;
-    this.TABLE_CONFIG.SEARCH_OPTIONS.enabled = false;
+    //this.TABLE_CONFIG_CATALOGO.SEARCH_OPTIONS.enabled = false;
     this.init();    
   },
   methods: {
@@ -490,11 +601,10 @@ export default {
       //this.categoriaSeleccionada = {id:-1,categoria:"Todos"};
       this.loader = false;
     },       
-    async cargarCatalogosAlta(){
-        //this.categorias = await this.getAsync(`${URL.CATEGORIA_ARTICULO}/${this.usuarioSesion.id_empresa}`);
-        this.categorias = await this.getAsync(`${URL.CATALOGO_CATEGORIA}/${this.usuarioSesion.id_empresa}`);
-        this.marcas = await this.getAsync(`${URL.MARCA_ARTICULO}/${this.usuarioSesion.id_empresa}`);
-        this.unidadMedidas = await this.getAsync(`${URL.UNIDAD_MEDIDA}/${this.usuarioSesion.id_empresa}`);
+    async cargarCatalogosAlta(){        
+        await this.cargarCategorias();        
+        await this.cargarMarcas();                
+        await this.cargarUnidadMedida();
     },
     async iniciarNuevo(){
         this.articulo = new CatArticuloSucursal();
@@ -588,12 +698,62 @@ export default {
       return true;     
 
     },
+    validarNombre(){
+      if(!this.nombre){
+          this.$notificacion.warn("Escribe el nombre","");          
+          return false;
+      }
+      return true;
+    },
+    async cargarCategorias(){
+      this.categorias = await this.getAsync(`${URL.CATALOGO_CATEGORIA}/${this.usuarioSesion.id_empresa}`);      
+    },
     async iniciarNuevaCategoria(){
-      this.categorias = await this.getAsync(`${URL.CATALOGO_CATEGORIA}/${this.usuarioSesion.id_empresa}`);
+      await this.cargarCategorias();
       $("#popup_categoria").modal("show");
-    }
-  } 
-   
+    },
+    async guardarCategoria(){
+      if(this.validarNombre()){       
+        const res = await this.postAsync(`${URL.CATALOGO_CATEGORIA}`,{nombre:this.nombre,co_empresa:this.usuarioSesion.id_empresa,genero:this.usuarioSesion.id});
+        if(res){            
+            await this.cargarCategorias();
+            this.nombre="";
+        }
+      }
+    },
+    async cargarMarcas(){
+      this.marcas = await this.getAsync(`${URL.CATALOGO_MARCA}/${this.usuarioSesion.id_empresa}`);      
+    },
+    async iniciarNuevaMarca(){
+      await this.cargarMarcas();
+      $("#popup_marca").modal("show");
+    },
+    async guardarMarca(){
+      if(this.validarNombre()){       
+        const res = await this.postAsync(`${URL.CATALOGO_MARCA}`,{nombre:this.nombre,co_empresa:this.usuarioSesion.id_empresa,genero:this.usuarioSesion.id});
+        if(res){            
+            await this.cargarMarcas();
+            this.nombre="";
+        }
+      }
+    },
+    async cargarUnidadMedida(){
+      this.unidadMedidas = await this.getAsync(`${URL.CATALOGO_UNIDAD_MEDIDA}/${this.usuarioSesion.id_empresa}`);
+    },  
+   async iniciarNuevaUnidadMedida(){
+      await this.cargarUnidadMedida();
+      $("#popup_unidad_medida").modal("show");
+    },
+    async guardarUnidadMedida(){
+      if(this.validarNombre()){       
+        const res = await this.postAsync(`${URL.CATALOGO_UNIDAD_MEDIDA}`,{nombre:this.nombre,co_empresa:this.usuarioSesion.id_empresa,genero:this.usuarioSesion.id});
+        if(res){            
+            await this.cargarUnidadMedida();
+            this.nombre="";
+        }
+      }
+    },
+  }
 };
 
 </script>
