@@ -73,7 +73,7 @@ const router = new Router({
         //{ path: '/Asistencia', name: 'Asistencia', component: Asistencia, meta: { requiresAuth: true, validar: false } },
         //{ path: '/Actividades', name: 'Actividades', component: RegistroActividad, meta: { requiresAuth: true, validar: false } },
         { path: '/Gastos', name: 'Gastos', component: Gastos, meta: { requiresAuth: true, validar: false } },
-        { path: '/Cobranza', name: 'Cobranza', component: Cobranza, meta: { requiresAuth: true, validar: false } },   
+        { path: '/Cobranza', name: 'Cobranza', component: Cobranza, meta: { requiresAuth: true, validar: true } },   
         { path: '/Venta', name: 'Venta', component: Venta, meta: { requiresAuth: true, validar: false } },
         { path: '/ConsultaVentas', name: 'ConsultaVentas', component: VentasSucursal, meta: { requiresAuth: true, validar: false } },
         { path: '/Inventario', name: 'Inventario', component: CatalogoProductos, meta: { requiresAuth: true, validar: false } },

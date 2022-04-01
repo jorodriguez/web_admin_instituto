@@ -1,11 +1,11 @@
   <template>
-  <div class="row ">
-  <div class="col-9">
+  <div class="row " >
+  <div class="col-9" >
     <span                  
       v-if="!isModificacion"      
     > 
       <span  v-if="loading" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>      
-      <span :class="eliminaro ? 'eliminado':''">{{nombreModel}}</span>       
+      <span :class="eliminado ? 'eliminado':''">{{nombreModel}}</span>       
     </span>  
     <input type="text"
             class="form-control"            
@@ -17,7 +17,7 @@
             Cancelar modificación
         </span>
     </div>
-    <div class="col-3 d-flex justify-content-center">
+    <div class="col-3 d-flex justify-content-center" v-if="!eliminado">
       <button v-if="!isModificacion" @click="iniciarModificacion()" class="btn btn-sm btn-link" >
         <i class="fa fa-edit"> </i>
       </button>      
@@ -28,7 +28,10 @@
       <button type="button" v-if="!loading" @click="iniciarEliminacion()" class="btn btn-link btn-sm text-danger">
                   <i class="fas fa-trash" title="Eliminar" ></i>
       </button>                                
-      </div>
+    </div>
+    <div class="col-3 d-flex justify-content-center" v-else>
+        <i class="eliminado">eliminado</i>       
+    </div>
   </div>
 </template>
     
@@ -43,8 +46,8 @@ export default {
 
   },
   mixins: [operacionesApi],
-  name: "modificar-categoria",
-  props: ["id","nombre"],
+  name: "modificar-catalogo",
+  props: ["id","nombre","url_catalogo"],
   data() {
     return {      
       usuarioSesion: {},
@@ -79,10 +82,10 @@ export default {
           return;
      }        
         this.loading = true;
-        const result  = await this.putAsync(`${URL.CATALOGO_CATEGORIA}/${this.id}`,{co_empresa:this.usuarioSesion.co_empresa, nombre:this.nombreModel,genero:this.usuarioSesion.id});
+        const result  = await this.putAsync(`${this.url_catalogo}/${this.id}`,{co_empresa:this.usuarioSesion.co_empresa, nombre:this.nombreModel,genero:this.usuarioSesion.id});
         if(result){
           this.nombre = result.nombre;          
-          this.cancelarModificacion();
+          this.cancelarModificacion();          
         }
         console.log(result);        
         this.loading = false;               
@@ -90,10 +93,10 @@ export default {
     async iniciarEliminacion(){      
       if(confirm(`¿Deseas eliminar ${this.nombre}?`)){
         this.loading = true;
-        const result  = await this.patchAsync(`${URL.CATALOGO_CATEGORIA}/${this.id}`,{co_empresa:this.usuarioSesion.co_empresa, nombre:this.nombreModel,genero:this.usuarioSesion.id});
+        const result  = await this.patchAsync(`${this.url_catalogo}/${this.id}`,{co_empresa:this.usuarioSesion.co_empresa, nombre:this.nombreModel,genero:this.usuarioSesion.id});
         if(result){          
           this.eliminado = true;
-          this.cancelarModificacion();
+          this.cancelarModificacion();          
         }
         console.log(result);        
         this.loading = false;                               

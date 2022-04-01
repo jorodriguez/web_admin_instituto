@@ -66,7 +66,8 @@ export default {
       mensaje_reenvio: "",
       limite: "20",
       loaderCargos: false,
-      loaderEnvioComprobante:false
+      loaderEnvioComprobante:false,
+      loaderGuardarPago:false
 
     };
   },
@@ -554,7 +555,11 @@ export default {
             genero: this.usuarioSesion.id
           };
 
+          this.loaderGuardarPago = true;
+
           const result = await this.postAsync(URL.PAGOS_REGISTRAR, objEnvio);
+
+          this.loaderGuardarPago = false;
 
           if (result != null) {
             console.log("DATA RETORNO " + JSON.stringify(result));
@@ -568,10 +573,10 @@ export default {
             //imprimir
             if(result && result.agregar_pago_alumno){
               this.imprimirPago(result.agregar_pago_alumno);
-            }
-            
+            }            
           }
-        
+          
+          
         }
       }
     },

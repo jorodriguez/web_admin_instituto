@@ -4,7 +4,6 @@ import configEnv from '../../config/configEnv';
 //const BASE = configEnv.BASE || "http://localhost:5000";
 //const BASE = process.env.URL_API || 'https://instituto-api-dev.herokuapp.com'
 //const BASE = process.env.URL_API || 'https://api-admin-paris.herokuapp.com';
-
 const BASE = process.env.URL_API || 'https://api-softlineas-demo.herokuapp.com';//Demo
 
 export const BRANCH = "2203-productos";
@@ -23,8 +22,8 @@ const VENTA = BASE + '/venta';
 const ARTICULO = BASE + '/articulo';
 const CATEGORIA_ARTICULO = BASE + '/categoria-articulo';
 const CATALOGO_CATEGORIA = BASE + '/categoria';
-const MARCA_ARTICULO = BASE + '/marca-articulo';
-const UNIDAD_MEDIDA = BASE + '/unidad-medida-articulo';
+const CATALOGO_MARCA = BASE + '/marca';
+const CATALOGO_UNIDAD_MEDIDA = BASE + '/unidad-medida';
 const ESTATUS= BASE + '/estatus';
 
 const ASISTENCIA_BASE =  BASE + '/asistencia';
@@ -111,8 +110,8 @@ const URL = {
     ARTICULO:ARTICULO,
     CATEGORIA_ARTICULO:CATEGORIA_ARTICULO,
     CATALOGO_CATEGORIA,
-    MARCA_ARTICULO:MARCA_ARTICULO,
-    UNIDAD_MEDIDA,
+    CATALOGO_MARCA,
+    CATALOGO_UNIDAD_MEDIDA,    
     ESTATUS:ESTATUS,
 
     USUARIO_BASE:  USUARIO_BASE,
