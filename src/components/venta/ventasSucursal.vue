@@ -23,7 +23,7 @@
                 Cargar
               </button>
           </div>
-        
+ 
 
         <vue-good-table
           :columns="columnas"
@@ -33,16 +33,19 @@
           :search-options="TABLE_CONFIG.SEARCH_OPTIONS"
           :pagination-options="TABLE_CONFIG.PAGINATION_OPTIONS"          
           :selectOptions="TABLE_CONFIG.NO_SELECT_OPTIONS"          
-          class="table-striped"
+          class="table-striped text-xs"                    
           :groupOptions="{
   	          enabled: false,               
           }"
         >
+        <div slot="table-actions">
+        </div>
         <template slot="loadingContent">              
-               <div  class="spinner-border text-info" role="status">
-                  
-              </div>
+               <div  class="spinner-border text-info" role="status"/>              
         </template>
+         <div slot="emptystate">
+              Sin registros para mostrar
+         </div>
           <template slot="table-header-row" slot-scope="props">
                 <span v-if="props.row.id_estatus == 1" class="font-weight-bold text-info h5">{{ props.row.label }}</span>
                 <span v-else class="font-weight-bold text-info h5">{{ props.row.label }}</span>

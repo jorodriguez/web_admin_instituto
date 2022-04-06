@@ -5,8 +5,10 @@
    <div class="row  mt-1 ">
       <div class="col col-12 col-md-6 col-sm-6 col-xl-6  d-flex align-items-start justify-content-start  text-left ">
         <div class="btn-group btn-group-lg" role="group" aria-label="...">
-          <button  class="btn btn-primary " @click="iniciarNuevo()">
-            <span class="fa fa-plus"/> Nuevo artículo
+          <button  class="btn btn-primary " @click="iniciarNuevo()" :disabled="loaderNuevo">            
+             <span v-if="loaderNuevo" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+             <span v-else class="fa fa-plus"/>
+             Nuevo artículo 
           </button>                    
         </div>
       </div>
@@ -41,12 +43,15 @@
           :search-options="TABLE_CONFIG.SEARCH_OPTIONS"
           :pagination-options="TABLE_CONFIG.PAGINATION_OPTIONS"          
           :selectOptions="TABLE_CONFIG.NO_SELECT_OPTIONS"          
-          class="table-striped"
+          class="table-striped text-sm"                    
           :groupOptions="{
   	          enabled: false,               
           }"
         >
-        <template slot="loadingContent">              
+        <div slot="emptystate">
+              Sin productos para mostrar
+        </div>
+        <template slot="loadingContent">         
               <div  class="spinner-border text-info" role="status"/>                                
         </template>
           <template slot="table-header-row" slot-scope="props">
@@ -72,7 +77,10 @@
 
 
             <span v-else-if="props.column.field == 'nota_interna'">                                
-                  <textarea rows="3"  style="resize: none;" disabled v-model="props.row.nota_interna"></textarea>                  
+                  <!--<textarea rows="3"  style="resize: none;" disabled v-model="props.row.nota_interna"></textarea>                  -->
+                  <button type="button" :class="`btn btn-link ${props.row.nota_interna ? 'text-blue':'text-gray' }`" @click="verDetalleArticulo(props.row)" :title="props.row.nota_interna">
+                        <i :class="props.row.nota_interna ? 'fas fa-file':'file-text-o'"/>
+                  </button>
             </span>           
 
             <span v-else-if="props.column.field == 'acciones'">   
@@ -224,7 +232,7 @@
 
             <div class="form-group ">
               <label>Nota</label>
-              <textarea cols="2" v-model="articulo.nota_interna" class="form-control form-control-sm" />
+              <textarea cols="2" v-model="articulo.nota_interna" class="form-control form-control-sm" />              
             </div>
 
       </div>
@@ -232,6 +240,7 @@
         <button
           class="btn btn-primary"                                                   
            @click="guardar()" 
+           :disabled="loaderGuardar"
         >
           <div v-if="loaderGuardar" class="spinner-border spinner-border-sm" role="status"/> Guardar
         </button>
@@ -264,7 +273,8 @@
           :search-options="{enabled:false}"
           :pagination-options="TABLE_CONFIG.PAGINATION_OPTIONS"          
           :selectOptions="TABLE_CONFIG.NO_SELECT_OPTIONS"               
-          class="table-striped"
+          
+           styleClass="vgt-table condensed"
           :groupOptions="{
   	          enabled: false,               
           }"
@@ -413,6 +423,34 @@
     </Popup> 
     <!-- FIN UNIDAD MEDIDA-->
 
+  <!-- VER COMENTANTARIOS DE PRODUCTO -->
+    <Popup id="popup_comentario_producto" size="sm" :show_button_close="true">
+      <div slot="header">
+       Nota de producto
+      </div>    
+      <div slot="content" class="text-left" >                                                 
+           <div v-if="articulo" class="row ">
+           <div class="media">
+                <img :src="`${articulo.foto}`" width="80" class="m-1" />
+                <div class="media-body">
+                  <h4 class="mt-0">{{articulo.codigo}}</h4>
+                  <p>{{articulo.nombre}}</p>
+              </div>
+          </div>              
+           </div>
+           <div v-if="articulo" class="row">
+                <span class="text-gray">Descripción</span>
+                <textarea v-model="articulo.descripcion" rows="2" class="form-control" disabled/>
+                <span class="text-gray">Nota</span>
+                <textarea v-model="articulo.nota_interna" rows="2" class="form-control" disabled/>
+           </div>
+      </div>
+      <div slot="footer">
+        
+      </div>
+    </Popup> 
+    <!-- FIN VER COMENTANTARIOS DE PRODUCTO-->
+
   </span>
 </template>
 
@@ -446,12 +484,13 @@ export default {
       TABLE_CONFIG:TABLE_CONFIG,      
       loaderConfirmacion:false,
       loader:false,  
+      loaderNuevo:false,  
       URL,
       loaderGuardar:false,  
       articulo:CatArticuloSucursal,
       motivo:"",      
       htmlTicket:"",
-      es: es,     
+      es: es,           
       lista:[],
       nombre:"",
       categorias:[],
@@ -467,7 +506,7 @@ export default {
         label: 'Nombre',
         field: 'nombre',
         filterable: false,
-        thClass: 'text-left',
+        thClass: 'text-left ',
         tdClass: 'text-left',
         hidden: false
       },      
@@ -482,8 +521,8 @@ export default {
         label: 'Foto',
         field: 'foto',
         filterable: false,
-        thClass: 'text-center',
-        tdClass: 'text-center',
+        thClass: 'text-center text-sm',
+        tdClass: 'text-center text-sm',
         hidden: false
       },      
       /*{
@@ -498,7 +537,7 @@ export default {
         label: 'Artículo',
         field: 'nombre',
         filterable: false,
-        thClass: 'text-center',
+        thClass: 'text-center text-sm',
         tdClass: 'text-left text-sm',
         hidden: false
       },
@@ -506,7 +545,7 @@ export default {
         label: 'marca',
         field: 'marca',
         filterable: false,
-        thClass: 'text-center',
+        thClass: 'text-center text-sm',
         tdClass: 'text-center text-sm',
         hidden: false
       },
@@ -514,7 +553,7 @@ export default {
         label: 'Categoria',
         field: 'categoria',
         filterable: false,
-        thClass: 'text-center',
+        thClass: 'text-center text-sm',
         tdClass: 'text-center text-sm',
         hidden: false
       },
@@ -522,7 +561,7 @@ export default {
         label: 'Unidad',
         field: 'unidad_medida',
         filterable: false,
-        thClass: 'text-center',
+        thClass: 'text-center text-sm',
         tdClass: 'text-center text-sm',
         hidden: false
       },
@@ -530,7 +569,7 @@ export default {
         label: 'Cant. Exis.',
         field: 'cantidad_existencia',
         filterable: false,
-        thClass: 'text-center',
+        thClass: 'text-center text-sm',
         tdClass: 'text-center text-sm',
         hidden: false
       },      
@@ -546,7 +585,7 @@ export default {
         label: 'Precio',
         field: 'precio',
         filterable: false,
-        thClass: 'text-center',
+        thClass: 'text-center text-sm',
         tdClass: 'text-center text-sm',
         hidden: false
       },
@@ -554,7 +593,7 @@ export default {
         label: 'Costo',
         field: 'costo_base',
         filterable: false,
-        thClass: 'text-center',
+        thClass: 'text-center text-sm',
         tdClass: 'text-center text-sm',
         hidden: false
       },
@@ -562,7 +601,7 @@ export default {
         label: 'Nota',
         field: 'nota_interna',
         filterable: false,
-        thClass: 'text-center',
+        thClass: 'text-center text-sm',
         tdClass: 'text-left text-sm',
         hidden: false
       },                  
@@ -592,15 +631,21 @@ export default {
     },            
     async cargarCatalogo() {
       this.loader = true;
-      console.log("@c@@@@argarCatalogo");      
-      
-      setTimeout(async()=>{
+      console.log("@c@@@@argarCatalogo");            
+      setTimeout(async()=>{        
         this.lista = await this.getAsync(`${URL.ARTICULO}/sucursal/${this.usuarioSesion.co_sucursal}`);
+        this.loader = false;
       },1000);
+            
+    },
+    seleccionarArticulo(row){
+        this.articulo =  Object.assign(new CatArticuloSucursal(),row);        
+    },          
+    verDetalleArticulo(row){
+        this.seleccionarArticulo(row);
+        $("#popup_comentario_producto").modal("show");
+    },          
 
-      //this.categoriaSeleccionada = {id:-1,categoria:"Todos"};
-      this.loader = false;
-    },       
     async cargarCatalogosAlta(){        
         await this.cargarCategorias();        
         await this.cargarMarcas();                
@@ -608,9 +653,9 @@ export default {
     },
     async iniciarNuevo(){
         this.articulo = new CatArticuloSucursal();
-        
+        this.loaderNuevo = true;        
         await this.cargarCatalogosAlta();
-        
+        this.loaderNuevo = false;
         $("#popup_agregar").modal("show");
     },
     async guardar(){
@@ -753,6 +798,7 @@ export default {
         }
       }
     },
+    
   }
 };
 
