@@ -64,7 +64,11 @@
                   <p class="text-sm font-weight-bold text-primary"><strong>{{props.row.codigo}}</strong></p>
             </span>
             <span v-else-if="props.column.field == 'nombre'">                                
-                  <p class="text-sm" >{{props.row.nombre}}</p>                                 
+                  <p class="text-sm" :disabled="loaderModificar" @click="iniciarModificacion(props.row)" >                  
+                  {{props.row.nombre}}
+                  <span v-if="props.row.es_nuevo" class="badge badge-warning">Nuevo</span>               
+                  </p>                                 
+                  
             </span>           
 
             <span v-else-if="props.column.field == 'precio'">                                
@@ -85,11 +89,12 @@
 
             <span v-else-if="props.column.field == 'acciones'">   
               <div class="btn-group" role="group" aria-label="Basic example">                                      
-                <button type="button" class="btn btn-link btn-sm text-danger">
-                  <i class="fas fa-trash" title="Modificar" ></i>
+                <button type="button" :disabled="loaderEliminar" @click="iniciarEliminacion(props.row)"  class="btn btn-link btn-sm text-danger">                  
+                  <i class="fas fa-trash" title="Eliminar" ></i>
                 </button>                
-                <button type="button" class="btn btn-link btn-sm text-primary">
-                  <i class="fas fa-edit" title="eliminar"></i>
+                <button type="button" :disabled="loaderModificar" @click="iniciarModificacion(props.row)" class="btn btn-link btn-sm text-primary">
+                  <!--<span v-if="loaderModificar" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>-->
+                  <i class="fas fa-edit" title="Modificar"></i>
                 </button>                
             </div>
             </span>                                           
@@ -103,16 +108,17 @@
     </div>  
 
     <!-- popup para agregar producto -->
-     <Popup id="popup_agregar" size="md" :show_button_close="true">
+     <Popup id="popup_producto" size="md" :show_button_close="true">
       <div slot="header">
         Agregar producto nuevo
       </div>    
 
       <div slot="content" class="text-left " >             
           
-           <div class="form-group ">
+           <div class="form-group" >
             <label>Código <span class="text-danger">*</span></label>
              <input
+                    :disabled="(operacion == 'MODIFICAR')"
                     ref="input_codigo"
                     type="text"
                     class="form-control font-weight-bold"                    
@@ -238,6 +244,16 @@
       </div>
       <div slot="footer">
         <button
+          v-if="(operacion=='INSERTAR')"
+          class="btn btn-primary"                                                   
+           @click="guardar()" 
+           :disabled="loaderGuardar"
+        >
+          <div v-if="loaderGuardar" class="spinner-border spinner-border-sm" role="status"/> Guardar
+        </button>
+
+        <button
+          v-if="(operacion=='MODIFICAR')"
           class="btn btn-primary"                                                   
            @click="guardar()" 
            :disabled="loaderGuardar"
@@ -451,6 +467,43 @@
     </Popup> 
     <!-- FIN VER COMENTANTARIOS DE PRODUCTO-->
 
+    <!-- ELIMINAR PRODUCTO -->
+    <Popup id="popup_eliminar" size="sm" :show_button_close="true">
+      <div slot="header">
+       Eliminar Articulo
+      </div>    
+      <div slot="content" class="text-left" >                                                 
+           <div v-if="articulo" class="row ">
+           <div class="media">
+                <img :src="`${articulo.foto}`" width="80" class="m-1" />
+                <div class="media-body">
+                  <h4 class="mt-0">{{articulo.codigo}}</h4>
+                  <p>{{articulo.nombre}}</p>
+              </div>
+          </div>              
+           </div>
+           <div v-if="articulo" class="row">
+                <span class="text-gray">Descripción</span>
+                <textarea v-model="articulo.descripcion" rows="2" class="form-control" disabled/>
+                <span class="text-gray">Nota</span>
+                <textarea v-model="articulo.nota_interna" rows="2" class="form-control" disabled/>
+           </div>
+           <div v-if="articulo" class="row text-center">
+            <p >¿Esta seguro de eliminar el producto seleccionado?</p>
+           </div>
+      </div>
+      <div slot="footer">
+         <button          
+          class="btn btn-danger"                                                   
+           @click="eliminar()" 
+           :disabled="loaderEliminar"
+         >
+          <div v-if="loaderEliminar" class="spinner-border spinner-border-sm" role="status"/> Eliminar
+        </button>
+      </div>
+    </Popup> 
+    <!-- FIN VER COMENTANTARIOS DE PRODUCTO-->
+
   </span>
 </template>
 
@@ -487,6 +540,8 @@ export default {
       loaderNuevo:false,  
       URL,
       loaderGuardar:false,  
+      loaderModificar:false,  
+      loaderEliminar:false,  
       articulo:CatArticuloSucursal,
       motivo:"",      
       htmlTicket:"",
@@ -522,7 +577,7 @@ export default {
         field: 'foto',
         filterable: false,
         thClass: 'text-center text-sm',
-        tdClass: 'text-center text-sm',
+        tdClass: 'text-left text-sm',
         hidden: false
       },      
       /*{
@@ -538,7 +593,7 @@ export default {
         field: 'nombre',
         filterable: false,
         thClass: 'text-center text-sm',
-        tdClass: 'text-left text-sm',
+        tdClass: 'text-lefy text-sm',
         hidden: false
       },
        {
@@ -638,11 +693,23 @@ export default {
       },1000);
             
     },
-    seleccionarArticulo(row){
+    seleccionarArticulo(row,operacion){
         this.articulo =  Object.assign(new CatArticuloSucursal(),row);        
+        this.operacion = operacion;
     },          
+    async iniciarModificacion(row){
+        this.seleccionarArticulo(row,'MODIFICAR');
+        this.loaderModificar = true;
+         await this.cargarCatalogosAlta(); 
+        this.loaderModificar = false;
+        $("#popup_producto").modal("show");        
+    },          
+    iniciarEliminacion(row){
+        this.seleccionarArticulo(row,'ELIMINAR');                 
+         $("#popup_eliminar").modal("show");        
+    },
     verDetalleArticulo(row){
-        this.seleccionarArticulo(row);
+        this.seleccionarArticulo(row,'DETALLE');
         $("#popup_comentario_producto").modal("show");
     },          
 
@@ -656,7 +723,8 @@ export default {
         this.loaderNuevo = true;        
         await this.cargarCatalogosAlta();
         this.loaderNuevo = false;
-        $("#popup_agregar").modal("show");
+        this.operacion = 'INSERTAR';
+        $("#popup_producto").modal("show");
     },
     async guardar(){
         if(!this.validacion()){
@@ -671,17 +739,41 @@ export default {
                       .setCoSucursal(this.usuarioSesion.co_sucursal)
                       .buildForInsert();
 
-        const results =  await this.postAsync(`${URL.ARTICULO}`,data);
+        const results = this.operacion == 'INSERTAR' ?
+                        await this.postAsync(`${URL.ARTICULO}`,data) 
+                        :
+                        await this.putAsync(`${URL.ARTICULO}/${this.articulo.id}`,data);
 
         if(results && results.error){              
           
           this.$notificacion.error(results.mensaje,"");
           
         }else{          
-          $("#popup_agregar").modal("hide");
-          await this.cargarCatalogo();
+          $("#popup_producto").modal("hide");
+            await this.cargarCatalogo();
         }
         this.loaderGuardar=false;
+
+    },
+    async eliminar(){
+        this.loaderEliminar=true;
+
+        const data = this.articulo
+                      .setModifico(this.usuarioSesion.id)                                            
+                      .setGenero(this.usuarioSesion.id)                                            
+                      .buildForInsert();
+
+        const results = await this.patchAsync(`${URL.ARTICULO}/${this.articulo.id}`,data);
+
+        if(results && results.error){              
+          
+          this.$notificacion.error(results.mensaje,"");
+          
+        }else{          
+          $("#popup_eliminar").modal("hide");
+            await this.cargarCatalogo();
+        }
+        this.loaderEliminar=false;
 
     },
     validacion(){
@@ -698,6 +790,12 @@ export default {
           return false;
       }
 
+      if(!this.articulo.cat_unidad_medida){
+          this.$notificacion.warn("Seleccionar una Medida","");
+          this.$refs.input_unidad.focus();          
+          return false;
+      }
+
       if(!this.articulo.cat_marca){
           this.$notificacion.warn("Seleccionar una Marca","");
           this.$refs.input_marca.focus();          
@@ -709,12 +807,7 @@ export default {
           this.$refs.input_categoria.focus();          
           return false;
       }
-
-      if(!this.articulo.cat_unidad_medida){
-          this.$notificacion.warn("Seleccionar una Medida","");
-          this.$refs.input_unidad.focus();          
-          return false;
-      }
+      
 
       if(!this.articulo.precio){
           this.$notificacion.warn("Escribe el precio","");
@@ -798,6 +891,12 @@ export default {
         }
       }
     },
+    tdClassMarcarNuevoModificado(row) {
+      if (row.es_nuevo) {
+          return 'text-left text-sm border border-primary';
+        }
+        return 'text-left text-sm';
+      },
     
   }
 };

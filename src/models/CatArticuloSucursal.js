@@ -144,4 +144,10 @@ export default class CatArticuloSucursal {
       modifico: this.modifico,
     };
   }
+  buildForDelete() {
+    return {                       
+      modifico: this.modifico,
+      genero: this.genero
+    };
+  }
 }
