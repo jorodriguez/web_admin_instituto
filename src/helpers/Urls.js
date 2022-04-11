@@ -23,6 +23,7 @@ const CATALOGO_CATEGORIA = BASE + '/categoria';
 const CATALOGO_MARCA = BASE + '/marca';
 const CATALOGO_UNIDAD_MEDIDA = BASE + '/unidad-medida';
 const ESTATUS= BASE + '/estatus';
+const MOVIMIENTO_INVENTARIO= BASE + '/movimiento-inventario';
 
 const ASISTENCIA_BASE =  BASE + '/asistencia';
 const ASISTENCIA_USUARIO_BASE =  BASE + '/asistencia_usuarios';
@@ -111,6 +112,7 @@ const URL = {
     CATALOGO_MARCA,
     CATALOGO_UNIDAD_MEDIDA,    
     ESTATUS:ESTATUS,
+    MOVIMIENTO_INVENTARIO,
 
     USUARIO_BASE:  USUARIO_BASE,
     USUARIO_BUSCAR_ID:  USUARIO_BASE+'/buscar',//+id_usuario

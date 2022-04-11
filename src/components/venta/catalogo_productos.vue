@@ -1,6 +1,6 @@
 <template>
   <span class="productos">
-   <h1>Inventario</h1>   
+   <h1>Catalogo de Productos</h1>   
    <small>{{usuarioSesion.nombre_sucursal}}</small> 
    <div class="row  mt-1 ">
       <div class="col col-12 col-md-6 col-sm-6 col-xl-6  d-flex align-items-start justify-content-start  text-left ">
@@ -14,11 +14,11 @@
       </div>
 
       <div class="col col-12 col-md-6 col-sm-6 col-xl-6  d-flex align-items-end justify-content-end  text-left ">
-      <div class="btn-group btn-group-lg" role="group" aria-label="...">
+      <!--<div class="btn-group btn-group-lg" role="group" aria-label="...">
           <button  class="btn btn-outline-primary " >
             <span class="fa fa-plus"/> Movimiento
           </button>                              
-      </div>
+      </div>-->
 
       <div class="dropdown btn-group-lg">
           <button class="btn btn-outline-primary  dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -71,12 +71,16 @@
                   
             </span>           
 
+            <span v-else-if="props.column.field == 'cantidad_existencia'">                                
+                  <p class="text-sm font-weight-bold text-primary pointer" @click="iniciarAjusteInventario(props.row)" >{{props.row.cantidad_existencia}}</p>                                 
+            </span>           
+
             <span v-else-if="props.column.field == 'precio'">                                
-                  <p class="text-sm font-weight-bold" >${{props.row.precio}}</p>                                 
+                  <p class="text-sm font-weight-bold text-primary pointer" @click="iniciarAjusteInventario(props.row)" >${{props.row.precio}}</p>                                 
             </span>           
 
             <span v-else-if="props.column.field == 'costo_base'">                                
-                  <p class="text-sm" >${{props.row.costo_base}}</p>                                 
+                  <p class="text-sm text-primary pointer" @click="iniciarAjusteInventario(props.row)">${{props.row.costo_base}}</p>                                 
             </span>           
 
 
@@ -199,8 +203,9 @@
             <label>Precio <span class="text-danger">*</span></label>
                <input
                      type="number"
+                     :disabled="(operacion == 'MODIFICAR')"
                      ref="input_precio"
-                    class="form-control text-success"                    
+                    class="form-control "                    
                     v-model="articulo.precio"                    
                   />                       
         </div>        
@@ -208,8 +213,9 @@
             <label>Costo <span class="text-danger">*</span></label>
                 <input
                      type="number"
+                     :disabled="(operacion == 'MODIFICAR')"
                      ref="input_costo_base"
-                    class="form-control text-success"                    
+                    class="form-control "                    
                     v-model="articulo.costo_base"                    
                   />                     
         </div>        
@@ -220,8 +226,9 @@
             <label>Existencia <span class="text-danger">*</span></label>
                <input
                      type="number"
+                     :disabled="(operacion == 'MODIFICAR')"
                      ref="input_cantidad_existencia"
-                    class="form-control text-success"                    
+                    class="form-control "                    
                     v-model="articulo.cantidad_existencia"                    
                   />                       
         </div>        
@@ -230,7 +237,7 @@
                 <input
                      type="number"
                      ref="input_stock_minimo"
-                    class="form-control text-success"                    
+                    class="form-control "                    
                     v-model="articulo.stock_minimo"                    
                   />                     
         </div>        
@@ -504,6 +511,63 @@
     </Popup> 
     <!-- FIN VER COMENTANTARIOS DE PRODUCTO-->
 
+
+       <!-- ajuste de existencia -->
+    <Popup id="popup_ajuste_existencia" size="sm" :show_button_close="true">
+      <div slot="header">
+       Ajuste libre de existencia
+      </div>    
+      <div slot="content" class="text-left" >                                                 
+           <div v-if="articulo" class="row ">
+           <div class="media">
+                <img :src="`${articulo.foto}`" width="80" class="m-1" />
+                <div class="media-body">
+                  <h3>{{articulo.nombre}}</h3>
+                  <small class="mt-0">{{articulo.codigo}}</small>                  
+              </div>
+           </div>              
+           </div>           
+           <hr/>
+           <div v-if="articulo" class="row">
+              <!-- ajustar precio existenca costo -->
+         
+           <div class="form-group col-md-6">
+            <label>Precio <span class="text-danger">*</span></label>
+               <input
+                     type="number"                     
+                     ref="input_precio_ajuste"
+                    class="form-control "                    
+                    v-model="articulo.precio"                    
+                  />                       
+           </div>        
+           <div class="form-group col-md-6">            
+            <label>Existencia <span class="text-danger">*</span></label>
+               <input
+                     type="number"                     
+                     ref="input_cantidad_existencia_ajuste"
+                    class="form-control "                    
+                    v-model="articulo.cantidad_existencia"                    
+                  />                       
+            </div>        
+              <!-- FIN - ajustar precio existencia costo-->           
+
+           </div>
+           <div class="form-group ">
+              <label>Nota</label>
+              <textarea cols="2" v-model="nota" class="form-control form-control-sm" />              
+            </div>
+      </div>
+      <div slot="footer">
+         <button          
+          class="btn btn-success"                                                              
+           :disabled="loaderAjuste"
+           @click="guardarMovimiento()"
+         >
+          <div v-if="loaderAjuste" class="spinner-border spinner-border-sm" role="status"/> Confirmar
+        </button>
+      </div>
+    </Popup> 
+    <!-- FIN VER COMENTANTARIOS DE PRODUCTO-->
   </span>
 </template>
 
@@ -542,8 +606,11 @@ export default {
       loaderGuardar:false,  
       loaderModificar:false,  
       loaderEliminar:false,  
+      loaderAjuste:false,  
       articulo:CatArticuloSucursal,
+      articuloMemento:CatArticuloSucursal,
       motivo:"",      
+      nota:"",      
       htmlTicket:"",
       es: es,           
       lista:[],
@@ -695,6 +762,7 @@ export default {
     },
     seleccionarArticulo(row,operacion){
         this.articulo =  Object.assign(new CatArticuloSucursal(),row);        
+        this.articuloMemento =  Object.assign(new CatArticuloSucursal(),row);        
         this.operacion = operacion;
     },          
     async iniciarModificacion(row){
@@ -704,6 +772,14 @@ export default {
         this.loaderModificar = false;
         $("#popup_producto").modal("show");        
     },          
+    async iniciarAjusteInventario(row){
+        this.seleccionarArticulo(row,'AJUSTE_INVENTARIO');
+        this.loaderAjuste = true;
+        this.nota = "";
+         await this.cargarCatalogosAlta(); 
+        this.loaderAjuste = false;
+        $("#popup_ajuste_existencia").modal("show");        
+    },              
     iniciarEliminacion(row){
         this.seleccionarArticulo(row,'ELIMINAR');                 
          $("#popup_eliminar").modal("show");        
@@ -897,6 +973,47 @@ export default {
         }
         return 'text-left text-sm';
       },
+    async guardarMovimiento(){
+
+       if(!this.articulo.cantidad_existencia){
+          this.$notificacion.warn("Escribe la cantidad de existencia","");
+          this.$refs.input_cantidad_existencia_ajuste.focus();          
+          return false;
+      }
+
+      if(!this.articulo.precio){
+          this.$notificacion.warn("Escribe el precio","");
+          this.$refs.input_precio_ajuste.focus();          
+          return false;
+      }
+
+      if(this.articulo.cantidad_existencia == this.articuloMemento.cantidad_existencia &&
+           this.articulo.precio == this.articuloMemento.precio ){
+           this.$notificacion.warn("No se han detectado cambios","");
+
+          return false;
+      }
+
+      const AJUSTE_LIBRE = 5;
+
+      const send= {
+        id_articulo_sucursal:this.articulo.id,
+        cat_tipo_movimiento:AJUSTE_LIBRE,
+        existencia_nueva:this.articulo.cantidad_existencia,
+        precio_nuevo:this.articulo.precio,
+        nota:this.nota,
+        co_empresa:this.usuarioSesion.id_empresa,
+        co_sucursal:this.usuarioSesion.co_sucursal,        
+        genero:this.usuarioSesion.id
+      }
+      const res = await this.postAsync(`${URL.MOVIMIENTO_INVENTARIO}`,send);
+        if(res){            
+              await this.cargarCatalogo();
+              $("#popup_ajuste_existencia").modal("hide");
+              
+        }
+         
+    },    
     
   }
 };

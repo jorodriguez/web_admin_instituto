@@ -76,7 +76,7 @@ const router = new Router({
         { path: '/Cobranza', name: 'Cobranza', component: Cobranza, meta: { requiresAuth: true, validar: true } },   
         { path: '/Venta', name: 'Venta', component: Venta, meta: { requiresAuth: true, validar: false } },
         { path: '/ConsultaVentas', name: 'ConsultaVentas', component: VentasSucursal, meta: { requiresAuth: true, validar: false } },
-        { path: '/Inventario', name: 'Inventario', component: CatalogoProductos, meta: { requiresAuth: true, validar: false } },
+        { path: '/Productos', name: 'Productos', component: CatalogoProductos, meta: { requiresAuth: true, validar: false } },
         { path: '/CambioSucursal/:id_alumno', name: 'CambioSucursal', component: CambiarSucursal, meta: { requiresAuth: true, validar: false } },
         //{ path: '/ReporteAsistencias', name: 'ReporteAsistencias', component: ReporteAsistencia, meta: { requiresAuth: true, validar: false } },
         //{ path: '/ReporteAsistenciasSucursalMes', name: 'ReporteAsistenciasSucursalMes', component: ReporteAsistenciasFaltasSucursalMes, meta: { requiresAuth: true, validar: false } },
