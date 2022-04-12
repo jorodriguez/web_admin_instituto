@@ -1,42 +1,6 @@
 <template>
   <span>  
   
-  <!--
-    <div class="row  mt-1 ">
-      <div class="col col-12 col-md-6 col-sm-6 col-xl-6  d-flex align-items-start justify-content-start  text-left ">
-        <div class="btn-group btn-group-lg" role="group" aria-label="...">
-          <button @click="iniciarNuevaVenta()" class="btn btn-light btn-lg" href="#">
-            Nueva
-          </button>
-          <button @click="iniciarBuscarProducto()" class="btn btn-light btn-lg" href="#">
-            Buscar
-          </button>
-          <button @click="iniciarCobrar()" class="btn btn-light btn-lg" href="#">
-            Cobrar
-          </button>
-        </div>
-      </div>
-      <div class="col col-12 col-md-6 col-sm-6 col-xl-6 ">
-        <div class="row ">          
-          <div
-            class="col-12 col-md-6 col-sm-6 col-xl-6  d-flex align-items-end  justify-content-end text-right"
-          >
-            <h1>Total</h1>
-          </div>
-          <div class="col-12 col-md-6 col-sm-12 col-xs-12 col-xl-6 rounded text-left">            
-            <input
-              type="text"
-              class="form-control form-control-lg bg-dark"
-              :value="`$${formatPrice(total)}`"
-              style="color:#fff;font-size:25px"
-              disabled
-            />
-          </div>
-        </div>
-      </div>
-    </div>
-    -->
-
     <div class="row  ">   
 
       <!-- Carrito de venta -->
@@ -47,41 +11,7 @@
             <small v-if="mensajeCodigo" class="text-danger">{{
               mensajeCodigo
             }}</small>
-            <!-- Si funciona la busqueda por codigo
-            <div class="input-group ">
-              <div class="input-group-prepend mr-1">
-                <span class="input-group-text border-0" id="basic-addon1"
-                  >Cant</span
-                >
-                <input
-                  type="number"
-                  class="form-control ml-1 bg-secondary "
-                  style="width:50px"
-                  v-model="cantidad"
-                  disabled
-                />
-              </div>
-              <div class="input-group-prepend">
-                <span class="input-group-text" id="inputGroup-sizing-default">
-                  <i
-                    :class="`fas fa-barcode ${loaderCodigo ? 'text-red' : ''}`"
-                  ></i>                  
-                </span>
-              </div>
-              <input
-                type="text"
-                class="form-control font-weight-bold"
-                ref="input_buscar_codigo"
-                aria-label="Default"
-                placeholder="Código"
-                :readonly="loaderCodigo"
-                v-model="codigo"
-                @keyup.enter="buscarCodigo()"
-                aria-describedby="inputGroup-sizing-default"
-                autofocus
-              />
-            </div>
-            -->
+          
           </div>
             <div
                 class="row border border-gray pt-1 m-0 bg-secondary  "
@@ -177,7 +107,19 @@
                 <div
                   class="text-left col-12 col-sm-12 col-md-12 col-lg-2 col-xl-2  d-flex align-items-center align-self-center justify-content-center "
                 >
-                  <span class="h3">${{ formatPrice(detalle.precio) }}</span>
+                  <!--<span class="h3">${{ formatPrice(detalle.precio) }}</span>-->
+                  <input
+                    id="inputCargo"
+                    type="number"
+                    v-model="detalle.precio"
+                    placeholder="precio"
+                    style="width:40px;"
+                    min="1"
+                    max="999"
+                    maxlength="3"
+                    oninput="validity.valid||(value='');"
+                    v-on:keyup.enter="recalcularPorEnter(detalle)"                    
+                  />
                 </div>
                 <div
                   class="text-left col-12 col-sm-12 col-md-12 col-lg-1 col-xl-1  d-flex align-items-center align-self-center justify-content-center "
@@ -217,13 +159,14 @@
                         </button>-->
                 </div>
                 </div>
-                
+              
+              
               <div class="pt-1 d-sm-none d-lg-block">                            
                 <div class="btn-group " >
-                 <button @click="cargarCatalogo()" type="button" class="btn bg-pink ">
+                 <button @click="cargarCatalogo()" type="button" class="btn bg-pink btn-sm">
                   Todos
                  </button>
-                 <button type="button" :class="`btn bg-pink `"
+                 <button type="button" :class="`btn bg-pink btn-sm`"
                        v-for="categoria in categoriaArticulos"
                       :key="categoria.cat_categoria"
                       @click="filtrarArticulosPorCategoria(categoria)"
@@ -232,7 +175,10 @@
                     <span class="badge badge-pill badge-light ">{{categoria.numero_articulos}}</span>
                  </button>                   
                 </div>                
-              </div>              
+              </div>           
+              
+              
+
               <small class="text-sm text-muted align-middle">{{categoriaSeleccionada && categoriaSeleccionada.categoria}}</small>
               
               <div class="card-body pt-0" :style="`height:${screenHeight-(screenHeight/2.7)}px;overflow-y:scroll;`"  >                            
@@ -260,7 +206,7 @@
                         style="width:100px;min-height:70px;height:90px"
                         :src="producto.foto"
                         alt="Foto"
-                        :title="`${producto.nombre}  `"
+                        :title="`${ producto.nombre}  `"
                       />
                       
                       <div
@@ -272,17 +218,21 @@
                       />
                       </div>
                       <!--<small style="font-size:10px;" class="text-muted m-0" >{{producto.codigo}}</small>-->
-                      <div class="card-body p-1">
-                        <h4 class="card-title m-0 text-truncate  pb-0 " :title="`${producto.nombre}  `">
-                         <span class="text-sm "> {{ producto.nombre }}</span>
-                        </h4>
-                        <!--<p class="card-text text-xs pt-0 m-0 small text-truncate  ">
-                           {{ producto.descripcion }}
-                        </p>   -->                     
+                      <div class="card-body p-0 ">
+                        <h4 class="card-title m-0 text-truncate pb-0 " :title="`${producto.nombre}  `">
+                         <span class="text-sm "> {{ producto.nombre }}</span>                                                  
+                        </h4>                        
+                        <!--<small style="font-size:8px" class="card-text text-xs pt-0 m-0 small text-truncate  ">
+                           
+                        </small>   -->
                       </div>
-                      <!--<div class="card-footer p-0 mb-0">
-                          <span class="text-muted  text-xs">{{producto.categoria}} | {{producto.marca}} </span>                      
-                      </div>-->
+                      <div class="card-footer p-0 mb-0">
+                          <!--<span class="text-muted  text-xs">{{producto.categoria}} | {{producto.marca}} </span>                      -->
+                         <small :class="producto.cantidad_existencia <= 0 ? 'text-danger font-weight-bold':'' " style="font-size:10px;">
+                         <i v-if="producto.cantidad_existencia <= 0" class=" fa fa-exclamation-triangle"/>
+                          {{ producto.cantidad_existencia }} {{producto.unidad_medida}} 
+                         </small>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -843,7 +793,7 @@ export default {
           .setCoEmpresa(this.usuarioSesion.id_empresa)
           .setCambio(this.cambio)
           .setNotaVenta("")
-          .setCatCliente(1)
+          .setCatCliente(1)//--mostrador
           .setGenero(this.usuarioSesion.id)
           .buildForInsert();
 
@@ -866,6 +816,11 @@ export default {
           this.iniciarNuevaVenta();
           this.loaderCobro = false;
           this.cerrarPopupYFocusBuscarCodigo();
+
+        setTimeout(async()=>{
+            await this.cargarCatalogo();
+        },1000);
+          
 
           //consultar ticker
           const { venta } = ventaGuardada;

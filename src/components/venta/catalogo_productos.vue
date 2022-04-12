@@ -72,7 +72,12 @@
             </span>           
 
             <span v-else-if="props.column.field == 'cantidad_existencia'">                                
-                  <p class="text-sm font-weight-bold text-primary pointer" @click="iniciarAjusteInventario(props.row)" >{{props.row.cantidad_existencia}}</p>                                 
+                  <p :class="`text-sm font-weight-bold  pointer ${props.row.cantidad_existencia <= 0 ? 'text-danger ':'text-primary'}`" 
+                            @click="iniciarAjusteInventario(props.row)" >
+                      <i v-if="props.row.cantidad_existencia <= 0 " class=" fa fa-exclamation-triangle"/>                          
+                      {{props.row.cantidad_existencia}}
+                  </p>                                                 
+                      
             </span>           
 
             <span v-else-if="props.column.field == 'precio'">                                
@@ -80,7 +85,7 @@
             </span>           
 
             <span v-else-if="props.column.field == 'costo_base'">                                
-                  <p class="text-sm text-primary pointer" @click="iniciarAjusteInventario(props.row)">${{props.row.costo_base}}</p>                                 
+                  <p class="text-sm " >${{props.row.costo_base}}</p>                                 
             </span>           
 
 
@@ -202,21 +207,21 @@
            <div class="form-group col-md-6">
             <label>Precio <span class="text-danger">*</span></label>
                <input
-                     type="number"
-                     :disabled="(operacion == 'MODIFICAR')"
+                     type="number"                     
                      ref="input_precio"
                     class="form-control "                    
                     v-model="articulo.precio"                    
+                    min="0"                 
                   />                       
         </div>        
            <div class="form-group col-md-6">
             <label>Costo <span class="text-danger">*</span></label>
                 <input
-                     type="number"
-                     :disabled="(operacion == 'MODIFICAR')"
+                     type="number"                     
                      ref="input_costo_base"
-                    class="form-control "                    
-                    v-model="articulo.costo_base"                    
+                     class="form-control "                    
+                     v-model="articulo.costo_base"   
+                     min="-1"                 
                   />                     
         </div>        
             </div>
@@ -228,8 +233,9 @@
                      type="number"
                      :disabled="(operacion == 'MODIFICAR')"
                      ref="input_cantidad_existencia"
-                    class="form-control "                    
-                    v-model="articulo.cantidad_existencia"                    
+                      :class="`form-control ${articulo.cantidad_existencia <= 0 ? 'text-danger':''}`"                    
+                      v-model="articulo.cantidad_existencia"                    
+                      min="0"
                   />                       
         </div>        
            <div class="form-group col-md-6">
@@ -238,7 +244,8 @@
                      type="number"
                      ref="input_stock_minimo"
                     class="form-control "                    
-                    v-model="articulo.stock_minimo"                    
+                    v-model="articulo.stock_minimo"         
+                    min="-1"           
                   />                     
         </div>        
             </div>
@@ -531,22 +538,25 @@
            <div v-if="articulo" class="row">
               <!-- ajustar precio existenca costo -->
          
-           <div class="form-group col-md-6">
+           <!--<div class="form-group col-md-6">
             <label>Precio <span class="text-danger">*</span></label>
                <input
                      type="number"                     
                      ref="input_precio_ajuste"
-                    class="form-control "                    
-                    v-model="articulo.precio"                    
+                     class="form-control "                    
+                     v-model="articulo.precio"                    
+                     min="0"
                   />                       
-           </div>        
-           <div class="form-group col-md-6">            
-            <label>Existencia <span class="text-danger">*</span></label>
+           </div>        -->
+           <div class="form-group col-md-12">            
+            <label>Nueva Existencia <span class="text-danger">*</span></label>
                <input
                      type="number"                     
                      ref="input_cantidad_existencia_ajuste"
-                    class="form-control "                    
-                    v-model="articulo.cantidad_existencia"                    
+                     :class="`form-control ${articulo.cantidad_existencia <= 0 ? 'text-danger':''}`"                    
+                     class="form-control "                    
+                     v-model="articulo.cantidad_existencia"                    
+                     min="-1"
                   />                       
             </div>        
               <!-- FIN - ajustar precio existencia costo-->           
@@ -885,25 +895,25 @@ export default {
       }
       
 
-      if(!this.articulo.precio){
+      if(!this.articulo.precio || this.articulo.precio <= 0){
           this.$notificacion.warn("Escribe el precio","");
           this.$refs.input_precio.focus();          
           return false;
       }
      
-      if(!this.articulo.costo_base){
+      if(!this.articulo.costo_base || this.articulo.costo_base < 0 ){
           this.$notificacion.warn("Escribe el costo","");
           this.$refs.input_costo_base.focus();          
           return false;
       }
 
-      if(!this.articulo.cantidad_existencia){
+      if(!this.articulo.cantidad_existencia || this.articulo.cantidad_existencia <= 0){
           this.$notificacion.warn("Escribe la cantidad en existencia","");
           this.$refs.input_cantidad_existencia.focus();          
           return false;
       }
 
-      if(!this.articulo.stock_minimo){
+      if(!this.articulo.stock_minimo || this.articulo.stock_minimo <= 0){
           this.$notificacion.warn("Escribe la cantidad en stock","");
           this.$refs.input_stock_minimo.focus();          
           return false;
@@ -981,14 +991,15 @@ export default {
           return false;
       }
 
-      if(!this.articulo.precio){
+      /*if(!this.articulo.precio){
           this.$notificacion.warn("Escribe el precio","");
           this.$refs.input_precio_ajuste.focus();          
           return false;
-      }
+      }*/
 
-      if(this.articulo.cantidad_existencia == this.articuloMemento.cantidad_existencia &&
-           this.articulo.precio == this.articuloMemento.precio ){
+      /*if(this.articulo.cantidad_existencia == this.articuloMemento.cantidad_existencia &&
+           this.articulo.precio == this.articuloMemento.precio ){*/
+      if(this.articulo.cantidad_existencia == this.articuloMemento.cantidad_existencia){
            this.$notificacion.warn("No se han detectado cambios","");
 
           return false;
@@ -1000,7 +1011,7 @@ export default {
         id_articulo_sucursal:this.articulo.id,
         cat_tipo_movimiento:AJUSTE_LIBRE,
         existencia_nueva:this.articulo.cantidad_existencia,
-        precio_nuevo:this.articulo.precio,
+        //precio_nuevo:this.articulo.precio,
         nota:this.nota,
         co_empresa:this.usuarioSesion.id_empresa,
         co_sucursal:this.usuarioSesion.co_sucursal,        
