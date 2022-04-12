@@ -107,8 +107,8 @@
                 <div
                   class="text-left col-12 col-sm-12 col-md-12 col-lg-2 col-xl-2  d-flex align-items-center align-self-center justify-content-center "
                 >
-                  <!--<span class="h3">${{ formatPrice(detalle.precio) }}</span>-->
-                  <input
+                  <span class="h3">${{ formatPrice(detalle.precio) }}</span>
+                  <!--<input
                     id="inputCargo"
                     type="number"
                     v-model="detalle.precio"
@@ -119,7 +119,7 @@
                     maxlength="3"
                     oninput="validity.valid||(value='');"
                     v-on:keyup.enter="recalcularPorEnter(detalle)"                    
-                  />
+                  />-->
                 </div>
                 <div
                   class="text-left col-12 col-sm-12 col-md-12 col-lg-1 col-xl-1  d-flex align-items-center align-self-center justify-content-center "
