@@ -45,10 +45,10 @@
  
           <div class="row justify-content-between border border-light border-top-0 border-left-0 border-right-0  border-bottom-2 ">
           <div class="col-3 h4 text-left">
-             <h2 class="mb-0">Ingreso</h2>                          
+             <h2 class="mb-0 pointer"  data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">Cobranza</h2>                          
           </div>
           <div class="col-3 border border-primary border-top-0 border-left-0 border-right-0  border-bottom-2  ">           
-                  <h2 class="mt-0 mb-1 "> ${{corte ? formatPrice(corte.totalIngreso) : ''}}</h2>                                       
+                  <h2 class="mt-0 mb-1 pointer " data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample" > ${{corte ? formatPrice(corte.totalIngreso) : ''}}</h2>                                       
           </div>
          </div>
 
@@ -100,41 +100,25 @@
           </template>
         </vue-good-table>
         </div>
-         <a class="pointer text-primary text-sm" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
-                  <small>({{lista.length}}) Ingresos</small>
-              </a>
-
-<!--        <div class="row justify-content-end">   
-          <div class="col-2 text-right">-->
-              <!--<download-excel
-                v-if="corte"
-                class="btn btn-link "
-                :data="lista"
-                :fields="columnasFiltradas"
-                :worksheet="nombre_libro"
-                :name="nombre_reporte+'.xls'"
-              >
-                <i class="fas fa-download" /> XLS
-              </download-excel>        -->
-          <!--</div>
-          <div class="col-3 light border border-primary border-top-0 border-left-0 border-right-0  border-bottom-2">           
-            <div class="media">
-                <div class="media-body">
-                  <h2 class="mt-0 mb-1">${{corte ? formatPrice(corte.totalIngreso) : ''}}</h2>                                    
-                </div>  
-            </div>           
+        <a class="pointer text-primary text-sm" data-toggle="collapse" href="#collapseExample" role="button" aria-expanded="false" aria-controls="collapseExample">
+                  <small>({{lista.length}}) Detalle de pagos</small>
+        </a>
+        <div class="row justify-content-between border border-light border-top-0 border-left-0 border-right-0  border-bottom-2 ">
+          <div class="col-3 h4 text-left">
+             <h2 class="mb-0">Ventas</h2>                          
           </div>
-         </div>
-        <br/>
-        -->
+          <div class="col-3 border border-primary border-top-0 border-left-0 border-right-0  border-bottom-2  ">           
+                  <h2 class="mt-0 mb-1 " > ${{corte ? formatPrice(corte.totalIngresoVenta) : ''}}</h2>                                       
+          </div>
+        </div>
         
           <div class="row justify-content-between border border-light border-top-0 border-left-0 border-right-0  border-bottom-2">
-          <div class="col-3 h4 text-left">
-             <h2>Gasto</h2>                               
+          <div class="col-3 h4 text-left ">
+             <h2 class="pointer" data-toggle="collapse" href="#collapseGastos" role="button" aria-expanded="false" aria-controls="collapseExample">Gasto</h2>                               
           </div>
-          <div class="col-3 border border-danger border-top-0 border-left-0 border-right-0  border-bottom-2 ">
+          <div class="col-3 border border-danger border-top-0 border-left-0 border-right-0  border-bottom-2 pointer">
            
-                  <h2 class="mt-0 mb-1"> ${{corte ? formatPrice(corte.totalGasto) : ''}}</h2>                  
+                  <h2 class="mt-0 mb-1 pointer" data-toggle="collapse" href="#collapseGastos" role="button" aria-expanded="false" aria-controls="collapseExample">- ${{corte ? formatPrice(corte.totalGasto) : ''}}</h2>                  
            
           </div>
          </div>
@@ -178,7 +162,9 @@
           </div>
           <div :class="`col-3 border  border-top-0 border-left-0 border-right-0  border-bottom-2 ${(corte.totalIngreso - corte.totalGasto) <= 0 ? ' border-danger':' border-success'}`">
             
-                  <h1 :class="`mt-0 mb-1 ${(corte.totalIngreso - corte.totalGasto) <= 0 ? ' text-danger':' text-primary'} `"> ${{corte ? formatPrice(corte.totalIngreso - corte.totalGasto) : ''}}</h1>                  
+                  <!--<h1 :class="`mt-0 mb-1 ${(corte.totalIngreso - corte.totalGasto) <= 0 ? ' text-danger':' text-primary'} `"> ${{corte ? formatPrice(corte.totalIngreso - corte.totalGasto) : ''}}</h1>                  -->
+                  <h1 :class="`mt-0 mb-1 ${(corte.totalCaja) <= 0 ? ' text-danger':' text-primary'} `"> ${{corte ? formatPrice(corte.totalCaja) : ''}}</h1>                  
+                  
             
           </div>
          </div>
