@@ -15,8 +15,8 @@ import ReporteAsistenciasFaltasSucursalMes from '@/components/ReporteAsistencias
 import AsistenciasUsuarios from '@/components/AsistenciaUsuarios'
 import ReporteAsistenciaRangoFechasSuc from '@/asistencia_usuario/ReporteAsistenciaRangoFechasSuc'
 import Bienvenido from '@/components/Bienvenido'
-//import CatUsuario from '../administracion/usuarios/CatUsuario'
-//import Administracion from '../administracion/Administracion'
+import CatUsuario from '../administracion/usuarios/CatUsuario'
+import Administracion from '../administracion/Administracion'
 //import Reportes from '../reportes/Reportes'
 import { getUsuarioSesion, getSesion, getToken } from '../helpers/Sesion';
 import SubirFotoAlumno from '@/components/SubirFotoAlumno'
@@ -83,8 +83,8 @@ const router = new Router({
         //{ path: '/AsistenciasUsuarios', name: 'AsistenciasUsuarios', component: AsistenciasUsuarios, meta: { requiresAuth: true, validar: false } },
         //{ path: '/AsistenciasUsuarioSucursal', name: 'AsistenciasUsuarioSucursal', component: ReporteAsistenciaRangoFechasSuc, meta: { requiresAuth: true, validar: true } },
         //{ path: '/AsistenciasUsuariosRh', name: 'AsistenciasUsuariosRh', component: ReporteAsistenciaUsuariosRh, meta: { requiresAuth: true, validar: true } },
-     //   { path: '/CatalogoUsuario', name: 'CatalogoUsuario', component: CatUsuario, meta: { requiresAuth: true, validar: true } },
-      //  { path: '/Administracion', name: 'Administracion', component: Administracion, meta: { requiresAuth: true, validar: false } },
+        { path: '/CatalogoUsuario', name: 'CatalogoUsuario', component: CatUsuario, meta: { requiresAuth: true, validar: true } },
+        { path: '/Administracion', name: 'Administracion', component: Administracion, meta: { requiresAuth: true, validar: false } },
      //   { path: '/Reportes', name: 'Reportes', component: Reportes, meta: { requiresAuth: true, validar: false } },
       //  { path: '/Avisos', name: 'Avisos', component: CatAvisos, meta: { requiresAuth: true, validar: true }},
       //  { path: '/ReactivarAlumno', name: 'ReactivarAlumno', component: ReactivarAlumnosEliminados, meta: { requiresAuth: true, validar: false } },

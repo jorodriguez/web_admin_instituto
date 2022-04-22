@@ -9,6 +9,7 @@
       </div>
     </div>  
     <div class="row mt-1 " >
+    
       <div class="col-4 mb-3" v-for="opc in lista" :key="opc.id">
         <Card
           titulo=""
@@ -69,10 +70,16 @@ export default {
   name: "Administracion",
   mounted() {
     this.usuarioSesion = getUsuarioSesion();
-    let menu = this.usuarioSesion.menu||[];
+    
+    const menu = this.usuarioSesion.menu||[];
+
     for(let i = 0;i<menu.length;i++){
-        if(menu.id = 1){//Administracion
+
+        const item = menu[i];
+        console.log(item);
+        if(item.id = 1){//Administracion
             this.lista = menu[i].opciones_hijo;
+            break;
         }
     }
   },
