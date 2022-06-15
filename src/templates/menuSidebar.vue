@@ -18,12 +18,13 @@
         <span class="navbar-toggler-icon"></span>
       </button>
       <!-- Brand -->
-      <span v-if="usuarioSesion && usuarioSesion.logotipo_empresa">
-        <router-link to="/Principal" class="navbar-brand pt-0"  >         
-           <img :src="usuarioSesion.logotipo_empresa" class="rounded-lg"  width="90" height="90" />                            
+      <span v-if="usuarioSesion && usuarioSesion.logotipo_sucursal" class="navbar-brand p-0">
+      <!-- antees tenia navbar-brand  -->
+        <router-link to="/Principal" class=" pt-0 "  >         
+           <img :src="usuarioSesion.logotipo_sucursal" class="rounded-lg" :width="with_logotipo" />                           
         </router-link>       
       </span>
-      <!-- User -->
+            <!-- User       -->
       <ul class="nav align-items-center d-md-none">
         <!-- slae cuando es resposive
           <li class="nav-item dropdown">
@@ -211,6 +212,7 @@ export default {
     return {      
       usuarioSesion: null,            
       logotipoEmpresa:"",
+      with_logotipo:"",
       opciones:[]
     };
   },
@@ -220,8 +222,15 @@ export default {
     //this.mostrarSideBar = !getUsuarioSesion().permiso_gerente;
     //this.opciones = this.usuarioSesion.opciones_acceso;
     this.opciones = this.usuarioSesion.menu;
+    this.with_logotipo = this.usuarioSesion.with_logotipo;
     //this.$mostrarSidebar = !getUsuarioSesion().permiso_gerente;
-    
+
+    this.$root.$on("CAMBIO_SUCURSAL", text => {
+      console.log("CAMBIO_SUCUSAL - CARGANDO EL LOGO");      
+      this.usuarioSesion = getUsuarioSesion();      
+      this.getLogo();
+    });
+
   },
   methods: {
      signout() {
@@ -232,9 +241,9 @@ export default {
       this.$router.push("/");
     },
     getLogo(){
-      console.log("getLogo");
-        //this.logotipoEmpresa = this.usuarioSesion.logotipo_empresa ? this.usuarioSesion.logotipo_empresa: '../assets/logodef.png';
-        return (this.usuarioSesion && this.usuarioSesion.logotipo_empresa) ? this.usuarioSesion.logotipo_empresa: '../assets/logodef.png';
+        console.log("getLogo");
+        this.with_logotipo = this.usuarioSesion.with_logotipo || '100';        
+        return (this.usuarioSesion && this.usuarioSesion.logotipo_sucursal) ? this.usuarioSesion.logotipo_sucursal: '../assets/logodef.png';
     }
   }
 };

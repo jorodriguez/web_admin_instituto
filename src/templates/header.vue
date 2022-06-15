@@ -8,8 +8,8 @@
     
       <!-- Mask -->
       <!--<span class="mask bg-gradient-default opacity-8"></span>-->
-      <!--style="background-color:#9BE1AD !important;"-->
-      <span class="mask opacity-8" style="background-color:#E701A8 !important;"></span>
+      <!--style="background-color:#9BE1AD !important; #E701A8"-->
+      <span class="mask opacity-8" :style="`background-color:${color_tema} !important;`"></span>
       <!-- Header container -->
       <div class="container-fluid d-flex align-items-center">
         <div class="row">
@@ -37,6 +37,7 @@ export default {
     return {
       usuarioSesion: {},
       mostrarmenu: false,
+      color_tema:'',
       revisarSesionPromise: null,
       revisarSesion: null,
       mostrarSideBar:Vue.prototype.$mostrarSidebar
@@ -44,8 +45,9 @@ export default {
   },
   mounted() {
     console.log("iniciando el template de menu");
-    //this.usuarioSesion = getUsuarioSesion();  
-    this.mostrarmenu= (getUsuarioSesion() != null);        
+    this.usuarioSesion = getUsuarioSesion();  
+    this.mostrarmenu = (getUsuarioSesion() != null);        
+    this.color_tema = this.usuarioSesion.color_tema;
     //this.mostrarmenu= (this.usuarioSesion != null);        
     
   },
