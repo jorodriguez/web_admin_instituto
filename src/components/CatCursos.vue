@@ -277,7 +277,7 @@
 
           <div class="col-md-8 offset-md-4  text-right">                               
               <button class="btn btn-link" @click="seleccionar(item, 'DETALLE')">
-                Ver detalle
+               {{item.cat_especialidad}} Ver detalle
               </button>
               <!--<button v-if="!item.activo" class="btn btn-link" @click="seleccionar(item, 'CONFIRM')">
                 Confirmar inscripciones
@@ -497,7 +497,7 @@ export default {
       );
 
       this.listaEspecialidades = await this.getAsync(
-        `${URL.ESPECIALIDADES_BASE}/${this.usuarioSesion.id_empresa}`
+        `${URL.ESPECIALIDADES_BASE}/${this.usuarioSesion.id_empresa}/${this.usuarioSesion.co_sucursal}`
       );
     },
     async guardar() {
