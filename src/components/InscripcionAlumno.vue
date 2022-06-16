@@ -274,7 +274,7 @@ export default {
       this.listaGeneroAlumno = await this.getAsync(`${URL.GENERO_ALUMNO}`);
 
       this.listaEspecialidades = await this.getAsync(
-        `${URL.ESPECIALIDADES_BASE}/${this.usuarioSesion.id_empresa}`
+        `${URL.ESPECIALIDADES_BASE}/${this.usuarioSesion.id_empresa}/${this.usuarioSesion.co_sucursal}`
       );
 
       this.nuevo();
