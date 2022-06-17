@@ -277,7 +277,7 @@
 
           <div class="col-md-8 offset-md-4  text-right">                               
               <button class="btn btn-link" @click="seleccionar(item, 'DETALLE')">
-               {{item.cat_especialidad}} Ver detalle
+               Ver detalle
               </button>
               <!--<button v-if="!item.activo" class="btn btn-link" @click="seleccionar(item, 'CONFIRM')">
                 Confirmar inscripciones

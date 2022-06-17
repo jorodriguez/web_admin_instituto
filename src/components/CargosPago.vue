@@ -182,7 +182,7 @@
               v-for="p in listaCargos"
               v-bind:value="p"
               v-bind:key="p.id"
-              >{{p.id}} - {{ p.nombre }}</option
+              >{{ p.nombre }}</option
             >
           </select>
         </div>
