@@ -3,7 +3,7 @@
     <Loader :loading="loader" />
     <button
       type="button"
-      class="btn btn-outline-primary btn-sm"
+      class="btn btn-link btn-sm"
       title="Modificar registro"
       v-on:click="seleccionar('EDIT')"
       :disabled="loader_edit"
@@ -14,7 +14,7 @@
     </button>
     <button
       type="button"
-      class="btn btn-outline-danger btn-sm"
+      class="btn btn-link btn-sm text-danger"
       :title="'Eliminar registro de la maestra '"
       v-on:click="seleccionar('DELETE')"
       :disabled="loader_eliminar"

@@ -38,7 +38,7 @@
     <div class="table-responsive">
       <table class="table">
         <thead>
-          <th>
+          <th >
             <!--<div class="custom-control custom-checkbox">-->
             <input
               type="checkbox"
@@ -59,7 +59,7 @@
         </thead>
         <tbody v-for="row in listaCargosAlumnos" :key="row.id">
           <tr>
-            <td >
+            <td class="col-1 mr-0 br-0 pr-0  w-auto">              
               <input
                 type="checkbox"
                 id="checkbox"

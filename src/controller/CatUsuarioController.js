@@ -39,7 +39,7 @@ export default {
       columnasUsuario: [
         { label: "Id", field: "id", hidden: true },
         { label: "Foto", field: "foto", hidden: true },
-        { label: "Miss.", field: "alias",hidden:true },
+        { label: "Alias", field: "alias",hidden:true },
         { label: "Nombre", field: "nombre" },
         { label: "Correo", field: "correo",hidden:true },
         { label: "Hora Entrada", field: "hora_entrada" },
