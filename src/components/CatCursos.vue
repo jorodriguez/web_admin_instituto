@@ -22,7 +22,7 @@
         <strong> {{ usuarioSesion.nombre_sucursal }}</strong>
       </div>
       <div slot="content" class="row text-left ">
-        <div class="col-7">
+        <div class="col-7 col-sm-7 col-md-7 col-lg-7 col-xl-7">
           <div class="form-group">
             <label>
               Especialidad
@@ -36,10 +36,9 @@
             </select>
             <input v-else disabled type="text" v-model="input.especialidad" class="form-control" required />
           </div>
-
+        
 
           <div class="form-row">
-
             <div class="form-group col-sm-6 col-md-6 col-lg-6 col-xl-6">
               <label>
                 Fecha Inicio
@@ -53,7 +52,7 @@
             </div>
             <div class="form-group col-sm-6 col-md-6 col-lg-6 col-xl-6">
               <label>
-                Número Semanas
+                Semanas de clases
                 <span class="text-danger">*</span>
               </label>
               <input :disabled="operacion == 'UPDATE'" type="number" v-model="input.numero_semanas" class="form-control"
@@ -107,13 +106,54 @@
             <input type="text" v-model="input.nota" class="form-control" />
           </div>          
         </div>
-        <div class="col-5 bg-danger">
-          <div class="form-row">
-            <div class="form-group form-group col-sm-6 col-md-6 col-lg-6 col-xl-6">
-              Esquema de Pagos 
+
+        <div class="col-5 col-sm-5 col-md-5 col-lg-5 col-xl-5">
+            <fieldset>
+              <div class="row pt-2 pb-2 d-flex justify-content-center">
+                <label class="pb-0">
+                    Esquema de Pagos
+                </label>
+              </div>
+
+          <div class="form-row pb-2">             
+          <div class="col d-flex justify-content-end">
+             <div class="form-check ">
+                <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios1" value="option1" checked>
+                <label class="form-check-label" for="exampleRadios1">
+                Semanales 
+              </label>
             </div>
+            </div>
+            <div class="col d-flex justify-content-start">
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="exampleRadios" id="exampleRadios2" value="option2">
+                <label class="form-check-label" for="exampleRadios2">
+                Mensuales
+              </label>  
+            </div>            
           </div>
+          </div>
+          <div class="row">
+              <table class="table table-sm">
+                <tr>
+                  <th>Sem.</th>  
+                  <th>Fecha</th>
+                  <th>Mes</th>
+                  <th></th>
+                </tr>
+                <tbody >                
+                  <tr  v-for="item in esquemaPagos.semanas" :key="item.dia" v-if="item.generar_cargo_mensual">
+                  <td>{{item.numero_semana_curso}}</td>
+                  <td>{{item.fecha_clase}}</td>
+                  <td>{{item.nombre_mes}}</td>
+                  <td>{{item.generar_cargo_mensual}}</td>
+                  </tr>
+                </tbody>
+              </table>
+          </div>
+          </fieldset>
        </div>
+
       </div>
       <div slot="footer">
         <button v-if="operacion === 'INSERT'" class="btn btn-primary" :disabled="loader" @click="guardar()">
@@ -287,6 +327,7 @@ export default {
       listaEspecialidades: [],
       listaDias: [],
       listaHorarios: [],
+      esquemaPagos:[],
       motivo: "",
       es: es,
       loader: false,
@@ -467,9 +508,10 @@ export default {
       return nombreDia;
 
     },
-    setNumeroSemanasEspecialidad() {
+    async setNumeroSemanasEspecialidad() {
       if (this.input.cat_especialidad) {
-        this.input.numero_semanas = this.input.cat_especialidad.duracion;
+          this.input.numero_semanas = this.input.cat_especialidad.duracion;
+          await this.cargarPreviewEsquemaPagos();
       }
     },
     validarHoras(eventData) {
@@ -541,6 +583,21 @@ export default {
       }
       return val;
     },
+    async cargarPreviewEsquemaPagos(){
+      
+      console.log("Fecha inicio"+this.input.fecha_inicio_previsto);
+      console.log("Fecha numero semanas"+this.input.numero_semanas);
+
+      if(!this.input.fecha_inicio_previsto || !this.input.numero_semanas){
+          return;
+      }
+
+      let fecha = moment(this.input.fecha_inicio_previsto).format('YYYY-MM-DD');
+            
+      this.esquemaPagos = await this.getAsync(
+        `${URL.PERIODOS_CURSO}/semanas/calculadas/${fecha}/${this.input.numero_semanas}`
+      );
+    }
   },
 };
 </script>
