@@ -1,6 +1,6 @@
 <template>
   <div class="cat_curso">
-    <PopupPagoPendiente/>
+    <PopupPagoPendiente />
     <h1>Talleres ({{ lista ? lista.length : 0 }})</h1>
     <small>{{ usuarioSesion.nombre_sucursal }}</small>
     <div class="row">
@@ -8,11 +8,7 @@
         <router-link to="/principal" class="btn btn-secondary btn-lg">
           <i class="fas fa-arrow-circle-left text-gray"></i>
         </router-link>
-        <button
-          type="button"
-          class="btn btn-primary btn-lg"
-          v-on:click="nuevo()"
-        >
+        <button type="button" class="btn btn-primary btn-lg" v-on:click="nuevo()">
           Nuevo Taller
         </button>
       </div>
@@ -20,223 +16,111 @@
 
     <br />
 
-    <Popup id="popup_curso" :show_button_close="true">
+    <Popup id="popup_curso" size="lg" :show_button_close="true">
       <div slot="header">
         {{ `${operacion == "INSERT" ? "Registrar" : "Modificar"}` }} Taller en
         <strong> {{ usuarioSesion.nombre_sucursal }}</strong>
       </div>
-      <div slot="content" class="text-left">
-        <div class="form-group">
-          <label>
-            Especialidad
-            <span class="text-danger">*</span>
-          </label>          
-          <select
-            v-if="operacion == 'INSERT'"            
-            v-model="input.cat_especialidad"
-            class="form-control"
-            placeholder="Especialidad"     
-            @change="setNumeroSemanasEspecialidad()"       
-            required
-          >
-            <option
-              v-for="grupo in listaEspecialidades"
-              v-bind:value="grupo"
-              v-bind:key="grupo.id"
-            >
-              {{ grupo.nombre }}
-            </option>
-          </select>
-           <input
-              v-else
-              disabled
-              type="text"
-              v-model="input.especialidad"
-              class="form-control"            
-              required
-            />       
-        </div>
-
-       <!-- <div class="form-group">
-          <label>
-            Dias
-            <span class="text-danger">*</span>
-          </label>
-          <div class="form-control text-center">
-            <span
-              v-for="item in listaDias"
-              v-bind:key="item.id"
-              style="margin-left: 10px"
-            >
-              <input
-                type="checkbox"
-                :id="`checkbox_${item.id}`"
-                v-model="item.checked"
-              />
-              <label :for="`checkbox_${item.id}`" class="font-weight-bold">
-                {{ item.nombre }}</label
-              >
-            </span>
-          </div>
-        </div>-->
-       <!-- <div class="form-row">         
-          <div class="form-group col-sm-6 col-md-6 col-lg-6 col-xl-6">
+      <div slot="content" class="row text-left ">
+        <div class="col-7">
+          <div class="form-group">
             <label>
-              Día
+              Especialidad
               <span class="text-danger">*</span>
             </label>
-           <select
-            :disabled="operacion == 'UPDATE'"
-            v-model="input.cat_dia"
-            class="form-control"
-            placeholder="Especialidad"
-            required
-          >
-            <option
-              v-for="dia in listaDias"
-              v-bind:value="dia.id"
-              v-bind:key="dia.id"
-            >
-              {{ dia.nombre }}
-            </option>
-          </select>
-          </div>          
-        </div>
-        -->
-
-        <div class="form-row">
-         
-          <div class="form-group col-sm-6 col-md-6 col-lg-6 col-xl-6">
-            <label>
-              Fecha Inicio
-              <span class="text-danger">*</span>
-            </label>
-            <datepicker
-              name="fecha_inicio_previsto"              
-              v-model="input.fecha_inicio_previsto"
-              input-class="form-control bg-white"              
-              :format="'yyyy-MM-dd'"
-              :bootstrap-styling="true"
-              :language="es"
-              required
-            ></datepicker>
-            <small class="text-gray">{{getNombreDia()}} </small>
-            
+            <select v-if="operacion == 'INSERT'" v-model="input.cat_especialidad" class="form-control"
+              placeholder="Especialidad" @change="setNumeroSemanasEspecialidad()" required>
+              <option v-for="grupo in listaEspecialidades" v-bind:value="grupo" v-bind:key="grupo.id">
+                {{ grupo.nombre }}
+              </option>
+            </select>
+            <input v-else disabled type="text" v-model="input.especialidad" class="form-control" required />
           </div>
-           <div class="form-group col-sm-6 col-md-6 col-lg-6 col-xl-6">
-            <label>
-              Número Semanas
-              <span class="text-danger">*</span>
-            </label>
-             <input
-              :disabled="operacion == 'UPDATE'"       
-              type="number"
-              v-model="input.numero_semanas"
-              class="form-control"
-              placeholder="No. semanas del curso"
-              min="1"
-              required
-            />             
-          </div>
-          
-        </div>
 
-         <div class="form-row">
-            <div
-            class="form-group form-group col-sm-6 col-md-6 col-lg-6 col-xl-6"
-          >
+
+          <div class="form-row">
+
+            <div class="form-group col-sm-6 col-md-6 col-lg-6 col-xl-6">
+              <label>
+                Fecha Inicio
+                <span class="text-danger">*</span>
+              </label>
+              <datepicker name="fecha_inicio_previsto" v-model="input.fecha_inicio_previsto"
+                input-class="form-control bg-white" :format="'yyyy-MM-dd'" :bootstrap-styling="true" :language="es"
+                required></datepicker>
+              <small class="text-gray">{{ getNombreDia() }} </small>
+
+            </div>
+            <div class="form-group col-sm-6 col-md-6 col-lg-6 col-xl-6">
+              <label>
+                Número Semanas
+                <span class="text-danger">*</span>
+              </label>
+              <input :disabled="operacion == 'UPDATE'" type="number" v-model="input.numero_semanas" class="form-control"
+                placeholder="No. semanas del curso" min="1" required />
+            </div>
+
+          </div>
+
+          <div class="form-row">
+            <div class="form-group form-group col-sm-6 col-md-6 col-lg-6 col-xl-6">
               <label>
                 Hora Inicio
                 <span class="text-danger">*</span>
               </label>
-              <vue-timepicker
-                v-model="input.hora_inicio"
-                :minute-interval="30"
-                :hour-range="[[7, 20]]"
-                :hide-disabled-hours="true"
-                hour-label="hora"
-                minute-label="minuto"
-                format="HH:mm"
-                placeholder="00:00"                
-              ></vue-timepicker>
+              <vue-timepicker v-model="input.hora_inicio" :minute-interval="30" :hour-range="[[7, 20]]"
+                :hide-disabled-hours="true" hour-label="hora" minute-label="minuto" format="HH:mm" placeholder="00:00">
+              </vue-timepicker>
             </div>
-             <div
-            class="form-group form-group col-sm-6 col-md-6 col-lg-6 col-xl-6"
-          >
+            <div class="form-group form-group col-sm-6 col-md-6 col-lg-6 col-xl-6">
               <label>
                 Hora Fin
                 <span class="text-danger">*</span>
               </label>
-              <vue-timepicker
-                v-model="input.hora_fin"
-                :min="input.hora_inicio"
-                :minute-interval="30"
-                :hour-range="[[7, 20]]"
-                :hide-disabled-hours="true"
-                hour-label="hora"
-                minute-label="minuto"
-                format="HH:mm"
-                placeholder="00:00"
-              ></vue-timepicker>
+              <vue-timepicker v-model="input.hora_fin" :min="input.hora_inicio" :minute-interval="30"
+                :hour-range="[[7, 20]]" :hide-disabled-hours="true" hour-label="hora" minute-label="minuto"
+                format="HH:mm" placeholder="00:00"></vue-timepicker>
             </div>
           </div>
 
-        <div class="form-row">
-          <div
-            class="form-group form-group col-sm-6 col-md-6 col-lg-6 col-xl-6"
-          >
-            <label>
-              Costo Colegiatura base
-              <span class="text-danger">*</span>
-            </label>
-            <input
-              type="number"
-              v-model="input.costo_colegiatura_base"
-              class="form-control"
-              placeholder="Costo Colegiatura"
-              min="0"
-              required
-            />
+          <div class="form-row">
+            <div class="form-group form-group col-sm-6 col-md-6 col-lg-6 col-xl-6">
+              <label>
+                Costo Colegiatura base
+                <span class="text-danger">*</span>
+              </label>
+              <input type="number" v-model="input.costo_colegiatura_base" class="form-control"
+                placeholder="Costo Colegiatura" min="0" required />
+            </div>
+            <div class="form-group form-group col-sm-6 col-md-6 col-lg-6 col-xl-6">
+              <label>
+                Costo Inscripción base
+                <span class="text-danger">*</span>
+              </label>
+              <input type="number" v-model="input.costo_inscripcion_base" class="form-control"
+                placeholder="Costo Inscripción" min="0" required />
+            </div>
           </div>
-          <div
-            class="form-group form-group col-sm-6 col-md-6 col-lg-6 col-xl-6"
-          >
-            <label>
-              Costo Inscripción base
-              <span class="text-danger">*</span>
-            </label>
-            <input
-              type="number"
-              v-model="input.costo_inscripcion_base"
-              class="form-control"
-              placeholder="Costo Inscripción"
-              min="0"
-              required
-            />
-          </div>
-        </div>
 
-        <div class="form-group">
-          <label> Nota </label>
-          <input type="text" v-model="input.nota" class="form-control" />
+          <div class="form-group">
+            <label> Nota </label>
+            <input type="text" v-model="input.nota" class="form-control" />
+          </div>          
         </div>
+        <div class="col-5 bg-danger">
+          <div class="form-row">
+            <div class="form-group form-group col-sm-6 col-md-6 col-lg-6 col-xl-6">
+              Esquema de Pagos 
+            </div>
+          </div>
+       </div>
       </div>
       <div slot="footer">
-        <button
-          v-if="operacion === 'INSERT'"
-          class="btn btn-primary"
-          :disabled="loader"
-          @click="guardar()"
-        >
-         <span v-if="loader" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-         Guardar
+        <button v-if="operacion === 'INSERT'" class="btn btn-primary" :disabled="loader" @click="guardar()">
+          <span v-if="loader" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+          Guardar
         </button>
-        <button
-          v-if="operacion === 'UPDATE'"
-          class="btn btn-primary"
-          :disabled="loader"
-          @click="guardar()"
-        >
+        <button v-if="operacion === 'UPDATE'" class="btn btn-primary" :disabled="loader" @click="guardar()">
           <span v-if="loader" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
           Modificar
         </button>
@@ -246,20 +130,10 @@
     <div class="card">
       <div class="card-body">
         <div class="input-group mb-3">
-          <input
-            type="text"
-            class="form-control"
-            placeholder="Buscar por nombre.."
-            v-model="criterioNombre"
-            v-on:keyup.enter="buscarPorNombre()"
-            aria-label="Buscar por nombre.."
-          />
+          <input type="text" class="form-control" placeholder="Buscar por nombre.." v-model="criterioNombre"
+            v-on:keyup.enter="buscarPorNombre()" aria-label="Buscar por nombre.." />
           <div class="input-group-append">
-            <button
-              class="btn btn-outline-secondary"
-              type="button"
-              v-on:click="buscarPorNombre()"
-            >
+            <button class="btn btn-outline-secondary" type="button" v-on:click="buscarPorNombre()">
               <i class="fas fa-search"></i>
             </button>
           </div>
@@ -269,25 +143,27 @@
           <Loader :loading="loader" :mini="true" />
         </div>
 
-        <span v-for="item in lista" :key="item.id">         
-          
-          <RowCurso :curso="item" :clickHeader="()=>{seleccionar(item,'DETALLE')}" />         
-          
+        <span v-for="item in lista" :key="item.id">
+
+          <RowCurso :curso="item" :clickHeader="() => { seleccionar(item, 'DETALLE') }" />
+
           <div class="row bg-secondary mt-2 border-top">
 
-          <div class="col-md-8 offset-md-4  text-right">                               
+            <div class="col-md-8 offset-md-4  text-right">
               <button class="btn btn-link" @click="seleccionar(item, 'DETALLE')">
-               Ver detalle
+                Ver detalle
               </button>
               <!--<button v-if="!item.activo" class="btn btn-link" @click="seleccionar(item, 'CONFIRM')">
                 Confirmar inscripciones
               </button>-->
-              <button v-if="item.fecha_inicio_previsto_pasada" class="btn btn-link" @click="seleccionar(item, 'UPDATE')">
+              <button v-if="item.fecha_inicio_previsto_pasada" class="btn btn-link"
+                @click="seleccionar(item, 'UPDATE')">
                 Modificar
               </button>
-              <button v-if="item.fecha_inicio_previsto_pasada" class="btn btn-link text-danger" @click="seleccionar(item, 'DELETE')">
+              <button v-if="item.fecha_inicio_previsto_pasada" class="btn btn-link text-danger"
+                @click="seleccionar(item, 'DELETE')">
                 Eliminar
-              </button>                            
+              </button>
             </div>
           </div>
         </span>
@@ -302,13 +178,8 @@
           <table class="table">
             <tr>
               <td rowspan="4">
-                <img
-                  v-if="input.foto_curso"
-                  class="mr-3 img-fluid rounded"
-                  width="150"
-                  :src="input.foto_curso"
-                  alt="Especialidad"
-                />
+                <img v-if="input.foto_curso" class="mr-3 img-fluid rounded" width="150" :src="input.foto_curso"
+                  alt="Especialidad" />
                 <div v-else class="card border-light" style="width: 140px">
                   <div class="card-body">
                     <i>sin imagen</i>
@@ -323,9 +194,9 @@
               <td>
                 <span class="font-weight-bold">
                   {{
-                    input.fecha_inicio_format
-                      ? input.fecha_inicio_format
-                      : ` previsto ${input.fecha_inicio_previsto_format}`
+                      input.fecha_inicio_format
+                        ? input.fecha_inicio_format
+                        : ` previsto ${input.fecha_inicio_previsto_format}`
                   }}
                 </span>
               </td>
@@ -371,7 +242,7 @@ import Popup from "../controller/Popup";
 import InscripcionAlumno from "./InscripcionAlumno.vue";
 import RowCurso from "./fragmentos/curso/RowCurso";
 import VueTimepicker from "vue2-timepicker";
-import  PopupPagoPendiente  from "./PopupPagoPendiente.vue";
+import PopupPagoPendiente from "./PopupPagoPendiente.vue";
 
 export default {
   name: "cat-cursos",
@@ -397,8 +268,8 @@ export default {
         //dias_array: [],
         cat_dia: -1,
         //cat_horario: -1,
-        hora_inicio:null,
-        hora_fin:null,
+        hora_inicio: null,
+        hora_fin: null,
         co_empresa: -1,
         co_sucursal: -1,
         costo_colegiatura_base: 0,
@@ -406,9 +277,9 @@ export default {
         nota: "",
         fecha_inicio_previsto: new Date(),
         fecha_fin_previsto: new Date(),
-        hora_inicio:null,
-        hora_fin:null,
-        numero_semanas:0,
+        hora_inicio: null,
+        hora_fin: null,
+        numero_semanas: 0,
         genero: 0,
       },
       rangoHora: [7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20],
@@ -448,21 +319,21 @@ export default {
 
       if (this.operacion === "UPDATE") {
         await this.cargarCatalogos();
-        console.log(this.input);      
-        
+        console.log(this.input);
+
         this.input.fecha_inicio_previsto = new Date(
-          this.input.fecha_inicio_previsto +' 00:00:00'          
+          this.input.fecha_inicio_previsto + ' 00:00:00'
         );
         $("#popup_curso").modal("show");
       }
-      
+
       if (this.operacion === "CONFIRM") {
-          this.$router.push({ name: "ConfirmarInscripcion", params: { uidCurso: row.uid,cat_especialidad:row.cat_especialidad } });
+        this.$router.push({ name: "ConfirmarInscripcion", params: { uidCurso: row.uid, cat_especialidad: row.cat_especialidad } });
       }
 
       if (this.operacion == "DETALLE") {
-          console.log("DETALLE CURSO");
-          this.$router.push({ name: "DetalleCurso", params: { uidCurso: row.uid } });
+        console.log("DETALLE CURSO");
+        this.$router.push({ name: "DetalleCurso", params: { uidCurso: row.uid } });
       }
     },
     async nuevo() {
@@ -473,7 +344,7 @@ export default {
       this.input.cat_especialidad = null;
       //this.input.cat_horario = -1;
       this.input.hora_inicio = "";
-      this.input.hora_fin = "";      
+      this.input.hora_fin = "";
       this.input.cat_dia = -1;//moment(input.fecha_inicio_previsto).isoWeekday();
       this.input.numero_semanas = 0;
       this.input.costo_colegiatura_base = 0;
@@ -502,39 +373,39 @@ export default {
     },
     async guardar() {
       console.log("@guardar");
-/*
-      const diasArray = this.listaDias.reduce(function (filtered, item) {
-        if (item.checked) {
-          filtered.push(item.id);
-        }
-        return filtered;
-      }, []);*/
+      /*
+            const diasArray = this.listaDias.reduce(function (filtered, item) {
+              if (item.checked) {
+                filtered.push(item.id);
+              }
+              return filtered;
+            }, []);*/
 
-     
-  /*    this.input.genero = this.usuarioSesion.id;
-      this.input.co_empresa = this.usuarioSesion.id_empresa;
-      this.input.co_sucursal = this.usuarioSesion.co_sucursal;
-*/
+
+      /*    this.input.genero = this.usuarioSesion.id;
+          this.input.co_empresa = this.usuarioSesion.id_empresa;
+          this.input.co_sucursal = this.usuarioSesion.co_sucursal;
+    */
       if (!this.validarDatos()) {
         return;
       }
-      
+
       //const catDia = getDiaFechaInicioSeleccionadaList();
-            
+
       const curso = {
-          cat_especialidad:this.input.cat_especialidad.id, 
-          cat_dia:this.input.cat_dia,                    
-          hora_inicio:this.input.hora_inicio,
-          hora_fin:this.input.hora_fin,
-          costo_colegiatura_base:this.input.costo_colegiatura_base,
-          costo_inscripcion_base:this.input.costo_inscripcion_base,
-          nota:this.input.nota,
-          fecha_inicio_previsto:this.input.fecha_inicio_previsto,
-          numero_semanas:this.input.numero_semanas,         
-          genero:this.usuarioSesion.id,
-          co_empresa:this.usuarioSesion.id_empresa,
-          co_sucursal:this.usuarioSesion.co_sucursal,
-          genero:this.usuarioSesion.id
+        cat_especialidad: this.input.cat_especialidad.id,
+        cat_dia: this.input.cat_dia,
+        hora_inicio: this.input.hora_inicio,
+        hora_fin: this.input.hora_fin,
+        costo_colegiatura_base: this.input.costo_colegiatura_base,
+        costo_inscripcion_base: this.input.costo_inscripcion_base,
+        nota: this.input.nota,
+        fecha_inicio_previsto: this.input.fecha_inicio_previsto,
+        numero_semanas: this.input.numero_semanas,
+        genero: this.usuarioSesion.id,
+        co_empresa: this.usuarioSesion.id_empresa,
+        co_sucursal: this.usuarioSesion.co_sucursal,
+        genero: this.usuarioSesion.id
       };
 
       this.loader = true;
@@ -544,14 +415,14 @@ export default {
       const respuesta = isModificacion
         ? await this.putAsync(`${URL.CURSO}/${this.input.id}`, curso)
         : await this.postAsync(`${URL.CURSO}`, curso);
-      
+
       if (respuesta) {
         this.$notificacion.info(
           `Curso ${isModificacion ? "modificado" : "registrado"}`,
           `Se ${isModificacion ? "modificado" : "registró"} el curso`
         );
         this.cargarCursos();
-        $("#popup_curso").modal("hide");        
+        $("#popup_curso").modal("hide");
       } else {
         this.$notificacion.error(
           "Ups!",
@@ -578,28 +449,28 @@ export default {
 
       $("#popup_eliminar").modal("hide");
     },
-    getDiaFechaInicioSeleccionadaList(){
-        let dia = null;
-        if(this.input.fecha_inicio_previsto && this.listaDias){
-          const  nDia = moment(this.input.fecha_inicio_previsto).isoWeekday()-1;
-          dia = this.listaDias[nDia];         
-        }
-        return dia;
+    getDiaFechaInicioSeleccionadaList() {
+      let dia = null;
+      if (this.input.fecha_inicio_previsto && this.listaDias) {
+        const nDia = moment(this.input.fecha_inicio_previsto).isoWeekday() - 1;
+        dia = this.listaDias[nDia];
+      }
+      return dia;
     },
-    getNombreDia(){
-      let nombreDia='';
-      if(this.input && this.input.fecha_inicio_previsto){
+    getNombreDia() {
+      let nombreDia = '';
+      if (this.input && this.input.fecha_inicio_previsto) {
         const diaOfList = this.getDiaFechaInicioSeleccionadaList();
         this.input.cat_dia = diaOfList && diaOfList.id;
         nombreDia = diaOfList && diaOfList.nombre;
       }
       return nombreDia;
-        
+
     },
-    setNumeroSemanasEspecialidad(){
-        if(this.input.cat_especialidad){
-            this.input.numero_semanas = this.input.cat_especialidad.duracion;
-        }
+    setNumeroSemanasEspecialidad() {
+      if (this.input.cat_especialidad) {
+        this.input.numero_semanas = this.input.cat_especialidad.duracion;
+      }
     },
     validarHoras(eventData) {
       let horaEntrada = moment({
@@ -641,7 +512,7 @@ export default {
         this.$notificacion.error("Hora de inicio", "Selecciona la hora de inicio y fin");
         val = false;
       }
-      
+
       if (
         this.input.fecha_inicio_previsto == null ||
         this.input.fecha_inicio_previsto == ""
@@ -668,10 +539,11 @@ export default {
         );
         val = false;
       }
-      return val ;
+      return val;
     },
   },
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+</style>
