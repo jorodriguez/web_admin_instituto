@@ -107,7 +107,7 @@
           </div>          
         </div>
 
-        <div class="col-5 col-sm-5 col-md-5 col-lg-5 col-xl-5">
+        <div  class="col-5 col-sm-5 col-md-5 col-lg-5 col-xl-5 border ">
             <fieldset>
               <div class="row pt-2 pb-2 d-flex justify-content-center">
                 <label class="pb-0">
@@ -134,15 +134,18 @@
           </div>
           </div>
           <div class="row">
-              <table class="table table-sm">
-                <tr>
+            <div :class="`p-3  border border-light `" :style="`height:420px;overflow-y:scroll;`"> 
+              <table class="table table-sm table-hover">
+              <thead  >
+                <tr >
                   <th>Sem.</th>  
                   <th>Fecha</th>
                   <th>Mes</th>
                   <th></th>
                 </tr>
+                </thead>
                 <tbody >                
-                  <tr  v-for="item in esquemaPagos.semanas" :key="item.dia" v-if="item.generar_cargo_mensual">
+                  <tr  v-for="item in esquemaPagos.semanas" :key="item.dia">
                   <td>{{item.numero_semana_curso}}</td>
                   <td>{{item.fecha_clase}}</td>
                   <td>{{item.nombre_mes}}</td>
@@ -150,6 +153,7 @@
                   </tr>
                 </tbody>
               </table>
+            </div>
           </div>
           </fieldset>
        </div>
