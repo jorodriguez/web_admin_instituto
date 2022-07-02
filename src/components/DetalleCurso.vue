@@ -68,7 +68,7 @@
               ><span v-if="listaSemanas" class="badge badge-pill badge-info">{{
                 listaSemanas.length
               }}</span>
-              Semanas
+              Semanas/pagos
             </a>
           </li>
 
@@ -120,23 +120,29 @@
             <div class="row">
               <table class="table table-sm table-hover text-left ">
                 <tr>                  
-                  <th scope="col">Fecha</th>
-                  <th scope="col">Semana</th>
-                  <th scope="col"></th>
+                  <th scope="col-2">Fecha</th>
+                  <th scope="col-2">Clase</th>
+                  <th scope="col-2 " class="text-left">Pago de Colegiatura</th>
                 </tr>
                 <tbody v-for="(row, index) in listaSemanas" :key="row.id">
                   <tr :class="index % 2 == 0 ? 'bg-secondary' : ''">                    
-                    <td
-                      :class="
-                        `${row.semana_actual && 'bg-info font-weight-bold'}`
-                      "
-                    >
-                      {{ row.fecha_clase_format }}
+                    <td class="col-2" >
+                      {{ row.nombre_dia }} {{ row.numero_dia }} {{row.nombre_mes}}
                     </td>
-                    <td :class="`${row.semana_actual && 'bg-info'}`">
+                    <td class="col-3">
                       Semana {{ row.numero_semana_curso }}
                     </td>
-                    <td></td>                    
+                    <td class="col-2 text-left">        
+                      <div class="custom-control custom-switch ">
+                          <input type="checkbox" class="custom-control-input" v-model="row.generar_colegiatura"
+                                 :id="`select_${index}`">
+                          <label class="custom-control-label " :for="`select_${index}`">
+                          {{row.identificador_cargo}}
+                            <!--<span v-if="row.generar_colegiatura" >paga</span>
+                            <span v-else class="text-muted">no paga</span>-->
+                          </label>
+                        </div>                      
+                    </td>                    
                   </tr>
                 </tbody>
               </table>

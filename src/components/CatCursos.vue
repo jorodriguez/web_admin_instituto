@@ -36,7 +36,7 @@
             </select>
             <input v-else disabled type="text" v-model="input.especialidad" class="form-control" required />
           </div>
-        
+
 
           <div class="form-row">
             <div class="form-group col-sm-6 col-md-6 col-lg-6 col-xl-6">
@@ -46,8 +46,7 @@
               </label>
               <datepicker name="fecha_inicio_previsto" v-model="input.fecha_inicio_previsto"
                 input-class="form-control bg-white" :format="'yyyy-MM-dd'" :bootstrap-styling="true" :language="es"
-                @selected="cambiarFecha"                
-                required></datepicker>
+                @selected="cambiarFecha" required></datepicker>
               <small class="text-gray">{{ getNombreDia() }} </small>
 
             </div>
@@ -58,10 +57,9 @@
               </label>
               <!--v-on:keyup.enter="cargarPreviewEsquemaPagos()"-->
               <input :disabled="operacion == 'UPDATE'" type="number" v-model="input.numero_semanas" class="form-control"
-                @change="cargarPreviewEsquemaPagos()"
-                v-on:keyup.enter="cargarPreviewEsquemaPagos()"
+                @change="cargarPreviewEsquemaPagos()" v-on:keyup.enter="cargarPreviewEsquemaPagos()"
                 placeholder="No. semanas del curso" min="1" required />
-            </div>             
+            </div>
           </div>
 
           <div class="form-row">
@@ -88,16 +86,16 @@
           <div class="form-row">
             <div class="form-group form-group col-sm-6 col-md-6 col-lg-6 col-xl-6">
               <label>
-                Colegiatura base 
+                Colegiatura base
                 <span class="text-danger">*</span>
               </label>
-               <div class="input-group">
-               <div class="input-group-prepend">
-                    <div class="input-group-text text-gray text-sm">{{seleccion_esquema}} $</div>
+              <div class="input-group">
+                <div class="input-group-prepend">
+                  <div class="input-group-text text-gray text-sm">{{nombre_seleccion_esquema}}$</div>
+                </div>
+                <input type="number" v-model="input.costo_colegiatura_base" class="form-control"
+                  placeholder="Costo Colegiatura" min="0" required />
               </div>
-              <input type="number" v-model="input.costo_colegiatura_base" class="form-control"
-                placeholder="Costo Colegiatura" min="0" required />
-            </div>
             </div>
             <div class="form-group form-group col-sm-6 col-md-6 col-lg-6 col-xl-6">
               <label>
@@ -105,119 +103,105 @@
                 <span class="text-danger">*</span>
               </label>
               <div class="input-group">
-               <div class="input-group-prepend">
-                    <div class="input-group-text text-gray">$</div>
+                <div class="input-group-prepend">
+                  <div class="input-group-text text-gray">$</div>
+                </div>
+                <input type="number" v-model="input.costo_inscripcion_base" class="form-control"
+                  placeholder="Costo Inscripción" min="0" required />
               </div>
-              <input type="number" v-model="input.costo_inscripcion_base" class="form-control"
-                placeholder="Costo Inscripción" min="0" required />
-            </div>
             </div>
           </div>
 
           <div class="form-group">
             <label> Nota </label>
             <input type="text" v-model="input.nota" class="form-control" />
-          </div>          
+          </div>
         </div>
 
-        <div  class="col-5 col-sm-5 col-md-5 col-lg-5 col-xl-5  ">
-            <fieldset>
-              <div class="row pt-2 pb-2 d-flex justify-content-center">
-                <label class="pb-0">
-                    Esquema de Pagos
-                </label>
-              </div>
-
-          <div class="form-row pb-2" >             
-          <div class="col d-flex justify-content-end" >
-             <div class="custom-control custom-radio ">
-                <input class="custom-control-input" 
-                        type="radio" 
-                        name="exampleRadios" 
-                        id="exampleRadios1" 
-                        :value="esquemas.SEMANAL" 
-                        @change="onChangeEsquemaPago()"
-                       v-model="seleccion_esquema" 
-                       :disabled="loaderListaPagos"
-                       checked>
-                <label class="custom-control-label" for="exampleRadios1">
-                ({{contadorSemanasPago}}) Semanas
+        <div class="col-5 col-sm-5 col-md-5 col-lg-5 col-xl-5  ">
+          <fieldset>
+            <div class="row pt-2 pb-2 d-flex justify-content-center">
+              <label class="pb-0">
+                Esquema de Pagos
               </label>
             </div>
+
+            <div class="form-row pb-2">
+              <div class="col d-flex justify-content-end">
+                <div class="custom-control custom-radio ">
+                  <input class="custom-control-input" type="radio" name="exampleRadios" id="exampleRadios1"
+                    :value="esquemas.SEMANAL.id" @change="onChangeEsquemaPago()" v-model="seleccion_esquema"
+                    :disabled="loaderListaPagos" checked>
+                  <label class="custom-control-label" for="exampleRadios1">
+                    ({{ contadorSemanasPago }}) Semanas
+                  </label>
+                </div>
+              </div>
+              <div class="col d-flex justify-content-start">
+                <div class="custom-control custom-radio">
+                  <input class="custom-control-input" type="radio" @change="onChangeEsquemaPago()"
+                    v-model="seleccion_esquema" name="exampleRadios" id="exampleRadios2" :value="esquemas.MENSUAL.id"
+                    :disabled="loaderListaPagos">
+                  <label class="custom-control-label" for="exampleRadios2">
+                    ({{ contadorMesesPago }}) Meses
+                  </label>
+                </div>
+              </div>
             </div>
-            <div class="col d-flex justify-content-start">
-            <div class="custom-control custom-radio">
-                <input class="custom-control-input" 
-                      type="radio" 
-                      @change="onChangeEsquemaPago()"
-                      v-model="seleccion_esquema"   
-                      name="exampleRadios" 
-                      id="exampleRadios2" 
-                      :value="esquemas.MENSUAL" 
-                      :disabled="loaderListaPagos">
-                <label class="custom-control-label" for="exampleRadios2">
-                ({{contadorMesesPago}}) Meses
-              </label>  
-            </div>            
-          </div>
-          </div>
-          
-          <div class="row">
-            <div :class="`col p-3  border border-light `" :style="`height:420px;overflow-y:scroll;`"> 
-              <table :class="`table table-sm table-hover ${loaderListaPagos && 'bg-secondary'}`">
-              <thead  >
-                <tr >
-                  <th class="pl-0 pr-0"><small>Sem.</small></th>  
-                  <th class="pl-0 pr-0"><small>Clase</small></th>                  
-                  <th class="pl-0 pr-0"><small>Colegiatura</small></th>
-                </tr>
-                </thead>                
-                <tbody >                
-                  <tr  v-for="item in listaPagos" :key="item.dia" v-if="item.generar_cargo || mostrarTodaListaPagos">
-                  <td class="p-0">  <span :class="`${!item.generar_cargo && 'text-muted'}`"><small> {{item.numero_semana_curso}}</small></span></td>
-                  <td class="p-0">
-                      <span :class="`${!item.generar_cargo && 'text-muted'}`">
-                      <!--:class="`${item.es_fecha_pasada ? 'text-danger':''}`" -->
-                        <small>
-                            {{item.nombre_dia}} {{item.numero_dia}} {{item.abreviatura_mes}}                             
-                        </small>
-                        <small v-if="item.es_fecha_pasada" style="font-size:9px" class="text-danger ">fecha pasada</small>
-                      </span>                      
-                  </td>                  
-                  <td class="p-0 text-left">
+
+            <div class="row">
+              <div :class="`col p-3  border border-light `" :style="`height:420px;overflow-y:scroll;`">
+                <table :class="`table table-sm table-hover ${loaderListaPagos && 'bg-secondary'}`">
+                  <thead>
+                    <tr>
+                      <th class="pl-0 pr-0"><small>Sem.</small></th>
+                      <th class="pl-0 pr-0"><small>Clase</small></th>
+                      <th class="pl-0 pr-0"><small>Colegiatura</small></th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr v-for="item in listaPagos" :key="item.dia" v-if="item.generar_cargo || mostrarTodaListaPagos">
+                      <td class="p-0"> <span :class="`${!item.generar_cargo && 'text-muted'}`"><small>
+                            {{ item.numero_semana_curso }}</small></span></td>
+                      <td class="p-0">
+                        <span :class="`${!item.generar_cargo && 'text-muted'}`">
+                          <!--:class="`${item.es_fecha_pasada ? 'text-danger':''}`" -->
+                          <small>
+                            {{ item.nombre_dia }} {{ item.numero_dia }} {{ item.abreviatura_mes }}
+                          </small>
+                          <small v-if="item.es_fecha_pasada" style="font-size:9px" class="text-danger ">fecha
+                            pasada</small>
+                        </span>
+                      </td>
+                      <td class="p-0 text-left">
                         <div class="custom-control custom-switch small">
-                              <input type="checkbox" 
-                                    class="custom-control-input" 
-                                    v-model="item.generar_cargo"
-                                    @change="actualizarContadoresPagos()"
-                                    :id="`select_${item.numero_semana_curso}`">
-                              <label class="custom-control-label " :for="`select_${item.numero_semana_curso}`">
-                                <span  v-if="item.generar_cargo" class="text-success">paga {{(seleccion_esquema == esquemas.MENSUAL) ? item.abreviatura_mes:'' }}</span> 
-                                <span v-else class="text-muted">no paga</span> 
-                              </label>
-                        </div>                        
-                  </td>
-                  </tr>
-                </tbody>
-              </table>              
-            </div>            
-          </div>
-          <div class="row text-right pt-2  " >
-                <div class="form-group ">
+                          <input type="checkbox" class="custom-control-input" v-model="item.generar_cargo"
+                            @change="actualizarContadoresPagos()" :id="`select_${item.numero_semana_curso}`">
+                          <label class="custom-control-label " :for="`select_${item.numero_semana_curso}`">
+                            <span v-if="item.generar_cargo" class="text-success">paga {{ (seleccion_esquema ==  esquemas.MENSUAL.id) ? item.abreviatura_mes : ''
+                            }}</span>
+                            <span v-else class="text-muted">no paga</span>
+                          </label>
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+            <div class="row text-right pt-2  ">
+              <div class="form-group ">
                 <div class="custom-control custom-checkbox ">
-                  <input class="custom-control-input" 
-                          type="checkbox" 
-                          value="" 
-                          v-model="mostrarTodaListaPagos"
-                         id="invalidCheck2" >
+                  <input class="custom-control-input" type="checkbox" value="" v-model="mostrarTodaListaPagos"
+                    id="invalidCheck2">
                   <label class="custom-control-label text-primary font-weight-bold" for="invalidCheck2">
                     Ver a detalle
                   </label>
                 </div>
-            </div>              
-          </div>
+              </div>
+            </div>
           </fieldset>
-       </div>
+        </div>
 
       </div>
       <div slot="footer">
@@ -393,18 +377,19 @@ export default {
       listaEspecialidades: [],
       listaDias: [],
       listaHorarios: [],
-      esquemaPagos:null,
-      listaPagos:[],
+      esquemaPagos: null,
+      listaPagos: [],
       motivo: "",
       es: es,
       loader: false,
       loaderListaPagos: false,
       isModificacion: false,
-      seleccion_esquema:"",
-      esquemas:{SEMANAL:"SEMANAL",MENSUAL:"MENSUAL"},
-      mostrarTodaListaPagos:false,
-      contadorSemanasPago:0,
-      contadorMesesPago:0
+      seleccion_esquema: 0,
+      nombre_seleccion_esquema: "",
+      esquemas: { SEMANAL: { id: 1, nombre: "SEMANAL" }, MENSUAL: { id: 2, nombre: "MENSUAL" } },
+      mostrarTodaListaPagos: false,
+      contadorSemanasPago: 0,
+      contadorMesesPago: 0
     };
   },
   mounted() {
@@ -449,16 +434,17 @@ export default {
         console.log("DETALLE CURSO");
         this.$router.push({ name: "DetalleCurso", params: { uidCurso: row.uid } });
       }
-      
+
     },
     async nuevo() {
       this.operacion = "INSERT";
-      this.seleccion_esquema = this.esquemas.SEMANAL;
+      this.seleccion_esquema = this.esquemas.SEMANAL.id;
       this.esquemaPagos = {};
-      this.listaPagos=[];
-      this.contadorSemanasPago =0;
-      this.contadorMesesPago =0;
+      this.listaPagos = [];
+      this.contadorSemanasPago = 0;
+      this.contadorMesesPago = 0;
       this.revisarVisibilidadListaPagos();
+      this.setNombreEsquemaSeleccionado();
 
       await this.cargarCatalogos();
 
@@ -515,6 +501,7 @@ export default {
 
       const curso = {
         cat_especialidad: this.input.cat_especialidad.id,
+        cat_esquema_pago: this.seleccion_esquema,
         cat_dia: this.input.cat_dia,
         hora_inicio: this.input.hora_inicio,
         hora_fin: this.input.hora_fin,
@@ -523,6 +510,7 @@ export default {
         nota: this.input.nota,
         fecha_inicio_previsto: this.input.fecha_inicio_previsto,
         numero_semanas: this.input.numero_semanas,
+        array_semanas_curso: this.listaPagos,
         genero: this.usuarioSesion.id,
         co_empresa: this.usuarioSesion.id_empresa,
         co_sucursal: this.usuarioSesion.co_sucursal,
@@ -590,8 +578,8 @@ export default {
     },
     async setNumeroSemanasEspecialidad() {
       if (this.input.cat_especialidad) {
-          this.input.numero_semanas = this.input.cat_especialidad.duracion;
-          await this.cargarPreviewEsquemaPagos();
+        this.input.numero_semanas = this.input.cat_especialidad.duracion;
+        await this.cargarPreviewEsquemaPagos();
       }
     },
     validarHoras(eventData) {
@@ -661,20 +649,39 @@ export default {
         );
         val = false;
       }
+
+      if (this.input.numero_semanas > 0) {
+
+        let existenPagosSeleccionados = false;
+        this.listaPagos.forEach(element => {
+          if (element.generar_cargo) {
+            existenPagosSeleccionados = true;
+          }
+        });
+
+        if (this.listaPagos.length == 0 || !existenPagosSeleccionados) {
+          this.$notificacion.error(
+            "Seleccione un pago",
+            "No existen pagos seleccionados de la lista, por favor seleccione al menos 1"
+          );
+          val = false;
+        }
+      }
+
       return val;
     },
-    async cargarPreviewEsquemaPagos(){
-      
-      console.log("Fecha inicio"+this.input.fecha_inicio_previsto);
-      console.log("Fecha numero semanas"+this.input.numero_semanas);
+    async cargarPreviewEsquemaPagos() {
 
-      if(!this.input.fecha_inicio_previsto || !this.input.numero_semanas){
-          return;
+      console.log("Fecha inicio" + this.input.fecha_inicio_previsto);
+      console.log("Fecha numero semanas" + this.input.numero_semanas);
+
+      if (!this.input.fecha_inicio_previsto || !this.input.numero_semanas) {
+        return;
       }
 
       this.loaderListaPagos = true;
       let fecha = moment(this.input.fecha_inicio_previsto).format('YYYY-MM-DD');
-            
+
       this.esquemaPagos = await this.getAsync(
         `${URL.PERIODOS_CURSO}/semanas/calculadas/${fecha}/${this.input.numero_semanas}/${this.usuarioSesion.id_empresa}`
       );
@@ -685,56 +692,65 @@ export default {
 
     },
     onChangeEsquemaPago(event) {
-          this.procesarListaPagos();            
-          this.revisarVisibilidadListaPagos();
-    },    
-    revisarVisibilidadListaPagos(){
-         this.mostrarTodaListaPagos = false;
-          this.mostrarTodaListaPagos = (this.seleccion_esquema == this.esquemas.SEMANAL); 
-    },      
-    procesarListaPagos(){
+      this.procesarListaPagos();
+      this.revisarVisibilidadListaPagos();
+      this.setNombreEsquemaSeleccionado();
+    },
+    revisarVisibilidadListaPagos() {
+      this.mostrarTodaListaPagos = false;
+      this.mostrarTodaListaPagos = (this.seleccion_esquema == this.esquemas.SEMANAL.id);
+    },
+    procesarListaPagos() {
 
       console.log("procesarListaPagos");
 
-      if(!this.listaPagos || !this.input.cat_especialidad){
+      if (!this.listaPagos || !this.input.cat_especialidad) {
         return;
       }
 
-      if(this.seleccion_esquema == this.esquemas.SEMANAL){            
-            this.listaPagos.forEach(element => {
-                element.mostrar = true;
-                element.generar_cargo = !element.es_fecha_pasada ;
-            });             
+      if (this.seleccion_esquema == this.esquemas.SEMANAL.id) {
+        this.listaPagos.forEach(element => {
+          element.mostrar = true;
+          element.generar_cargo = !element.es_fecha_pasada;
+        });
       }
-      if(this.seleccion_esquema == this.esquemas.MENSUAL){
-            this.listaPagos.forEach(element => {              
-                element.mostrar = element.generar_cargo_mensual ? true : false;
-                element.generar_cargo =(element.generar_cargo_mensual && !element.es_fecha_pasada) ? true : false;
-            });             
-      }    
+      if (this.seleccion_esquema == this.esquemas.MENSUAL.id) {
+        this.listaPagos.forEach(element => {
+          element.mostrar = element.generar_cargo_mensual ? true : false;
+          element.generar_cargo = (element.generar_cargo_mensual && !element.es_fecha_pasada) ? true : false;
+        });
+      }
       this.actualizarContadoresPagos();
-    },    
-    actualizarContadoresPagos(){
-        this.contadorSemanasPago = 0;
+    },
+    actualizarContadoresPagos() {
+      this.contadorSemanasPago = 0;
       this.contadorMesesPago = 0;
 
-      this.listaPagos.forEach((item)=>{
-              if(item.generar_cargo && this.seleccion_esquema == this.esquemas.SEMANAL){
-                  this.contadorSemanasPago += 1;
-              }
-              if(item.generar_cargo && this.seleccion_esquema == this.esquemas.MENSUAL){
-                  this.contadorMesesPago+= 1;
-              }
+      this.listaPagos.forEach((item) => {
+        if (item.generar_cargo && this.seleccion_esquema == this.esquemas.SEMANAL.id) {
+          this.contadorSemanasPago += 1;
+        }
+        if (item.generar_cargo && this.seleccion_esquema == this.esquemas.MENSUAL.id) {
+          this.contadorMesesPago += 1;
+        }
       });
-     
+
 
     },
-  cambiarFecha(){
-         this.$nextTick(async () => {
-           await this.cargarPreviewEsquemaPagos();
-           
-    }); 
-  }
+    cambiarFecha() {
+      this.$nextTick(async () => {
+        await this.cargarPreviewEsquemaPagos();
+
+      });
+    },
+    setNombreEsquemaSeleccionado() {
+        if(this.seleccion_esquema == this.esquemas.SEMANAL.id){
+          this.nombre_seleccion_esquema =  this.esquemas.SEMANAL.nombre;
+        }
+        if(this.seleccion_esquema == this.esquemas.MENSUAL.id){
+          this.nombre_seleccion_esquema= this.esquemas.MENSUAL.nombre;
+        }
+    }
   },
 };
 

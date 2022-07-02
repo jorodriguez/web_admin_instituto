@@ -219,7 +219,7 @@
           v-if="cargo.cat_cargo.id == 1 "
         >
           <label for="inputSemanaCurso">
-            Semana
+            Colegiatura
             <span class="text-danger">*</span>
           </label>
           <select
@@ -233,8 +233,10 @@
               v-bind:value="semana.id"
               v-bind:key="semana.id"             
               :disabled="semana.tiene_cargo"
+              v-if="semana.generar_colegiatura"
             >
-             Semama-{{semana.numero_semana_curso}} / {{semana.fecha_clase_format}}
+             <!--{{semana.numero_semana_curso}}Semama-{{semana.numero_semana_curso}} / {{semana.fecha_clase_format}}-->
+                {{ semana.esquema}} - {{ semana.identificador_cargo}} - {{ semana.nombre_dia }} {{ semana.numero_dia }} 
             </option>
           </select>          
         </div>
