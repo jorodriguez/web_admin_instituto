@@ -44,13 +44,9 @@
           <div class="text-danger card font-weight-bold h6">
             <div class="card-body">
               Balance
-              <p>
-                ${{alumno.total_adeudo}}
-                <!--<balance-alumno
-                  :idalumno="id"
-                  mostrarfecha="true"
-                ></balance-alumno>-->
-              </p>
+              <h1 class="text-danger">
+                ${{alumno.total_adeudo}}               
+              </h1>
               <estado-cuenta :idAlumno="alumno.id" />
             </div>
           </div>
@@ -71,7 +67,7 @@
                 role="tab"
                 aria-controls="pills-home"
                 aria-selected="true"
-                >Perfil</a
+                ><i class="fa fa-user"></i> Perfil</a
               >
             </li>
 
@@ -85,7 +81,7 @@
                 aria-controls="pills-inscripciones"
                 aria-selected="false"
                 @click="cargarCursos()"
-                >Inscripciones
+                ><i class="fa fa-graduation-cap"></i> Inscripciones
               </a>
             </li>
 
@@ -99,7 +95,7 @@
                 aria-controls="pills-servicios"
                 aria-selected="false"
                 v-if="mostrarCobranza"
-                >Cobranza
+                ><i class="fa fa-money-bill"></i> Cobranza
               </a>
             </li>
           </ul>

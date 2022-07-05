@@ -137,7 +137,7 @@
                           <input type="checkbox" class="custom-control-input" v-model="row.generar_colegiatura"
                                  :id="`select_${index}`">
                           <label class="custom-control-label " :for="`select_${index}`">
-                          {{row.identificador_cargo}}
+                          {{row.nombre_mes}}
                             <!--<span v-if="row.generar_colegiatura" >paga</span>
                             <span v-else class="text-muted">no paga</span>-->
                           </label>

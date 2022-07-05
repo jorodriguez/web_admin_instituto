@@ -8,7 +8,8 @@
       <router-link to="/principal" class="btn btn-secondary btn-lg">
         <i class="fas fa-arrow-circle-left text-gray"></i>
       </router-link>
-      <button type="button" class="btn btn-primary btn-lg" v-on:click="iniciarAgregarGasto()">Nuevo</button>
+      <button type="button" class="btn btn-primary btn-lg" v-on:click="iniciarAgregarGasto()">
+      <i class="fa fa-plus"></i> Nuevo gasto</button>
       </div>
       <div class="col-auto ">
          <select v-model="mes_seleccionado" class="form-control" placeholder="Mes" 

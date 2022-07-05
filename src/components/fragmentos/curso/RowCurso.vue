@@ -32,7 +32,7 @@
           <span v-if="curso.inicia_manana" class="badge  badge-warning">Inicia Mañana</span>
         </p>
         <p class="card-text text-sm">
-          {{ curso.dia }} de {{ curso.horario }} <!--<span class="text-indigo">(Pago {{ curso.esquema }})</span>-->
+             <i class="fa fa-clock text-muted"></i> {{ curso.dia }} de {{ curso.horario }} <!--<span class="text-indigo">(Pago {{ curso.esquema }})</span>-->
         </p>
         <!--<p class="card-text text-sm">
           Colegiatura <strong>{{ curso.esquema }}</strong> <span
@@ -45,8 +45,11 @@
       </div>
     </div>
     <div class="col-4 text-left">          
-          <h3><span class="text-gray"> ${{curso.costo_colegiatura_base}} <span class="text-gray">{{ curso.esquema }}</span> </span></h3>
-          <span class="text-sm text-orange">{{ curso.numero_semanas }} semanas de clases</span>
+          <h3><span class="text-gray"> ${{curso.costo_colegiatura_base}} /<span class="text-gray">{{ curso.esquema }}</span> </span></h3>
+          <span class="text-sm text-orange">duración {{ curso.numero_semanas }} ({{curso.esquema}})</span>
+    </div>
+    <div class="col-2 text-left">          
+          
     </div>
   </div>
 

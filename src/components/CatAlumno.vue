@@ -9,7 +9,7 @@
           <i class="fas fa-arrow-circle-left text-gray"></i>
         </router-link>
         <router-link to="/Inscripcion" class="btn btn-primary btn-lg">
-          Nueva Inscripción
+         <i class="fa fa-user"></i> Nueva Inscripción
         </router-link>               
         
       </div>
