@@ -17,7 +17,7 @@
         <button :disabled="bloquear" type="button" class="btn bg-pink" data-dismiss="modal">Hoy es un buen día para sonreir 😊</button>        
       </div>
     </div>
-  </div>
+  </div>  
 </div>
 </template>
 
@@ -52,7 +52,10 @@ export default {
       this.usuarioSesion = getUsuarioSesion();
       console.log("TIENE PAGO PENDIENTE "+this.usuarioSesion.pago_pendiente);     
 
-      if(this.usuarioSesion.pago_pendiente){
+      //Cambio para solo bloquear cuando ya haya pasado 2 dias sin recibir pago
+      
+      //if(this.usuarioSesion.pago_pendiente){
+      if(this.usuarioSesion.pago_pendiente_bloquear){
         this.bloquear = this.usuarioSesion.pago_pendiente_bloquear;
         this.imagen = this.usuarioSesion.pago_pendiente_imagen;
         this.colorFondo = this.usuarioSesion.pago_pendiente_fondo;
