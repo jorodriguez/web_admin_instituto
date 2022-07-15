@@ -282,12 +282,15 @@
               <!--<button v-if="!item.activo" class="btn btn-link" @click="seleccionar(item, 'CONFIRM')">
                 Confirmar inscripciones
               </button>-->
+              <button class="btn btn-link text-red" @click="seleccionar(item, 'CERRAR_INSCRIPCIONES')">
+               <i class="fa fa-lock" /> Cerrar inscripciones
+              </button>
               <button v-if="item.fecha_inicio_previsto_pasada" class="btn btn-link" @click="seleccionar(item, 'UPDATE')">
                 Modificar
               </button>
               <button v-if="item.fecha_inicio_previsto_pasada" class="btn btn-link text-danger" @click="seleccionar(item, 'DELETE')">
                 Eliminar
-              </button>                            
+              </button>                                          
             </div>
           </div>
         </span>
@@ -462,6 +465,11 @@ export default {
 
       if (this.operacion == "DETALLE") {
           console.log("DETALLE CURSO");
+          this.$router.push({ name: "DetalleCurso", params: { uidCurso: row.uid } });
+      }
+
+      if (this.operacion == "CERRAR_INSCRIPCIONES") {
+          console.log("CERRAR_INSCRIPCIONES");
           this.$router.push({ name: "DetalleCurso", params: { uidCurso: row.uid } });
       }
     },

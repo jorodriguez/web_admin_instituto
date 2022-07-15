@@ -1,6 +1,6 @@
 <template>
     
-        <div class="row    mt-2">
+        <div class="row mt-2">
              <div class="col-md-2 mt-2">
               <img
                 v-if="curso.foto_curso"
@@ -21,12 +21,12 @@
                   </button>
                 </div>
               </div>
+              <small v-if="curso.inscripciones_cerradas" class="text-red text-sm"><i class="fa fa-lock"></i>Inscripciones cerradas</small>
             </div>
             <div class="col mt-2">
               <div class="text-left">
-                <h3 class="mt-0 pointer"  @click="()=>this.clickHead()"> {{ curso.especialidad }} 
-                 <small style="font-size:10px" :class="`badge badge-pill ${curso.inscripciones == 0 ? ' badge-dark':' badge-primary'}`">{{curso.inscripciones}} {{`alumno${curso.inscripciones == 1 ? '':'s'}`}} </small> 
-                 <!--<small :class="`text-info`">{{`Alumno${curso.inscripciones == 1 ? '':'s'}`}} </small> -->
+                 <h3 class="mt-0 pointer"  @click="()=>this.clickHead()"> <span :class="curso.inscripciones_cerradas ? 'text-strike':''" >{{ curso.especialidad }} </span> 
+                 <small style="font-size:10px" :class="`badge badge-pill ${curso.inscripciones == 0 ? ' badge-dark':' badge-primary'}`">{{curso.inscripciones}} {{`alumno${curso.inscripciones == 1 ? '':'s'}`}} </small>                  
                   <span v-if="curso.es_nuevo" class="badge badge-pill badge-warning">Nuevo</span></h3>
                 <p class="card-text text-sm">
                   <span class="text-muted">Fecha de inicio</span>
