@@ -58,16 +58,18 @@
             placeholder="Curso"
             required
           >
-            <option
+            <option            
               v-for="curso in listaCurso"
               v-bind:value="curso.id"
               v-bind:key="curso.id"
+              :disabled="curso.inscripciones_cerradas"
             >
               {{
                 `${curso.dia} horario ${curso.horario} / inicia ${
                   curso.fecha_inicio_previsto_format
-                }`
+                } ${curso.inscripciones_cerradas ? ' - INSCRIPCIONES CERRADAS':''} `
               }}
+
             </option>
           </select>
         </div>
@@ -312,9 +314,7 @@ export default {
       console.log("@onChangeEspecialidad " + this.input.cat_especialidad);
       if (this.input.cat_especialidad) {
         this.listaCurso = await this.getAsync(
-          `${URL.CURSO}/${this.usuarioSesion.co_sucursal}/${
-            this.input.cat_especialidad
-          }`
+          `${URL.CURSO}/${this.usuarioSesion.co_sucursal}/${this.input.cat_especialidad}`
         );
       } else {
         console.log("No va a la db por los cursos");
