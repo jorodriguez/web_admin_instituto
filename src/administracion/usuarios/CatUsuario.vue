@@ -17,6 +17,51 @@
     <Loader :loading="loader" />
     <br/>
     
+    <div class="table-responsive">
+    <div>
+    <table class="table align-items-center">
+        <thead class="thead-light">
+            <tr>
+                <th scope="col" class="sort" data-sort="name">Nombre</th>
+                <th scope="col" class="sort" data-sort="budget">Correo</th>
+                <th scope="col" class="sort" data-sort="status">Permisos</th>                                
+                <th scope="col"></th>
+            </tr>
+        </thead>
+        <tbody class="list">
+            
+            <tr    v-for="row in listaUsuario"
+                   :key="row.id"    >
+                <th scope="row">
+                    <div class="media align-items-center">
+                        <a href="#" class="avatar rounded-circle mr-3">                        
+                              <img v-if="row.foto" class="avatar avatar-md rounded-circle"  alt="usuario" :src="row.foto">
+                              <img v-else alt="usuario" class="avatar avatar-md rounded-circle" src="../../assets/user.png">                                                      
+                        </a>
+                        <div class="media-body text-left">
+                            <span class="name mb-0 text-sm">{{row.nombre}}</span>
+                            <p class="name mb-0 text-sm text-gray">{{row.alias}}</p>
+                        </div>
+                    </div>
+                </th>
+                <td class="budget text-left">
+                    {{row.correo}}
+                </td>               
+                <td style="width: 6rem;" >                        
+                    <PopupPermisosUsuario :usuario_value="row" :metodo_refrescar="init"/>
+                </td>             
+                                
+                <td class="text-right">
+                    <PopupOperacionesUsuario :usuario_value="row" :metodo_refrescar="init" :dropdown="true" />                   
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+    </div>
+
+
+    <!--
     <div class="card">
       <div class="card-body">
         <vue-good-table
@@ -43,6 +88,7 @@
         </vue-good-table>
       </div>
     </div>
+    -->
   </div>
 </template>
 

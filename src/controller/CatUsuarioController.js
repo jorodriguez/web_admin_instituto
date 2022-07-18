@@ -13,13 +13,14 @@ import { validarDatosUsuario } from '../helpers/UsuarioValidacion';
 import * as moment from 'moment';
 import CONSTANTES  from '../helpers/Constantes'
 import PopupOperacionesUsuario from '../administracion/usuarios/PopupOperacionesUsuario';
+import PopupPermisosUsuario from '../administracion/usuarios/PopupPermisosUsuario';
 import PopupNuevoUsuario from '../administracion/usuarios/PopupNuevoUsuario';
 
 export default {
   name: "cat-usuario",
   mixins: [operacionesApi],
   components: {
-    VueGoodTable, Datepicker, VueTimepicker, Popup, Loader,PopupOperacionesUsuario,PopupNuevoUsuario
+    VueGoodTable, Datepicker, VueTimepicker, Popup, Loader,PopupOperacionesUsuario,PopupNuevoUsuario,PopupPermisosUsuario
   },
   data() {
     return {

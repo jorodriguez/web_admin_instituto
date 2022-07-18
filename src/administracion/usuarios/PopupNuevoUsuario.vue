@@ -3,13 +3,17 @@
     <button type="button" class="btn btn-primary btn-lg" v-on:click="nuevo()">Nuevo</button>
 
     <Popup id="popup_usuario" :show_button_close="true" size="md">
-      <div slot="header">Usuario</div>
+      <div slot="header">Registrar Usuario nuevo</div>
       <div slot="content">
-        <div class="container text-left">
+        <span v-if="mensaje" class="text-danger" role="alert">
+            *{{mensaje}}
+        </span>
+        <div class="container text-left">        
+        
           <!--  <ValidationObserver ref="observer" v-slot="{ invalid }">-->
           <div class="form-group">
             <label for="aliasInput">
-              Miss.
+              Nombre corto
               <span class="text-danger">*</span>
             </label>
             <!--<ValidationProvider rules="required" v-slot="{errors}">-->
@@ -18,11 +22,10 @@
               type="text"
               v-model="usuario.alias"
               class="form-control"
-              placeholder="Miss"
+              placeholder="Por ejemplo Lic. Ana"
               required
               autofocus
-            />
-            <span class="small">Por ejemplo: Miss. Wendy</span>
+            />            
             <!--  <span>{{ errors[0] }}</span>
             </ValidationProvider>-->
           </div>
@@ -40,15 +43,14 @@
               placeholder="Nombre completo"
               required
               autofocus
-            />
-             <span class="small">Por ejemplo: Wendy Villareal Romero</span>   
+            />             
             <!--  <span>{{ errors[0] }}</span>
             </ValidationProvider>-->
           </div>
           <div class="form-group">
             <label for="correoInput">
               Correo
-              <span class="text-primary">(opcional)</span>
+              <span class="text-sm text-primary"><span class="text-danger">*</span>(se usará para entrar al sistema)</span>
             </label>
             <input
               id="correoInput"
@@ -59,7 +61,7 @@
             />
           </div>
 
-           <div class="form-group">
+           <!--<div class="form-group">
             <label for="sueldoMensualInput">
               Sueldo Mensual
               <span class="text-danger">*</span>
@@ -72,7 +74,7 @@
               placeholder="Sueldo mensual"
               required
             />             
-          </div>
+          </div>-->
 
           <div class="row">
             <div class="col">
@@ -101,12 +103,13 @@
                 :min="usuario.hora_entrada"
                 :minute-interval="15"
                 :hour-range="[[7, 20]]"
-                :hide-disabled-hours="true"
+                :hide-disabled-hours="true"                
                 hour-label="hora"
                 minute-label="minuto"
                 format="HH:mm"
                 placeholder="00:00"
               ></vue-timepicker>
+              {{usuario.hora_salida}}
             </div>
           </div>
           <!--</ValidationObserver>-->
@@ -159,7 +162,8 @@ export default {
       registrarCorreo: false,
       loader: false,
       contador: 0,
-      rangoHora: [7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20]
+      rangoHora: [7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20],
+      mensaje:""
     };
   },
   mounted() {
@@ -173,8 +177,9 @@ export default {
       console.log("Nuevo");
       this.operacion = "INSERT";
       this.usuario = new UsuarioModel();
-      this.usuario.hora_entrada = "";
-      this.usuario.hora_salida = "";
+      this.usuario.hora_entrada = '';
+      this.usuario.hora_salida = '';
+      this.mensaje="";
       $("#popup_usuario").modal("show");
     },
     async guardar() {
@@ -191,20 +196,21 @@ export default {
       this.usuario.genero = this.usuarioSesion.id;
       this.usuario.id_tipo_usuario = CONSTANTES.ID_TIPO_USUARIO_MAESTRA;
 
-      this.post(URL.USUARIO_BASE, this.usuario, result => {
-        console.log("this.response " + result.body);
-        let respuesta = result.body;
+    this.loader= true;
+      const respuesta = await this.postAsync(URL.USUARIO_BASE,this.usuario);
+
+     
         if (respuesta.estatus) {
-          this.metodo_refrescar();
+          this.metodo_refrescar();    
           $("#popup_usuario").modal("hide");
-          this.$notificacion.info(
-            "Registro de usuario",
-            "Se registró el usuario."
-          );
+          this.$notificacion.info( "Registro de usuario",  "Se registró el usuario." );
         } else {
-          this.$notificacion.error("Mensaje", respuesta.mensaje);
+          this.mensaje = respuesta.mensaje;
+          this.$notificacion.error("Mensaje", respuesta.mensaje);                    
         }
-      });
+
+        this.loader= false;
+      
     },
     validarHoras(eventData) {
       let horaEntrada = moment({

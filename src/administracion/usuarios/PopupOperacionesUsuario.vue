@@ -1,28 +1,75 @@
 <template>
-  <span>
+  <span>  
     <Loader :loading="loader" />
+
+                <div v-if="dropdown" class="dropdown">
+                        <a class="btn btn-sm btn-icon-only text-primary" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                          <i class="fas fa-ellipsis-v"></i>
+                        </a>
+                        <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
+                            <a class="dropdown-item" href="#" 
+                                v-on:click="seleccionar('EDIT')"
+                                :disabled="loader_edit"
+                                v-if="!ocultar_modificacion"
+                                 >
+                                <i class="fa fa-edit text-primary"></i> Modificar
+                            </a>                            
+                            <a class="dropdown-item" href="#"><i class="fa fa-ban text-red"></i> Bloquear acceso </a>
+                            <a class="dropdown-item" href="#"
+                                title="Enviar nueva contraseña "
+                                v-on:click="seleccionar('ENVIAR_CLAVE')"
+                                :disabled="loader_contrasena"
+                                v-if="!ocultar_contrasena"
+                            >
+                                    <i class="fa fa-share text-blue"></i>Reiniciar su clave de acceso 
+                            </a>
+                            <a class="dropdown-item" href="#"
+                                :title="'Eliminar registro de la maestra '"
+                                v-on:click="seleccionar('DELETE')"
+                                :disabled="loader_eliminar"
+                                v-if="!ocultar_eliminacion">
+                                <i class="fa fa-times text-red"></i> Dar de baja
+                            </a>
+                            <!--<a class="dropdown-item" href="#"><i class="fa fa-share text-blue"></i>Enviarme un mensaje </a>-->
+                        </div>
+    </div>
+
+  <span v-else>
     <button
       type="button"
-      class="btn btn-outline-primary btn-sm"
+      class="btn  btn-sm"
       title="Modificar registro"
       v-on:click="seleccionar('EDIT')"
       :disabled="loader_edit"
       v-if="!ocultar_modificacion"
     >
       <Loader :loading="loader_edit" :mini="true" />      
-      <i class="fas fa-edit"></i>
+      <i class="fas fa-edit text-primary"></i>
     </button>
     <button
       type="button"
-      class="btn btn-outline-danger btn-sm"
+      class="btn btn-sm"
       :title="'Eliminar registro de la maestra '"
       v-on:click="seleccionar('DELETE')"
       :disabled="loader_eliminar"
       v-if="!ocultar_eliminacion"
     >
       <Loader :loading="loader_eliminar" :mini="true" />
-      <i class="fas fa-trash-alt"></i>
+      <i class="fas fa-trash-alt text-red"></i>
     </button>
+     
+     <button
+      type="button"
+      class="btn  btn-sm"
+      title="Enviar nueva contraseña "
+      v-on:click="seleccionar('ENVIAR_CLAVE')"
+      :disabled="loader_contrasena"
+      v-if="!ocultar_contrasena"
+    >
+      <Loader :loading="loader_contrasena" :mini="true" />
+      <i class="fas fa-envelope text-indigo"></i>
+    </button>
+  </span>
 
     <Popup :id="'popup_usuario_'+id_popup_edit" :show_button_close="false" size="md">
       <div slot="header">Usuario</div>
@@ -30,7 +77,7 @@
         <div class="container text-left">
            <div class="form-group">
             <label for="aliasInput">
-              Miss.
+              Nombre Corto
               <span class="text-danger">*</span>
             </label>
             <!--<ValidationProvider rules="required" v-slot="{errors}">-->
@@ -39,11 +86,10 @@
               type="text"
               v-model="usuario.alias"
               class="form-control"
-              placeholder="Miss"
+              placeholder="Por ejemplo Lic. Ana"
               required
               autofocus
-            />
-           <span class="small">Por ejemplo: Miss. Wendy</span>
+            />           
             <!--  <span>{{ errors[0] }}</span>
             </ValidationProvider>-->
           </div>
@@ -62,13 +108,13 @@
               placeholder="Nombre completo "
               required
               autofocus
-            />
-             <span class="small">Por ejemplo: Wendy Villareal Romero</span>            
+            />             
           </div>
           <div class="form-group">
             <label for="correoInput">
               Correo
-              <span class="text-primary">(opcional)</span>
+              <span class="text-danger">*</span>
+              <span class="text-sm text-primary"> (se usará para entrar al sistema)</span>
             </label>
             <input
               id="correoInput"
@@ -79,7 +125,7 @@
             />
           </div>
 
-          <div class="form-group">
+          <!--<div class="form-group">
             <label for="sueldoMensualInput">
               Sueldo Mensual
               <span class="text-danger">*</span>
@@ -92,7 +138,7 @@
               placeholder="Sueldo mensual"
               required
             />             
-          </div>
+          </div>-->
 
           <div class="row">
             <div class="col">
@@ -205,7 +251,7 @@ import CONSTANTES from "../../helpers/Constantes";
 export default {
   name: "opciones-usuario",
   mixins: [operacionesApi],
-  props: ["usuario_value", "metodo_refrescar", "id_usuario", "buscar","ocultar_eliminacion","ocultar_modificacion"],
+  props: ["usuario_value", "metodo_refrescar", "id_usuario", "buscar","ocultar_eliminacion","ocultar_modificacion","dropdown"],
   components: {
     Datepicker,
     VueTimepicker,
