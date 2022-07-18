@@ -26,7 +26,7 @@ export default {
         Popup,
         EstadoCuenta,
         DatosAlumno,
-        CursosAlumno
+        CursosAlumno        
     },
     data() {
         return {

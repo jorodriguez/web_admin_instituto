@@ -18,12 +18,13 @@
         <span class="navbar-toggler-icon"></span>
       </button>
       <!-- Brand -->
-      <span v-if="usuarioSesion && usuarioSesion.logotipo_empresa">
-        <router-link to="/Principal" class="navbar-brand pt-0"  >         
-           <img :src="usuarioSesion.logotipo_empresa" class="rounded-lg"  width="90" height="90" />                            
+      <span v-if="usuarioSesion && usuarioSesion.logotipo_sucursal" class="navbar-brand p-0">
+      <!-- antees tenia navbar-brand  -->
+        <router-link to="/Principal" class=" pt-0 "  >         
+           <img :src="usuarioSesion.logotipo_sucursal" class="rounded-lg" :width="with_logotipo" />                           
         </router-link>       
       </span>
-      <!-- User -->
+            <!-- User       -->
       <ul class="nav align-items-center d-md-none">
         <!-- slae cuando es resposive
           <li class="nav-item dropdown">
@@ -177,7 +178,22 @@
         <!-- Divider -->
         <hr class="my-3" />
         <!-- Heading -->
-        <h6 class="navbar-heading text-muted"></h6>
+        <h6 class="navbar-heading" v-if="pagoPendiente">
+          <img v-if="imagen == ''" 
+              style="width:100px;"  
+              src="https://img.freepik.com/vector-gratis/lindo-gato-jugando-ilustracion-icono-vector-dibujos-animados-bola-hilo-concepto-icono-naturaleza-animal-aislado-vector-premium-estilo-dibujos-animados-plana_138676-3568.jpg"/>
+          <img v-else :src="imagen" style="width:100px;"  />         
+        </h6>
+        <h5 class="navbar-heading" v-if="pagoPendiente">
+          <i class="fa fa-bullhorn" aria-hidden="true"></i> Hola
+          </h5>
+        <h5 class="text-gray " v-if="pagoPendiente">
+          Nos ponemos a disposición por si tienes algún detalle con el pago del mes en curso
+        </h5>
+        <h5 class="text-red" v-if="pagoPendiente">
+          Fecha de pago: del 1 al 9 de cada mes.
+        </h5>
+        
 <!--
         <ul class="navbar-nav mb-md-3">          
           <li class="nav-item nav-with-child">            
@@ -211,6 +227,9 @@ export default {
     return {      
       usuarioSesion: null,            
       logotipoEmpresa:"",
+      with_logotipo:"",
+      imagen:"",
+      pagoPendiente:false,
       opciones:[]
     };
   },
@@ -220,8 +239,28 @@ export default {
     //this.mostrarSideBar = !getUsuarioSesion().permiso_gerente;
     //this.opciones = this.usuarioSesion.opciones_acceso;
     this.opciones = this.usuarioSesion.menu;
+    this.with_logotipo = this.usuarioSesion.with_logotipo;
     //this.$mostrarSidebar = !getUsuarioSesion().permiso_gerente;
-    
+
+    this.pagoPendiente = this.usuarioSesion.pago_pendiente;
+
+     if(this.pagoPendiente){        
+        this.pagoPendiente = this.usuarioSesion.pago_pendiente;
+        this.imagen = this.usuarioSesion.pago_pendiente_imagen;                
+      }
+
+    this.$root.$on("CAMBIO_SUCURSAL", text => {
+      console.log("CAMBIO_SUCUSAL - CARGANDO EL LOGO");      
+      this.usuarioSesion = getUsuarioSesion();      
+      
+      this.pagoPendiente = this.usuarioSesion.pago_pendiente;
+      
+      if(this.pagoPendiente ){              
+        this.imagen = this.usuarioSesion.pago_pendiente_imagen;                
+      }
+      this.getLogo();
+    });
+
   },
   methods: {
      signout() {
@@ -232,9 +271,9 @@ export default {
       this.$router.push("/");
     },
     getLogo(){
-      console.log("getLogo");
-        //this.logotipoEmpresa = this.usuarioSesion.logotipo_empresa ? this.usuarioSesion.logotipo_empresa: '../assets/logodef.png';
-        return (this.usuarioSesion && this.usuarioSesion.logotipo_empresa) ? this.usuarioSesion.logotipo_empresa: '../assets/logodef.png';
+        console.log("getLogo");
+        this.with_logotipo = this.usuarioSesion.with_logotipo || '100';        
+        return (this.usuarioSesion && this.usuarioSesion.logotipo_sucursal) ? this.usuarioSesion.logotipo_sucursal: '../assets/logodef.png';
     }
   }
 };

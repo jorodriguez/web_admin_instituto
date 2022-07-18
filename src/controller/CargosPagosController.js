@@ -80,7 +80,7 @@ export default {
     this.loadFunctionCatCargos = function () {
       this.listaCargos = [];
       this.get(
-        `${URL.CARGOS_BASE}/${this.usuarioSesion.id_empresa}`,
+        `${URL.CARGOS_BASE}/${this.usuarioSesion.id_empresa}/${this.usuarioSesion.co_sucursal}`,
         (result) => {
           console.log("Consulta del catalogo de cargos" + result.data);
           if (result.data != null) {

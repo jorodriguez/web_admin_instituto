@@ -1,10 +1,11 @@
-<template>
-    
-        <div class="row    mt-2">
+<template> 
+      
+        <div :class="`row mt-2 `">
              <div class="col-md-2 mt-2">
               <img
                 v-if="curso.foto_curso"
-                class="mr-3 img-fluid rounded border border-gray pointer"
+                class="mr-3 img-fluid rounded border border-gray  pointer"
+                :style="`opacity: ${curso.inscripciones_cerradas ? 0.5 : 1 }`"
                 width="150"
                 :src="curso.foto_curso"
                 alt="Especialidad"
@@ -21,14 +22,16 @@
                   </button>
                 </div>
               </div>
+              
             </div>
-            <div class="col mt-2">
+            <div class="col-md-7 mt-2">
               <div class="text-left">
-                <h3 class="mt-0 pointer"  @click="()=>this.clickHead()"> {{ curso.especialidad }} 
-                 <small style="font-size:10px" :class="`badge badge-pill ${curso.inscripciones == 0 ? ' badge-dark':' badge-primary'}`">{{curso.inscripciones}} {{`alumno${curso.inscripciones == 1 ? '':'s'}`}} </small> 
-                 <!--<small :class="`text-info`">{{`Alumno${curso.inscripciones == 1 ? '':'s'}`}} </small> -->
+                 <h3 class="mt-0 pointer"  @click="()=>this.clickHead()"> 
+                 <small v-if="curso.inscripciones_cerradas" class=" badge badge-pill text-md text-red"><i class="fa fa-lock"></i></small>
+                 <span :class="curso.inscripciones_cerradas ? 'text-strike':''" >{{ curso.especialidad }} </span> 
+                 <small style="font-size:10px" :class="`badge badge-pill ${curso.inscripciones == 0 ? ' badge-dark':' badge-primary'}`">{{curso.inscripciones}} {{`alumno${curso.inscripciones == 1 ? '':'s'}`}} </small>                                   
                   <span v-if="curso.es_nuevo" class="badge badge-pill badge-warning">Nuevo</span></h3>
-                <p class="card-text text-sm">
+                  <p class="card-text text-sm">
                   <span class="text-muted">Fecha de inicio</span>
                   {{
                     curso.fecha_inicio_format
@@ -36,13 +39,7 @@
                       : ` previsto ${curso.fecha_inicio_previsto_format}`
                   }}         
                   <span class="text-orange">({{curso.numero_semanas}} semanas)</span>        
-                  <span v-if="curso.inicia_manana" class="badge  badge-warning">Inicia Mañana</span>        
-                  <!--<span class="text-muted">Fecha de fin</span>
-                  {{
-                    curso.fecha_fin_format
-                      ? curso.fecha_fin_format
-                      : ` previsto ${curso.fecha_fin_previsto_format}`
-                  }}-->
+                  <span v-if="curso.inicia_manana" class="badge  badge-warning">Inicia Mañana</span>                         
                 </p>
                 <p class="card-text text-sm">
                   {{ curso.dia }} de {{ curso.horario }}
@@ -51,31 +48,10 @@
                   Colegiatura  <span class="font-weight-bold d-inline p-2 bg-gray rounded text-white m-2">${{ curso.costo_colegiatura_base }}</span>
                   Inscripción <span class="font-weight-bold d-inline p-2 bg-gray rounded text-white m-2">${{ curso.costo_inscripcion_base }}</span>
                 </p>
+                <small v-if="curso.inscripciones_cerradas" class=" badge badge badge-danger  "><i class="fa fa-lock"></i> Inscripciones cerradas</small>                 
               </div>
             </div>     
-            <!--<div class="col-4 mt-2 mb-2 text-right">
-              <p class="card-text text-sm ">                
-                <span class="font-weight-bold"
-                  >${{ item.costo_inscripcion_base }}</span
-                ><span class="text-muted">Inscripción</span>
-              </p>
-              <p class="card-text text-sm">                
-                <span class="font-weight-bold"
-                  >${{ item.costo_colegiatura_base }}</span
-                ><span class="text-muted">Colegiatura</span>
-              </p>
-              <p class="card-text text-sm">              
-              <span
-                :class="`badge badge-pill ${
-                  item.inscripciones && item.inscripciones > 0
-                    ? 'badge-primary'
-                    : 'badge-secondary'
-                }`"
-                >{{ item.inscripciones }}</span
-              >
-              <span class="text-muted">Inscritos</span>
-              </p>
-            </div>-->          
+                           
           </div>
     
 </template>
@@ -119,4 +95,8 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+.text-strike{
+  text-decoration: line-through;
+}
+</style>
