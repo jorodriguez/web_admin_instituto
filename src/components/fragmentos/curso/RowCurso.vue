@@ -1,9 +1,10 @@
 <template>
-
   <div class="row mt-2">
     <div class="col-md-2 mt-2">
-      <img v-if="curso.foto_curso" class="mr-3 img-fluid rounded border border-gray pointer" width="150"
-        :src="curso.foto_curso" alt="Especialidad" @click="() => this.clickHead()" />
+      <img v-if="curso.foto_curso" 
+              :style="`opacity: ${curso.inscripciones_cerradas ? 0.5 : 1 }`"
+              class="mr-3 img-fluid rounded border border-gray pointer" width="150"
+              :src="curso.foto_curso" alt="Especialidad" @click="() => this.clickHead()" />
       <div v-else class="card border border-gray" style="width: 140px">
         <div class="card-body">
           <button class="btn btn-link">
@@ -13,8 +14,9 @@
       </div>
     </div>
     <div class="col-6 mt-2">
-      <div class="text-left">
-        <h3 class="mt-0 pointer" @click="() => this.clickHead()"> {{ curso.especialidad }}
+      <div class="text-left">              
+        <small v-if="curso.inscripciones_cerradas" class=" badge badge-pill text-md text-red"><i class="fa fa-lock"></i></small>
+        <h3 class="mt-0 pointer" :class="curso.inscripciones_cerradas ? 'text-strike':''"  @click="() => this.clickHead()"> {{ curso.especialidad }}
           <i class="fa fa-users text-gray"></i><sup
             :class="`badge badge-pill ${curso.inscripciones == 0 ? ' badge-secondary' : ' badge-primary'}`">
             {{ curso.inscripciones }} </sup>
@@ -49,7 +51,7 @@
           <span class="text-sm text-orange">duración {{ curso.numero_semanas }} ({{curso.esquema}})</span>
     </div>
     <div class="col-2 text-left">          
-          
+          <small v-if="curso.inscripciones_cerradas" class=" badge badge badge-danger  "><i class="fa fa-lock"></i> Inscripciones cerradas</small>                 
     </div>
   </div>
 
@@ -95,4 +97,9 @@ export default {
 </script>
 
 <style scoped>
+
+.text-strike{
+  text-decoration: line-through;
+}
+
 </style>

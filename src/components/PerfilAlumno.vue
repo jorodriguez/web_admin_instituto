@@ -108,7 +108,7 @@
             >
               <div class="card">
                 <div class="card-body">                  
-                  <DatosAlumno :uuidAlumno="alumno.uid"/>               
+                  <DatosAlumno :uuidAlumno="alumno.uid" :inscripciones="listaInscripciones"/>               
                   
                 </div>
               </div>

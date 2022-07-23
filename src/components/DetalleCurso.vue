@@ -8,7 +8,7 @@
           <i class="fas fa-arrow-circle-left text-gray"></i>
         </router-link>
         <!--<button  @click="iniciarTaller()" class="btn btn-success btn-lg " :disabled="alumnosConfirmados == 0">Iniciar taller</button>-->
-        <button @click="iniciarInscripcion()" class="btn btn-success btn-lg ">
+        <button @click="iniciarInscripcion()" :disabled="cursoSeleccionado.inscripciones_cerradas" class="btn btn-success btn-lg ">
           Agregar inscripción
         </button>
       </div>
@@ -22,11 +22,12 @@
           <button
             v-if="!cursoSeleccionado.activo"
             class="btn btn-link"
+            :disabled="cursoSeleccionado.inscripciones_cerradas"
             @click="iniciarModificacionCurso()"
           >
             Modificar
           </button>
-          <button v-else class="btn btn-link text-danger">
+          <button v-else class="btn btn-link text-danger" :disabled="cursoSeleccionado.inscripciones_cerradas">
             Cancelar curso
           </button>
         </div>
