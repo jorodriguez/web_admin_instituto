@@ -1,19 +1,9 @@
 <template>
   <span>  
     <Loader :loading="loader" />    
-     <span v-if="usuario.acceso_sistema" class="pl-2 text-wrap">
-                 <span v-for="rol in usuario.roles"                            
-                            :key="rol.si_usuario_sucursal_rol" 
-                            > 
-                    <span class="badge badge-info pointer">
-                             {{rol.rol}} 
-                             <i class="text-orange fa fa-times"></i>
-                          </span>                                                    
-                  </span>        
-    </span>     
-    <button class="btn btn-link btn-sm " @click="iniciarAsignacion()" > <i class="fa fa-key"></i> Asignar Permisos </button>
-    
-    
+   
+    <button class="btn btn-link btn-sm " @click="iniciarAsignacion()"><i class="fa fa-key"></i> {{usuario.roles}} Permiso{{usuario.roles== 1 ? '':'s'}}  </button>
+        
     <Popup :id="'popup_permisos_'+id_popup" show_button_close="true" size="md">
       <div slot="header">Permisos para {{usuario.nombre}} </div>
       <div slot="content">
@@ -41,20 +31,7 @@
         </button>
       </div>
     </Popup>
-
-    <Popup :id="'popup_permisos_baja_'+id_popup_baja" show_button_close="true" size="md">
-      <div slot="header">Confimar  </div>
-      <div slot="content">
-        <div class="container text-left">
-
-        </div>
-      </div>
-      <div slot="footer">
-        <button class="btn btn-danger" :disabled="loader_baja" @click="eliminar()">
-          <Loader :loading="loader_baja" :mini="true" />Confirmar
-        </button>
-      </div>
-    </Popup>
+  
   </span>
 </template>
 
@@ -84,8 +61,7 @@ export default {
       operacion: "INSERT",      
       loader: false,      
       loader_baja: false,      
-      loaderAsignar: false,      
-      id_popup_baja: "",
+      loaderAsignar: false,            
       id_popup: "",
       listaRoles:[],
       rolesUsuario:[],
@@ -98,8 +74,7 @@ export default {
   },
   methods: {
     init() {
-      console.log("Init " + JSON.stringify(this.usuario_value));
-      this.id_popup_baja = this.nombreRandom();
+      console.log("Init " + JSON.stringify(this.usuario_value));      
       this.id_popup = this.nombreRandom();
       this.usuario = this.usuario_value;
       
@@ -109,34 +84,13 @@ export default {
     
       this.loaderAsignar = true;
       
-      this.listaRoles = await this.getAsync(URL.ROL);
-
-      this.procesarListaRoles();
+      this.listaRoles = await this.getAsync(`${URL.USUARIO_ROL}/${this.usuario_value.id}/${this.usuarioSesion.co_sucursal}`);
 
       $(`#popup_permisos_${this.id_popup}`).modal("show");
 
       this.loaderAsignar = false;
     },
-    procesarListaRoles(){
-      console.log("procesarListaRoles "+this.listaRoles.length);
-
-      for(let i = 0; i < this.listaRoles.length; i++){
-                   
-          this.listaRoles[i].seleccionado = false;
-          
-          console.log("rol "+this.listaRoles[i].nombre);
-
-          for(let x = 0; x < this.usuario.roles.length; x++){
-
-              const rolUsuario = this.usuario.roles[x];
-
-              if(rolUsuario.si_rol == this.listaRoles[i].id){
-                console.log("rol ECNONTRADO");
-                this.listaRoles[i].seleccionado = true;
-              }
-          }
-      }      
-    },
+    
     guardar() {
       console.log("guardar el id " + this.usuario.nombre);
 

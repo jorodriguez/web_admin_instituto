@@ -193,8 +193,9 @@ export default {
         `entrada ${this.usuario.hora_entrada} salida ${this.usuario.hora_entrada}`
       );
       this.usuario.co_sucursal = this.usuarioSesion.co_sucursal;
+      this.usuario.co_empresa = this.usuarioSesion.id_empresa;
       this.usuario.genero = this.usuarioSesion.id;
-      this.usuario.id_tipo_usuario = CONSTANTES.ID_TIPO_USUARIO_MAESTRA;
+      this.usuario.cat_tipo_usuario = CONSTANTES.ID_TIPO_USUARIO_MAESTRA;
 
     this.loader= true;
       const respuesta = await this.postAsync(URL.USUARIO_BASE,this.usuario);

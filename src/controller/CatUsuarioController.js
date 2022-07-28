@@ -63,7 +63,7 @@ export default {
     init() {
       console.log("Init");
       this.loader = true;
-      this.get(URL.USUARIO_BASE + "/" + this.usuarioSesion.co_sucursal,
+      this.get(`${URL.USUARIO_BASE}/${this.usuarioSesion.co_sucursal}/${this.usuarioSesion.id_empresa}`,
         (result) => {          
           this.loader = false;
           if (result.body != null) {

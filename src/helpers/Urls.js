@@ -94,9 +94,7 @@ const ESTADO_CUENTA_PREVIEW = BASE + '/estado_cuenta/preview/'; // /estado_cuent
 const ESTADO_CUENTA_ENVIAR = BASE + '/estado_cuenta/enviar/'; // /estado_cuenta/preview/:id_alumno
 const USUARIOS_RH = BASE + '/usuarios_rh'; // /usuarios_rh/id_sucursal
 const AVISOS = BASE + '/aviso'; // /aviso/:
-
-
-const ROL = BASE + '/rol';
+const USUARIO_ROL = BASE + '/usuario-rol';
 
 const URL = {    
     LOGIN : BASE+'/auth/login',    
@@ -195,7 +193,7 @@ const URL = {
     USUARIOS_RH:USUARIOS_RH,
     REPORTE_ASISTECIAS_RH: ASISTENCIA_USUARIO_BASE +'/reporte_rh',
     AVISOS: AVISOS,
-    ROL
+    USUARIO_ROL
 
 }
 

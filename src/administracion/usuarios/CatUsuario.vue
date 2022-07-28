@@ -47,7 +47,7 @@
                 <td class="budget text-left">
                     {{row.correo}}
                 </td>               
-                <td style="width: 6rem;" >                        
+                <td style="width: 6rem;" >                               
                     <PopupPermisosUsuario :usuario_value="row" :metodo_refrescar="init"/>
                 </td>             
                                 
