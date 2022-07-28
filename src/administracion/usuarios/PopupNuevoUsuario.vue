@@ -9,110 +9,8 @@
             *{{mensaje}}
         </span>
         <div class="container text-left">        
-        
-          <!--  <ValidationObserver ref="observer" v-slot="{ invalid }">-->
-          <div class="form-group">
-            <label for="aliasInput">
-              Nombre corto
-              <span class="text-danger">*</span>
-            </label>
-            <!--<ValidationProvider rules="required" v-slot="{errors}">-->
-            <input
-              id="aliasInput"
-              type="text"
-              v-model="usuario.alias"
-              class="form-control"
-              placeholder="Por ejemplo Lic. Ana"
-              required
-              autofocus
-            />            
-            <!--  <span>{{ errors[0] }}</span>
-            </ValidationProvider>-->
-          </div>
-          <div class="form-group">
-            <label for="nombreInput">
-              Nombre completo
-              <span class="text-danger">*</span>
-            </label>
-            <!--<ValidationProvider rules="required" v-slot="{errors}">-->
-            <input
-              id="nombreInput"
-              type="text"
-              v-model="usuario.nombre"
-              class="form-control"
-              placeholder="Nombre completo"
-              required
-              autofocus
-            />             
-            <!--  <span>{{ errors[0] }}</span>
-            </ValidationProvider>-->
-          </div>
-          <div class="form-group">
-            <label for="correoInput">
-              Correo
-              <span class="text-sm text-primary"><span class="text-danger">*</span>(se usará para entrar al sistema)</span>
-            </label>
-            <input
-              id="correoInput"
-              type="email"
-              v-model="usuario.correo"
-              class="form-control"
-              placeholder="micorreo@ejemplo.com"
-            />
-          </div>
-
-           <!--<div class="form-group">
-            <label for="sueldoMensualInput">
-              Sueldo Mensual
-              <span class="text-danger">*</span>
-            </label>
-            <input
-              id="sueldoMensualInput"
-              type="number"
-              v-model="usuario.sueldo_mensual"
-              class="form-control"
-              placeholder="Sueldo mensual"
-              required
-            />             
-          </div>-->
-
-          <div class="row">
-            <div class="col">
-              <label>
-                Hora Entrada
-                <span class="text-danger">*</span>
-              </label>
-              <vue-timepicker
-                v-model="usuario.hora_entrada"
-                :minute-interval="15"
-                :hour-range="[[7, 20]]"
-                :hide-disabled-hours="true"
-                hour-label="hora"
-                minute-label="minuto"
-                format="HH:mm"
-                placeholder="00:00"
-              ></vue-timepicker>
-            </div>
-            <div class="col">
-              <label>
-                Hora Salida
-                <span class="text-danger">*</span>
-              </label>
-              <vue-timepicker
-                v-model="usuario.hora_salida"
-                :min="usuario.hora_entrada"
-                :minute-interval="15"
-                :hour-range="[[7, 20]]"
-                :hide-disabled-hours="true"                
-                hour-label="hora"
-                minute-label="minuto"
-                format="HH:mm"
-                placeholder="00:00"
-              ></vue-timepicker>
-              {{usuario.hora_salida}}
-            </div>
-          </div>
-          <!--</ValidationObserver>-->
+        <formulario-usuario :usuario="usuario" />
+       
         </div>
       </div>
       <div slot="footer">
@@ -140,6 +38,7 @@ import Loader from "../../components_utils/Loader";
 import { validarDatosUsuario } from "../../helpers/UsuarioValidacion";
 import * as moment from "moment";
 import CONSTANTES from "../../helpers/Constantes";
+import FormularioUsuario from './FormularioUsuario.vue';
 
 export default {
   name: "opciones-usuario",
@@ -149,7 +48,8 @@ export default {
     Datepicker,
     VueTimepicker,
     Popup,
-    Loader
+    Loader,
+    FormularioUsuario
   },
   data() {
     return {

@@ -30,7 +30,7 @@
         </thead>
         <tbody class="list">
             
-            <tr    v-for="row in listaUsuario"
+            <tr v-for="row in listaUsuario"
                    :key="row.id"    >
                 <th scope="row">
                     <div class="media align-items-center">
@@ -48,7 +48,7 @@
                     {{row.correo}}
                 </td>               
                 <td style="width: 6rem;" >                               
-                    <PopupPermisosUsuario :usuario_value="row" :metodo_refrescar="init"/>
+                    <PopupPermisosUsuario :usuario_value="row" :metodo_refrescar="init"  />
                 </td>             
                                 
                 <td class="text-right">

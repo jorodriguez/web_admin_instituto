@@ -8,7 +8,7 @@
                         </a>
                         <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow">
                             <a class="dropdown-item" href="#" 
-                                v-on:click="seleccionar('EDIT')"
+                                v-on:click="seleccionar(EDIT)"
                                 :disabled="loader_edit"
                                 v-if="!ocultar_modificacion"
                                  >
@@ -17,7 +17,7 @@
                             <a class="dropdown-item" href="#"><i class="fa fa-ban text-red"></i> Bloquear acceso </a>
                             <a class="dropdown-item" href="#"
                                 title="Enviar nueva contraseña "
-                                v-on:click="seleccionar('ENVIAR_CLAVE')"
+                                v-on:click="seleccionar(ENVIAR_CLAVE)"
                                 :disabled="loader_contrasena"
                                 v-if="!ocultar_contrasena"
                             >
@@ -25,7 +25,7 @@
                             </a>
                             <a class="dropdown-item" href="#"
                                 :title="'Eliminar registro de la maestra '"
-                                v-on:click="seleccionar('DELETE')"
+                                v-on:click="seleccionar(DELETE)"
                                 :disabled="loader_eliminar"
                                 v-if="!ocultar_eliminacion">
                                 <i class="fa fa-times text-red"></i> Dar de baja
@@ -39,7 +39,7 @@
       type="button"
       class="btn  btn-sm"
       title="Modificar registro"
-      v-on:click="seleccionar('EDIT')"
+      v-on:click="seleccionar(EDIT)"
       :disabled="loader_edit"
       v-if="!ocultar_modificacion"
     >
@@ -50,7 +50,7 @@
       type="button"
       class="btn btn-sm"
       :title="'Eliminar registro de la maestra '"
-      v-on:click="seleccionar('DELETE')"
+      v-on:click="seleccionar(DELETE)"
       :disabled="loader_eliminar"
       v-if="!ocultar_eliminacion"
     >
@@ -62,7 +62,7 @@
       type="button"
       class="btn  btn-sm"
       title="Enviar nueva contraseña "
-      v-on:click="seleccionar('ENVIAR_CLAVE')"
+      v-on:click="seleccionar(ENVIAR_CLAVE)"
       :disabled="loader_contrasena"
       v-if="!ocultar_contrasena"
     >
@@ -75,120 +75,20 @@
       <div slot="header">Usuario</div>
       <div slot="content">
         <div class="container text-left">
-           <div class="form-group">
-            <label for="aliasInput">
-              Nombre Corto
-              <span class="text-danger">*</span>
-            </label>
-            <!--<ValidationProvider rules="required" v-slot="{errors}">-->
-            <input
-              id="aliasInput"
-              type="text"
-              v-model="usuario.alias"
-              class="form-control"
-              placeholder="Por ejemplo Lic. Ana"
-              required
-              autofocus
-            />           
-            <!--  <span>{{ errors[0] }}</span>
-            </ValidationProvider>-->
-          </div>
-          <!--  <ValidationObserver ref="observer" v-slot="{ invalid }">-->
-          <div class="form-group">
-            <label for="nombreInput">
-              Nombre completo
-              <span class="text-danger">*</span>
-            </label>
-            <!--<ValidationProvider rules="required" v-slot="{errors}">-->
-            <input
-              id="nombreInput"
-              type="text"
-              v-model="usuario.nombre"
-              class="form-control"
-              placeholder="Nombre completo "
-              required
-              autofocus
-            />             
-          </div>
-          <div class="form-group">
-            <label for="correoInput">
-              Correo
-              <span class="text-danger">*</span>
-              <span class="text-sm text-primary"> (se usará para entrar al sistema)</span>
-            </label>
-            <input
-              id="correoInput"
-              type="email"
-              v-model="usuario.correo"
-              class="form-control"
-              placeholder="micorreo@ejemplo.com"
-            />
-          </div>
-
-          <!--<div class="form-group">
-            <label for="sueldoMensualInput">
-              Sueldo Mensual
-              <span class="text-danger">*</span>
-            </label>
-            <input
-              id="sueldoMensualInput"
-              type="number"
-              v-model="usuario.sueldo_mensual"
-              class="form-control"
-              placeholder="Sueldo mensual"
-              required
-            />             
-          </div>-->
-
-          <div class="row">
-            <div class="col">
-              <label>
-                Hora Entrada
-                <span class="text-danger">*</span>
-              </label>
-              <vue-timepicker
-                v-model="usuario.hora_entrada"
-                :minute-interval="15"
-                :hour-range="[[7, 20]]"
-                :hide-disabled-hours="true"
-                hour-label="hora"
-                minute-label="minuto"
-                format="HH:mm"
-                placeholder="00:00"
-              ></vue-timepicker>
-            </div>
-            <div class="col">
-              <label>
-                Hora Salida
-                <span class="text-danger">*</span>
-              </label>
-              <vue-timepicker
-                v-model="usuario.hora_salida"
-                :min="usuario.hora_entrada"
-                :minute-interval="15"
-                :hour-range="[[7, 20]]"
-                :hide-disabled-hours="true"
-                hour-label="hora"
-                minute-label="minuto"
-                format="HH:mm"
-                placeholder="00:00"
-              ></vue-timepicker>
-            </div>
-          </div>
-          <!--</ValidationObserver>-->
+             <formulario-usuario :usuario="usuario" />       
         </div>
       </div>
       <div slot="footer">
         <button
           class="btn btn-secondary"
           @click="cancelar()"
-          v-if="operacion == 'EDIT' || operacion == 'INSERT'"
+          v-if="operacion == EDIT || operacion == INSERT"
         >Cerrar</button>
-        <button class="btn btn-primary" @click="guardar()" v-if="operacion == 'INSERT'">Guardar</button>
+        <button class="btn btn-primary" @click="guardar()" v-if="operacion == INSERT">Guardar</button>
         <button
           class="btn btn-primary"
           @click="modificar()"
-          v-if="operacion == 'EDIT'"
+          v-if="operacion == EDIT"
           :disabled="loader_edit"
         >
           <Loader :loading="loader_edit" :mini="true" />Modificar
@@ -200,10 +100,10 @@
       <div slot="header">Acceso al Sistema</div>
       <div slot="content">
         <div class="container text-left">
-          <p class="text-danger">
-            Con la siguiente acción se desactivara todo acceso y uso en el sistema de
-            <strong>{{usuario.nombre}}</strong>.
-          </p>
+          <div class="alert alert-warning">
+            <span class="alert-icon"><i class="fas fa-user-minus"></i></span><strong>{{usuario.nombre}}</strong>
+             <p class="text-sm">Se desactivara todo acceso al sistema</p>
+          </div>
           <label>
             Fecha de Baja
             <span class="text-danger">*</span>
@@ -229,6 +129,34 @@
         </button>
       </div>
     </Popup>
+
+
+<!-- reiniciar clave-->
+   <Popup :id="'popup_enviar_clave_'+id_popup_edit" show_button_close="true" size="md">
+      <div slot="header">Enviar clave de acceso</div>
+      <div slot="content">
+        <div class="container text-left">                             
+          
+          <p><i class="fa fa-user text-primary"></i> {{usuario_value.nombre}}</p>
+          <span v-if="!usuario_value.correo" class="text-danger">* No existe el correo</span>
+          
+          <div class="input-group flex-nowrap">
+            <div class="input-group-prepend">
+              <span class="input-group-text" id="addon-wrapping">@</span>
+            </div>
+            <input type="text" disabled v-model="usuario_value.correo"  class="form-control" placeholder="Correo" aria-label="correo" aria-describedby="addon-wrapping">
+          </div>
+          <small class="text-warning"><i class="fa fa-circle-info text-warning"></i>* Se reiniciará su clave de acceso al sistema</small>
+        </div>
+        
+      </div>
+      <div slot="footer">
+        <button class="btn btn-primary" :disabled="loader_eliminar" @click="reenviarClaveAcceso()">
+          <Loader :loading="loader_eliminar" :mini="true" /><i class="fa fa-envelope"></i> Confirmar envío
+        </button>
+      </div>
+    </Popup>
+
   </span>
 </template>
 
@@ -247,6 +175,9 @@ import Loader from "../../components_utils/Loader";
 import { validarDatosUsuario } from "../../helpers/UsuarioValidacion";
 import * as moment from "moment";
 import CONSTANTES from "../../helpers/Constantes";
+import FormularioUsuario from './FormularioUsuario.vue';
+
+const INSERT="INSERT", EDIT="EDIT", DELETE="DELETE",ENVIAR_CLAVE="ENVIAR_CLAVE",ACCESO_SISTEMA="ACCESO_SISTEMA";
 
 export default {
   name: "opciones-usuario",
@@ -256,7 +187,8 @@ export default {
     Datepicker,
     VueTimepicker,
     Popup,
-    Loader
+    Loader,
+    FormularioUsuario
   },
   data() {
     return {
@@ -265,17 +197,20 @@ export default {
       datosBaja: { motivo_baja: "", fecha_baja: null },
       usuarioSesion: null,
       response: "",
-      operacion: "INSERT",
+      operacion: INSERT,
       es: es,
       registrarCorreo: false,
       TABLE_CONFIG: TABLE_CONFIG,
       loader_eliminar: false,
       loader_edit: false,
       loader: false,
+      loader_contrasena: false,
       contador: 0,
       rangoHora: [7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20],
       id_popup_baja: "",
-      id_popup_edit: ""
+      id_popup_edit: "",
+      ocultar_contrasena:false,
+      INSERT,EDIT,DELETE,ENVIAR_CLAVE,ACCESO_SISTEMA
     };
   },
   mounted() {
@@ -376,41 +311,52 @@ export default {
       );
     },
     seleccionar(operacion) {
-      console.log("fila seleccionada " + this.usuario);
+      console.log("fila seleccionada " + this.usuario+" operaicon "+operacion);
+      
       this.operacion = operacion;
-
-      //this.usuario = Object.assign({}, this.usuario_value);
 
       this.usuarioMemento = Object.assign({}, this.usuario);
 
-      if (this.operacion == "EDIT") {
-        if (this.buscar == true) {
-          this.buscarId();
-        }
-
-        $("#popup_usuario_" + this.id_popup_edit).modal("show");
-      }
-      if (this.operacion == "DELETE") {
-        //validar si no esta en asistencia
-
-        this.datosBaja = { motivo_baja: "", fecha_baja: new Date() };
-
-        //this.$notificacion.warn('Baja de usuario', 'No es posible dar de baja el alumno por motivos de deuda activa.');
-        $("#popup_baja_" + this.id_popup_baja).modal("show");
-      }
-      if (this.operacion === "ACCESO_SISTEMA") {
-        $("#popup_acceso").modal("show");
+      switch(this.operacion){
+          case EDIT: this.caseEdit(); break;
+          case DELETE: this.caseDelete(); break;
+          case ENVIAR_CLAVE: this.caseEnviarClave(); break;
+          case ACCESO_SISTEMA: this.caseAccesoSistema(); break;
+          default: console.log("No existe case");
       }
     },
+
+    caseEdit(){
+        console.log("caseEdit");
+        if (this.buscar == true) {
+                  this.buscarId();
+         }
+
+      $("#popup_usuario_" + this.id_popup_edit).modal("show");
+    },
+    caseDelete(){              
+        console.log("caseDelete");
+        this.datosBaja = { motivo_baja: "", fecha_baja: new Date() };
+        
+        $("#popup_baja_" + this.id_popup_baja).modal("show");
+    },
+    caseEnviarClave(){          
+        console.log("caseEnviarClave");
+        $("#popup_enviar_clave_" + this.id_popup_edit).modal("show");
+    },
+    caseAccesoSistema(){     
+          console.log("caseAccesoSistema");        
+         $("#popup_acceso").modal("show");
+    },
     cancelar() {
-      if (this.operacion == "EDIT" || this.operacion == "INSERT") {
+      if (this.operacion == EDIT || this.operacion == INSERT) {
         this.usuario = this.usuarioMemento;
         $("#popup_usuario_" + this.id_popup_edit).modal("hide");
       }
-      if (this.operacion == "DELETE") {
+      if (this.operacion == DELETE) {
         $("#popup_baja_" + this.id_popup_baja).modal("hide");
       }
-      if (this.operacion === "ACCESO_SISTEMA") {
+      if (this.operacion === ACCESO_SISTEMA) {
         $("#popup_acceso").modal("hide");
       }
     },

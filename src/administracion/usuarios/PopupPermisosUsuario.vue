@@ -13,22 +13,13 @@
                   <li v-for="rol in listaRoles"                            
                             :key="rol.id"  
                              class="list-group-item">                                      
-                      <div class="custom-control custom-switch">                      
-                        <input type="checkbox" v-model="rol.seleccionado"  class="custom-control-input" :id="`'customSwitch_'${rol.id}`">
-                        <label class="custom-control-label" :for="`'customSwitch_'${rol.id}`">
-                            {{rol.nombre}}                            
-                        </label>                        
-                      </div>    
-                      <small class="text-gray">{{rol.descripcion}}</small>                
+                             <switch-permiso-rol :rol_value="rol" :usuario_id="usuario.id" />                    
                   </li>                                    
               </ul>
             </div>
         </div>
       </div>
-      <div slot="footer">
-        <button class="btn btn-primary" :disabled="loader" @click="guardar()">
-          <Loader :loading="loader" :mini="true" />Guardar
-        </button>
+      <div slot="footer">        
       </div>
     </Popup>
   
@@ -44,6 +35,7 @@ import { UsuarioModel } from "../../models/UsuarioModel";
 import Popup from "../../controller/Popup";
 import Loader from "../../components_utils/Loader";
 import CONSTANTES from "../../helpers/Constantes";
+import SwitchPermisoRol from './SwitchPermisoRol.vue';
 
 export default {
   name: "permisos-usuario",
@@ -51,7 +43,8 @@ export default {
   props: ["usuario_value","metodo_refrescar", "id_usuario"],
   components: {    
     Popup,
-    Loader
+    Loader,
+    SwitchPermisoRol
   },
   data() {
     return {
