@@ -22,7 +22,9 @@
     <br />
 
     <div class="container text-left" :disabled="loader">
-      <div class="form-row">
+      
+
+      <div class="form-row">      
         <div class="form-group form-group col-sm-6 col-md-6 col-lg-6 col-xl-6">
           <label>
             Especialidad
@@ -210,16 +212,39 @@
         </div>
       </div>
 
-      <div class="form-group">
-        <label for="inputFechaLimitePago">Nota </label>
+        <div class="form-row ">
+          <div class="form-group form-group col-sm-6 col-md-6 col-lg-6 col-xl-6 ">
+          <label>
+            Asesor que inscribe
+            <span class="text-danger">*</span>
+          </label>
+          <select         
+          
+            class="form-control"
+            placeholder="Especialidad"
+            autofocus
+            required
+          >
+            <option
+              v-for="asesor in listaAsesores"
+              v-bind:value="asesor.id"
+              v-bind:key="asesor.id"
+            >
+              {{ asesor.nombre }}
+            </option>
+          </select>
+         </div>
+           <div class="form-group col-sm-6 col-md-6 col-lg-6 col-xl-6">
+             <label for="inputFechaLimitePago">Nota </label>
         <textarea
-          rows="2"
+          rows="1"
           v-model="input.nota"
           class="form-control"
-          placeholder="Notas "
+          placeholder="Nota de inscripción "
         />
-      </div>
-
+           </div>
+        </div>
+      
       <button
         class="btn btn-block btn-primary"
         :disabled="loader"
@@ -260,6 +285,7 @@ export default {
       listaGeneroAlumno: [],
       listaCurso: [],
       listaEspecialidades: [],
+      listaAsesores: [],
       generoAlumno: { id: -1, nombre: "", foto: "" },
       es: es,
       loader: false,
@@ -281,7 +307,7 @@ export default {
 
       this.nuevo();
     },
-    nuevo() {
+    async nuevo() {
       console.log("Es un formulario Nuevo");
       this.operacion = "INSERT";
       this.input = {
@@ -309,6 +335,11 @@ export default {
 
       this.generoAlumno = { id: -1, nombre: "", foto: "" };
       this.input.fecha_inicio = new Date();
+
+     this.listaAsesores = await this.getAsync(
+        `${URL.USUARIO_BASE}/asesores/${this.usuarioSesion.co_sucursal}/${this.usuarioSesion.id_empresa}`
+      );
+
     },
     async onChangeEspecialidad(event) {
       console.log("@onChangeEspecialidad " + this.input.cat_especialidad);

@@ -2,9 +2,9 @@
   <span>  
     <Loader :loading="loader" />    
    
-    <button class="btn btn-link btn-sm " @click="iniciarAsignacion()"><i class="fa fa-key"></i> {{usuario.roles}} Permiso{{usuario.roles== 1 ? '':'s'}}  </button>
+    <button :class="`btn btn-link btn-sm ${color_icon}`" @click="iniciarAsignacion()"><i :class="`fa fa-key`"></i> {{label}} </button>
         
-    <Popup :id="'popup_permisos_'+id_popup" show_button_close="true" size="md">
+    <Popup :id="'popup_permisos_'+id_popup" :show_button_close="false" size="md">
       <div slot="header">Permisos para {{usuario.nombre}} </div>
       <div slot="content">
         <div class="container text-left">
@@ -20,6 +20,7 @@
         </div>
       </div>
       <div slot="footer">        
+          <button class="btn btn-secondary" @click="cerrar()">Cerrar</button>
       </div>
     </Popup>
   
@@ -40,7 +41,7 @@ import SwitchPermisoRol from './SwitchPermisoRol.vue';
 export default {
   name: "permisos-usuario",
   mixins: [operacionesApi],
-  props: ["usuario_value","metodo_refrescar", "id_usuario"],
+  props: ["usuario_value","metodo_refrescar", "id_usuario","label","color_icon"],
   components: {    
     Popup,
     Loader,
@@ -96,6 +97,10 @@ export default {
       return Math.random()
         .toString(36)
         .substring(7);
+    },
+    async cerrar(){
+      $(`#popup_permisos_${this.id_popup}`).modal("hide");
+      await this.metodo_refrescar();            
     }
   }
 };

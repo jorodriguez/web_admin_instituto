@@ -16,7 +16,7 @@
       <div slot="footer">
         
         <button class="btn btn-primary" @click="guardar()" v-if="operacion == 'INSERT'">
-          <Loader :loading="loader" :mini="true" />Guardar
+          <div v-if="loader" class="spinner-border spinner-border-sm" role="status"/>Guardar
         </button>
       </div>
     </Popup>

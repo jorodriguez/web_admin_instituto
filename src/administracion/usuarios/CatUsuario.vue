@@ -48,7 +48,10 @@
                     {{row.correo}}
                 </td>               
                 <td style="width: 6rem;" >                               
-                    <PopupPermisosUsuario :usuario_value="row" :metodo_refrescar="init"  />
+                     <PopupPermisosUsuario :usuario_value="row" 
+                                            :metodo_refrescar="init" 
+                                            :color_icon="row.roles == 0 ? 'text-danger':''"
+                                            :label="`${row.roles == 0 ? 'Sin': row.roles} Permiso${usuario.roles== 1 ? '':'s'}`"/>                    
                 </td>             
                                 
                 <td class="text-right">

@@ -6,7 +6,7 @@
                 <th>Matricula</th>
                 <th>Alumno</th>
                 <th>Teléfono</th>
-                <th>Dirección</th>
+                <!--<th>Dirección</th>-->
                 <th>Inscripción</th>                
                 <th></th>
             </tr>
@@ -37,10 +37,11 @@
                     </span>                                            
                   </td>
                   <td class="font-weight-normal">{{row.telefono}}</td>
-                  <td class="font-weight-normal">{{row.direccion}}</td>
+                  <!--<td class="font-weight-normal">{{row.direccion}}</td>-->
                   <td>
-                      <p class="text-gray small">{{row.fecha_inscripcion_format}} </p>
-                      <p class="text-gray small text-wrap" style="width: 10rem;">{{row.nota_inscripcion}}</p>
+                      <small class="text-gray small ">{{row.inscribio ? row.inscribio:'-'}} </small>                      
+                      <p class="text-gray small">{{row.fecha_inscripcion_format}} </p>                      
+                      <small class="text-gray small text-wrap" style="width: 10rem;">{{row.nota_inscripcion}}</small>
                   </td>
 
                   <td class="text-right ">                     

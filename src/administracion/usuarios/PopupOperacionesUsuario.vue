@@ -14,7 +14,8 @@
                                  >
                                 <i class="fa fa-edit text-primary"></i> Modificar
                             </a>                            
-                            <a class="dropdown-item" href="#"><i class="fa fa-ban text-red"></i> Bloquear acceso </a>
+                            
+                            <!--  <a class="dropdown-item" href="#"><i class="fa fa-ban text-red"></i> Bloquear acceso </a>-->
                             <a class="dropdown-item" href="#"
                                 title="Enviar nueva contraseña "
                                 v-on:click="seleccionar(ENVIAR_CLAVE)"
@@ -23,12 +24,13 @@
                             >
                                     <i class="fa fa-share text-blue"></i>Reiniciar su clave de acceso 
                             </a>
+                            
                             <a class="dropdown-item" href="#"
                                 :title="'Eliminar registro de la maestra '"
                                 v-on:click="seleccionar(DELETE)"
                                 :disabled="loader_eliminar"
                                 v-if="!ocultar_eliminacion">
-                                <i class="fa fa-times text-red"></i> Dar de baja
+                                <i class="fa fa-user-minus text-red"></i> Dar de baja
                             </a>
                             <!--<a class="dropdown-item" href="#"><i class="fa fa-share text-blue"></i>Enviarme un mensaje </a>-->
                         </div>
@@ -91,44 +93,41 @@
           v-if="operacion == EDIT"
           :disabled="loader_edit"
         >
-          <Loader :loading="loader_edit" :mini="true" />Modificar
+          <div v-if="loader_edit" class="spinner-border spinner-border-sm" role="status"/>Modificar
         </button>
       </div>
     </Popup>
 
-    <Popup :id="'popup_baja_'+id_popup_baja" show_button_close="true" size="md">
-      <div slot="header">Acceso al Sistema</div>
+   <Popup :id="'popup_baja_'+id_popup_baja" show_button_close="true" size="md">
+      <div slot="header">Baja de cuenta de usuario</div>
       <div slot="content">
-        <div class="container text-left">
-          <div class="alert alert-warning">
-            <span class="alert-icon"><i class="fas fa-user-minus"></i></span><strong>{{usuario.nombre}}</strong>
-             <p class="text-sm">Se desactivara todo acceso al sistema</p>
-          </div>
-          <label>
-            Fecha de Baja
-            <span class="text-danger">*</span>
-          </label>
-          <datepicker
-            name="fechaBaja"
-            v-model="datosBaja.fecha_baja"
-            input-class="form-control"
-            :disabled-dates="{from:new Date()}"
-            :bootstrap-styling="true"
-            :language="es"
-            required
-          ></datepicker>
-          <div class="form-group">
+        <div class="container text-left">          
+        
+        <div class="card card-border border border-danger p-2">
+          <div class="media">
+                <img v-if="usuario.foto" class="avatar avatar-md rounded-circle align-self-start mr-3"  alt="usuario" :src="usuario.foto">
+                <img v-else alt="usuario" class="avatar avatar-md rounded-circle align-self-start mr-3" src="../../assets/user.png">                                                                  
+            <div class="media-body">
+              <h5 class="mt-0">{{usuario.nombre}}</h5>
+              <h4 class="mt-0">{{usuario.alias}}</h4>
+              <h4 class="mt-0">{{usuario.correo}}</h4>              
+            </div>
+          </div>          
+        </div>        
+
+        <div class="form-group pt-2">
             <label>Escriba algúna observación</label>
-            <textarea class="form-control" v-model="datosBaja.motivo_baja" rows="3"></textarea>
-          </div>
+            <textarea class="form-control" placeholder="Obsevración opcional" v-model="datosBaja.motivo_baja" rows="3"></textarea>
+          </div>          
         </div>
       </div>
       <div slot="footer">
         <button class="btn btn-danger" :disabled="loader_eliminar" @click="eliminar()">
-          <Loader :loading="loader_eliminar" :mini="true" />Confirmar Baja
+          <div v-if="loader_eliminar" class="spinner-border spinner-border-sm" role="status"/>Confirmar Baja
         </button>
       </div>
     </Popup>
+    
 
 
 <!-- reiniciar clave-->
@@ -151,8 +150,8 @@
         
       </div>
       <div slot="footer">
-        <button class="btn btn-primary" :disabled="loader_eliminar" @click="reenviarClaveAcceso()">
-          <Loader :loading="loader_eliminar" :mini="true" /><i class="fa fa-envelope"></i> Confirmar envío
+        <button class="btn btn-primary" :disabled="loader_eliminar" @click="confirmarEnviarClave()">
+          <div v-if="loader_contrasena" class="spinner-border spinner-border-sm" role="status"/> <i class="fa fa-envelope"></i> {{loader_contrasena ? 'Enviando...':'Confirmar envío'}} 
         </button>
       </div>
     </Popup>
@@ -203,6 +202,7 @@ export default {
       TABLE_CONFIG: TABLE_CONFIG,
       loader_eliminar: false,
       loader_edit: false,
+      loader_bloquear: false,
       loader: false,
       loader_contrasena: false,
       contador: 0,
@@ -276,18 +276,7 @@ export default {
     },
     eliminar() {
       console.log("Modificar el id " + this.usuario.id);
-
-      if (
-        this.datosBaja.fecha_baja == null ||
-        this.datosBaja.fecha_baja == undefined
-      ) {
-        this.$notificacion.error(
-          "Fecha de baja",
-          "Seleccione una fecha de baja"
-        );
-        return;
-      }
-
+    
       this.datosBaja.genero = this.usuarioSesion.id;
       this.loader_eliminar = true;
       this.put(
@@ -321,7 +310,7 @@ export default {
           case EDIT: this.caseEdit(); break;
           case DELETE: this.caseDelete(); break;
           case ENVIAR_CLAVE: this.caseEnviarClave(); break;
-          case ACCESO_SISTEMA: this.caseAccesoSistema(); break;
+       //   case ACCESO_SISTEMA: this.caseAccesoSistema(); break; si funciona pero no se incluye en esta actualizacion
           default: console.log("No existe case");
       }
     },
@@ -344,10 +333,34 @@ export default {
         console.log("caseEnviarClave");
         $("#popup_enviar_clave_" + this.id_popup_edit).modal("show");
     },
-    caseAccesoSistema(){     
+    async confirmarEnviarClave(){          
+        console.log("confirmarEnviarClave");
+        this.loader_contrasena =true;
+        
+        const respuesta = await this.postAsync(`${URL.USUARIO_BASE}/reiniciar-clave`,{id_usuario:this.usuario_value.id,genero:this.usuarioSesion.id});
+        
+        this.loader_contrasena =false;
+        
+        console.log(respuesta);
+
+        $("#popup_enviar_clave_" + this.id_popup_edit).modal("hide");
+    },
+   /* caseAccesoSistema(){     
           console.log("caseAccesoSistema");        
          $("#popup_acceso").modal("show");
     },
+    async confirmarBloquearAccesoSistema(){          
+        console.log("confirmarBloquearAccesoSistema");
+        this.loader_contrasena =true;
+        
+        const respuesta = await this.putAsync(`${URL.USUARIO_BASE}/bloquear-acceso/${this.usuario_value.id}`,{acceso:false ,genero:this.usuarioSesion.id});
+        
+        this.loader_contrasena =false;
+        
+        console.log(respuesta);
+
+        $("#popup_enviar_clave_" + this.id_popup_edit).modal("hide");
+    },*/
     cancelar() {
       if (this.operacion == EDIT || this.operacion == INSERT) {
         this.usuario = this.usuarioMemento;
