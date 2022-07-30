@@ -67,7 +67,7 @@
               :disabled="curso.inscripciones_cerradas"
             >
               {{
-                `${curso.dia} horario ${curso.horario} / inicia ${
+                `${curso.dia} de ${curso.horario} / inicia ${
                   curso.fecha_inicio_previsto_format
                 } ${curso.inscripciones_cerradas ? ' - INSCRIPCIONES CERRADAS':''} `
               }}
@@ -218,11 +218,11 @@
             Asesor que inscribe
             <span class="text-danger">*</span>
           </label>
-          <select         
-          
+          <select                   
             class="form-control"
             placeholder="Especialidad"
             autofocus
+            v-model="input.usuario_inscribe"
             required
           >
             <option
@@ -304,7 +304,6 @@ export default {
       this.listaEspecialidades = await this.getAsync(
         `${URL.ESPECIALIDADES_BASE}/${this.usuarioSesion.id_empresa}/${this.usuarioSesion.co_sucursal}`
       );
-
       this.nuevo();
     },
     async nuevo() {
@@ -319,6 +318,7 @@ export default {
         direccion: "",
         telefono: "",
         correo: "",
+        usuario_inscribio:-1,
         cat_genero: -1,
         nombre_grupo: "",
         nombre_sucursal: "",
@@ -335,11 +335,14 @@ export default {
 
       this.generoAlumno = { id: -1, nombre: "", foto: "" };
       this.input.fecha_inicio = new Date();
-
-     this.listaAsesores = await this.getAsync(
+      this.listaAsesores = await this.getAsync(
         `${URL.USUARIO_BASE}/asesores/${this.usuarioSesion.co_sucursal}/${this.usuarioSesion.id_empresa}`
       );
 
+      let user = {id:this.usuarioSesion.id,nombre:this.usuarioSesion.nombre};
+
+      this.listaAsesores.unshift(user);
+      this.input.usuario_inscribe = this.usuarioSesion.id;
     },
     async onChangeEspecialidad(event) {
       console.log("@onChangeEspecialidad " + this.input.cat_especialidad);
@@ -424,6 +427,7 @@ export default {
         fecha_nacimiento: moment(this.input.fecha_nacimiento).format(
           "YYYY-MM-DD"
         ),
+        usuario_inscribe:this.input.usuario_inscribe,
         genero: this.usuarioSesion.id
       };
     },

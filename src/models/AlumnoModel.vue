@@ -4,8 +4,9 @@ import FormatoModel from './FormatoModel';
 var Alumno = new Vue({
     data : {
         id: 0,        
-        padre:{},
-        madre:{},        
+        padre:{},        
+        madre:{},
+        usuario_inscribio:-1,        
         co_sucursal:-1,
         co_curso:-1,
         cat_escolaridad:1,

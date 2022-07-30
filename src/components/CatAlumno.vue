@@ -1,7 +1,7 @@
 <template>
   <div class="cat_alumno">
     <PopupPagoPendiente/>
-    <h1>Alumnos </h1>
+    <h1>Alumnos ({{lista ? lista.length:0}}) </h1>
     <small>{{ usuarioSesion.nombre_sucursal }}</small>
     <div class="row">
       <div class="col-auto mr-auto">

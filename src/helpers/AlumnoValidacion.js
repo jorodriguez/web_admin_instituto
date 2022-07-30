@@ -71,7 +71,13 @@ export const validacionDatosAlumno = (alumno,incluirEspecialidad) => {
       if (alumno.costo_inscripcion == null || alumno.costo_inscripcion == '') {      
         Vue.prototype.$notificacion.error('Escribe el costo de la inscripción', 'El valor de costo de inscripción es requedido.');
         return false;
-      }    
+      }
+      
+      
+      if (!alumno.usuario_inscribe) {
+        Vue.prototype.$notificacion.error('Selecciona quien inscribe', 'El asesor que inscribe es requerido.');
+        return false;
+      }
     }    
     
     return true;
