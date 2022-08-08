@@ -5,8 +5,10 @@
       class="btn btn-sm btn-link text-danger"
       v-on:click="iniciarBaja()"
     >
-      Iniciar Baja
-       <span  v-if="loading" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+
+      <span  v-if="loading" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+      <i v-else class="fa fa-user-minus fa-3x"></i>       
+      <p class="text-sm pb-0 m-0">Iniciar Baja </p>
     </button>
 
     <div

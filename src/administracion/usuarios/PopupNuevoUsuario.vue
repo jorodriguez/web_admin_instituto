@@ -4,16 +4,21 @@
 
     <Popup id="popup_usuario" :show_button_close="true" size="md">
       <div slot="header">Registrar Usuario nuevo</div>
-      <div slot="content">
+      <div slot="content" >
         <span v-if="mensaje" class="text-danger" role="alert">
             *{{mensaje}}
         </span>
         <div class="container text-left">        
-        <formulario-usuario :usuario="usuario" />
-       
+
+           <formulario-usuario :usuario="usuario" />            
+                 
         </div>
+        <!--<div class="alert a ">        
+          <small class="text-sm"><i class="fa fa-info-circle text-primary pt-1"></i> Se enviará un correo al empleado con sus credenciales de acceso.</small>
+        </div>-->
+
       </div>
-      <div slot="footer">
+      <div slot="footer" >
         
         <button class="btn btn-primary" @click="guardar()" v-if="operacion == 'INSERT'">
           <div v-if="loader" class="spinner-border spinner-border-sm" role="status"/>Guardar

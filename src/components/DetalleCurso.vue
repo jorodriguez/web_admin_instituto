@@ -9,7 +9,7 @@
         </router-link>
         <!--<button  @click="iniciarTaller()" class="btn btn-success btn-lg " :disabled="alumnosConfirmados == 0">Iniciar taller</button>-->
         <button @click="iniciarInscripcion()" :disabled="cursoSeleccionado.inscripciones_cerradas" class="btn btn-success btn-lg ">
-          Agregar inscripción
+          <i class="fa fa-plus"></i> Agregar inscripción
         </button>
       </div>
       <div class="col-auto"></div>

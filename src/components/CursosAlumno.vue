@@ -65,7 +65,7 @@
                   @click="iniciarModificacion(item)"
                   class="btn btn-link btn-sm"
                 >
-                  Modificar
+                  <i class="fa fa-edit"></i> Modificar
                 </button>
               </p>
               <p class="card-text">
@@ -84,12 +84,13 @@
         <div class="card-footer bg-light">
           <div class="row">
             <div class="col">
-
+              <i class="fa fa-user"></i>
               <span >Inscribió</span> {{ item.inscribio ? item.inscribio : "-" }}
               <!--Semana Actual: <strong>{{ item.semana_actual }}</strong> de
               <strong>{{ item.duracion_curso }}</strong>-->
             </div>
             <div class="col">
+              <i class="fa fa-user"></i>
               <span >Registró {{item.nombre_genero}}</span>                
               <!--Pagado completo: <strong>{{ item.pagado ? "SI" : "NO" }}</strong>-->
             </div>

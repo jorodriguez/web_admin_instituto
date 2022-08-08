@@ -40,7 +40,7 @@
           <div class="form-group">
             <label for="correoInput">
               Correo
-              <span class="text-sm text-primary"><span class="text-danger">*</span>(se usará para entrar al sistema)</span>
+              <span class="text-sm text-primary"><span class="text-danger">*</span>(se usará para entrar al sistema y le llegaŕa un correo)</span>
             </label>
             <input
               id="correoInput"

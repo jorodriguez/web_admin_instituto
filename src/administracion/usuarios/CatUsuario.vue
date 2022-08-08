@@ -36,7 +36,8 @@
                     <div class="media align-items-center">
                         <a href="#" class="avatar rounded-circle mr-3">                        
                               <img v-if="row.foto" class="avatar avatar-md rounded-circle"  alt="usuario" :src="row.foto">
-                              <img v-else alt="usuario" class="avatar avatar-md rounded-circle" src="../../assets/user.png">                                                      
+                              <span v-else > <i class="fa fa-user fa-2x " ></i> </span>
+                              <!--<img v-else alt="usuario" class="avatar avatar-md rounded-circle" src="../../assets/user.png">-->
                         </a>
                         <div class="media-body text-left">
                             <span class="name mb-0 text-sm">{{row.nombre}}</span>
