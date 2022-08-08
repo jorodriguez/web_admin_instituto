@@ -117,7 +117,7 @@
 
         <div class="form-group pt-2">
             <label>Escriba algúna observación</label>
-            <textarea class="form-control" placeholder="Obsevración opcional" v-model="datosBaja.motivo_baja" rows="3"></textarea>
+            <textarea class="form-control" placeholder="Observación opcional" v-model="datosBaja.motivo_baja" rows="3"></textarea>
           </div>          
         </div>
       </div>
