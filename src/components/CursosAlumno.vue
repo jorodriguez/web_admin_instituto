@@ -24,6 +24,9 @@
               <small>{{item.duracion_curso}} semanas</small>
             </div>
             <div class="col-2 ">              
+              <PopupCambiarTallerAlumno :idAlumno="item.id_alumno" :callback="regresarCatalogoAlumnos" />
+            </div>
+            <div class="col-2 ">              
               <PupupBajaAlumno :idAlumno="item.id_alumno" :callback="regresarCatalogoAlumnos" />
             </div>
           </div>
@@ -193,6 +196,7 @@ import Loader from "../components_utils/Loader";
 import moment from "moment";
 import Popup from "../controller/Popup";
 import PupupBajaAlumno from "../components/fragmentos/baja/pupupBajaAlumno.vue";
+import PopupCambiarTallerAlumno from "../components/fragmentos/inscripciones/PopupCambiarTallerAlumno.vue";
 
 
 export default {
@@ -201,8 +205,9 @@ export default {
     Datepicker,
     Loader,
     Popup,
-    PupupBajaAlumno
-  },
+    PupupBajaAlumno,
+    PopupCambiarTallerAlumno
+},
   props: ["lista"],
   mixins: [operacionesApi],
   data() {
