@@ -3,6 +3,8 @@
      <h1>{{usuarioSesion.nombre_sucursal}}</h1>        
     <div class="row"></div>
       <div class="scroll-panel-salida-div rounded border">
+        {{usuarioSesion.opciones_acceso}}
+        
       <div class="row">                
        <PopupPagoPendiente/>       
       </div>      

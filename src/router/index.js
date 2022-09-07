@@ -17,16 +17,10 @@ import ReporteAsistenciaRangoFechasSuc from '@/asistencia_usuario/ReporteAsisten
 import Bienvenido from '@/components/Bienvenido'
 import CatUsuario from '../administracion/usuarios/CatUsuario'
 import Administracion from '../administracion/Administracion'
-//import Reportes from '../reportes/Reportes'
 import { getUsuarioSesion, getSesion, getToken } from '../helpers/Sesion';
 import SubirFotoAlumno from '@/components/SubirFotoAlumno'
-//import ReporteAsistenciaUsuariosRh from '@/components/ReporteAsistenciaUsuariosRh'
-//import AdministrarUsuariosRh from '@/components_admin/AdministrarUsuariosRh'
-//import CatAvisos from '../administracion/avisos/CatAvisos';
 import InscripcionAlumno from '@/components/InscripcionAlumno';
-//import ReactivarAlumnosEliminados from '@/components/ReactivarAlumnosEliminados';
 import CatCursos from '@/components/CatCursos';
-//import ConfirmarInscripcion from '@/components/ConfirmarInscripcion';
 import DetalleCurso from '@/components/DetalleCurso';
 import ReciboPago from '@/components/ReciboPago';
 import CorteDia from '@/components/reportes/CorteDia';
@@ -34,6 +28,7 @@ import Cobranza from '@/components/Cobranza';
 import Venta from '@/components/venta/index';
 import VentasSucursal from '@/components/venta/ventasSucursal';
 import CatalogoProductos from '@/components/venta/catalogo_productos';
+import CatEspecialidad from '../administracion/especialidades/CatEspecialidad'
 
 import VueSession from 'vue-session'
 
@@ -63,37 +58,21 @@ const router = new Router({
         { path: '/principal', name: 'PaginaPrincipal', component: Principal, meta: { requiresAuth: true, validar: false } },        
         { path: '/CatAlumno', name: 'CatAlumno', component: CatAlumno, meta: { requiresAuth: true, validar: false } },
         { path: '/CatCurso', name: 'CatCurso', component: CatCursos, meta: { requiresAuth: true, validar: false } },
-        { path: '/Inscripcion', name: 'Inscripcion', component: InscripcionAlumno, meta: { requiresAuth: true, validar: false } },
-     //   { path: '/ConfirmarInscripcion/:uidCurso/:cat_especialidad', name: 'ConfirmarInscripcion', component: ConfirmarInscripcion, meta: { requiresAuth: true, validar: false } },
+        { path: '/Inscripcion', name: 'Inscripcion', component: InscripcionAlumno, meta: { requiresAuth: true, validar: false } },     
         { path: '/DetalleCurso/:uidCurso', name: 'DetalleCurso', component: DetalleCurso, meta: { requiresAuth: true, validar: false } },
         { path: '/PerfilAlumno/:uid', name: 'PerfilAlumno', component: PerfilAlumno, meta: { requiresAuth: true, validar: false } },
         { path: '/ReciboPago/:id_pago', name: 'ReciboPago', component: ReciboPago, meta: { requiresAuth: true, validar: false } },
         { path: '/Corte', name: 'Corte', component: CorteDia, meta: { requiresAuth: true, validar: false } },
-        { path: '/SubirFotoAlumno/:uid', name: 'SubirFotoAlumno', component: SubirFotoAlumno, meta: { requiresAuth: true, validar: false } },        
-        //{ path: '/Asistencia', name: 'Asistencia', component: Asistencia, meta: { requiresAuth: true, validar: false } },
-        //{ path: '/Actividades', name: 'Actividades', component: RegistroActividad, meta: { requiresAuth: true, validar: false } },
+        { path: '/SubirFotoAlumno/:uid', name: 'SubirFotoAlumno', component: SubirFotoAlumno, meta: { requiresAuth: true, validar: false } },                
         { path: '/Gastos', name: 'Gastos', component: Gastos, meta: { requiresAuth: true, validar: false } },
         { path: '/Cobranza', name: 'Cobranza', component: Cobranza, meta: { requiresAuth: true, validar: true } },   
         { path: '/Venta', name: 'Venta', component: Venta, meta: { requiresAuth: true, validar: false } },
         { path: '/ConsultaVentas', name: 'ConsultaVentas', component: VentasSucursal, meta: { requiresAuth: true, validar: false } },
         { path: '/Productos', name: 'Productos', component: CatalogoProductos, meta: { requiresAuth: true, validar: false } },
-        { path: '/CambioSucursal/:id_alumno', name: 'CambioSucursal', component: CambiarSucursal, meta: { requiresAuth: true, validar: false } },
-        //{ path: '/ReporteAsistencias', name: 'ReporteAsistencias', component: ReporteAsistencia, meta: { requiresAuth: true, validar: false } },
-        //{ path: '/ReporteAsistenciasSucursalMes', name: 'ReporteAsistenciasSucursalMes', component: ReporteAsistenciasFaltasSucursalMes, meta: { requiresAuth: true, validar: false } },
-        //{ path: '/AsistenciasUsuarios', name: 'AsistenciasUsuarios', component: AsistenciasUsuarios, meta: { requiresAuth: true, validar: false } },
-        //{ path: '/AsistenciasUsuarioSucursal', name: 'AsistenciasUsuarioSucursal', component: ReporteAsistenciaRangoFechasSuc, meta: { requiresAuth: true, validar: true } },
-        //{ path: '/AsistenciasUsuariosRh', name: 'AsistenciasUsuariosRh', component: ReporteAsistenciaUsuariosRh, meta: { requiresAuth: true, validar: true } },
+        { path: '/CambioSucursal/:id_alumno', name: 'CambioSucursal', component: CambiarSucursal, meta: { requiresAuth: true, validar: false } },        
         { path: '/CatalogoUsuario', name: 'CatalogoUsuario', component: CatUsuario, meta: { requiresAuth: true, validar: true } },
         { path: '/Administracion', name: 'Administracion', component: Administracion, meta: { requiresAuth: true, validar: false } },
-     //   { path: '/Reportes', name: 'Reportes', component: Reportes, meta: { requiresAuth: true, validar: false } },
-      //  { path: '/Avisos', name: 'Avisos', component: CatAvisos, meta: { requiresAuth: true, validar: true }},
-      //  { path: '/ReactivarAlumno', name: 'ReactivarAlumno', component: ReactivarAlumnosEliminados, meta: { requiresAuth: true, validar: false } },
-        
-      //  { path: '/ReporteAdmin', name: 'ReporteDeudas', component: ReporteDeudas, meta: { requiresAuth: true, is_admin: true, validar: false } },
-      //  { path: '/CrecimientoGlobal', name: 'CrecimientoGlobal', component: CrecimientoGlobal, meta: { requiresAuth: true, is_admin: true, validar: false } },
-      //  { path: '/ReporteGastos', name: 'ReporteGastos', component: ReporteGastos, meta: { requiresAuth: true, validar: false } },
-       // { path: '/UsuariosRh', name: 'UsuariosRh', component: AdministrarUsuariosRh, meta: { requiresAuth: true, validar: false,is_admin: true, } }
-
+        { path: '/Especialidades', name: 'Especialidades', component: CatEspecialidad, meta: { requiresAuth: true, validar: true } },
       ]
     },
     /*{ si se activa no se ve el menu
