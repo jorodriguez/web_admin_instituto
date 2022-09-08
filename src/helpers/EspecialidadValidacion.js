@@ -1,11 +1,11 @@
 
 
 import Vue from 'vue'
-import { validarEmail } from './CorreoValidacion'
 
 export const validarDatosEspecialidad = (especialidad) => {
   console.log("# VALIDACION DE ESPECIALIDAD #");
-  if (especialidad == null || especialidad == undefined) {
+  if (!especialidad) {
+    Vue.prototype.$notificacion.error('Error', 'Por favor ponte en contacto con el equipo de soporte.');
     return false;
   } else {
 

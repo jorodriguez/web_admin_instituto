@@ -11,6 +11,7 @@
               v-model="especialidad.nombre"
               class="form-control"
               placeholder="Nombre de la especialidad"
+              autocomplete="false"
               required
               autofocus
             />                       
@@ -23,6 +24,7 @@
             <textarea
               id="descripcionInput"
               type="text"
+              autocomplete="false"
               v-model="especialidad.descripcion"
               class="form-control"
               placeholder=""
@@ -37,6 +39,7 @@
             <input
               id="duracionInput"
               type="number"
+              autocomplete="false"
               v-model="especialidad.duracion"
               class="form-control"
               placeholder="ejemplo 12"

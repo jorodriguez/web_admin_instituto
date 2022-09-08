@@ -2,7 +2,7 @@
   <span>
     <button type="button" class="btn btn-primary btn-lg" v-on:click="nuevo()">Nuevo</button>
 
-    <Popup id="popup_especialidad" :show_button_close="true" size="md">
+    <Popup :id="MODAL_NAME" :show_button_close="true" size="md">
       <div slot="header">Registrar Especialidad</div>
       <div slot="content">
         <span v-if="mensaje" class="text-danger" role="alert">
@@ -10,7 +10,7 @@
         </span>
         <div class="container text-left">
 
-          <formulario-usuario :usuario="usuario" />
+          <FormularioEspecialidad :especialidad="especialidad" />
 
         </div>
 
@@ -38,7 +38,8 @@ import { validarDatosEspecialidad } from "../../helpers/EspecialidadValidacion";
 import CONSTANTES from "../../helpers/Constantes";
 import FormularioEspecialidad from './FormularioEspecialidad.vue';
 
-const MODAL_NAME = '#modal_especialidad';
+const MODAL_NAME = 'modal_especialidad';
+const MODAL_NAME_REF = `#${MODAL_NAME}`;
 
 export default {
   name: "nueva-especialidad",
@@ -57,6 +58,8 @@ export default {
       response: "",
       operacion: "INSERT",
       loader: false,
+      CAT_DURACION_SEMANAL : 1,
+      MODAL_NAME,
       mensaje: ""
     };
   },
@@ -72,28 +75,41 @@ export default {
       this.operacion = "INSERT";
       this.especialidad = new CatEspecialidad();
       this.mensaje = "";
-      $(MODAL_NAME).modal("show");
+      $(MODAL_NAME_REF).modal("show");
     },
     async guardar() {
       console.log("Insertar");
 
-      if (!validarDatosEspecialidad(this.usuario)) {
+      if (!validarDatosEspecialidad(this.especialidad)) {
         console.log("No paso la validacion");
         return;
       }
 
-      this.usuario.co_sucursal = this.usuarioSesion.co_sucursal;
-      this.usuario.co_empresa = this.usuarioSesion.id_empresa;
-      this.usuario.genero = this.usuarioSesion.id;
-      this.usuario.cat_tipo_usuario = CONSTANTES.ID_TIPO_USUARIO_MAESTRA;
+      this.especialidad.co_sucursal = this.usuarioSesion.co_sucursal;
+      this.especialidad.co_empresa = this.usuarioSesion.id_empresa;
+      this.especialidad.genero = this.usuarioSesion.id;      
+      this.especialidad.cat_duracion = this.CAT_DURACION_SEMANAL;
+      this.especialidad.alumnos_permitidos = 20;
+      this.especialidad.foto = "";
+      this.especialidad.alumnos_permitidos=20;
 
+      /*this.duracion = null;
+      this.nombre = "";
+      this.descripcion = "";    
+      this.alumnos_permitidos = null;
+      this.foto = "";
+      this.activo = true;
+      this.color="";*/
+    
       this.loader = true;
 
-      const respuesta = await this.postAsync(URL.ESPECIALIDADES_BASE, this.usuario);
+      const respuesta = await this.postAsync(URL.ESPECIALIDADES_BASE, this.especialidad);
+
+      console.log(JSON.stringify(respuesta));
 
       if (respuesta.estatus) {
-        this.metodo_refrescar();
-        $(MODAL_NAME).modal("hide");
+        await this.metodo_refrescar();
+        $(MODAL_NAME_REF).modal("hide");
         this.$notificacion.info("Registro de especialidad", "Registro exitoso.");
       } else {
         this.mensaje = respuesta.mensaje;
