@@ -1,6 +1,6 @@
 <template>
   <div class="datos_alumno">    
-    <div class="container text-left" :disabled="loader">    
+    <div class="container text-left" :disabled="loader">        
       <span class="text-warning" v-if="!input.correo"> <i class="fas fa-info-circle"></i> * Completa la información de
         correo para que le lleguen los comprobantes de pagos a esa dirección.</span>
       <div class="form-row">

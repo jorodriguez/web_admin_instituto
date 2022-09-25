@@ -22,7 +22,9 @@
     <br />
 
     <div class="container text-left" :disabled="loader">
-      <div class="form-row">
+      
+
+      <div class="form-row">      
         <div class="form-group form-group col-sm-6 col-md-6 col-lg-6 col-xl-6">
           <label>
             Especialidad
@@ -65,7 +67,7 @@
               :disabled="curso.inscripciones_cerradas"
             >
               {{
-                `${curso.dia} horario ${curso.horario} / inicia ${
+                `${curso.dia} de ${curso.horario} / inicia ${
                   curso.fecha_inicio_previsto_format
                 } ${curso.inscripciones_cerradas ? ' - INSCRIPCIONES CERRADAS':''} `
               }}
@@ -210,16 +212,39 @@
         </div>
       </div>
 
-      <div class="form-group">
-        <label for="inputFechaLimitePago">Nota </label>
+        <div class="form-row ">
+          <div class="form-group form-group col-sm-6 col-md-6 col-lg-6 col-xl-6 ">
+          <label>
+            Asesor que inscribe
+            <span class="text-danger">*</span>
+          </label>
+          <select                   
+            class="form-control"
+            placeholder="Especialidad"
+            autofocus
+            v-model="input.usuario_inscribe"
+            required
+          >
+            <option
+              v-for="asesor in listaAsesores"
+              v-bind:value="asesor.id"
+              v-bind:key="asesor.id"
+            >
+              {{ asesor.nombre }}
+            </option>
+          </select>
+         </div>
+           <div class="form-group col-sm-6 col-md-6 col-lg-6 col-xl-6">
+             <label for="inputFechaLimitePago">Nota </label>
         <textarea
-          rows="2"
+          rows="1"
           v-model="input.nota"
           class="form-control"
-          placeholder="Notas "
+          placeholder="Nota de inscripción "
         />
-      </div>
-
+           </div>
+        </div>
+      
       <button
         class="btn btn-block btn-primary"
         :disabled="loader"
@@ -260,6 +285,7 @@ export default {
       listaGeneroAlumno: [],
       listaCurso: [],
       listaEspecialidades: [],
+      listaAsesores: [],
       generoAlumno: { id: -1, nombre: "", foto: "" },
       es: es,
       loader: false,
@@ -278,10 +304,9 @@ export default {
       this.listaEspecialidades = await this.getAsync(
         `${URL.ESPECIALIDADES_BASE}/${this.usuarioSesion.id_empresa}/${this.usuarioSesion.co_sucursal}`
       );
-
       this.nuevo();
     },
-    nuevo() {
+    async nuevo() {
       console.log("Es un formulario Nuevo");
       this.operacion = "INSERT";
       this.input = {
@@ -293,6 +318,7 @@ export default {
         direccion: "",
         telefono: "",
         correo: "",
+        usuario_inscribio:-1,
         cat_genero: -1,
         nombre_grupo: "",
         nombre_sucursal: "",
@@ -309,6 +335,14 @@ export default {
 
       this.generoAlumno = { id: -1, nombre: "", foto: "" };
       this.input.fecha_inicio = new Date();
+      this.listaAsesores = await this.getAsync(
+        `${URL.USUARIO_BASE}/asesores/${this.usuarioSesion.co_sucursal}/${this.usuarioSesion.id_empresa}`
+      );
+
+      let user = {id:this.usuarioSesion.id,nombre:this.usuarioSesion.nombre};
+
+      this.listaAsesores.unshift(user);
+      this.input.usuario_inscribe = this.usuarioSesion.id;
     },
     async onChangeEspecialidad(event) {
       console.log("@onChangeEspecialidad " + this.input.cat_especialidad);
@@ -393,6 +427,7 @@ export default {
         fecha_nacimiento: moment(this.input.fecha_nacimiento).format(
           "YYYY-MM-DD"
         ),
+        usuario_inscribe:this.input.usuario_inscribe,
         genero: this.usuarioSesion.id
       };
     },

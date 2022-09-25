@@ -29,10 +29,11 @@
                  <h3 class="mt-0 pointer"  @click="()=>this.clickHead()"> 
                  <small v-if="curso.inscripciones_cerradas" class=" badge badge-pill text-md text-red"><i class="fa fa-lock"></i></small>
                  <span :class="curso.inscripciones_cerradas ? 'text-strike':''" >{{ curso.especialidad }} </span> 
-                 <small style="font-size:10px" :class="`badge badge-pill ${curso.inscripciones == 0 ? ' badge-dark':' badge-primary'}`">{{curso.inscripciones}} {{`alumno${curso.inscripciones == 1 ? '':'s'}`}} </small>                                   
+                  <i class="fa fa-user-graduate " ></i>
+                  <sup style="font-size:10px" :class="`badge badge-pill ${curso.inscripciones == 0 ? ' badge-dark':' badge-primary'}`">{{curso.inscripciones}} </sup>                                   
                   <span v-if="curso.es_nuevo" class="badge badge-pill badge-warning">Nuevo</span></h3>
                   <p class="card-text text-sm">
-                  <span class="text-muted">Fecha de inicio</span>
+                   <span class="text-muted">Fecha de inicio</span>
                   {{
                     curso.fecha_inicio_format
                       ? curso.fecha_inicio_format
@@ -41,12 +42,12 @@
                   <span class="text-orange">({{curso.numero_semanas}} semanas)</span>        
                   <span v-if="curso.inicia_manana" class="badge  badge-warning">Inicia Mañana</span>                         
                 </p>
-                <p class="card-text text-sm">
+                <p class="card-text text-sm ">
                   {{ curso.dia }} de {{ curso.horario }}
                 </p>
                  <p class="card-text text-sm">
-                  Colegiatura  <span class="font-weight-bold d-inline p-2 bg-gray rounded text-white m-2">${{ curso.costo_colegiatura_base }}</span>
-                  Inscripción <span class="font-weight-bold d-inline p-2 bg-gray rounded text-white m-2">${{ curso.costo_inscripcion_base }}</span>
+                  Colegiatura  <span class="font-weight-bold d-inline p-2 rounded  m-2">${{ curso.costo_colegiatura_base }}</span>
+                  Inscripción <span class="font-weight-bold d-inline p-2 rounded  m-2">${{ curso.costo_inscripcion_base }}</span>
                 </p>
                 <small v-if="curso.inscripciones_cerradas" class=" badge badge badge-danger  "><i class="fa fa-lock"></i> Inscripciones cerradas</small>                 
               </div>

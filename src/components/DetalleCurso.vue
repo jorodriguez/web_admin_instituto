@@ -9,7 +9,7 @@
         </router-link>
         <!--<button  @click="iniciarTaller()" class="btn btn-success btn-lg " :disabled="alumnosConfirmados == 0">Iniciar taller</button>-->
         <button @click="iniciarInscripcion()" :disabled="cursoSeleccionado.inscripciones_cerradas" class="btn btn-success btn-lg ">
-          Agregar inscripción
+          <i class="fa fa-plus"></i> Agregar inscripción
         </button>
       </div>
       <div class="col-auto"></div>
@@ -347,7 +347,7 @@
       <div slot="header">
         <h4>Inscripción a {{cursoSeleccionado.especialidad}}</h4>
       </div>
-      <div slot="content" class="text-left">
+      <div slot="content"  class="text-left ">
         
         <div class="form-row">
           <div class="form-group col-sm-6 col-md-6 col-lg-6 col-xl-6">
@@ -487,25 +487,46 @@
         </div>
       </div>
 
-        <div class="form-group">
+       <div class="form-group ">
+          <label for="inputAsesor">Inscribe </label>
+          <select                
+            id="inputAsesor"   
+            class="form-control"
+            placeholder="Inscribe"
+            autofocus
+            v-model="input.usuario_inscribe"
+            required
+          >
+            <option
+              v-for="asesor in listaAsesores"
+              v-bind:value="asesor.id"
+              v-bind:key="asesor.id"
+            >
+              {{ asesor.nombre }}
+            </option>
+          </select>
+        </div>
+
+        <div class="form-group mb-0">
           <label for="inputFechaLimitePago">Nota </label>
           <textarea
-            rows="2"
+            rows="1"
             v-model="input.nota"
             class="form-control"
             placeholder="Notas "
           />
         </div>
-   
+       
+
       </div>
 
-      <div slot="footer">
+      <div slot="footer" >
        <button
         class="btn btn-block btn-primary"
         :disabled="loader"
         v-on:click="guardarInscripcion()"
       >
-        <Loader :loading="loader" :mini="true" />
+        <span v-if="loader" class="spinner-border spinner-border-sm"/>
         Guardar
        </button>
       </div>
@@ -559,6 +580,7 @@ export default {
       listaSemanas: [],
       listaDias: [],
       listaHorarios: [],
+      listaAsesores:[],
       es: es,
       loader: false,
       isModificacion: false,
@@ -754,10 +776,19 @@ export default {
         fecha_inicio: null,
         fecha_fin: null,
         foto: "",       
+        usuario_inscribe:-1,
         genero: 1,
       };
          this.listaGeneroAlumno = await this.getAsync(`${URL.GENERO_ALUMNO}`);
-      $("#popup_inscripcion").modal("show");
+         this.listaAsesores = await this.getAsync(
+               `${URL.USUARIO_BASE}/asesores/${this.usuarioSesion.co_sucursal}/${this.usuarioSesion.id_empresa}`
+          );
+
+          let user = {id:this.usuarioSesion.id,nombre:this.usuarioSesion.nombre};
+
+          this.listaAsesores.unshift(user);
+          this.input.usuario_inscribe = this.usuarioSesion.id;
+          $("#popup_inscripcion").modal("show");
     },    
     async guardarInscripcion() {
       console.log("@guardar");
@@ -835,6 +866,7 @@ export default {
         fecha_nacimiento: moment(this.input.fecha_nacimiento).format(
           "YYYY-MM-DD"
         ),
+        usuario_inscribe:this.input.usuario_inscribe,
         genero: this.usuarioSesion.id,
       };
     },

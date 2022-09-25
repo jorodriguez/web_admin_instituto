@@ -13,7 +13,7 @@
           class="btn btn-primary btn-lg"
           v-on:click="nuevo()"
         >
-          Nuevo Taller
+         <i class="fa fa-plus"></i> Nuevo Taller
         </button>
       </div>
     </div>
@@ -229,6 +229,7 @@
           @click="guardar()"
         >
          <span v-if="loader" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+         <i v-else class="fa fa-save"></i>
          Guardar
         </button>
         <button
@@ -238,7 +239,7 @@
           @click="guardar()"
         >
           <span v-if="loader" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-          Modificar
+          <i v-else class="fa fa-save"></i> Modificar
         </button>
       </div>
     </Popup>
@@ -275,16 +276,16 @@
           <div class="row bg-secondary mt-2 border-top">
 
           <div class="col-md-8 offset-md-4  text-right">                               
-              <button class="btn btn-link" @click="seleccionar(item, 'DETALLE')">
+              <button class="btn btn-link text-sm" @click="seleccionar(item, 'DETALLE')">
                <i class="fa fa-eye"></i> Ver detalle
               </button>                            
-              <button v-if="item.fecha_inicio_previsto_pasada" class="btn btn-link" @click="seleccionar(item, 'UPDATE')">
+              <button v-if="item.fecha_inicio_previsto_pasada" class="btn btn-link text-sm" @click="seleccionar(item, 'UPDATE')">
                <i class="fa fa-edit"></i> Modificar
               </button>
-              <button v-if="item.fecha_inicio_previsto_pasada" class="btn btn-link text-danger" @click="seleccionar(item, 'DELETE')">
+              <button v-if="item.fecha_inicio_previsto_pasada" class="btn btn-link text-danger text-sm" @click="seleccionar(item, 'DELETE')">
                 <i class="fa fa-trash"></i> Eliminar
               </button>              
-              <button :class="`btn btn-link ${item.inscripciones_cerradas ?  '':'text-red'}`" @click="seleccionar(item, 'CERRAR_INSCRIPCIONES')">
+              <button :class="`btn btn-link text-sm ${item.inscripciones_cerradas ?  '':'text-red'}`" @click="seleccionar(item, 'CERRAR_INSCRIPCIONES')">
                <i :class="`${item.inscripciones_cerradas ? 'fa fa-unlock':'fa fa-lock'}`" />  {{item.inscripciones_cerradas  ? 'Abrir':'Cerrar'}} inscripciones
               </button>                            
             </div>
@@ -350,7 +351,7 @@
         </div>
       </div>
       <div slot="footer">
-        <button class="btn btn-danger" @click="eliminar()">Eliminar</button>
+        <button class="btn btn-danger" @click="eliminar()"><i class="fa fa-trash"></i>Eliminar</button>        
       </div>
     </Popup>
 
