@@ -5,7 +5,7 @@ import configEnv from '../../config/configEnv';
 //const BASE = process.env.URL_API || 'https://api-softlineas-demo.herokuapp.com' //demo
 const BASE = process.env.URL_API || 'https://api-admin-paris.herokuapp.com';
 //export const BRANCH = "2203-productos";
-export const BRANCH = "2207-18-asesores - liberado 8 agosto";
+export const BRANCH = "2207-18-asesores - liberado 24 septiembre";
 
 
 const CURSO = BASE + '/curso';
