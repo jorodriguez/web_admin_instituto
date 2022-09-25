@@ -300,6 +300,8 @@
     <Popup id="modal_pago" size="lg" :show_button_close="false">
       <div slot="header">Efectuar Pago</div>
       <div slot="content">
+      <div class="row">
+      <div class="col-10">
         <label for="selectFormaPago">
           Forma de Pago
           <span class="text-danger">*</span>
@@ -318,6 +320,16 @@
             >{{ p.nombre }} - ({{ p.descripcion }})</option
           >
         </select>
+        </div>
+        <div class="col-2">          
+            <div class="pt-4 mt-1">
+              <button class="btn btn-primary" :disabled="loaderGuardarPago"  v-on:click="guardarPago()">
+                <div class="spinner-border spinner-border-sm" v-if="loaderGuardarPago"  role="status"/> Pagar
+              </button>
+            </div>
+        </div>
+      </div>
+        
 
        <div
           class="form-row"
@@ -370,6 +382,7 @@
             />
           </div>
         </div>
+
 
         <table class="table">
           <thead>
