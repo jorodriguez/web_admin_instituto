@@ -29,8 +29,7 @@
       </div>
       <div slot="footer">
         <button class="btn btn-secondary" @click="cancelar()"
-          v-if="operacion == EDIT || operacion == INSERT">Cerrar</button>
-        <button class="btn btn-primary" @click="guardar()" v-if="operacion == INSERT">Guardar</button>
+          v-if="operacion == EDIT || operacion == INSERT">Cerrar</button>        
         <button class="btn btn-primary" @click="modificar()" v-if="operacion == EDIT" :disabled="loader_edit">
           <div v-if="loader_edit" class="spinner-border spinner-border-sm" role="status" />Modificar
         </button>
@@ -125,7 +124,7 @@ export default {
   },
   methods: {
     init() {
-      console.log("Init " + JSON.stringify(this.usuario_value));
+      console.log("Init " + JSON.stringify(this.especialidad_value));
       this.id_popup_baja = this.nombreRandom();
       this.id_popup_edit = this.nombreRandom();
 
@@ -146,7 +145,7 @@ export default {
         }
       });
     },
-    modificar() {
+    async modificar() {
       
       if (!validarDatosEspecialidad(this.especialidad)) {
         console.log("No paso la validacion");
@@ -158,11 +157,11 @@ export default {
 
       this.loader_edit = true;
       
-      this.put(URL.ESPECIALIDADES_BASE, this.especialidad, result => {
-        if (result != null) {
-          console.log("" + JSON.stringify(result.body));
-          let respuesta = result.body;
-          if (respuesta.estatus) {
+      const result = await this.putAsync(`${URL.ESPECIALIDADES_BASE}/${this.especialidad.id}`, this.especialidad);
+
+      console.log(JSON.stringify(result));
+
+        if (result) {                              
             this.$notificacion.info(
               "Modificación ",
               "Se actualizarón los datos."
@@ -170,37 +169,28 @@ export default {
             //this.init();
             this.loader_edit = false;
             $("#popup_especialidad_" + this.id_popup_edit).modal("hide");
-            this.metodo_refrescar();
+            await this.metodo_refrescar();
           } else {
             this.$notificacion.error("Mensaje", respuesta.mensaje);
-          }
-        }
-      });
+          }       
+      
     },
-    eliminar() {
+    async eliminar() {
       console.log("Modificar el id " + this.especialidad.id);
 
       this.datosBaja.genero = this.usuarioSesion.id;
       this.loader_eliminar = true;
-      this.put(
-        URL.ESPECIALIDADES_BASE + "/" + this.especialidad.id,
-        this.datosBaja,
-        result => {
-          let respuesta = result.body;
-          if (respuesta.estatus) {
+      const result = await this.patchAsync(URL.ESPECIALIDADES_BASE + "/" + this.especialidad.id,this.datosBaja);
+      if(result){
             this.$notificacion.error(
               "Registro de Baja",
               "Se registro la baja " + this.especialidad.nombre + "."
             );
             this.loader_eliminar = false;
-            $("#popup_baja_" + this.id_popup_baja).modal("hide");
-            //this.init();
-            this.metodo_refrescar();
-          } else {
-            this.$notificacion.error("Mensaje", respuesta.mensaje);
-          }
-        }
-      );
+            await this.metodo_refrescar();
+      }else{
+        this.$notificacion.error("Mensaje", "Ups, al parecer sucedió un detalle al intentar guardar. comunicate con el equipo de soporte.");
+      }
     },
     seleccionar(operacion) {
       console.log("fila seleccionada " + this.especialidad + " operaicon " + operacion);
