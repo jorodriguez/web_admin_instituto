@@ -277,7 +277,7 @@
 
           <div class="col-md-8 offset-md-4  text-right">                               
               <button class="btn btn-link text-sm" @click="seleccionar(item, 'DETALLE')">
-               <i class="fa fa-eye"></i> Ver detalle
+               <i class="fa fa-eye"></i> 
               </button>                            
               <button v-if="item.fecha_inicio_previsto_pasada" class="btn btn-link text-sm" @click="seleccionar(item, 'UPDATE')">
                <i class="fa fa-edit"></i> Modificar
@@ -286,8 +286,9 @@
                 <i class="fa fa-trash"></i> Eliminar
               </button>              
               <button :class="`btn btn-link text-sm ${item.inscripciones_cerradas ?  '':'text-red'}`" @click="seleccionar(item, 'CERRAR_INSCRIPCIONES')">
-               <i :class="`${item.inscripciones_cerradas ? 'fa fa-unlock':'fa fa-lock'}`" />  {{item.inscripciones_cerradas  ? 'Abrir':'Cerrar'}} inscripciones
-              </button>                            
+               <i :class="`${item.inscripciones_cerradas ? 'fa fa-unlock':'fa fa-lock'}`" />  {{item.inscripciones_cerradas  ? '':''}} 
+              </button>                
+              <ImprimirListaAlumnos  :uuidCurso="item.uid" />
             </div>
           </div>
         </span>
@@ -442,6 +443,7 @@ import InscripcionAlumno from "./InscripcionAlumno.vue";
 import RowCurso from "./fragmentos/curso/RowCurso";
 import VueTimepicker from "vue2-timepicker";
 import  PopupPagoPendiente  from "./PopupPagoPendiente.vue";
+import ImprimirListaAlumnos from "./fragmentos/curso/ImprimirListaAlumnos.vue";
 
 export default {
   name: "cat-cursos",
@@ -452,7 +454,8 @@ export default {
     InscripcionAlumno,
     RowCurso,
     VueTimepicker,
-    PopupPagoPendiente
+    PopupPagoPendiente,
+    ImprimirListaAlumnos
   },
   mixins: [operacionesApi],
   data() {

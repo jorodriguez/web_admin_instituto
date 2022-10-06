@@ -6,7 +6,7 @@ const BASE = configEnv.BASE || "http://localhost:5000";
 //const BASE = process.env.URL_API || 'https://api-softlineas-demo.herokuapp.com' //demo
 //const BASE = process.env.URL_API || 'https://api-admin-paris.herokuapp.com';
 //export const BRANCH = "2203-productos";
-export const BRANCH = "2207-18-asesores - liberado 8 agosto";
+export const BRANCH = "220 - liberado 8 agosto";
 
 
 const CURSO = BASE + '/curso';
@@ -95,6 +95,7 @@ const ESTADO_CUENTA_ENVIAR = BASE + '/estado_cuenta/enviar/'; // /estado_cuenta/
 const USUARIOS_RH = BASE + '/usuarios_rh'; // /usuarios_rh/id_sucursal
 const AVISOS = BASE + '/aviso'; // /aviso/:
 const USUARIO_ROL = BASE + '/usuario-rol';
+
 
 const URL = {    
     LOGIN : BASE+'/auth/login',    
@@ -193,8 +194,8 @@ const URL = {
     USUARIOS_RH:USUARIOS_RH,
     REPORTE_ASISTECIAS_RH: ASISTENCIA_USUARIO_BASE +'/reporte_rh',
     AVISOS: AVISOS,
-    USUARIO_ROL
-
+    USUARIO_ROL,
+    
 }
 
 export default URL;

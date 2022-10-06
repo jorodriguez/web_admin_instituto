@@ -1,14 +1,13 @@
 <template>
-  <div class="principal">
-     <h1>{{usuarioSesion.nombre_sucursal}}</h1>        
-    <div class="row"></div>
-      <div class="scroll-panel-salida-div rounded border">
-        {{usuarioSesion.opciones_acceso}}
-        
-      <div class="row">                
-       <PopupPagoPendiente/>       
-      </div>      
-    </div>   
+  <div class="principal bg-gradient-primary">
+     <!--<h1>{{usuarioSesion.nombre_sucursal}}</h1>        -->
+    
+     <DashboardPrincipal/>
+
+     <!--<div class="row">                
+            <PopupPagoPendiente/>       
+      
+    </div>   -->
   </div>
 </template>
 
@@ -17,11 +16,13 @@ import URL from "../helpers/Urls";
 import { operacionesApi } from "../helpers/OperacionesApi";
 import { getUsuarioSesion } from "../helpers/Sesion";
 import  PopupPagoPendiente  from "./PopupPagoPendiente.vue";
+import  DashboardPrincipal  from "./reportes/DashboardPrincipal.vue";
+
 
 
 export default {
   name: "principal",
-  components: { PopupPagoPendiente },
+  components: { PopupPagoPendiente,DashboardPrincipal },
   mixins: [operacionesApi],
   data() {
     return {      

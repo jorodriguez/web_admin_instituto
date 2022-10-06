@@ -6,8 +6,7 @@
       <div class="col-auto mr-auto">
         <router-link to="/CatCurso" class="btn btn-secondary btn-lg">
           <i class="fas fa-arrow-circle-left text-gray"></i>
-        </router-link>
-        <!--<button  @click="iniciarTaller()" class="btn btn-success btn-lg " :disabled="alumnosConfirmados == 0">Iniciar taller</button>-->
+        </router-link>        
         <button @click="iniciarInscripcion()" :disabled="cursoSeleccionado.inscripciones_cerradas" class="btn btn-success btn-lg ">
           <i class="fa fa-plus"></i> Agregar inscripción
         </button>
@@ -25,11 +24,16 @@
             :disabled="cursoSeleccionado.inscripciones_cerradas"
             @click="iniciarModificacionCurso()"
           >
-            Modificar
-          </button>
+            Modificar          
+          </button>        
+
           <button v-else class="btn btn-link text-danger" :disabled="cursoSeleccionado.inscripciones_cerradas">
             Cancelar curso
           </button>
+
+          <ImprimirListaAlumnos  :uuidCurso="cursoSeleccionado.uid" />
+
+
         </div>
       </div>
     </div>
@@ -551,6 +555,7 @@ import TablaAlumnos from "./fragmentos/inscripciones/TablaAlumnos";
 import InscripcionAlumno from "./InscripcionAlumno.vue";
 import VueTimepicker from "vue2-timepicker";
 //import PopupBajaAlumno from './fragmentos/baja/pupupBajaAlumno.vue'
+import ImprimirListaAlumnos from "./fragmentos/curso/ImprimirListaAlumnos.vue";
 
 export default {
   name: "detalle-curso",
@@ -562,6 +567,7 @@ export default {
     TablaAlumnos,
     InscripcionAlumno,
     VueTimepicker,
+    ImprimirListaAlumnos
   //  PopupBajaAlumno
   },
   mixins: [operacionesApi],
