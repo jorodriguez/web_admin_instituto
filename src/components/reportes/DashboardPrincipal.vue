@@ -1,5 +1,6 @@
 <template>
   <span id="dashboard"  >   
+   <span v-if="loading" class="spinner-border  text-info" role="status" aria-hidden="true"></span>   
    <div class="header  pb-4 pt-1 pt-md-3 ">
       <div class="container-fluid">
         <div class="header-body">
@@ -10,8 +11,9 @@
                 <div class="card-body">
                   <div class="row">
                     <div class="col">
-                      <h5 class="card-title text-uppercase text-muted mb-0">Alumnos</h5>
-                      <span class="h2 font-weight-bold mb-0">{{loadingContadores ? '-': contadores.alumnos }}</span>
+                      <h5 class="card-title text-uppercase text-muted mb-0">Alumnos total</h5>
+                      <span v-if="loadingContadores" class="spinner-border spinner-border-sm text-info" role="status" aria-hidden="true"></span>                      
+                      <span v-else class="h1 font-weight-bold mb-0"> {{ contadores.alumnos }} </span>
                     </div>
                     <div class="col-auto">
                       <div class="icon icon-shape bg-danger text-white rounded-circle shadow">
@@ -31,12 +33,13 @@
                 <div class="card-body">
                   <div class="row">
                     <div class="col">
-                      <h5 class="card-title text-uppercase text-muted mb-0">Talleres</h5>
-                      <span class="h2 font-weight-bold mb-0">{{loadingContadores ? '-': contadores.talleres }}</span>
+                      <h5 class="card-title text-uppercase text-muted mb-0">Talleres</h5>                      
+                         <span v-if="loadingContadores" class="spinner-border spinner-border-sm text-info" role="status" aria-hidden="true"></span>
+                         <span v-else class="h1 font-weight-bold mb-0"> {{contadores.talleres }}</span>                      
                     </div>
                     <div class="col-auto">
                       <div class="icon icon-shape bg-warning text-white rounded-circle shadow">
-                        <i class="fas fa-chart-pie"></i>
+                        <i class="fas fa-table"></i>
                       </div>
                     </div>
                   </div>
@@ -47,34 +50,15 @@
                 </div>
               </div>
             </div>
+         
             <div class="col-xl-3 col-lg-6">
               <div class="card card-stats mb-4 mb-xl-0">
                 <div class="card-body">
                   <div class="row">
                     <div class="col">
-                      <h5 class="card-title text-uppercase text-muted mb-0">Sales</h5>
-                      <span class="h2 font-weight-bold mb-0">924</span>
-                    </div>
-                    <div class="col-auto">
-                      <div class="icon icon-shape bg-yellow text-white rounded-circle shadow">
-                        <i class="fas fa-users"></i>
-                      </div>
-                    </div>
-                  </div>
-                  <p class="mt-3 mb-0 text-muted text-sm">
-                    <span class="text-warning mr-2"><i class="fas fa-arrow-down"></i> 1.10%</span>
-                    <span class="text-nowrap">Since yesterday</span>
-                  </p>
-                </div>
-              </div>
-            </div>
-            <div class="col-xl-3 col-lg-6">
-              <div class="card card-stats mb-4 mb-xl-0">
-                <div class="card-body">
-                  <div class="row">
-                    <div class="col">
-                      <h5 class="card-title text-uppercase text-muted mb-0">Performance</h5>
-                      <span class="h2 font-weight-bold mb-0">49,65%</span>
+                      <h5 class="card-title text-uppercase text-muted mb-0">Inscripciones Mes</h5>
+                      <span v-if="loadingInscripciones" class="spinner-border spinner-border-sm text-info" role="status" aria-hidden="true"></span>
+                      <span v-else :class="`h1 font-weight-bold mb-0  ${informacionInscripciones.inscritos_mes_actual == 0 ? 'text-danger':''}`">{{informacionInscripciones.inscritos_mes_actual}}</span>
                     </div>
                     <div class="col-auto">
                       <div class="icon icon-shape bg-info text-white rounded-circle shadow">
@@ -83,19 +67,168 @@
                     </div>
                   </div>
                   <p class="mt-3 mb-0 text-muted text-sm">
-                    <span class="text-success mr-2"><i class="fas fa-arrow-up"></i> 12%</span>
-                    <span class="text-nowrap">Since last month</span>
+                    <span :class="`text-success mr-2  ${informacionInscripciones.inscritos_mes_actual == 0 ? 'text-danger':''}`"> {{informacionInscripciones.inscritos_mes_anterior}}</span>
+                    <span class="text-nowrap">mes anterior</span>
                   </p>
                 </div>
               </div>
             </div>
+
+             <div class="col-xl-3 col-lg-6">
+              <div class="card card-stats mb-4 mb-xl-0">
+                <div class="card-body">
+                  <div class="row">
+                    <div class="col">
+                      <h5 class="card-title text-uppercase text-muted mb-0">Cobros pendiente</h5>
+                      <span v-if="loadingCargos" class="spinner-border spinner-border-sm text-info" role="status" aria-hidden="true"></span>
+                      <span class="h1 font-weight-bold mb-0">${{ formatPrice(informacionCargos.adeudo_total)}}</span>
+                    </div>
+                    <div class="col-auto">
+                      <div class="icon icon-shape bg-yellow text-white rounded-circle shadow">
+                        <i class="fas fa-cash-register"></i>
+                      </div>
+                    </div>
+                  </div>
+                  <p class="mt-3 mb-0 text-muted text-sm">
+                    <!--<span class="text-warning mr-2"><i class="fas fa-arrow-down"></i> 1.10%</span>-->
+                    <span class="text-nowrap">{{informacionCargos.numero_cargos}} cargos pendientes de cobrar</span>
+                  </p>
+                </div>
+              </div>
+            </div>
+
           </div>
         </div>
       </div>
     </div>
 
+    <!-- desglose de cargos -->
+    <div class="row mt-3">               
+          <!-- Desglose de alumnos deudores -->
+         <div class="col-xl-7">
+          <div class="card shadow">
+            <div class="card-header border-0">
+              <div class="row align-items-center">
+                <div class="col">
+                  <h3 class="mb-0">Alumnos </h3>
+                </div>
+                <div class="col text-right">
+                  <!--<a href="#!" class="btn btn-sm btn-primary">See all</a>-->
+                </div>
+              </div>
+            </div>
+            <div class="table-responsive">
+              <!-- Projects table -->
+              <span v-if="loadingTotalAlumnosDeudores" class="spinner-border spinner-border-sm text-info" role="status" aria-hidden="true"></span>
+              <table v-else class="table align-items-center table-flush">
+                <thead class="thead-light">
+                  <tr>
+                    <th scope="col">Nombre</th>                    
+                    <th scope="col">Adeuda</th>
+                  </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="(item,index) in informacionTotalAlumnosDeudores" :key="index">
+                    <td scope="row" class="text-left">
+                      <strong>{{item.alumno}} {{item.apellidos}}</strong> <br/>
+                      {{item.curso}} {{item.dia}} {{item.hora_inicio}}-{{item.hora_fin}}
+                    </td>                    
+                    <td>
+                         <strong> ${{ formatPrice(item.total_adeudo)}}</strong>
+                    </td>
+                  </tr>                 
+                </tbody>
+              </table>
+            </div>
+          </div>      
+    </div>
+    <!-- fin desglose de cargos-->
+     <div class="col-xl-5 mb-4 mb-xl-0">
+          <div class="card shadow">
+            <div class="card-header border-0">
+              <div class="row align-items-center">
+                <div class="col">
+                  <h3 class="mb-0">Cobros pendientes</h3>
+                </div>
+                <div class="col text-right">
+                 <!--- <a href="#!" class="btn btn-sm btn-primary">See all</a>-->
+                </div>
+              </div>
+            </div>
+            <div class="table-responsive">  
+              <span v-if="loadingCargos" class="spinner-border spinner-border-sm text-info" role="status" aria-hidden="true"></span>              
+              <table v-else class="table align-items-center table-flush">
+                <thead class="thead-light">
+                  <tr>
+                    <th scope="col">Cargo</th>
+                    <!--<th scope="col">Adeudo</th>-->
+                    <th scope="col">No. Cargos</th>
+                    <th scope="col">Total </th>
+                  </tr>
+                </thead>              
+                <tbody>
+                  <tr v-for="(item,index) in informacionCargos.totalAdeudoDesgloseCargos" :key="index">
+                    <th scope="row">
+                      {{item.nombre_cargo}}
+                    </th>
+                    <td>
+                      {{item.numero_cargos}}
+                    </td>                    
+                    <td>
+                     <strong> ${{ formatPrice(item.total_adeudo)}}</strong>
+                    </td>
+                  </tr>                 
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
 
-    
+
+
+       <!-- alumnos deudores -->
+      <div class="row mt-3">     
+         <!-- Desglose de cargos -->
+         <div class="col-xl-12">
+          <div class="card shadow">
+            <div class="card-header border-0">
+              <div class="row align-items-center">
+                <div class="col">
+                  <h3 class="mb-0">Cobros por Cursos </h3>
+                </div>
+                <div class="col text-right">
+                  <!--<a href="#!" class="btn btn-sm btn-primary">See all</a>-->
+                </div>
+              </div>
+            </div>
+            <div class="table-responsive">
+              <!-- Projects table -->
+              <table class="table align-items-center table-flush">
+                <thead class="thead-light">
+                  <tr>
+                    <th scope="col">Curso</th>                    
+                    <th scope="col">Total</th>
+                  </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="(item,index) in informacionTotalAdeudosCurso" :key="index">
+                    <td scope="row" class="text-left">
+                      <strong>{{item.curso}}</strong> <br/> <span class="text-gray">{{item.dia}} {{item.hora_inicio}}-{{item.hora_fin}}</span>
+                    </td>
+                    
+                    <td>
+                         <strong> ${{ formatPrice(item.total_adeudo)}}</strong>
+                    </td>
+                  </tr>                 
+                </tbody>
+              </table>
+            </div>
+          </div>      
+         </div>    
+     </div>
+     
+  
     
   </span>
 </template>
@@ -122,38 +255,86 @@ export default {
       fechaInicio:Date,
       fechaFin:Date,
       lista: [],                                       
-      alumnosTotal:0,  
-      contadores:null,             
+      alumnosTotal:0,        
+      contadores:null, 
+      informacionCargos:null,            
+      informacionInscripciones:null,            
+      informacionTotalAdeudosCurso:null,
+      informacionTotalAlumnosDeudores:null,
       formatPrice:formatPrice,
       loading:false,
-      loadingContadores:false
+      loadingCargos:false,
+      loadingContadores: false,  
+      loadingInscripciones:false,
+      loadingTotalAdeudoPorCursos:false,
+      loadingTotalAlumnosDeudores:false,
     };
   },
   mounted() {
     console.log("====iniciando el componente dashboard ===");
     
     this.usuarioSesion = getUsuarioSesion();
-    this.fechaInicio = new Date();
-    this.fechaFin = new Date();
-    
+        
     this.init();    
   },
   methods: {
     init(){      
-      this.loadFunction();
+      this.loadingContadores = true;    
+      this.loading = true;
+        
+      this.cargarContadores();
+        
+
+     this.loadingCargos = true;
+      setTimeout(()=>{
+          this.cargarCargos();
+      },4000);
+
+      this.loadingInscripciones = true;      
+      setTimeout(()=>{
+          this.cargarInscripciones();
+      },6000);
+
+      this.loadingTotalAlumnosDeudores = true;      
+      setTimeout(()=>{
+        this.cargarTotalAlumnosDeudores();          
+      },8000);
+
+      this.loadingTotalAdeudoPorCursos = true;      
+      setTimeout(()=>{
+        this.cargarTotalAdeudosPorCurso();
+        this.loading = false;
+      },10000);
+      
+      
+      
     },
-    async loadFunction(){            
-       this.loadingContadores = true;
-       
-        this.contadores = await this.getAsync(`${URL.REPORTES_BASE}/contadores/${this.usuarioSesion.id_empresa}/sucursal/${this.usuarioSesion.co_sucursal}`);
-       //this.corte =  await this.putAsync(URL.REPORTES_BASE +'/corte/dia/sucursal/'+this.usuarioSesion.co_sucursal,
-       //{ fechaInicio:this.fechaInicio,fechaFin:this.fechaFin,id_usuario:this.usuarioSesion.id });
-       //this.lista = this.corte.detalleIngreso;
-       //this.listaGastos = this.corte.detalleGasto;
-       
-       this.loadingContadores = false;
+    async cargarContadores(){       
+      this.contadores = await this.getAsync(`${URL.REPORTES_BASE}/contadores/${this.usuarioSesion.id_empresa}/sucursal/${this.usuarioSesion.co_sucursal}`);
+      this.loadingContadores = false;
     },
-     
+   async cargarCargos(){                  
+        this.informacionCargos = await this.getAsync(`${URL.REPORTES_BASE}/totales-cargos/${this.usuarioSesion.id_empresa}/sucursal/${this.usuarioSesion.co_sucursal}`);
+        this.loadingCargos = false;      
+    },
+    async cargarInscripciones(){     
+      
+        this.informacionInscripciones = await this.getAsync(`${URL.REPORTES_BASE}/totales-inscripciones/${this.usuarioSesion.id_empresa}/sucursal/${this.usuarioSesion.co_sucursal}`);
+        this.loadingInscripciones = false;
+      
+    },
+    async cargarTotalAdeudosPorCurso(){     
+      
+        this.informacionTotalAdeudosCurso = await this.getAsync(`${URL.REPORTES_BASE}/totales-adeudos-por-curso/${this.usuarioSesion.id_empresa}/sucursal/${this.usuarioSesion.co_sucursal}`);
+        this.loadingTotalAdeudoPorCursos = false;
+      
+    },
+     async cargarTotalAlumnosDeudores(){ 
+           
+        this.informacionTotalAlumnosDeudores = await this.getAsync(`${URL.REPORTES_BASE}/top-alumnos-deudores/${this.usuarioSesion.id_empresa}/sucursal/${this.usuarioSesion.co_sucursal}`);
+        this.loadingTotalAlumnosDeudores = false;
+      
+    },
     
   }   
 };

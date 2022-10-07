@@ -1,5 +1,5 @@
 <template>
-  <div class="principal bg-gradient-primary">
+  <div class="principal fondo_override">
      <!--<h1>{{usuarioSesion.nombre_sucursal}}</h1>        -->
     
      <DashboardPrincipal/>
@@ -44,7 +44,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style >
 .btn-head {
   width: 70px !important;
   height: 70px !important;
@@ -77,7 +77,9 @@ export default {
   z-index: 9999999;
 }
 
-.fondo-rosa {
-  background-color: "#e83e8c" !important;
+.fondo_override{
+  background: linear-gradient(10deg, #ffffff, #BCDEFF) !important;
 }
+
+
 </style>
