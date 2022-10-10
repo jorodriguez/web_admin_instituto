@@ -6,7 +6,7 @@
         <div class="header-body">
           <!-- Card stats -->
           <div class="row">
-            <div class="col-xl-3 col-lg-6">
+            <div class="col-xl-4 col-lg-6">
               <div class="card card-stats mb-4 mb-xl-0">
                 <div class="card-body">
                   <div class="row">
@@ -23,42 +23,23 @@
                   </div>
                   <p class="mt-3 mb-0 text-muted text-sm">
 <!--                    <span class="text-success mr-2"><i class="fa fa-arrow-up"></i> 3.48%</span>-->
-                    <span class="text-nowrap">Al día de hoy</span>
+                    <span v-if="contadores" class="text-nowrap">En  {{contadores.talleres }} talleres</span>
                   </p>
                 </div>
               </div>
             </div>
-            <div class="col-xl-3 col-lg-6">
-              <div class="card card-stats mb-4 mb-xl-0">
-                <div class="card-body">
-                  <div class="row">
-                    <div class="col">
-                      <h5 class="card-title text-uppercase text-muted mb-0">Talleres</h5>                      
-                         <span v-if="loadingContadores" class="spinner-border spinner-border-sm text-info" role="status" aria-hidden="true"></span>
-                         <span v-else class="h1 font-weight-bold mb-0"> {{contadores.talleres }}</span>                      
-                    </div>
-                    <div class="col-auto">
-                      <div class="icon icon-shape bg-warning text-white rounded-circle shadow">
-                        <i class="fas fa-table"></i>
-                      </div>
-                    </div>
-                  </div>
-                  <p class="mt-3 mb-0 text-muted text-sm">
-                    <!--<span class="text-danger mr-2"><i class="fas fa-arrow-down"></i> 3.48%</span>-->
-                    <span class="text-nowrap">Al día de hoy</span>
-                  </p>
-                </div>
-              </div>
-            </div>
-         
-            <div class="col-xl-3 col-lg-6">
+
+                
+            <div class="col-xl-4 col-lg-6">
               <div class="card card-stats mb-4 mb-xl-0">
                 <div class="card-body">
                   <div class="row">
                     <div class="col">
                       <h5 class="card-title text-uppercase text-muted mb-0">Inscripciones Mes</h5>
                       <span v-if="loadingInscripciones" class="spinner-border spinner-border-sm text-info" role="status" aria-hidden="true"></span>
-                      <span v-else :class="`h1 font-weight-bold mb-0  ${informacionInscripciones.inscritos_mes_actual == 0 ? 'text-danger':''}`">{{informacionInscripciones.inscritos_mes_actual}}</span>
+                      <span v-else :class="`h1 font-weight-bold mb-0  ${informacionInscripciones && informacionInscripciones.inscritos_mes_actual == 0 ? 'text-danger':''}`">
+                         <span v-if="informacionInscripciones.inscritos_mes_actual != null" >{{informacionInscripciones.inscritos_mes_actual}}</span> 
+                      </span>
                     </div>
                     <div class="col-auto">
                       <div class="icon icon-shape bg-info text-white rounded-circle shadow">
@@ -67,14 +48,14 @@
                     </div>
                   </div>
                   <p class="mt-3 mb-0 text-muted text-sm">
-                    <span :class="`text-success mr-2  ${informacionInscripciones.inscritos_mes_actual == 0 ? 'text-danger':''}`"> {{informacionInscripciones.inscritos_mes_anterior}}</span>
+                    <span v-if="informacionInscripciones != null" :class="`text-success mr-2  ${informacionInscripciones && informacionInscripciones.inscritos_mes_actual == 0 ? 'text-danger':''}`"> {{informacionInscripciones.inscritos_mes_anterior}}</span>
                     <span class="text-nowrap">mes anterior</span>
                   </p>
                 </div>
               </div>
             </div>
 
-             <div class="col-xl-3 col-lg-6">
+             <div class="col-xl-4 col-lg-6">
               <div class="card card-stats mb-4 mb-xl-0">
                 <div class="card-body">
                   <div class="row">
@@ -143,7 +124,7 @@
           </div>      
     </div>
     <!-- fin desglose de cargos-->
-     <div class="col-xl-5 mb-4 mb-xl-0">
+     <div class="col-xl-5 mb-4 mb-xl-0 ">
           <div class="card shadow">
             <div class="card-header border-0">
               <div class="row align-items-center">
@@ -168,7 +149,7 @@
                 </thead>              
                 <tbody>
                   <tr v-for="(item,index) in informacionCargos.totalAdeudoDesgloseCargos" :key="index">
-                    <th scope="row">
+                    <th scope="row" class="text-left">
                       {{item.nombre_cargo}}
                     </th>
                     <td>
@@ -227,8 +208,9 @@
           </div>      
          </div>    
      </div>
-     
-  
+
+
+
     
   </span>
 </template>
@@ -283,28 +265,28 @@ export default {
       this.loading = true;
         
       this.cargarContadores();
-        
+   
 
      this.loadingCargos = true;
       setTimeout(()=>{
           this.cargarCargos();
-      },4000);
+      },1000);
 
       this.loadingInscripciones = true;      
       setTimeout(()=>{
           this.cargarInscripciones();
-      },6000);
+      },3000);
 
       this.loadingTotalAlumnosDeudores = true;      
       setTimeout(()=>{
         this.cargarTotalAlumnosDeudores();          
-      },8000);
+      },4000);
 
       this.loadingTotalAdeudoPorCursos = true;      
       setTimeout(()=>{
         this.cargarTotalAdeudosPorCurso();
         this.loading = false;
-      },10000);
+      },8000);
       
       
       

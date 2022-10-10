@@ -1,6 +1,6 @@
 <template>
   <div class="principal fondo_override">
-     <!--<h1>{{usuarioSesion.nombre_sucursal}}</h1>        -->
+     <h1>{{usuarioSesion.nombre_sucursal}}</h1>        
     
      <DashboardPrincipal/>
 
@@ -77,8 +77,9 @@ export default {
   z-index: 9999999;
 }
 
-.fondo_override{
-  background: linear-gradient(10deg, #ffffff, #BCDEFF) !important;
+ 
+.container-fluid.override.fondo-override{
+  /*background: linear-gradient(80deg, #ffffff, #d4d4d4) !important;*/
 }
 
 

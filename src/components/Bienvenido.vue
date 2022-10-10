@@ -5,7 +5,7 @@
     <div class="main-content">
       <MenuEncabezado />
       <Header />
-      <div class="container-fluid fondo-override" >
+      <div class="container-fluid override fondo-override " >
        <!--- <div class="col-xl-12 mb-12 mb-xl-0">-->
           <vue-page-transition name="fade-in-up">          
               <router-view />

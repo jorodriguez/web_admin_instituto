@@ -14,7 +14,7 @@
         
       </div>
       <div class="col-auto">
-       
+       <!--<button @click="carg<arInscripcionesBaja()">Alumnos en baja</button>-->
       </div>
     </div>
 
