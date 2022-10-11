@@ -223,6 +223,7 @@ import URL from "../../helpers/Urls";
 import {getUsuarioSesion} from '../../helpers/Sesion';
 import {formatPrice} from '../../helpers/Utils';
 import moment from 'moment';
+import Emit from "../../helpers/Emit";
 
 
 export default {
@@ -258,6 +259,12 @@ export default {
     this.usuarioSesion = getUsuarioSesion();
         
     this.init();    
+
+    this.$root.$on("CAMBIO_SUCURSAL", text => {
+            console.log("Actualizar dashboard " + text);                
+             this.init();               
+    });
+
   },
   methods: {
     init(){      
