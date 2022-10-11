@@ -2,8 +2,9 @@
   <div class="principal fondo_override">
      <h1>{{usuarioSesion.nombre_sucursal}}</h1>        
     
-     <DashboardPrincipal/>
-
+     <span v-if="mostrarDashboard">
+        <DashboardPrincipal />
+     </span>
      <!--<div class="row">                
             <PopupPagoPendiente/>       
       
@@ -15,6 +16,7 @@
 import URL from "../helpers/Urls";
 import { operacionesApi } from "../helpers/OperacionesApi";
 import { getUsuarioSesion } from "../helpers/Sesion";
+import Constantes from '@/helpers/Constantes';
 import  PopupPagoPendiente  from "./PopupPagoPendiente.vue";
 import  DashboardPrincipal  from "./reportes/DashboardPrincipal.vue";
 
@@ -26,7 +28,8 @@ export default {
   mixins: [operacionesApi],
   data() {
     return {      
-      usuarioSesion: {}      
+      usuarioSesion: {},
+      mostrarDashboard:false      
     };
   },
   mounted() {
@@ -36,10 +39,27 @@ export default {
       console.log("CAMBIO_SUCURSAL en MENU ENCABEZADO");
       let message = text;      
       this.usuarioSesion = getUsuarioSesion();      
+
+
+
     });
   },
   methods: {
-  
+      revisarPersmiso(){
+          this.mostrarDashboard = false;
+          
+          let roles = this.usuarioSesion.roles || [];
+
+          if(roles){
+              roles.forEach(element => {
+                  if(element.id == Constantes.ID_ROL_VER_DASHBOARD){
+                    this.mostrarDashboard = true;
+                  }
+              });
+              
+          }
+
+      }
   }
 };
 </script>
