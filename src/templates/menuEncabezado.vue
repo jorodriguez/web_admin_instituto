@@ -67,8 +67,9 @@
           >
             <div class="media align-items-center">
               <span class="avatar avatar-sm rounded-circle">
-                <i class="fa fa-2x fa-smile-wink"></i>
-                <!--<img alt="Image placeholder" src="./assets/img/theme/team-4-800x800.jpg" />-->
+                <!--<i class="fa fa-2x fa-smile-wink"></i>-->
+                <i class="fa fa-user fa-2x "></i> 
+                <!-- <img alt="Image placeholder" src="./assets/img/theme/team-4-800x800.jpg" /> -->
               </span>
               <div class="media-body ml-2 d-none d-lg-block">
                 <span class="mb-0 text-xs font-weight-bold">

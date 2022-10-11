@@ -4,7 +4,7 @@
       <!-- Header -->
     <!--<div class="header pb-8 pt-5 pt-lg-8 d-flex align-items-center" style="min-height: 100px; background-image: url(../assets/img/theme/profile-cover.jpg); background-size: cover; background-position: center top;">-->
     <div  class="header pb-2 pt-5 pt-lg-4 d-flex align-items-center" 
-    style="min-height: 80px; ">
+          style="min-height: 80px; ">
     
       <!-- Mask -->
       <!--<span class="mask bg-gradient-default opacity-8"></span>-->

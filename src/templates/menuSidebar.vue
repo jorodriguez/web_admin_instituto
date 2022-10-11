@@ -178,7 +178,22 @@
         <!-- Divider -->
         <hr class="my-3" />
         <!-- Heading -->
-        <h6 class="navbar-heading text-muted"></h6>
+        <h6 class="navbar-heading" v-if="pagoPendiente">
+          <img v-if="imagen == ''" 
+              style="width:100px;"  
+              src="https://img.freepik.com/vector-gratis/lindo-gato-jugando-ilustracion-icono-vector-dibujos-animados-bola-hilo-concepto-icono-naturaleza-animal-aislado-vector-premium-estilo-dibujos-animados-plana_138676-3568.jpg"/>
+          <img v-else :src="imagen" style="width:100px;"  />         
+        </h6>
+        <h5 class="navbar-heading" v-if="pagoPendiente">
+          <i class="fa fa-bullhorn" aria-hidden="true"></i> Hola
+          </h5>
+        <h5 class="text-gray " v-if="pagoPendiente">
+          Nos ponemos a disposición por si tienes algún detalle con el pago del mes en curso
+        </h5>
+        <h5 class="text-red" v-if="pagoPendiente">
+          Fecha de pago: del 1 al 9 de cada mes.
+        </h5>
+        
 <!--
         <ul class="navbar-nav mb-md-3">          
           <li class="nav-item nav-with-child">            
@@ -213,6 +228,8 @@ export default {
       usuarioSesion: null,            
       logotipoEmpresa:"",
       with_logotipo:"",
+      imagen:"",
+      pagoPendiente:false,
       opciones:[]
     };
   },
@@ -225,9 +242,22 @@ export default {
     this.with_logotipo = this.usuarioSesion.with_logotipo;
     //this.$mostrarSidebar = !getUsuarioSesion().permiso_gerente;
 
+    this.pagoPendiente = this.usuarioSesion.pago_pendiente;
+
+     if(this.pagoPendiente){        
+        this.pagoPendiente = this.usuarioSesion.pago_pendiente;
+        this.imagen = this.usuarioSesion.pago_pendiente_imagen;                
+      }
+
     this.$root.$on("CAMBIO_SUCURSAL", text => {
       console.log("CAMBIO_SUCUSAL - CARGANDO EL LOGO");      
       this.usuarioSesion = getUsuarioSesion();      
+      
+      this.pagoPendiente = this.usuarioSesion.pago_pendiente;
+      
+      if(this.pagoPendiente ){              
+        this.imagen = this.usuarioSesion.pago_pendiente_imagen;                
+      }
       this.getLogo();
     });
 

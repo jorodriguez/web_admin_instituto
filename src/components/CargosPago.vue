@@ -8,17 +8,18 @@
           <button
             type="button"
             class="btn btn-success"
+            title="Agregar un nuevo cargo al alumno"
             v-on:click="iniciarAgregarCargo()"
           >
-            Agregar Cargo
+           <i class="fa fa-plus"></i> Agregar Cargo
           </button>
           <button
             type="button"
             v-on:click="iniciarEliminacionCargo()"
             class="btn btn-danger"
-            title="Eliminar cargo(s) selecionado(s)"
+            title="Selecciona uno o varios cargos para eliminarlos"            
           >
-            Eliminar Cargo
+            <i class="fa fa-minus"></i> Eliminar Cargo
           </button>
         </div>
       </div>
@@ -28,8 +29,9 @@
             type="button"
             v-on:click="iniciarAgregarPago()"
             class="btn btn-success"
+            title="Seleccionar uno o varios cargos y efectura su pago"
           >
-            Efectuar Pago
+            <i class="fa fa-dollar-sign"></i> Efectuar Pago
           </button>
         </div>
       </div>

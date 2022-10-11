@@ -21,8 +21,12 @@
             </div>
             <div class="col">
               <h3>{{ item.especialidad }}</h3>
+              <small>{{item.duracion_curso}} semanas</small>
             </div>
-            <div class="col-2">              
+            <div class="col-2 ">              
+              <PopupCambiarTallerAlumno :idAlumno="item.id_alumno" :callback="regresarCatalogoAlumnos" />
+            </div>
+            <div class="col-2 ">              
               <PupupBajaAlumno :idAlumno="item.id_alumno" :callback="regresarCatalogoAlumnos" />
             </div>
           </div>
@@ -30,7 +34,7 @@
         <div class="card-body">
           <div class="row">
             <div class="col">
-              <p class="card-text">
+              <p class="card-text">                
                 <span class="text-muted">Fecha de inicio</span>
                 {{
                   item.fecha_inicio_format
@@ -39,11 +43,12 @@
                 }}
               </p>
               <p class="card-text">
-                <span class="text-muted">Día(s)</span> {{ item.dias }}
+                <span class="text-muted">Día</span> {{ item.dias }}
               </p>
               <p class="card-text">
                 <span class="text-muted">Horario</span> {{ item.horario }}
               </p>
+              
             </div>
             <div class="col">
               <p class="card-text">
@@ -63,7 +68,7 @@
                   @click="iniciarModificacion(item)"
                   class="btn btn-link btn-sm"
                 >
-                  Modificar
+                  <i class="fa fa-edit"></i> Modificar
                 </button>
               </p>
               <p class="card-text">
@@ -74,17 +79,23 @@
                     : ""
                 }}
               </p>
-            </div>
+             
+            </div>            
           </div>
+          
         </div>
         <div class="card-footer bg-light">
           <div class="row">
             <div class="col">
-              Semana Actual: <strong>{{ item.semana_actual }}</strong> de
-              <strong>{{ item.duracion_curso }}</strong>
+              <i class="fa fa-user"></i>
+              <span >Inscribió</span> {{ item.inscribio ? item.inscribio : "-" }}
+              <!--Semana Actual: <strong>{{ item.semana_actual }}</strong> de
+              <strong>{{ item.duracion_curso }}</strong>-->
             </div>
             <div class="col">
-              Pagado completo: <strong>{{ item.pagado ? "SI" : "NO" }}</strong>
+              <i class="fa fa-user"></i>
+              <span >Registró {{item.nombre_genero}}</span>                
+              <!--Pagado completo: <strong>{{ item.pagado ? "SI" : "NO" }}</strong>-->
             </div>
           </div>
           <div v-if="item.nota_inscripcion" class="row">
@@ -145,9 +156,7 @@
             <small class="text-gray"> costo actual <strong> ${{costo_colegiatura_anterior}} </strong> </small>
           </div>
         </div>
-     
-
-    
+        
         <div class="form-group">
           <label for="inputFechaLimitePago">Nota </label>
           <textarea
@@ -187,6 +196,7 @@ import Loader from "../components_utils/Loader";
 import moment from "moment";
 import Popup from "../controller/Popup";
 import PupupBajaAlumno from "../components/fragmentos/baja/pupupBajaAlumno.vue";
+import PopupCambiarTallerAlumno from "../components/fragmentos/inscripciones/PopupCambiarTallerAlumno.vue";
 
 
 export default {
@@ -195,8 +205,9 @@ export default {
     Datepicker,
     Loader,
     Popup,
-    PupupBajaAlumno
-  },
+    PupupBajaAlumno,
+    PopupCambiarTallerAlumno
+},
   props: ["lista"],
   mixins: [operacionesApi],
   data() {

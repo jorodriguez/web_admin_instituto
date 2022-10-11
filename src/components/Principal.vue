@@ -1,12 +1,13 @@
 <template>
-  <div class="principal">
+  <div class="principal fondo_override">
      <h1>{{usuarioSesion.nombre_sucursal}}</h1>        
-    <div class="row"></div>
-      <div class="scroll-panel-salida-div rounded border">
-      <div class="row">                
-       <PopupPagoPendiente/>
-      </div>      
-    </div>   
+    
+     <DashboardPrincipal/>
+
+     <!--<div class="row">                
+            <PopupPagoPendiente/>       
+      
+    </div>   -->
   </div>
 </template>
 
@@ -15,11 +16,13 @@ import URL from "../helpers/Urls";
 import { operacionesApi } from "../helpers/OperacionesApi";
 import { getUsuarioSesion } from "../helpers/Sesion";
 import  PopupPagoPendiente  from "./PopupPagoPendiente.vue";
+import  DashboardPrincipal  from "./reportes/DashboardPrincipal.vue";
+
 
 
 export default {
   name: "principal",
-  components: { PopupPagoPendiente },
+  components: { PopupPagoPendiente,DashboardPrincipal },
   mixins: [operacionesApi],
   data() {
     return {      
@@ -41,7 +44,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style >
 .btn-head {
   width: 70px !important;
   height: 70px !important;
@@ -74,7 +77,10 @@ export default {
   z-index: 9999999;
 }
 
-.fondo-rosa {
-  background-color: "#e83e8c" !important;
+ 
+.container-fluid.override.fondo-override{
+  /*background: linear-gradient(80deg, #ffffff, #d4d4d4) !important;*/
 }
+
+
 </style>

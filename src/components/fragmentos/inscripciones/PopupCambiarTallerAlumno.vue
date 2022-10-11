@@ -2,17 +2,16 @@
   <span>
     <button
       type="button"
-      class="btn btn-sm btn-link text-danger"
-      v-on:click="iniciarBaja()"
+      class="btn btn-sm btn-link text-primary"      
     >
 
       <span  v-if="loading" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-      <i v-else class="fa fa-user-minus fa-3x"></i>       
-      <p class="text-sm pb-0 m-0">Iniciar Baja </p>
+      <i v-else class="fas fa-exchange-alt fa-3x"></i>       
+      <p class="text-sm pb-0 m-0">Cambiar de taller </p>
     </button>
 
     <div
-      id="modal_eliminar_alumno"
+      id="modal_cambiar_taller_alumno"
       class="modal fade"
       tabindex="-1"
       role="dialog"
@@ -101,7 +100,7 @@ export default {
     Datepicker
   },
   mixins: [operacionesApi],
-  name: "popup-baja",
+  name: "popup-cambiar-taller",
   props: ["idAlumno","callback"],
   data() {
     return {

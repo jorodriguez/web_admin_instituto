@@ -13,7 +13,7 @@
           class="btn btn-primary btn-lg"
           v-on:click="nuevo()"
         >
-          Nuevo Taller
+         <i class="fa fa-plus"></i> Nuevo Taller
         </button>
       </div>
     </div>
@@ -229,6 +229,7 @@
           @click="guardar()"
         >
          <span v-if="loader" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
+         <i v-else class="fa fa-save"></i>
          Guardar
         </button>
         <button
@@ -238,7 +239,7 @@
           @click="guardar()"
         >
           <span v-if="loader" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
-          Modificar
+          <i v-else class="fa fa-save"></i> Modificar
         </button>
       </div>
     </Popup>
@@ -270,24 +271,24 @@
         </div>
 
         <span v-for="item in lista" :key="item.id">         
-          
           <RowCurso :curso="item" :clickHeader="()=>{seleccionar(item,'DETALLE')}" />         
-          
+
           <div class="row bg-secondary mt-2 border-top">
 
           <div class="col-md-8 offset-md-4  text-right">                               
-              <button class="btn btn-link" @click="seleccionar(item, 'DETALLE')">
-               Ver detalle
-              </button>
-              <!--<button v-if="!item.activo" class="btn btn-link" @click="seleccionar(item, 'CONFIRM')">
-                Confirmar inscripciones
-              </button>-->
-              <button v-if="item.fecha_inicio_previsto_pasada" class="btn btn-link" @click="seleccionar(item, 'UPDATE')">
-                Modificar
-              </button>
-              <button v-if="item.fecha_inicio_previsto_pasada" class="btn btn-link text-danger" @click="seleccionar(item, 'DELETE')">
-                Eliminar
+              <button class="btn btn-link text-sm" @click="seleccionar(item, 'DETALLE')">
+               <i class="fa fa-eye"></i> 
               </button>                            
+              <button v-if="item.fecha_inicio_previsto_pasada" class="btn btn-link text-sm" @click="seleccionar(item, 'UPDATE')">
+               <i class="fa fa-edit"></i> Modificar
+              </button>
+              <button v-if="item.fecha_inicio_previsto_pasada" class="btn btn-link text-danger text-sm" @click="seleccionar(item, 'DELETE')">
+                <i class="fa fa-trash"></i> Eliminar
+              </button>              
+              <button :class="`btn btn-link text-sm ${item.inscripciones_cerradas ?  '':'text-red'}`" @click="seleccionar(item, 'CERRAR_INSCRIPCIONES')">
+               <i :class="`${item.inscripciones_cerradas ? 'fa fa-unlock':'fa fa-lock'}`" />  {{item.inscripciones_cerradas  ? '':''}} 
+              </button>                
+              <ImprimirListaAlumnos  :uuidCurso="item.uid" />
             </div>
           </div>
         </span>
@@ -299,9 +300,9 @@
       <div slot="header">Eliminar Taller</div>
       <div slot="content">
         <div class="row text-left">
-          <table class="table">
+          <table class="table table-sm">
             <tr>
-              <td rowspan="4">
+              <td  rowspan="4" class="col-4">
                 <img
                   v-if="input.foto_curso"
                   class="mr-3 img-fluid rounded"
@@ -351,9 +352,79 @@
         </div>
       </div>
       <div slot="footer">
-        <button class="btn btn-danger" @click="eliminar()">Eliminar</button>
+        <button class="btn btn-danger" @click="eliminar()"><i class="fa fa-trash"></i>Eliminar</button>        
       </div>
     </Popup>
+
+
+ <!--cerrar / abrir inscripciones-->
+    <Popup id="popup_cerrar_inscripciones" :show_button_close="true">
+      <div slot="header">{{input.inscripciones_cerradas  ? 'Abrir':'Cerrar'}} Inscripciones</div>
+      <div slot="content">
+        <div class="row text-left">
+          <table class="table table-sm">
+            <tr >
+              <td rowspan="4" class="col-4">                
+                <img
+                  v-if="input.foto_curso"
+                  class="mr-3 img-fluid rounded"
+                  width="150"
+                  :src="input.foto_curso"
+                  alt="Especialidad"
+                />
+                <div v-else class="card border-light" style="width: 140px">
+                  <div class="card-body">
+                    <i>sin imagen</i>
+                  </div>
+                </div>                
+              </td>
+              <td>
+                <span class="font-weight-bold">{{ input.especialidad }}</span>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <span class="font-weight-bold">
+                  {{
+                    input.fecha_inicio_format
+                      ? input.fecha_inicio_format
+                      : `inicia ${input.fecha_inicio_previsto_format}`
+                  }}
+                </span>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <span class="font-weight-bold">{{ input.dia }}</span>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <span class="font-weight-bold">{{ input.horario }}</span>
+              </td>
+            </tr>
+            <tr>              
+              <td colspan="2">
+                Escribe una nota <span class="text-danger">*</span>
+                <textarea v-model="motivo" class="form-control" rows="2">
+                </textarea>
+              </td>
+            </tr>
+            <tr>
+              <td colspan="2" class="text-red">
+                  <i class="fa fa-exclamation-triangle"></i> Al {{input.inscripciones_cerradas  ? ' Abrir las inscripciones todo se habilitará para realizar inscripciones':'Cerrar las inscripciones no podrán realizar inscripciones'}} 
+              </td>
+            </tr>
+          </table>
+        </div>
+      </div>
+      <div slot="footer">
+        <button :class="`${input.inscripciones_cerradas ? 'btn btn-primary':'btn btn-danger'}`" @click="abrirCerrarInscripciones()">
+        <i :class="input.inscripciones_cerradas ? 'fa fa-unlock':'fa fa-lock'"></i>
+        {{input.inscripciones_cerradas  ? 'Abrir':'Cerrar'}} inscripciones</button>
+      </div>
+    </Popup>
+
   </div>
 </template>
 
@@ -372,6 +443,7 @@ import InscripcionAlumno from "./InscripcionAlumno.vue";
 import RowCurso from "./fragmentos/curso/RowCurso";
 import VueTimepicker from "vue2-timepicker";
 import  PopupPagoPendiente  from "./PopupPagoPendiente.vue";
+import ImprimirListaAlumnos from "./fragmentos/curso/ImprimirListaAlumnos.vue";
 
 export default {
   name: "cat-cursos",
@@ -382,7 +454,8 @@ export default {
     InscripcionAlumno,
     RowCurso,
     VueTimepicker,
-    PopupPagoPendiente
+    PopupPagoPendiente,
+    ImprimirListaAlumnos
   },
   mixins: [operacionesApi],
   data() {
@@ -442,6 +515,7 @@ export default {
       console.log("====" + JSON.stringify(row));
       this.input = Object.assign({}, row);
       this.operacion = ope;
+      this.motivo="";
       if (this.operacion === "DELETE") {
         $("#popup_eliminar").modal("show");
       }
@@ -463,6 +537,11 @@ export default {
       if (this.operacion == "DETALLE") {
           console.log("DETALLE CURSO");
           this.$router.push({ name: "DetalleCurso", params: { uidCurso: row.uid } });
+      }
+
+      if (this.operacion == "CERRAR_INSCRIPCIONES") {
+          console.log("CERRAR_INSCRIPCIONES");
+          $("#popup_cerrar_inscripciones").modal("show");
       }
     },
     async nuevo() {
@@ -577,6 +656,26 @@ export default {
       this.cargarCursos();
 
       $("#popup_eliminar").modal("hide");
+    },
+    async abrirCerrarInscripciones() {
+      if (!this.motivo || this.motivo == "") {
+        this.$notificacion.error(
+          "Escribe una nota",
+          "Por favor escribe una nota para proceder a cerrar las inscripciones."
+        );
+        return;
+      }
+
+      let isCerrar = !this.input.inscripciones_cerradas;
+
+      const result = await this.putAsync(
+        `${URL.CURSO}/${isCerrar ? 'cerrar':'abrir'}/${this.input.id}`,
+        { motivo: this.motivo, genero: this.usuarioSesion.id }
+      );
+
+      this.cargarCursos();
+
+      $("#popup_cerrar_inscripciones").modal("hide");
     },
     getDiaFechaInicioSeleccionadaList(){
         let dia = null;

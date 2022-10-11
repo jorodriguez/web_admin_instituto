@@ -51,6 +51,7 @@ export default {
       this.listaRespaldo = Object.assign(this.lista,{});
       this.loader = false;
     },
+    
     getFoto() {
       let elemento = this.listaGeneroAlumno.find(e => e.id == this.input.cat_genero);
       return elemento.foto;

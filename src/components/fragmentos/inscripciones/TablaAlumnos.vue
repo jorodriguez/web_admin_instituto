@@ -3,10 +3,8 @@
      <table class="table table-sm text-left">          
             <tr>
                 <th></th>                
-                <th>Matricula</th>
-                <th>Alumno</th>
-                <th>Teléfono</th>
-                <th>Dirección</th>
+                <th>Matricula/Alumno</th>                
+                <th>Teléfono</th>                
                 <th>Inscripción</th>                
                 <th></th>
             </tr>
@@ -30,17 +28,16 @@
                     <span class="pointer " @click="verPerfil(row)"> 
                       {{row.matricula}} 
                     </span>                                            
-                  </td>
-                  <td>                   
-                    <span class="pointer " @click="verPerfil(row)"> 
+                    <p class="pointer text-sm " @click="verPerfil(row)"> 
                       {{row.alumno}} {{row.apellidos}} 
-                    </span>                                            
+                    </p>                                            
                   </td>
                   <td class="font-weight-normal">{{row.telefono}}</td>
-                  <td class="font-weight-normal">{{row.direccion}}</td>
+                  <!--<td class="font-weight-normal">{{row.direccion}}</td>-->
                   <td>
-                      <p class="text-gray small">{{row.fecha_inscripcion_format}} </p>
-                      <p class="text-gray small text-wrap" style="width: 10rem;">{{row.nota_inscripcion}}</p>
+                      <small class="text-gray small ">{{row.inscribio ? row.inscribio:'-'}} </small>                      
+                      <p class="text-gray small">{{row.fecha_inscripcion_format}} </p>                      
+                      <small class="text-gray small text-wrap" style="width: 10rem;">{{row.nota_inscripcion}}</small>
                   </td>
 
                   <td class="text-right ">                     

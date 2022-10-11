@@ -1,7 +1,7 @@
 <template>
   <div class="cat_alumno">
     <PopupPagoPendiente/>
-    <h1>Alumnos </h1>
+    <h1>Alumnos ({{lista ? lista.length:0}}) </h1>
     <small>{{ usuarioSesion.nombre_sucursal }}</small>
     <div class="row">
       <div class="col-auto mr-auto">
@@ -14,7 +14,7 @@
         
       </div>
       <div class="col-auto">
-       
+       <!--<button @click="carg<arInscripcionesBaja()">Alumnos en baja</button>-->
       </div>
     </div>
 
@@ -127,8 +127,8 @@
             v-for="row in lista"
             :key="row.id"            
           >
-            <div class="card border-light">
-              <div class="d-flex justify-content-end ">
+            <div class="card border-light">            
+              <div class="d-flex justify-content-end ">                                                               
                 <div class="btn-group" role="group">
                   <button
                     id="btnGroupDrop1"
@@ -145,9 +145,9 @@
                       href="#"
                     >
                       <i class="fas fa-user-minus"></i> Iniciar Baja
-                    </button>
-                  </div>
-                </div>
+                    </button>                    
+                  </div>                  
+                </div>                
               </div>
 
               <img
@@ -160,19 +160,23 @@
               />
 
               <div class="card-body p-1 pointer" @click="verPerfil(row)" >
-                <h4 class="card-text">
+                <p class="card-text text-sm font-weight-bold mb-0 ">
                   {{ row.alumno }}                  
-                </h4>
-                <h5 class="card-text pt-0 small">
+                </p>
+                <small class="card-text pt-0 small">
                   {{ row.apellidos }}
-                </h5>
-                <h6
+                </small>
+                <small
                   :style="row.color_especialidad ? 'background-color:' + row.color_especialidad : ''"
-                  class="badge badge-info text-wrap"
+                  class="badge badge-info text-wrap "
                 >
                   {{ row.especialidad }}
-                </h6>                                                    
-                <small class="font-weight-normal">{{row.dia}} turno {{ row.horario }}</small>
+                </small>                                                    
+                <p class="font-weight-normal small m-0">{{row.dia}} {{ row.horario }}</p>                
+              </div>
+               <div class="card-footer p-0 text-muted d-flex justify-content-start">
+                    <small style="font-size:10px"><i class="fa fa-user-check text-gray pl-1"></i></small>
+                    <small style="font-size:10px" class="text-gray">Inscribió {{row.inscribio ? row.inscribio:'-'}} </small>
               </div>
             </div>
           </div>

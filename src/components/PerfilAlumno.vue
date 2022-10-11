@@ -24,14 +24,14 @@
           <img
             :src="alumno.foto"
             class="rounded-circle"
-            width="50"
-            height="50"
+            width="60"
+            height="60"
             style="cursor:pointer"
             title="Actualizar foto de perfil"
             @click="subirFotoPerfil(alumno.uid)"
           />
           <p class="m-0 p-0">{{alumno.matricula}}</p>
-          <p class="font-weight-bold h4">
+          <p class="font-weight-bold h3">
             {{ alumno.nombre }}
             {{ alumno.apellidos }}            
           </p>
@@ -43,8 +43,8 @@
         <div class="col text-center">
           <div class="text-danger card font-weight-bold h6">
             <div class="card-body">
-              Balance
-              <p>
+              Adeudo
+              <p class="h1 text-danger">
                 ${{alumno.total_adeudo}}
                 <!--<balance-alumno
                   :idalumno="id"
@@ -71,7 +71,7 @@
                 role="tab"
                 aria-controls="pills-home"
                 aria-selected="true"
-                >Perfil</a
+                ><i class="fa fa-user"></i> Perfil</a
               >
             </li>
 
@@ -85,7 +85,7 @@
                 aria-controls="pills-inscripciones"
                 aria-selected="false"
                 @click="cargarCursos()"
-                >Inscripciones
+                ><i class="fa fa-graduation-cap"></i> Inscripciones
               </a>
             </li>
 
@@ -99,7 +99,7 @@
                 aria-controls="pills-servicios"
                 aria-selected="false"
                 v-if="mostrarCobranza"
-                >Cobranza
+                ><i class="fa fa-money-bill"></i> Cobranza
               </a>
             </li>
           </ul>
@@ -112,7 +112,7 @@
             >
               <div class="card">
                 <div class="card-body">                  
-                  <DatosAlumno :uuidAlumno="alumno.uid"/>               
+                  <DatosAlumno :uuidAlumno="alumno.uid" :inscripciones="listaInscripciones"/>               
                   
                 </div>
               </div>
