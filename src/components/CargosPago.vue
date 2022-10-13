@@ -79,14 +79,16 @@
                 <span v-if="!row.pagado" class="font-weight-bold"
                   >{{ row.cantidad > 1 ? row.cantidad : "" }}
                   {{ row.nombre_cargo }}{{ row.cantidad > 1 ? "s" : "" }}
-                  {{ row.numero_semana_curso != null ? `Semana ${row.numero_semana_curso}` : "" }}
+                  {{ row.texto_ayuda != null ? row.texto_ayuda : "" }}
+                  <!--{{ row.numero_semana_curso != null ? `Semana ${row.numero_semana_curso}` : "" }}-->
                 </span>
 
                 <span v-else-if="row.pagado" class="font-weight-bold tachado"
                   >{{ row.cantidad > 1 ? row.cantidad : "" }}
                   {{ row.nombre_cargo }}
-                  {{ row.texto_ayuda != null ? row.texto_ayuda : "" }}</span
-                >
+                  {{ row.texto_ayuda != null ? row.texto_ayuda : "" }}
+                </span>
+                
                 <span class="small ">
                   <div class="text-wrap" style="width: 10rem;">
                     {{row.especialidad != null ? row.especialidad :"" }} 
