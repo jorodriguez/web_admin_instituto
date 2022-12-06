@@ -1,12 +1,12 @@
 import configEnv from '../../config/configEnv';
 
 
-const BASE = configEnv.BASE || "http://localhost:5000";
+//const BASE = configEnv.BASE || "http://localhost:5000";
 //const BASE = process.env.URL_API || 'https://instituto-api-dev.herokuapp.com'
 //const BASE = process.env.URL_API || 'https://api-softlineas-demo.herokuapp.com' //demo
-//const BASE = process.env.URL_API || 'https://api-admin-paris.herokuapp.com';
+const BASE = process.env.URL_API || 'https://api-admin-paris.herokuapp.com';
 //export const BRANCH = "2203-productos";
-export const BRANCH = "2208 - impresión lista alunos,dashboard, cat especialidad";
+export const BRANCH = "2210 - mejoras";
 
 
 const CURSO = BASE + '/curso';
