@@ -5,7 +5,7 @@
       class="btn btn-sm btn-link"
       v-on:click="verEstadoCuenta()"
     >
-    <i class="fa fa-envelope"></i>  Detallado
+    <i class="fa fa-print"></i>  Historial
     </button>
 
     <Popup id="popup_preview_estado_cuenta_detallado" size="lg" :show_button_close="true">

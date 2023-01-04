@@ -279,10 +279,10 @@
               <button class="btn btn-link text-sm" @click="seleccionar(item, 'DETALLE')">
                <i class="fa fa-eye"></i> 
               </button>                            
-              <button v-if="item.fecha_inicio_previsto_pasada" class="btn btn-link text-sm" @click="seleccionar(item, 'UPDATE')">
+              <button v-if="item.inscripciones == 0 " class="btn btn-link text-sm" @click="seleccionar(item, 'UPDATE')">
                <i class="fa fa-edit"></i> Modificar
-              </button>
-              <button v-if="item.fecha_inicio_previsto_pasada" class="btn btn-link text-danger text-sm" @click="seleccionar(item, 'DELETE')">
+              </button>              
+              <button v-if="item.inscripciones == 0 " class="btn btn-link text-danger text-sm" @click="seleccionar(item, 'DELETE')">
                 <i class="fa fa-trash"></i> Eliminar
               </button>              
               <button :class="`btn btn-link text-sm ${item.inscripciones_cerradas ?  '':'text-red'}`" @click="seleccionar(item, 'CERRAR_INSCRIPCIONES')">

@@ -21,7 +21,7 @@
             </div>
             <div class="col">
               <h3>{{ item.especialidad }}</h3>
-              <small>{{item.duracion_curso}} semanas</small>
+              <small>{{item.numero_semanas}} semanas</small>
             </div>
             <div class="col-2 ">              
               <PopupCambiarTallerAlumno :idAlumno="item.id_alumno" :callback="regresarCatalogoAlumnos" />

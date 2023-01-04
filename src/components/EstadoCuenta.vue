@@ -5,7 +5,7 @@
       class="btn btn-sm btn-link"
       v-on:click="verEstadoCuenta()"
     >
-    <i class="fa fa-envelope"></i>  Enviar estado de cuenta
+    <i class="fa fa-envelope"></i>  Enviar
     </button>
 
     <Popup id="popup_preview" size="lg" :show_button_close="true">
