@@ -171,6 +171,17 @@
         </div>
       </div>
 
+         <div class="form-row d-flex justify-content-center mb-3  h3">
+          <div class="custom-control custom-radio custom-control-inline">
+            <input type="radio" v-model="input.cat_esquema_pago" value="1" id="customRadioInline1" name="customRadioInline1" class="custom-control-input">
+            <label class="custom-control-label" for="customRadioInline1">Pago Semanal</label>
+          </div>
+          <div class="custom-control custom-radio custom-control-inline">
+              <input type="radio" v-model="input.cat_esquema_pago" value="2" id="customRadioInline2" name="customRadioInline1" class="custom-control-input">
+            <label class="custom-control-label" for="customRadioInline2">Pago Mensual</label>
+          </div>          
+       </div>       
+
       <div class="form-row ">
         <div class="form-group form-group col-sm-6 col-md-6 col-lg-6 col-xl-6 ">
           <label>
@@ -189,6 +200,10 @@
               min="0"
               required
             />
+             <div class="input-group-append" v-if="input.cat_esquema_pago">
+              <span v-if="input.cat_esquema_pago == 1" class="input-group-text text-gray" id="basic-addon2">Semanal</span>
+              <span v-if="input.cat_esquema_pago == 2" class="input-group-text text-gray" id="basic-addon2">Mensual</span>
+            </div>
           </div>
         </div>
         <div class="form-group col-sm-6 col-md-6 col-lg-6 col-xl-6">
@@ -327,6 +342,7 @@ export default {
         costo_inscripcion: "",
         costo_colegiatura: "",
         cat_especialidad: -1,
+        cat_esquema_pago: -1,
         fecha_inicio: null,
         fecha_fin: null,
         foto: "",
@@ -411,6 +427,7 @@ export default {
     getValues() {
       return {
         co_curso: this.input.co_curso,
+        cat_esquema_pago: this.input.cat_esquema_pago,
         cat_genero: this.input.cat_genero,
         nombre: this.input.nombre,
         apellidos: this.input.apellidos,
