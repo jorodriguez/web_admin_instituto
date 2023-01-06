@@ -62,7 +62,7 @@
                 <span
                   @click="iniciarModificacion(item)"
                   class="pointer font-weight-bold"
-                  >${{ item.costo_colegiatura }}</span
+                  >${{ item.costo_colegiatura }} <i > ({{item.esquema_pago}})</i> </span
                 >
                 <button
                   @click="iniciarModificacion(item)"

@@ -3,37 +3,46 @@
      <table class="table table-sm text-left">          
             <tr>
                 <th></th>                
-                <th>Matricula/Alumno</th>                
+                <th>Matricula/Alumno</th>                                
                 <th>Teléfono</th>                
-                <th>Inscripción</th>                
+                <th>Esquema</th>                
+                <th>Inscripción</th>                                
                 <th></th>
             </tr>
             <tbody 
-              v-for="row in listaInscripciones"
-              :key="row.id">
+                v-for="row in listaInscripciones"
+                :key="row.id">
                 <tr>                
+                
                   <td style="width:40px">
                     <img
-            :src="row.foto"
-            class="rounded-circle "
-            width="40"
-            height="40"
-            style="cursor:pointer"
-            title="Actualizar foto de perfil"
-            @click="verPerfil(row)"
-          />               
-              
-                     </td>
+                      :src="row.foto"
+                      class="rounded-circle "
+                      width="40"
+                      height="40"
+                      style="cursor:pointer"
+                      title="Actualizar foto de perfil"
+                      @click="verPerfil(row)"
+                    />               
+                  </td>
+                 
                   <td>                   
                     <span class="pointer " @click="verPerfil(row)"> 
                       {{row.matricula}} 
                     </span>                                            
                     <p class="pointer text-sm " @click="verPerfil(row)"> 
                       {{row.alumno}} {{row.apellidos}} 
-                    </p>                                            
-                  </td>
+                    </p>                                                              
+                  </td>                                    
+
                   <td class="font-weight-normal">{{row.telefono}}</td>
-                  <!--<td class="font-weight-normal">{{row.direccion}}</td>-->
+
+                  <td class="font-weight-normal">
+                    <span :class="row.cat_esquema_pago == 1 ? 'text-white badge bg-gradient-warning':'text-white badge bg-gradient-primary'">
+                      {{row.esquema_pago}}
+                    </span>
+                  </td>
+                 
                   <td>
                       <small class="text-gray small ">{{row.inscribio ? row.inscribio:'-'}} </small>                      
                       <p class="text-gray small">{{row.fecha_inscripcion_format}} </p>                      

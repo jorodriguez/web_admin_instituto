@@ -78,16 +78,24 @@
               >
                 <span v-if="!row.pagado" class="font-weight-bold"
                   >{{ row.cantidad > 1 ? row.cantidad : "" }}
-                  {{ row.nombre_cargo }}{{ row.cantidad > 1 ? "s" : "" }}
-                  {{ row.texto_ayuda != null ? row.texto_ayuda : "" }}
-                  {{ row.numero_semana_curso != null ? `Semana ${row.numero_semana_curso}` : "" }}
+                  {{ row.nombre_cargo }}{{ row.cantidad > 1 ? "s" : "" }}                  
+                  <span v-if="row.cat_esquema_pago == 1">
+                    {{ row.numero_semana_curso != null ? `Semana ${row.numero_semana_curso}` : "" }}
+                  </span>
+                  <span v-if="row.cat_esquema_pago == 2">
+                    {{ row.texto_ayuda != null ? row.texto_ayuda : "" }}                  
+                  </span>                  
                 </span>
                 
                 <span v-else-if="row.pagado" class="font-weight-bold tachado"
                   >{{ row.cantidad > 1 ? row.cantidad : "" }}
                   {{ row.nombre_cargo }}
-                  <!--{{ row.texto_ayuda != null ? row.texto_ayuda : "" }}-->
-                  {{`${row.numero_semana_curso ? 'Semana '+ row.numero_semana_curso :''}`}}                  
+                  <span v-if="row.cat_esquema_pago == 1">
+                    {{`${row.numero_semana_curso ? 'Semana '+ row.numero_semana_curso :''}`}}                  
+                  </span>
+                  <span v-if="row.cat_esquema_pago == 2">
+                    {{ row.texto_ayuda != null ? row.texto_ayuda : "" }}                  
+                  </span>                  
                 </span>
                
                 <span class="small ">
@@ -221,10 +229,10 @@
 
         <div
           class="form-group"
-          v-if="cargo.cat_cargo.id == 1 "
+          v-if="cargo.cat_cargo.id == 1 && cargo.co_curso.cat_esquema_pago == 1"
         >
           <label for="inputSemanaCurso">
-            Semana
+            Colegiatura Semana
             <span class="text-danger">*</span>
           </label>
           <select
@@ -243,7 +251,34 @@
             </option>
           </select>          
         </div>
-        
+
+
+        <div
+          class="form-group"
+          v-if="cargo.cat_cargo.id == 1 && cargo.co_curso.cat_esquema_pago == 2"
+        >
+          <label for="inputMesesCurso">
+            Colegiatura del mes
+            <span class="text-danger">*</span>
+          </label>
+          <select
+            v-model="cargo.mes"
+            class="form-control"
+            placeholder="Mensualidad"            
+          >
+            <option
+              id="selectMesCurso"
+              v-for="mes in listaMesesAdeuda"
+              v-bind:value="mes"
+              v-bind:key="mes.fecha_mes"             
+              :disabled="mes.cargo_registrado"
+            >
+             {{mes.nombre_mes_anio}} 
+            </option>
+          </select>          
+        </div>
+
+         
 
         <div
           class="form-group"
@@ -392,7 +427,9 @@
             >
               <td style="width:25%">
                 <span class="h4"
-                  >{{ row.nombre_cargo }}  {{ row.numero_semana_curso != null ? `Semana ${row.numero_semana_curso}` : "" }}
+                  >{{ row.nombre_cargo }}  
+                  {{ row.numero_semana_curso != null ? `Semana ${row.numero_semana_curso}` : "" }}
+                  {{ row.texto_ayuda ? row.texto_ayuda  : '' }}
                 </span>
                  <span class="small ">
                   <div class="text-wrap" style="width: 10rem;">
