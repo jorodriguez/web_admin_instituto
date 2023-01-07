@@ -201,8 +201,8 @@
               required
             />
              <div class="input-group-append" v-if="input.cat_esquema_pago">
-              <span v-if="input.cat_esquema_pago == 1" class="input-group-text text-gray" id="basic-addon2">Semanal</span>
-              <span v-if="input.cat_esquema_pago == 2" class="input-group-text text-gray" id="basic-addon2">Mensual</span>
+              <span v-if="input.cat_esquema_pago == 1" class="input-group-text badge badge-pills bg-gradient-warning text-white" id="basic-addon2">Semanal</span>
+              <span v-if="input.cat_esquema_pago == 2" class="input-group-text badge badge-pills bg-gradient-info text-white" id="basic-addon2">Mensual</span>
             </div>
           </div>
         </div>

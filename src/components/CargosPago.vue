@@ -588,7 +588,13 @@
                   }}
                   {{ cargoSeleccionado.nombre_cargo
                   }}{{ cargoSeleccionado.cantidad > 1 ? "s" : "" }}
-                  {{cargoSeleccionado.numero_semana_curso != null ? `Semana ${cargoSeleccionado.numero_semana_curso}` : "" }}
+                   <span v-if="cargoSeleccionado.cat_esquema_pago == 1">
+                    {{`${cargoSeleccionado.numero_semana_curso ? 'Semana '+ row.numero_semana_curso :''}`}}                  
+                  </span>
+                  <span v-if="cargoSeleccionado.cat_esquema_pago == 2">
+                    {{ cargoSeleccionado.texto_ayuda != null ? cargoSeleccionado.texto_ayuda : "" }}                  
+                  </span> 
+                  <!--{{cargoSeleccionado.numero_semana_curso != null ? `Semana ${cargoSeleccionado.numero_semana_curso}` : "" }}-->
                 </span>
                 <span
                   v-else-if="cargoSeleccionado.pagado"

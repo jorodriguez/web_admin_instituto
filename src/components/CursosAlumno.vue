@@ -115,6 +115,9 @@
         <h4>Modificar Colegiatura </h4>
       </div>
       <div slot="content" class="text-left">
+        <div class="alert alert-warning" role="alert">
+          <i class="fa fa-exclamation-circle"/> Tenga cuidado con este cambio, <strong>revise bien los datos</strong>. 
+        </div>
          <div class="row mb-2">
           <div class="col-4">
             <strong>Taller:</strong>
@@ -129,9 +132,23 @@
             <strong>Alumno:</strong>
           </div>
           <div class="col">
-            {{input.alumno}} {{input.alumno}}
+            {{input.alumno}} {{input.apellidos}}
           </div>
         </div>
+        
+        <div class="row  mb-3 mt-3 ">
+          <div class="col-4">
+            <strong>Esquema :</strong>
+          </div>
+          <div class="custom-control custom-radio custom-control-inline">
+            <input type="radio" v-model="input.cat_esquema_pago" value="1" id="customRadioInline1" name="customRadioInline1" class="custom-control-input">
+            <label class="custom-control-label" for="customRadioInline1">Pago Semanal</label>
+          </div>
+          <div class="custom-control custom-radio custom-control-inline">
+              <input type="radio" v-model="input.cat_esquema_pago" value="2" id="customRadioInline2" name="customRadioInline1" class="custom-control-input">
+            <label class="custom-control-label" for="customRadioInline2">Pago Mensual</label>
+          </div>          
+       </div>       
 
          <div class="row">
           <div class="col-4">
@@ -151,14 +168,18 @@
                 placeholder="Costo Colegiatura"
                 min="0"
                 required                
-              />              
+              />  
+              <div class="input-group-append" v-if="input.cat_esquema_pago">
+              <span v-if="input.cat_esquema_pago == 1" class="input-group-text  badge badge-pills bg-gradient-warning text-white " id="basic-addon2">Semanal</span>
+              <span v-if="input.cat_esquema_pago == 2" class="input-group-text badge badge-pills bg-gradient-info text-white " id="basic-addon2">Mensual</span>
+            </div>            
             </div>
             <small class="text-gray"> costo actual <strong> ${{costo_colegiatura_anterior}} </strong> </small>
           </div>
         </div>
         
         <div class="form-group">
-          <label for="inputFechaLimitePago">Nota </label>
+          <label for="inputFechaLimitePago">Nota <span class="text-danger">*</span></label>
           <textarea
             rows="2"
             v-model="input.nota"
@@ -216,6 +237,7 @@ export default {
       usuarioSesion: {},
       input: AlumnoModel,
       costo_colegiatura_anterior:0,
+      cat_esquema_pago_anterior:0,
       listaInscripciones: [],
       generoAlumno: { id: -1, nombre: "", foto: "" },
       es: es,
@@ -255,6 +277,7 @@ export default {
       this.input = Object.assign({}, row);
 
       this.costo_colegiatura_anterior = row.costo_colegiatura;
+      this.cat_esquema_pago_anterior = row.cat_esquema_pagos;
 
       $("#popup_modificar_colegiatura").modal("show");
 
@@ -263,10 +286,11 @@ export default {
     },
     async modificar() {
 
-        if(this.costo_colegiatura_anterior == this.input.costo_colegiatura){
+        if(this.costo_colegiatura_anterior == this.input.costo_colegiatura && 
+            this.cat_esquema_pago_anterior == this.input.cat_esquema_pago){
           Vue.prototype.$notificacion.warn(
           "No hay cambios",
-            "Modifica el costo de la colegiatura."
+            "Modifica el costo de la colegiatura o el esquema de pago y presiona guardar."
         );
         return;  
         }
@@ -292,6 +316,7 @@ export default {
 
       const data = {
         costo_colegiatura: this.input.costo_colegiatura,
+        cat_esquema_pago:this.input.cat_esquema_pago, 
         nota: this.input.nota,
         genero: this.usuarioSesion.id,
       };

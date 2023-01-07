@@ -1,5 +1,5 @@
 <template>
-  <div class="login containe bg-gray h-100  ">
+  <div class="login     ">
     <section class="section section-shaped section-lg">
       <!--  bg-gradient-default-->
       <div class="shape shape-style-1 pb-4 ">
@@ -10,7 +10,7 @@
                 <div class="card-header  responsive text-center">
                   <!--<img src="https://res.cloudinary.com/dwttlkcmu/image/upload/v1640639519/static/thumbnail_LOGO_PARIS_aw1o2o.png" height="80" width="140" />-->
                   <h1 style="font-size:2em" class="responsive">
-                    Soft<small>lineas</small>
+                    Soft<span>lineas</span>
                   </h1>
                   <small class="text-gray">Ayudamos en tu crecimiento</small>
                 </div>
@@ -75,12 +75,12 @@
                 </div>
                 <div class="row mt-3 h4">
                   <div class="col-6">
-                    <router-link class="text-link " to="/olvido"
+                    <router-link class="text-link font-weight-normal" to="/olvido"
                       >Olvide mi contraseña</router-link
                     >
                   </div>
                   <div class="col-6 ">
-                    <router-link class="text-link " to="/Registro"
+                    <router-link class="text-link font-weight-normal " to="/Registro"
                       >Crear cuenta</router-link
                     >
                   </div>
@@ -93,10 +93,10 @@
       
     </section>
 
-    <footer class="footer py-6 " style="background-color:#1C7F8D">
+    <footer class="fixed-bottom py-6 bg-gradient-info " >
       <div class="container ">
         <div class="row">
-          <div class="col-lg-8 mb-4 mx-auto text-center">
+         <!-- <div class="col-lg-8 mb-4 mx-auto text-center">
             <a
               href="#"
               target="_blank"
@@ -140,6 +140,7 @@
               Pricing
             </a>
           </div>
+        -->
           <div class="col-lg-8 mx-auto text-center mb-4 mt-2">
             <a href="#" target="_blank" class="text-secondary me-xl-4 me-4">
               <span class="text-lg fab fa-dribbble"></span>
@@ -150,12 +151,7 @@
             <a href="#" target="_blank" class="text-secondary me-xl-4 me-4">
               <span class="text-lg fab fa-instagram"></span>
             </a>
-            <a href="#" target="_blank" class="text-secondary me-xl-4 me-4">
-              <span class="text-lg fab fa-pinterest"></span>
-            </a>
-            <a href="#" target="_blank" class="text-secondary me-xl-4 me-4">
-              <span class="text-lg fab fa-github"></span>
-            </a>
+                        
           </div>
         </div>
         <div class="row">
@@ -165,7 +161,7 @@
               <!--<script type="javascript">
                 document.write(new Date().getFullYear());
               </script>-->
-              Soft by Soflineas team (luci-2)</small>
+              Soft by Soflineas team (luci-3)</small>
                            
             </p>
           </div>
