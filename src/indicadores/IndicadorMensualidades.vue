@@ -1,5 +1,5 @@
 <template>
-  <div v-if="sucItem.existen_mensualidades_vencidas && sucItem.existen_mensualidades_vencidas != null">    
+  <div >    
     <a
      :key="usuarioSesion.co_sucursal"      
       class="nav-link pr-0"
@@ -32,6 +32,7 @@
           
           <!--  max-height="400px"
               :fixed-header="true"-->
+              <!--
             <vue-good-table
               :columns="columnas"
               :rows="listaMensualidades"
@@ -57,12 +58,12 @@
                     <span class="text-danger"><strong>${{props.row.total}}</strong></span>  
                 </span>
                 <span v-else-if="props.column.field == 'botones'">
-                  <button class="btn btn-primary"  @click="verPerfil(props.row)" >Pagar</button>                  
-                  <!--<router-link :to="{name:'PerfilAlumno',params:{id : props.row.id_alumno}}" replace >Pagar {{props.row.id_alumno}}</router-link>-->
+                  <button class="btn btn-primary"  @click="verPerfil(props.row)" >Pagar</button>                                    
                 </span>
                 <span v-else>{{props.formattedRow[props.column.field]}}</span>
               </template>
             </vue-good-table>
+            -->
           </div>
         </div>
       </div>

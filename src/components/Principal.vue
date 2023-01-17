@@ -2,7 +2,7 @@
   <div class="principal fondo_override">
      <h1>{{usuarioSesion.nombre_sucursal}}</h1>        
     
-     <span v-if="mostrarDashboard">
+     <span v-if="mostrarDashboard">     
         <DashboardPrincipal />
      </span>
      <!--<div class="row">                
@@ -35,12 +35,13 @@ export default {
   mounted() {
     console.log("##### pagina principal ####");
     this.usuarioSesion = getUsuarioSesion();
+    this.revisarPersmiso();
     this.$root.$on("CAMBIO_SUCURSAL", text => {
       console.log("CAMBIO_SUCURSAL en MENU ENCABEZADO");
       let message = text;      
       this.usuarioSesion = getUsuarioSesion();      
 
-
+      this.revisarPersmiso();
 
     });
   },
@@ -52,7 +53,11 @@ export default {
 
           if(roles){
               roles.forEach(element => {
-                  if(element.id == Constantes.ID_ROL_VER_DASHBOARD){
+                  if(element.id == Constantes.ID_ROL_VER_DASHBOARD || 
+                      element.id == Constantes.ID_ROL_GERENTE ||
+                      element.id == Constantes.ID_ROL_ADMINISTRADOR
+                  ){
+                    console.log("mostrar dash ");
                     this.mostrarDashboard = true;
                   }
               });

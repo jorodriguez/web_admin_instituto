@@ -1,12 +1,12 @@
 import configEnv from '../../config/configEnv';
 
 
-//const BASE = configEnv.BASE || "http://localhost:5000";
+const BASE = configEnv.BASE || "http://localhost:5000";
 //const BASE = process.env.URL_API || 'https://instituto-api-dev.herokuapp.com'
 //const BASE = process.env.URL_API || 'https://api-softlineas-demo.herokuapp.com' //demo
-const BASE = process.env.URL_API || 'https://api-admin-paris.herokuapp.com';
+//const BASE = process.env.URL_API || 'https://api-admin-paris.herokuapp.com';
 //export const BRANCH = "2203-productos";
-export const BRANCH = "2301-colegiatura-mensual se integra el esquema de pago mensual";
+export const BRANCH = "2301-release - aviso de pago";
 
 
 const CURSO = BASE + '/curso';
@@ -95,6 +95,7 @@ const ESTADO_CUENTA_ENVIAR = BASE + '/estado_cuenta/enviar/'; // /estado_cuenta/
 const USUARIOS_RH = BASE + '/usuarios_rh'; // /usuarios_rh/id_sucursal
 const AVISOS = BASE + '/aviso'; // /aviso/:
 const USUARIO_ROL = BASE + '/usuario-rol';
+const FACTURACION_SUCURSAL = BASE + '/facturacion';
 
 
 const URL = {
@@ -195,6 +196,8 @@ const URL = {
     REPORTE_ASISTECIAS_RH: ASISTENCIA_USUARIO_BASE + '/reporte_rh',
     AVISOS: AVISOS,
     USUARIO_ROL,
+    FACTURACION_SUCURSAL
+
 
 }
 

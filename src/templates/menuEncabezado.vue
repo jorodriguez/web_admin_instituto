@@ -19,8 +19,13 @@
       </div>
 
       <!--  notificaciones -->
+      <!--<router-link to="/Cuenta" class=" pt-0 text-white " >
+          <i class="fa fa-envelope" /> Cuenta
+      </router-link>           
+      -->
 
-      <div class="nav-item dropdown">
+<!--      
+  <div class="nav-item dropdown">
         <a
           class="nav-link pr-0"
           href="#"
@@ -28,29 +33,23 @@
           data-toggle="dropdown"
           aria-haspopup="true"
           aria-expanded="false"
-        >
-          <IndicadorMensualidades />
+        >          
+          
         </a>
 
         <div class="dropdown-menu dropdown-menu-arrow dropdown-menu-right">
           <div class="dropdown-header noti-title">
             <h6 class="text-overflow m-0">Notificaciones</h6>
-          </div>
-          <a
-            class="dropdown-item"
-            v-if="usuarioSesion.permiso_gerente"
-            @click="irDashboard()"
-          >
-            <i class="ni ni-single-02"></i>
-            <span>Dashboard</span>
-          </a>
+          </div>          
           <div class="dropdown-divider"></div>
-          <a class="dropdown-item" @click="signout()">
+            <a class="dropdown-item" @click="signout()">
             <i class="fa fa-sign-out-alt"></i>
             <span class="text-red">Salir</span>
           </a>
         </div>
+    
       </div>
+      -->
 
       <!-- notificaciones -->
 
@@ -92,6 +91,10 @@
               <i class="ni ni-single-02"></i>
               <span>Dashboard</span>
             </a>
+            <router-link to="/Cuenta" class="dropdown-item ">
+              <i class="fa fa-home text-gray" /> Cuenta
+            </router-link>    
+
             <CambioSucursal />
             <div class="dropdown-divider"></div>
             <a class="dropdown-item" @click="signout()">
@@ -121,7 +124,8 @@ export default {
       usuarioSesion: {},
       revisarSesionPromise: null,
       revisarSesion: null,
-      loader: false
+      loader: false,
+      
     };
   },
   mounted() {
