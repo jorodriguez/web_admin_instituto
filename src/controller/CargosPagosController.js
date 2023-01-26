@@ -262,6 +262,9 @@ export default {
                 return;
             }
 
+            let fecha = "";
+            let nombreMes = "";
+
             if (this.cargo.cat_cargo.id == 1) { //colegiatura
 
                 if (!this.cargo.co_curso.id == -1) {
@@ -278,6 +281,11 @@ export default {
                     this.$notificacion.error('Seleccione el mes correspondiente a la colegiatura.', '');
                     return;
                 }
+
+                // solo aplica a la colegiatura
+                fecha = this.cargo.co_curso.cat_esquema_pago == 2 ? moment(this.cargo.mes.fecha_mes).format("YYYY-MM-DD") : null;
+                nombreMes = this.cargo.co_curso.cat_esquema_pago == 2 ? this.cargo.mes.nombre_mes_anio : '';
+
             }
 
             if (this.cargo.cat_cargo.id == 2) { //inscripcion
@@ -311,12 +319,9 @@ export default {
             }
 
             console.log("invocar " + this.usuarioSesion.id);
-            //this.cargo.id_curso = this.co_curso.id;
-            //this.cargo.genero = this.usuarioSesion.id;
-            //this.cargo.uid_alumno = this.uidalumno;
 
-            const fecha = this.cargo.co_curso.cat_esquema_pago == 2 ? moment(this.cargo.mes.fecha_mes).format("YYYY-MM-DD") : null;
-            const nombreMes = this.cargo.co_curso.cat_esquema_pago == 2 ? this.cargo.mes.nombre_mes_anio : '';
+            //const fecha = this.cargo.co_curso.cat_esquema_pago == 2 ? moment(this.cargo.mes.fecha_mes).format("YYYY-MM-DD") : null;
+            //const nombreMes = this.cargo.co_curso.cat_esquema_pago == 2 ? this.cargo.mes.nombre_mes_anio : '';
 
             const result = await this.postAsync(URL.CARGO_REGISTRAR, {
                 fecha: fecha,
