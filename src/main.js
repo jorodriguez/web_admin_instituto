@@ -12,7 +12,8 @@ import VueTimepicker from 'vue2-timepicker'
 import 'vue2-timepicker/dist/VueTimepicker.css'
 import VuePageTransition from 'vue-page-transition'
 import JsonExcel from 'vue-json-excel'
-import moment from 'moment'
+import moment from 'moment';
+import printSection from './directivas/DirectivaPrint';
 Vue.prototype.moment = moment
  
 
@@ -28,7 +29,15 @@ Vue.component('downloadExcel', JsonExcel)
 Vue.prototype.$notificacion = Notificaciones;
 //Vue.prototype.$mostrarSidebar = {value:true};
 //Vue.forceUpdate();
-Vue.config.productionTip = false
+Vue.config.productionTip = false;
+
+
+Vue.directive('print',{
+  bind( el, binding){
+     printSection( el, binding )
+  }
+});
+
 
 /* eslint-disable */
 new Vue({

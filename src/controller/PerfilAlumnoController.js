@@ -169,6 +169,7 @@ export default {
         subirFotoPerfil(uid) {
 
             this.$router.push({ name: "SubirFotoAlumno", params: { uid: uid, path_retorno: `PerfilAlumno` } });
-        }
+        },
+         
     }
 };
