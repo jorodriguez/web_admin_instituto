@@ -185,9 +185,9 @@
                     <span v-if="row.cat_esquema_pago == 1">
                       {{ row.numero_semana_curso != null ? `Semana ${row.numero_semana_curso}` : "" }}
                     </span>
-                    <!--<span v-if="row.cat_esquema_pago == 2">
+                    <span v-if="row.cat_esquema_pago == 2">
                     {{ row.texto_ayuda != null ? row.texto_ayuda : "" }}                  
-                  </span> -->
+                  </span> 
 
                   </span>
 
@@ -198,9 +198,9 @@
                     <span v-if="row.cat_esquema_pago == 1">
                       {{`${row.numero_semana_curso ? 'Semana ' + row.numero_semana_curso : ''}`}}
                     </span>
-                    <!--<span v-if="row.cat_esquema_pago == 2">
+                    <span v-if="row.cat_esquema_pago == 2">
                     {{ row.texto_ayuda != null ? row.texto_ayuda : "" }}                  
-                  </span>-->
+                  </span>
                   </span>
 
                   <span class="small ">
