@@ -250,20 +250,20 @@
           <input
             type="text"
             class="form-control"
-            placeholder="Buscar por nombre.."
+            placeholder="Escribe el nombre de la especialidad ó el día .."
             v-model="criterioNombre"
             v-on:keyup.enter="buscarPorNombre()"
-            aria-label="Buscar por nombre.."
+            aria-label="Escribe la especialidad, el día .."
           />
           <div class="input-group-append">
             <button
-              class="btn btn-outline-secondary"
+              class="btn btn-light"
               type="button"
               v-on:click="buscarPorNombre()"
             >
               <i class="fas fa-search"></i>
             </button>
-          </div>
+          </div>         
         </div>
 
         <div v-if="loader" class="mx-auto">
@@ -481,11 +481,12 @@ export default {
         fecha_fin_previsto: new Date(),
         hora_inicio:null,
         hora_fin:null,
-        numero_semanas:0,
+        numero_semanas:0,        
         genero: 0,
       },
       rangoHora: [7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20],
       lista: [],
+      listaRespaldo: [],
       listaEspecialidades: [],
       listaDias: [],
       listaHorarios: [],
@@ -493,6 +494,7 @@ export default {
       es: es,
       loader: false,
       isModificacion: false,
+      filtroDia:""
     };
   },
   mounted() {
@@ -510,6 +512,7 @@ export default {
       this.lista = await this.getAsync(
         `${URL.CURSO}/sucursal/${this.usuarioSesion.co_sucursal}`
       );
+      this.listaRespaldo = this.lista;
     },
     async seleccionar(row, ope) {
       console.log("====" + JSON.stringify(row));
@@ -768,6 +771,21 @@ export default {
         val = false;
       }
       return val ;
+    },
+    buscarPorNombre() {
+      console.log("Buscar por nombre " + this.criterioNombre);
+      if (this.criterioNombre == '') {
+        this.lista = this.listaRespaldo;
+      } else {
+
+        this.lista = this.listaRespaldo
+          .filter(
+            e =>
+              e.especialidad.toUpperCase().includes(this.criterioNombre.toUpperCase())
+              || (e.dia ? e.dia.toUpperCase().includes(this.criterioNombre.toUpperCase()) : false)
+          );
+
+      }
     },
   },
 };

@@ -3,6 +3,7 @@
     <button
       type="button"
       class="btn btn-sm btn-link text-primary"      
+     
     >
 
       <span  v-if="loading" class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
@@ -120,7 +121,7 @@ export default {
     onInit() {
       this.usuarioSesion = getUsuarioSesion();
     },
-    async iniciarBaja(){     
+    async iniciarCambio(){     
      if (this.idAlumno != 0) {        
         this.loading = true;
         const result  = await this.getAsync(`${URL.ESTADO_CUENTA}${this.idAlumno}`);
@@ -134,10 +135,10 @@ export default {
         
     if (this.alumno == null || this.alumno == undefined || this.alumno.adeuda) {    
 
-        this.$notificacion.warn('Baja de alumno', 'No es posible dar de baja el alumno por motivos de deuda activa.');
+        this.$notificacion.warn('Cambio de taller', 'No es posible cambiar de taller al alumno debido a que tiene una deuda pendiente.');
         
       } else {
-        $("#modal_eliminar_alumno").modal("show");
+        $("#modal_cambiar_taller_alumno").modal("show");
       }
       
     },
