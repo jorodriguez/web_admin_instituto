@@ -14,7 +14,10 @@
         
       </div>
       <div class="col-auto">
-       <!--<button @click="carg<arInscripcionesBaja()">Alumnos en baja</button>-->
+        <router-link to="/CatAlumnosBaja" class="btn btn-warning btn-outline btn-lg">
+          Alumnos en baja
+        </router-link>               
+        
       </div>
     </div>
 

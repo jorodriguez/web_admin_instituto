@@ -1,7 +1,7 @@
 {
   "name": "admin-instituto",
   "version": "1.0.0",
-  "description": "Proyecto cliente para gestión de procesos de guarderia estancia y kinder",
+  "description": "Proyecto cliente para gestión de procesos de academias y pagos recurrentes por cursos",
   "author": "Joel Rodriguez Rojas",
   "private": true,
   "scripts": {

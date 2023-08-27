@@ -6,7 +6,7 @@ import configEnv from '../../config/configEnv';
 //const BASE = process.env.URL_API || 'https://api-softlineas-demo.herokuapp.com' //demo
 const BASE = process.env.URL_API || 'https://api-admin-paris.herokuapp.com';
 //export const BRANCH = "2203-productos";
-export const BRANCH = "2305-correo-gasto - enviar un correo cuando se registrar un gasto";
+export const BRANCH = "2308-estatus-inscripcion : poner un estatus a la inscripción";
 
 
 const CURSO = BASE + '/curso';
@@ -19,7 +19,7 @@ const ESCOLARIDAD_BASE = BASE + '/escolaridad';
 const PERIODOS_CURSO = BASE + '/periodos-curso';
 const MATERIAS_ESPECIALIDAD = BASE + '/materias';
 const COBRANZA = BASE + '/cobranza';
-const VENTA = BASE + '/venta';
+const VENTA = BASE + '/venta';  
 const ARTICULO = BASE + '/articulo';
 const CATEGORIA_ARTICULO = BASE + '/categoria-articulo';
 const CATALOGO_CATEGORIA = BASE + '/categoria';

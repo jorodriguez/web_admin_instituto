@@ -1,6 +1,6 @@
 <template>
   <div class="reactivar_alumnos">
-    <h1>Alumnos eliminados</h1>
+    <h1>Alumnos en baja</h1>
     <small>{{ usuarioSesion.nombre_sucursal }}</small>
     <div class="text-left">
       <router-link to="/CatAlumno" class="btn btn-secondary btn-lg">
@@ -46,51 +46,75 @@
             <Loader :loading="loader" :mini="true" />
           </div>
           <!-- configuracion correcta para todos los dispositivos-->
+          
           <div
-            class="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-3"
+            class="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-3 mt-2"
             v-for="row in lista"
-            :key="row.id"
+            :key="row.id"            
           >
-            <div class="card border border-secondary">
+            <div class="card border-danger ">            
+              <!--<div class="d-flex justify-content-end ">                                                               
+                <div class="btn-group" role="group">
+                  <button
+                    id="btnGroupDrop1"
+                    type="button"
+                    class="btn btn-link btn-block btn-sm dropdown-toggle"
+                    data-toggle="dropdown"
+                    aria-haspopup="true"
+                    aria-expanded="false"
+                  ></button>
+                  <div class="dropdown-menu" aria-labelledby="btnGroupDrop1">                  
+                    <button
+                      class="dropdown-item"
+                      @click="select(row, 'REACTIVAR')"
+                      href="#"
+                    >
+                      <i class="fas fa-user-plus"></i> Reactivar
+                    </button>                    
+                  </div>                  
+                </div>                
+              </div>
+            -->
+
               <img
-                class="card-img-top rounded-circle mx-auto"
-                style="width:100px"
-                @click="seleccionarAlumno(row)"
+                class="card-img-top pointer rounded-circle mx-auto"
+                style="width:100px"                
                 :src="row.foto"
                 alt="Foto"
+                @click="verPerfil(row)"
+                title="Cambiar la foto"
               />
-              <div class="card-body">
-                <h5 class="card-text">
-                  {{ row.nombre }}
-                  <span v-if="row.mostrar_nombre_carino"
-                    >({{ row.nombre_carino }})</span
-                  >
-                </h5>
-                <h5 class="card-text small">
+
+              <div class="card-body p-1 pointer" @click="verPerfil(row)" >
+                <p class="card-text text-sm font-weight-bold mb-0 ">
+                  {{ row.alumno }}                  
+                </p>
+                <small class="card-text pt-0 small">
                   {{ row.apellidos }}
-                </h5>
-                <h5
-                  :style="row.color ? 'background-color:' + row.color : ''"
-                  class="badge badge-info text-wrap"
+                </small>
+                <small
+                  :style="row.color_especialidad ? 'background-color:' + row.color_especialidad : ''"
+                  class="badge badge-info text-wrap "
                 >
-                  {{ row.nombre_grupo }}
-                </h5>
-                <h5 class="card-text small">
-                  {{ row.fecha_baja_format ? "Baja" : "-" }}
-                  <span class="text-red">{{ row.fecha_baja_format }}</span>
-                </h5>
-                <!--<h6>{{row.hora_entrada}}</h6>
-              <h6>{{row.hora_salida}}</h6>-->
-                <button
-                  type="button"
-                  @click="seleccionarAlumno(row)"
-                  class="btn btn-outline-primary btn-block btn-sm"
-                >
-                  Activar
-                </button>
+                  {{ row.especialidad }}
+                </small>                                                    
+                <p class="font-weight-normal small m-0">{{row.dia}} {{ row.horario }}</p>                
               </div>
+               <div class="card-footer p-0 text-muted d-flex justify-content-start">
+                    <small style="font-size:10px"><i class="fa fa-user-minus text-gray pl-1"></i></small>
+                    <small style="font-size:10px" class="text-gray">{{row.dio_baja ? row.dio_baja:'-'}} dió de baja</small>                    
+              </div>
+              <div class="card-footer  text-muted d-flex justify-content-start">
+                <small style="font-size:10px" class="text-danger">{{row.observaciones_baja}} dió de baja</small>
+              </div>
+              
+              <!--<div class="card-footer p-0 text-muted d-flex justify-content-start">
+                  <button class="btn btn-block btn-link text-danger" @click="seleccionarAlumno">Reactivar</button>
+              </div>-->
+              
             </div>
           </div>
+
         </div>
       </div>
     </div>
@@ -202,20 +226,17 @@ export default {
 
     buscarPorNombre() {
       console.log("Buscar por nombre " + this.criterioNombre);
-      if (this.criterioNombre == "") {
+      if (this.criterioNombre == '') {
         this.lista = this.listaRespaldo;
       } else {
-        this.lista = this.listaRespaldo.filter(
-          e =>
-            e.nombre
-              .toUpperCase()
-              .includes(this.criterioNombre.toUpperCase()) ||
-            (e.nombre_carino
-              ? e.nombre_carino
-                  .toUpperCase()
-                  .includes(this.criterioNombre.toUpperCase())
-              : false)
-        );
+
+        this.lista = this.listaRespaldo
+          .filter(
+            e =>
+              e.alumno.toUpperCase().includes(this.criterioNombre.toUpperCase())
+              || (e.apellidos ? e.apellidos.toUpperCase().includes(this.criterioNombre.toUpperCase()) : false)
+          );
+
       }
     },
     seleccionarAlumno(alumno) {

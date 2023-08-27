@@ -55,3 +55,12 @@ export default {
 };
 </script>
 
+<style>
+body{
+  background: rgb(245,245,245) !important;
+background: linear-gradient(90deg, rgba(245,245,245,1) 0%, rgba(227,227,227,1) 100%) !important;
+}
+
+
+</style>
+

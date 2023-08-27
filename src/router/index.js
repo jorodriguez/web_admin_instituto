@@ -3,6 +3,7 @@ import Router from 'vue-router'
 import Login from '@/components/Login'
 import Principal from '@/components/Principal'
 import CatAlumno from '@/components/CatAlumno'
+import CatAlumnosBaja from '@/components/ReactivarAlumnosEliminados'
 import PerfilAlumno from '@/components/PerfilAlumno'
 import RegistroActividad from '@/actividad/RegistroActividad'
 import ReporteDeudas from '@/components_admin/ReporteDeudas'
@@ -61,6 +62,7 @@ const router = new Router({
             children: [
                 { path: '/principal', name: 'PaginaPrincipal', component: Principal, meta: { requiresAuth: true, validar: false } },
                 { path: '/CatAlumno', name: 'CatAlumno', component: CatAlumno, meta: { requiresAuth: true, validar: false } },
+                { path: '/CatAlumnosBaja', name: 'CatAlumnosBaja', component: CatAlumnosBaja, meta: { requiresAuth: true, validar: false } },
                 { path: '/CatCurso', name: 'CatCurso', component: CatCursos, meta: { requiresAuth: true, validar: false } },
                 { path: '/Inscripcion', name: 'Inscripcion', component: InscripcionAlumno, meta: { requiresAuth: true, validar: false } },
                 { path: '/DetalleCurso/:uidCurso', name: 'DetalleCurso', component: DetalleCurso, meta: { requiresAuth: true, validar: false } },

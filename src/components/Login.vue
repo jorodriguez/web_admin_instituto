@@ -1,6 +1,6 @@
 <template>
-  <div class="login     ">
-    <section class="section section-shaped section-lg">
+  <div class="login  " >
+    <section class="section section-shaped section-lg" >
       <!--  bg-gradient-default-->
       <div class="shape shape-style-1 pb-4 ">
         <div class="container pt-lg-7">
@@ -93,7 +93,7 @@
       
     </section>
 
-    <footer class="fixed-bottom py-6 bg-gradient-info " >
+    <footer class="fixed-bottom  bg-gradient-info " >
       <div class="container ">
         <div class="row">
          <!-- <div class="col-lg-8 mb-4 mx-auto text-center">
@@ -143,6 +143,9 @@
         -->
           <div class="col-lg-8 mx-auto text-center mb-4 mt-2">
             <a href="#" target="_blank" class="text-secondary me-xl-4 me-4">
+              Soft<b>Lineas</b>
+            </a>
+            <a href="#" target="_blank" class="text-secondary me-xl-4 me-4">
               <span class="text-lg fab fa-dribbble"></span>
             </a>
             <a href="#" target="_blank" class="text-secondary me-xl-4 me-4">
@@ -154,18 +157,18 @@
                         
           </div>
         </div>
-        <div class="row">
+        <!--<div class="row">
           <div class="col-8 mx-auto text-center mt-1">
             <p class="mb-0 text-secondary">
               <small>Copyright ©
-              <!--<script type="javascript">
+              <script type="javascript">
                 document.write(new Date().getFullYear());
-              </script>-->
+              </script>
               Soft by Soflineas team (luci-3)</small>
                            
             </p>
           </div>
-        </div>
+        </div>-->
       </div>
     </footer>
 
@@ -191,4 +194,31 @@
 
 <script src="../controller/LoginController.js"></script>
 
-<style scoped></style>
+<style>
+
+body{
+  background: rgb(49,209,224);
+  background: linear-gradient(90deg, rgba(49,209,224,1) 0%, rgba(16,142,242,1) 41%, rgba(16,142,242,1) 100%);    
+}
+
+
+.div-imagen-fondo {
+  background-image: url("../assets/bc_softlineas.png") !important;
+                  
+  /* Para este ejemplo usamos el archivo que está dentro de una carpeta imagenes 
+  en nuestro proyecto */
+
+  /* 
+  Puedes modificar como se ve la imagen de fondo con las siguientes propiedades:
+  */
+ 
+  /*background-position: 0cm;*/
+  background-repeat: repeat-x;
+  background-size: contain;
+  
+  
+  
+
+  /* A continuación explicamos cada como funciona cada propiedad. */
+}
+</style>
