@@ -144,9 +144,17 @@
                       @click="select(row, 'DELETE')"
                       href="#"
                     >
-                      <i class="fas fa-user-minus"></i> Iniciar Baja
+                      <i class="fas fa-user-minus text-red"></i> Iniciar Baja
                     </button>                    
+                    <button
+                      class="dropdown-item"
+                      @click="select(row, 'FOTO')"
+                      href="#"
+                    >
+                      <i class="fas fa-camera text-gray"></i> Actualizar foto
+                    </button>   
                   </div>                  
+                               
                 </div>                
               </div>
 
@@ -156,7 +164,7 @@
                 :src="row.foto"
                 alt="Foto"
                 @click="verPerfil(row)"
-                title="Cambiar la foto"
+                title="Ver perfil"
               />
 
               <div class="card-body p-1 pointer" @click="verPerfil(row)" >

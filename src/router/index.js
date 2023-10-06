@@ -78,6 +78,7 @@ const router = new Router({
                 { path: '/Administracion', name: 'Administracion', component: Administracion, meta: { requiresAuth: true, validar: false } },
                 { path: '/Especialidades', name: 'Especialidades', component: CatEspecialidad, meta: { requiresAuth: true, validar: true } },
                 { path: '/Cuenta', name: 'Cuenta', component: CuentaSucursal, meta: { requiresAuth: true, validar: false } },
+
             ]
         },
         /*{ si se activa no se ve el menu

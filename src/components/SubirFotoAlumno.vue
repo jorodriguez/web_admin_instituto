@@ -3,17 +3,20 @@
   <div>
     <h1>Foto del perfil </h1>
     <div class="row mb-3">      
-      <router-link
-        :to="{ name: path_retorno, params: {uid:alumno.uid} }"
-        class="btn btn-secondary btn-lg"
-        v-if="!usuarioSesion.permiso_gerente"
-      >
-        <i class="fas fa-arrow-circle-left text-gray"></i>
-      </router-link>
+   <router-link  class="btn btn-secondary btn-lg"  to="">
+    <i class="fas fa-arrow-circle-left text-gray" @click="$router.go(-1)"></i>
+</router-link>
+
+   
     </div>
+    
+    <div class="alert alert-warning" v-if="!sucursal.plan_foto_alumnos">
+    <i class="fa fa-meh-o" aria-hidden="true"></i> No es posible subir fotos, por favor comunicate con el administrador y pide que te <strong> actualice tu plan</strong>.
+    </div>
+
     <div class="row">
-      <div class="col-4">
-        <table class="table text-left">          
+      <div class="col-2">
+        <table class="table table-sm text-left">          
           <tr>
             <td>
                 <img style="border-radius:100px;width:200px;heigth:200px" class="mb-1" :src="alumno.foto" /> 
@@ -57,6 +60,7 @@
                 :placeholder-color="'#3E85CC'"
                 @file-type-mismatch="onFileTypeMismatch"
                 @file-size-exceed="onFileSizeExceed"
+                 :disabled="this.loadingUpload || !sucursal.plan_foto_alumnos"
               ></croppa>
             </div>
           </div>
@@ -73,6 +77,7 @@
                   data-toggle="button"
                   aria-pressed="false"
                   autocomplete="off"
+                   :disabled="this.loadingUpload || !sucursal.plan_foto_alumnos"
                   @click="zoomOut()"
                 >
                   <i class="fa fa-search-minus" aria-hidden="true"></i>
@@ -83,6 +88,7 @@
                   data-toggle="button"
                   aria-pressed="false"
                   autocomplete="off"
+                   :disabled="this.loadingUpload || !sucursal.plan_foto_alumnos"
                   @click="flipX()"
                 >
                   <i class="fas fa-arrows-alt-h"></i>
@@ -93,6 +99,7 @@
                   data-toggle="button"
                   aria-pressed="false"
                   autocomplete="off"
+                   :disabled="this.loadingUpload || !sucursal.plan_foto_alumnos"
                   @click="rotate()"
                 >
                   <i class="fas fa-redo"></i>
@@ -103,6 +110,7 @@
                   data-toggle="button"
                   aria-pressed="false"
                   autocomplete="off"
+                   :disabled="this.loadingUpload || !sucursal.plan_foto_alumnos"
                   @click="flipY()"
                 >
                   <i class="fas fa-arrows-alt-v"></i>
@@ -113,6 +121,7 @@
                   data-toggle="button"
                   aria-pressed="false"
                   autocomplete="off"
+                   :disabled="this.loadingUpload || !sucursal.plan_foto_alumnos"
                   @click="zoomIn()"
                 >
                   <i class="fa fa-search-plus" aria-hidden="true"></i>
@@ -125,7 +134,8 @@
                   class="btn btn-light btn-block"
                   data-toggle="button"
                   aria-pressed="false"
-                  autocomplete="off"
+                  autocomplete="off"                  
+                  :disabled="this.loadingUpload || !sucursal.plan_foto_alumnos"
                   @click="generateImage(true)"
                 >Previsualizar</button>
                 <button
@@ -134,7 +144,7 @@
                   data-toggle="button"
                   aria-pressed="false"
                   autocomplete="off"
-                  :disabled="this.loadingUpload"
+                  :disabled="this.loadingUpload || !sucursal.plan_foto_alumnos"
                   @click="generateImage(false)"
                 >{{this.loadingUpload ? 'Actualizando foto..':'Actualizar foto'}}</button>
               </div>
@@ -174,6 +184,7 @@ export default {
       path_retorno: "",
       resultado: {},
       usuarioSesion: {},
+      sucursal: {},
       criterioNombre: "",
       listaAlumnos: [],
       lista: [],
@@ -192,9 +203,11 @@ export default {
     this.path_retorno = to.params.path_retorno;
   },
   async mounted() {
+    this.onInit();
     this.uid = this.$route.params.uid;    
     console.log("@ide recibido " + this.uid);
     await this.cargarAlumno();
+    await this.cargarInformacionSucursal();
     this.path_retorno = this.$route.params.path_retorno;
   },
   methods: {
@@ -235,6 +248,9 @@ export default {
         console.log("La lista ya se encuentra cargada");
       }
     },
+     async cargarInformacionSucursal() {        
+        this.sucursal = await this.getAsync(`${URL.SUCURSAL_BASE}/${this.usuarioSesion.co_sucursal}`);        
+    },
     async cargarAlumno() {
         if(!this.uid){
             this.$notificacion.error(
@@ -243,7 +259,7 @@ export default {
           );
           return;
         }
-      this.alumno = await this.getAsync(`${URL.ALUMNOS_BASE}/id/${this.uid}`);
+        this.alumno = await this.getAsync(`${URL.ALUMNOS_BASE}/id/${this.uid}`);
         this.loadingUpload = false;      
     },
     seleccionarAlumno(row) {
