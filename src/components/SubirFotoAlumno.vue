@@ -55,7 +55,7 @@
                 :width="200"
                 :height="200"
                 :quality="1"
-                :file-size-limit="(102400*8)"
+                :file-size-limit="(102400*12)"
                 prevent-white-space
                 :accept="'image/*'"
                 :placeholder="'Selecciona una nueva foto'"
