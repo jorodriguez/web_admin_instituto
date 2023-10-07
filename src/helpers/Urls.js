@@ -2,11 +2,11 @@ import configEnv from '../../config/configEnv';
 
 
 //const BASE = configEnv.BASE || "http://localhost:5000";
-const BASE = process.env.URL_API || 'https://instituto-api-dev.herokuapp.com'
+const BASE = process.env.URL_API || 'https://api-admin-instituto-dev-ce61d87de44a.herokuapp.com'
 //const BASE = process.env.URL_API || 'https://api-softlineas-demo.herokuapp.com' //demo
 
 //const BASE = process.env.URL_API || 'https://api-admin-paris.herokuapp.com';
-export const BRANCH = "2206-separacion-sucursal - actualizacion 16-jun-10pm";
+export const BRANCH = "2310-impresion-credencial";
 
 
 const CURSO = BASE + '/curso';

@@ -11,7 +11,10 @@
     </div>
     
     <div class="alert alert-warning" v-if="!sucursal.plan_foto_alumnos">
-    <i class="fa fa-meh-o" aria-hidden="true"></i> No es posible subir fotos, por favor comunicate con el administrador y pide que te <strong> actualice tu plan</strong>.
+      <i class="fa fa-meh-o" aria-hidden="true"></i> No es posible subir fotos, por favor comunicate con el administrador y pide que te <strong> actualice tu plan</strong>.
+    </div>
+    <div class="alert alert-warning" v-if="alumno.public_id_foto != null">
+      <i class="fa fa-meh-o" aria-hidden="true"></i> El alumno seleccionado ya tiene una foto de perfil si la actualizas se <strong>  agregaran gastos</strong> a la facturación mensual.
     </div>
 
     <div class="row">
@@ -52,7 +55,7 @@
                 :width="200"
                 :height="200"
                 :quality="1"
-                :file-size-limit="(102400*5)"
+                :file-size-limit="(102400*8)"
                 prevent-white-space
                 :accept="'image/*'"
                 :placeholder="'Selecciona una nueva foto'"
