@@ -3,9 +3,9 @@
   <div>
     <h1>Foto del perfil </h1>
     <div class="row mb-3">      
-   <router-link  class="btn btn-secondary btn-lg"  to="">
-    <i class="fas fa-arrow-circle-left text-gray" @click="$router.go(-1)"></i>
-</router-link>
+   <button  class="btn btn-secondary btn-lg"  @click="$router.go(-1)">
+        <i class="fas fa-arrow-circle-left text-gray" ></i>
+    </button>
 
    
     </div>
@@ -18,36 +18,16 @@
     </div>
 
     <div class="row">
-      <div class="col-2">
-        <table class="table table-sm text-left">          
-          <tr>
-            <td>
-                <img style="border-radius:100px;width:200px;heigth:200px" class="mb-1" :src="alumno.foto" /> 
-            </td>            
-          </tr>
-          <tr>            
-            <td>
-              <h4>{{this.alumno.matricula}}</h4>
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <h4>{{this.alumno.nombre}} {{this.alumno.apellidos}}</h4>
-            </td>
-          </tr>                   
-          <tr>
-            <td >
-              <h4>{{alumno.telefono}}</h4>
-            </td>
-          </tr>                             
-        </table>
-      </div>
-
-      <div class="col-3">
+      <div class="card">
+          <div class="card-body">
+              <div class="row">
+                  <div class="col-6">                    
         <div class="row">
           <div class="col">
             <div class="mx-auto">
+              <img v-if="alumno.public_id_foto" style="border-radius:100px;width:200px;heigth:200px" class="mb-1" :src="alumno.foto" /> 
               <croppa
+                v-else
                 v-model="myCroppa"
                 canvas-color="transparent"
                 :initial-image="`${alumno.foto}`"
@@ -132,7 +112,7 @@
               </div>
 
               <div class="row">
-                <button
+                <!--<button
                   type="button"
                   class="btn btn-light btn-block"
                   data-toggle="button"
@@ -140,7 +120,7 @@
                   autocomplete="off"                  
                   :disabled="this.loadingUpload || !sucursal.plan_foto_alumnos"
                   @click="generateImage(true)"
-                >Previsualizar</button>
+                >Previsualizar</button>-->
                 <button
                   type="button"
                   class="btn btn-success btn-block"
@@ -153,8 +133,42 @@
               </div>
             </div>
           </div>
-        </div>
+
+
       </div>
+                  </div>
+                  <div class="col-6">
+                    <table class="table table-sm text-left">          
+          <tr>
+            <td>
+                
+            </td>            
+          </tr>
+          <tr>            
+            <td>
+              <h4>{{this.alumno.matricula}}</h4>
+            </td>
+          </tr>
+          <tr>
+            <td>
+              <h4>{{this.alumno.nombre}} {{this.alumno.apellidos}}</h4>
+            </td>
+          </tr>                   
+          <tr>
+            <td >
+              <h4>{{alumno.telefono}}</h4>
+            </td>
+          </tr>                             
+        </table>
+                  </div>
+              </div>              
+          </div>
+      </div>
+
+
+      
+      
+  
 
    
     </div>
