@@ -28,6 +28,7 @@
                 class="mb-1"
                 :src="alumno.foto"
               />
+              <!-- :file-size-limit="102400 * 15"-->
               <croppa
                 v-else
                 v-model="myCroppa"
@@ -37,7 +38,7 @@
                 :width="200"
                 :height="200"
                 :quality="1"
-                :file-size-limit="102400 * 15"
+                
                 prevent-white-space
                 :accept="'image/*'"
                 :placeholder="'Clic aquí para seleccionar foto'"
