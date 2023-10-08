@@ -121,13 +121,14 @@
             <Loader :loading="loader" :mini="true" />
         </div>
 
+<!-- class="col-12 col-sm-6 col-md-6 col-lg-3 col-xl-3 mt-2"-->
         <div class="row">                 
           <div
-            class="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-3 mt-2"
+            class="col-12 col-sm-6 col-md-6 col-lg-2 col-xl-2 mt-2 p-1"
             v-for="row in lista"
             :key="row.id"            
           >
-            <div class="card border-light">            
+            <div class="card border-light  " style="min-height: 244px;">            
               <div class="d-flex justify-content-end ">                                                               
                 <div class="btn-group" role="group">
                   <button
@@ -168,23 +169,30 @@
               />
 
               <div class="card-body p-1 pointer" @click="verPerfil(row)" >
-                <p class="card-text text-sm font-weight-bold mb-0 ">
-                  {{ row.alumno }}                  
+                <p class="card-text text-sm font-weight-bold col-12 text-truncate mb-0 " 
+                      :title="`${row.alumno} ${row.apellidos}`">                  
+                  {{ row.alumno }}                                    
                 </p>
-                <small class="card-text pt-0 small">
+                <small class="card-text pt-0 small" :title="`${row.alumno} ${row.apellidos}`">
+                  <div class="col-12 text-truncate">
                   {{ row.apellidos }}
+                  </div>
                 </small>
-                <small
+                <div class="card-item small">
+                  <small
                   :style="row.color_especialidad ? 'background-color:' + row.color_especialidad : ''"
                   class="badge badge-info text-wrap "
                 >
                   {{ row.especialidad }}
                 </small>                                                    
+                </div>                
                 <p class="font-weight-normal small m-0">{{row.dia}} {{ row.horario }}</p>                
               </div>
                <div class="card-footer p-0 text-muted d-flex justify-content-start">
                     <small style="font-size:10px"><i class="fa fa-user-check text-gray pl-1"></i></small>
-                    <small style="font-size:10px" class="text-gray">Inscribió {{row.inscribio ? row.inscribio:'-'}} </small>
+                    <small style="font-size:10px" class="text-gray col-12 text-truncate">                      
+                        INSCRIBIÓ {{row.inscribio ? row.inscribio:'-'}} 
+                    </small>
               </div>
             </div>
           </div>

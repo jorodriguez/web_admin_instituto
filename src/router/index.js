@@ -30,6 +30,7 @@ import VentasSucursal from '@/components/venta/ventasSucursal';
 import CatalogoProductos from '@/components/venta/catalogo_productos';
 import CatEspecialidad from '../administracion/especialidades/CatEspecialidad';
 import CuentaSucursal from '@/components/CuentaSucursal/CuentaSucursal'
+import ImprimirCredencial from '@/components/fragmentos/imprimir/credencial'
 
 
 import VueSession from 'vue-session'
@@ -78,6 +79,8 @@ const router = new Router({
                 { path: '/Administracion', name: 'Administracion', component: Administracion, meta: { requiresAuth: true, validar: false } },
                 { path: '/Especialidades', name: 'Especialidades', component: CatEspecialidad, meta: { requiresAuth: true, validar: true } },
                 { path: '/Cuenta', name: 'Cuenta', component: CuentaSucursal, meta: { requiresAuth: true, validar: false } },
+                { path: '/ImprimirCredencial', name: 'ImprimirCredencial', component: ImprimirCredencial, meta: { requiresAuth: true, validar: false } },
+                
 
             ]
         },

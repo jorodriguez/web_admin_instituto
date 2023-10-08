@@ -1,31 +1,33 @@
-
 <template>
   <div>
-    <h1>Foto del perfil </h1>
-    <div class="row mb-3">      
-   <button  class="btn btn-secondary btn-lg"  @click="$router.go(-1)">
-        <i class="fas fa-arrow-circle-left text-gray" ></i>
-    </button>
-
-   
+    <h1>Foto del perfil</h1>
+    <div class="row mb-3">
+      <button class="btn btn-secondary btn-lg" @click="$router.go(-1)">
+        <i class="fas fa-arrow-circle-left text-gray"></i>
+      </button>
     </div>
-    
+
     <div class="alert alert-warning" v-if="!sucursal.plan_foto_alumnos">
-      <i class="fa fa-meh-o" aria-hidden="true"></i> No es posible subir fotos, por favor comunicate con el administrador y pide que te <strong> actualice tu plan</strong>.
+      <i class="fa fa-meh-o" aria-hidden="true"></i> No es posible subir fotos, por favor
+      comunicate con el administrador y pide que te <strong> actualice tu plan</strong>.
     </div>
     <div class="alert alert-warning" v-if="alumno.public_id_foto != null">
-      <i class="fa fa-meh-o" aria-hidden="true"></i> El alumno seleccionado ya tiene una foto de perfil si la actualizas se <strong>  agregaran gastos</strong> a la facturación mensual.
+      <i class="fa fa-meh-o" aria-hidden="true"></i> El alumno seleccionado ya tiene una
+      foto de perfil si la actualizas se <strong> agregaran gastos</strong> a la
+      facturación mensual.
     </div>
 
-    <div class="row">
-      <div class="card">
-          <div class="card-body">
-              <div class="row">
-                  <div class="col-6">                    
-        <div class="row">
-          <div class="col">
+    <div class="card">
+      <div class="card-body ">
+        <div class="row ">
+          <div class="col-12 col-sm-12 col-md-12 col-lg-3 col-xl-3">
             <div class="mx-auto">
-              <img v-if="alumno.public_id_foto" style="border-radius:100px;width:200px;heigth:200px" class="mb-1" :src="alumno.foto" /> 
+              <img
+                v-if="alumno.public_id_foto"
+                style="border-radius: 100px; width: 200px; heigth: 200px"
+                class="mb-1"
+                :src="alumno.foto"
+              />
               <croppa
                 v-else
                 v-model="myCroppa"
@@ -35,19 +37,18 @@
                 :width="200"
                 :height="200"
                 :quality="1"
-                :file-size-limit="(102400*12)"
+                :file-size-limit="102400 * 15"
                 prevent-white-space
                 :accept="'image/*'"
-                :placeholder="'Selecciona una nueva foto'"
+                :placeholder="'Clic aquí para seleccionar foto'"
                 :placeholder-font-size="12"
                 :placeholder-color="'#3E85CC'"
                 @file-type-mismatch="onFileTypeMismatch"
                 @file-size-exceed="onFileSizeExceed"
-                 :disabled="this.loadingUpload || !sucursal.plan_foto_alumnos"
+                :disabled="this.loadingUpload || !sucursal.plan_foto_alumnos || alumno.public_id_foto"
               ></croppa>
             </div>
-          </div>
-          <div class="col">
+
             <div class="mx-auto">
               <div
                 class="btn-group btn-group-sm mb-2 mx-auto"
@@ -60,7 +61,7 @@
                   data-toggle="button"
                   aria-pressed="false"
                   autocomplete="off"
-                   :disabled="this.loadingUpload || !sucursal.plan_foto_alumnos"
+                  :disabled="this.loadingUpload || !sucursal.plan_foto_alumnos || alumno.public_id_foto"
                   @click="zoomOut()"
                 >
                   <i class="fa fa-search-minus" aria-hidden="true"></i>
@@ -71,7 +72,7 @@
                   data-toggle="button"
                   aria-pressed="false"
                   autocomplete="off"
-                   :disabled="this.loadingUpload || !sucursal.plan_foto_alumnos"
+                  :disabled="this.loadingUpload || !sucursal.plan_foto_alumnos || alumno.public_id_foto"
                   @click="flipX()"
                 >
                   <i class="fas fa-arrows-alt-h"></i>
@@ -82,7 +83,7 @@
                   data-toggle="button"
                   aria-pressed="false"
                   autocomplete="off"
-                   :disabled="this.loadingUpload || !sucursal.plan_foto_alumnos"
+                  :disabled="this.loadingUpload || !sucursal.plan_foto_alumnos || alumno.public_id_foto"
                   @click="rotate()"
                 >
                   <i class="fas fa-redo"></i>
@@ -93,7 +94,7 @@
                   data-toggle="button"
                   aria-pressed="false"
                   autocomplete="off"
-                   :disabled="this.loadingUpload || !sucursal.plan_foto_alumnos"
+                  :disabled="this.loadingUpload || !sucursal.plan_foto_alumnos || alumno.public_id_foto"
                   @click="flipY()"
                 >
                   <i class="fas fa-arrows-alt-v"></i>
@@ -104,7 +105,7 @@
                   data-toggle="button"
                   aria-pressed="false"
                   autocomplete="off"
-                   :disabled="this.loadingUpload || !sucursal.plan_foto_alumnos"
+                  :disabled="this.loadingUpload || !sucursal.plan_foto_alumnos || alumno.public_id_foto"
                   @click="zoomIn()"
                 >
                   <i class="fa fa-search-plus" aria-hidden="true"></i>
@@ -127,50 +128,65 @@
                   data-toggle="button"
                   aria-pressed="false"
                   autocomplete="off"
-                  :disabled="this.loadingUpload || !sucursal.plan_foto_alumnos"
+                  :disabled="this.loadingUpload || !sucursal.plan_foto_alumnos || alumno.public_id_foto"
                   @click="generateImage(false)"
-                >{{this.loadingUpload ? 'Actualizando foto..':'Actualizar foto'}}</button>
+                >
+                  {{ this.loadingUpload ? "Actualizando foto.." : "Actualizar foto" }}
+                </button>
+                <button
+                  type="button"
+                  class="btn btn-danger btn-block"
+                  data-toggle="button"
+                  aria-pressed="false"
+                  autocomplete="off"             
+                  v-if="alumno.public_id_foto"                       
+                  @click="quitarFoto()"
+                >
+                  Quitar foto
+                </button>
               </div>
             </div>
           </div>
+          <div class="col-12 col-sm-12 col-md-12 col-lg-6 col-xl-6">
+            <table class="table table-sm text-left">
+              <tr>
+                <td></td>
+              </tr>
+              <tr>
+                <td>
+                  <h4>{{ this.alumno.matricula }}</h4>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <h4>{{ this.alumno.nombre }} {{ this.alumno.apellidos }}</h4>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <h4>{{ alumno.telefono }}</h4>
+                </td>
+              </tr>
+              <tr>
+                <td>
+                  <!--<router-link 
+                            to="/ImprimirCredencial" 
+                            class="btn btn-primary btn-lg">
+                      
+                  </router-link>                     -->  
 
+                  <button class="btn btn-link btn-block"
+                        :disabled="!alumno.public_id_foto" 
+                          @click="imprimirCredencial()">
+                        <i class="fas fa-print" /> Credencial
+                  </button>
 
-      </div>
-                  </div>
-                  <div class="col-6">
-                    <table class="table table-sm text-left">          
-          <tr>
-            <td>
-                
-            </td>            
-          </tr>
-          <tr>            
-            <td>
-              <h4>{{this.alumno.matricula}}</h4>
-            </td>
-          </tr>
-          <tr>
-            <td>
-              <h4>{{this.alumno.nombre}} {{this.alumno.apellidos}}</h4>
-            </td>
-          </tr>                   
-          <tr>
-            <td >
-              <h4>{{alumno.telefono}}</h4>
-            </td>
-          </tr>                             
-        </table>
-                  </div>
-              </div>              
+                </td>
+              </tr>
+            </table>
           </div>
+        </div>
       </div>
-
-
-      
-      
-  
-
-   
     </div>
   </div>
 </template>
@@ -191,7 +207,7 @@ import "vue-croppa/dist/vue-croppa.css";
 export default {
   components: {
     Popup,
-    ItemCapsulaAlumno
+    ItemCapsulaAlumno,
   },
   mixins: [operacionesApi],
   name: "upload",
@@ -210,7 +226,7 @@ export default {
       imgUrl: "",
       cargaAlumno: false,
       loadingCatalogo: false,
-      loadingUpload: false
+      loadingUpload: false,
     };
   },
   beforeRouteUpdate(to) {
@@ -221,7 +237,7 @@ export default {
   },
   async mounted() {
     this.onInit();
-    this.uid = this.$route.params.uid;    
+    this.uid = this.$route.params.uid;
     console.log("@ide recibido " + this.uid);
     await this.cargarAlumno();
     await this.cargarInformacionSucursal();
@@ -231,7 +247,7 @@ export default {
     onInit() {
       this.usuarioSesion = getUsuarioSesion();
 
-      this.myCroppa.addClipPlugin(function(ctx, x, y, w, h) {
+      this.myCroppa.addClipPlugin(function (ctx, x, y, w, h) {
         /*
          * ctx: canvas context
          * x: start point (top-left corner) x coordination
@@ -249,35 +265,37 @@ export default {
     cargarCatalogoAlumnos() {
       if (this.listaAlumnos.length == 0) {
         this.loadingCatalogo = true;
-        this.get(
-          URL.ALUMNOS_BASE + "/" + this.usuarioSesion.co_sucursal,
-          result => {
-            this.response = result.data;
-            console.log("Consulta " + JSON.stringify(this.response));
-            if (this.response != null) {
-              this.listaAlumnos = this.response;
-              this.lista = this.response;
-              this.loadingCatalogo = false;
-            }
+        this.get(URL.ALUMNOS_BASE + "/" + this.usuarioSesion.co_sucursal, (result) => {
+          this.response = result.data;
+          console.log("Consulta " + JSON.stringify(this.response));
+          if (this.response != null) {
+            this.listaAlumnos = this.response;
+            this.lista = this.response;
+            this.loadingCatalogo = false;
           }
-        );
+        });
       } else {
         console.log("La lista ya se encuentra cargada");
       }
     },
-     async cargarInformacionSucursal() {        
-        this.sucursal = await this.getAsync(`${URL.SUCURSAL_BASE}/${this.usuarioSesion.co_sucursal}`);        
+    async cargarInformacionSucursal() {
+      this.sucursal = await this.getAsync(
+        `${URL.SUCURSAL_BASE}/${this.usuarioSesion.co_sucursal}`
+      );
     },
     async cargarAlumno() {
-        if(!this.uid){
-            this.$notificacion.error(
-            "No se encotro el alumno",
-            "Al parecer no encontramos al alumno que busca."
-          );
-          return;
-        }
-        this.alumno = await this.getAsync(`${URL.ALUMNOS_BASE}/id/${this.uid}`);
-        this.loadingUpload = false;      
+      if (!this.uid) {
+        this.$notificacion.error(
+          "No se encotro el alumno",
+          "Al parecer no encontramos al alumno que busca."
+        );
+        return;
+      }
+      this.alumno = await this.getAsync(`${URL.ALUMNOS_BASE}/id/${this.uid}`);
+      this.loadingUpload = false;
+    },
+    quitarFoto(){
+        this.alumno.public_id_foto = null;
     },
     seleccionarAlumno(row) {
       console.log("seleccion " + JSON.stringify(row));
@@ -287,7 +305,7 @@ export default {
       alert("Tipo de archivo invalido. Por favor seleccione jpeg ó png.");
     },
     onFileSizeExceed(file) {
-      alert("Archivo excedido. Por favor seleccione un archivo menor a 500k.");
+      alert("Archivo excedido. Por favor seleccione un archivo menor a 1.5mb.");
     },
     generateImage(preview) {
       console.log("Upload ");
@@ -302,7 +320,7 @@ export default {
 
       if (!preview) {
         this.myCroppa.generateBlob(
-          blob => {
+          (blob) => {
             // write code to upload the cropped image file (a file is a blob)
             this.subir(blob);
           },
@@ -319,7 +337,7 @@ export default {
       data.append("genero", this.usuarioSesion.id);
       this.loadingUpload = true;
       let thus = this;
-      this.post(URL.IMAGEN_PERFIL, data, result => {
+      this.post(URL.IMAGEN_PERFIL, data, (result) => {
         console.log(JSON.stringify(result));
         let respuesta = result.data;
         if (respuesta != null) {
@@ -373,11 +391,14 @@ export default {
 
     flipY() {
       this.myCroppa.flipY();
-    }
-  },
-  remove() {
+    },
+    remove() {
     this.myCroppa.remove();
+  },
+  imprimirCredencial(){
+    this.$router.push({ name: "ImprimirCredencial", params: { uid: this.alumno.uid } });
   }
+  },
+  
 };
 </script>
-
