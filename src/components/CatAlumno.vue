@@ -128,7 +128,7 @@
             v-for="row in lista"
             :key="row.id"            
           >
-            <div class="card border-light  " style="min-height: 244px;">            
+            <div class="card border-light move-on-hover " style="min-height: 244px;">            
               <div class="d-flex justify-content-end ">                                                               
                 <div class="btn-group" role="group">
                   <button

@@ -1,8 +1,8 @@
 import configEnv from '../../config/configEnv';
 
 
-//const BASE = configEnv.BASE || "http://localhost:5000";
-const BASE = process.env.URL_API || 'https://api-admin-instituto-dev-ce61d87de44a.herokuapp.com'
+const BASE = configEnv.BASE || "http://localhost:5000";
+//const BASE = process.env.URL_API || 'https://api-admin-instituto-dev-ce61d87de44a.herokuapp.com'
 //const BASE = process.env.URL_API || 'https://api-softlineas-demo.herokuapp.com' //demo
 
 //const BASE = process.env.URL_API || 'https://api-admin-paris.herokuapp.com';
@@ -96,7 +96,7 @@ const USUARIOS_RH = BASE + '/usuarios_rh'; // /usuarios_rh/id_sucursal
 const AVISOS = BASE + '/aviso'; // /aviso/:
 const USUARIO_ROL = BASE + '/usuario-rol';
 const FACTURACION_SUCURSAL = BASE + '/facturacion';
-
+const IMPRESION_BASE = BASE + '/impresion';
 
 const URL = {
     LOGIN: BASE + '/auth/login',
@@ -196,7 +196,8 @@ const URL = {
     REPORTE_ASISTECIAS_RH: ASISTENCIA_USUARIO_BASE + '/reporte_rh',
     AVISOS: AVISOS,
     USUARIO_ROL,
-    FACTURACION_SUCURSAL
+    FACTURACION_SUCURSAL,
+    IMPRESION_BASE,
 
 
 }

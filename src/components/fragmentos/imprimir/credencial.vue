@@ -6,29 +6,8 @@
         <i class="fas fa-arrow-circle-left text-gray"></i>
       </button>
     </div>
-    <main id="main" class="output">
-      <div class="ac-card">
-        <div class="ac-card-image">
-          <img :src="alumno.foto" style="width:120px; height:150px">
-        </div>
-        <div class="ac-card-info">
-          <p>
-            <strong id="name"> {{alumno.nombre}} {{alumno.apellidos}} </strong><br />
-            <span id="studentNumber">{{alumno.matricula}}</span>
-          </p>
-          <p id="partTime" class="hide">PART TIME</p>
-          <p id="date" class="ac-card-date"></p>
-        </div>
-        <img
-          class="ac-icon"
-          src="https://imdac.github.io/images/codepen/AC_ICON_1C_BLK_70x58.png"
-        />
-        <div class="ac-card-footer text-white">
-               {{sucursal.nombre}}
-        </div>
-      </div>
-      <button class="btn" id="makeCard">Imprimir</button>
-    </main>
+       <span v-if="this.loadingPage">Cargando..</span>
+        <span v-else v-html="this.pagePreview"></span>
   </div>
 </template>
 
@@ -65,6 +44,7 @@ export default {
       cargaAlumno: false,
       loadingCatalogo: false,
       loadingUpload: false,
+      pagePreview:""
     };
   },
   beforeRouteUpdate(to) {
@@ -73,17 +53,23 @@ export default {
     this.uid = to.params.uid;
     this.path_retorno = to.params.path_retorno;
   },
-  async mounted() {
-    this.onInit();
+  async mounted() {    
     this.uid = this.$route.params.uid;
+    this.usuarioSesion = getUsuarioSesion();
     console.log("@ide recibido " + this.uid);
     await this.cargarAlumno();
-    await this.cargarInformacionSucursal();
+    //await this.cargarInformacionSucursal();
+    await this.getHtml();
     this.path_retorno = this.$route.params.path_retorno;
   },
-  methods: {
-    onInit() {
-      this.usuarioSesion = getUsuarioSesion();
+  methods: {    
+    async getHtml(){     
+
+      this.loadingPage = true;       
+      this.existeHtml = false;
+      this.pagePreview =await  this.getAsync(`${URL.IMPRESION_BASE}/credencial/${this.uid}/${this.usuarioSesion.id}`);
+      this.loadingPage = false;
+
     },
     async cargarInformacionSucursal() {
       this.sucursal = await this.getAsync(
