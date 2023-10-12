@@ -246,11 +246,28 @@
                   <button
                     class="btn btn-link btn-block"
                     :disabled="!alumno.public_id_foto"
-                    @click="printCredencial()"
+                    @click="downloadPdf()"
                   >
                     <i class="fas fa-print" />
                     Credencial
                   </button>
+                <button
+                    class="btn btn-link btn-block"
+                    :disabled="!alumno.public_id_foto"
+                    @click="printCredencial()"
+                  >
+                    <i class="fas fa-print" />
+                    Credencial html
+                  </button>
+                  <button
+                    class="btn btn-link btn-block"
+                    :disabled="!alumno.public_id_foto"
+                    @click="consultaEstado()"
+                  >
+                    <i class="fas fa-print" />
+                    checar estado
+                  </button>
+                  
                 </td>
               </tr>
             </table>
@@ -270,7 +287,6 @@ import URL from '../helpers/Urls'
 import Vue from 'vue'
 import ItemCapsulaAlumno from '../components_utils/ItemCapsulaAlumno'
 import VueHtml2pdf from 'vue-html2pdf'
- 
 
 import Croppa from 'vue-croppa'
 Vue.use(Croppa)
@@ -280,7 +296,7 @@ export default {
   components: {
     Popup,
     ItemCapsulaAlumno,
-    VueHtml2pdf
+    VueHtml2pdf,
   },
   mixins: [operacionesApi],
   name: 'upload',
@@ -300,7 +316,7 @@ export default {
       cargaAlumno: false,
       loadingCatalogo: false,
       loadingUpload: false,
-      loadingPage:false,
+      loadingPage: false,
     }
   },
   beforeRouteUpdate(to) {
@@ -318,10 +334,8 @@ export default {
     this.path_retorno = this.$route.params.path_retorno
   },
   methods: {
-   onInit() {
+    onInit() {
       this.usuarioSesion = getUsuarioSesion()
-     
-     
 
       //------- este add es para hacer redonda la imagen
       /*this.myCroppa.addClipPlugin(function (ctx, x, y, w, h) {
@@ -333,35 +347,63 @@ export default {
       });*/
       //------- este add es para hacer redonda la imagen
     },
-    async beforeDownload ({ html2pdf, options, pdfContent }) {
-            await html2pdf().set(options).from(pdfContent).toPdf().get('pdf').then((pdf) => {
-                const totalPages = pdf.internal.getNumberOfPages()
-                for (let i = 1; i <= totalPages; i++) {
-                    pdf.setPage(i)
-                    pdf.setFontSize(10)
-                    pdf.setTextColor(150)
-                    pdf.text('Page ' + i + ' of ' + totalPages, (pdf.internal.pageSize.getWidth() * 0.88), (pdf.internal.pageSize.getHeight() - 0.3))
-                } 
-            }).save()
+    async beforeDownload({ html2pdf, options, pdfContent }) {
+      await html2pdf()
+        .set(options)
+        .from(pdfContent)
+        .toPdf()
+        .get('pdf')
+        .then((pdf) => {
+          const totalPages = pdf.internal.getNumberOfPages()
+          for (let i = 1; i <= totalPages; i++) {
+            pdf.setPage(i)
+            pdf.setFontSize(10)
+            pdf.setTextColor(150)
+            pdf.text(
+              'Page ' + i + ' of ' + totalPages,
+              pdf.internal.pageSize.getWidth() * 0.88,
+              pdf.internal.pageSize.getHeight() - 0.3,
+            )
+          }
+        })
+        .save()
     },
-    async printCredencial(){
-      this.loadingPage = true;             
-      this.pagePreview =await  this.getAsync(`${URL.IMPRESION_BASE}/credencial/${this.uid}/${this.usuarioSesion.id}`);
-      this.loadingPage = false;
-      const WinPrint = window.open('', '', 'width=800,height=900');
+    async printCredencial() {
+      this.loadingPage = true
+      this.pagePreview = await this.getAsync(
+        `${URL.IMPRESION_BASE}/credencial/${this.uid}/html/${this.usuarioSesion.id}`,
+      )
+      this.loadingPage = false
+      const WinPrint = window.open('', '', 'width=800,height=900')
 
       WinPrint.document.write(`
              
               ${this.pagePreview}
              
-          `);
+          `)
 
-      WinPrint.document.close();
-      WinPrint.focus();
-      WinPrint.print();
-      WinPrint.close();
-
+      WinPrint.document.close()
+      WinPrint.focus()
+      WinPrint.print()
+      WinPrint.close()
     },
+
+    downloadPdf() {
+      var oReq = new XMLHttpRequest()
+      oReq.open('GET', `${URL.IMPRESION_BASE}/credencial/${this.uid}/PDF/${this.usuarioSesion.id}`, true);
+      oReq.responseType = 'arraybuffer';
+
+      oReq.onload = function (oEvent) {
+        console.log(oReq.response)
+        var blob = new Blob([oReq.response], { type: 'application/pdf' })
+        var win = window.open('', '_blank')
+        var URL = window.URL || window.webkitURL
+        var dataUrl = URL.createObjectURL(blob)
+        win.location = dataUrl
+      }
+      oReq.send()
+    },
+
     cargarCatalogoAlumnos() {
       if (this.listaAlumnos.length == 0) {
         this.loadingCatalogo = true
@@ -505,6 +547,14 @@ export default {
         params: { uid: this.uid },
       })
     },
+    consultaEstado(){
+        
+        this.$router.push({
+        name: 'ConsultarEstadoAlumno',
+        params: { uid: this.uid },
+      })
+    }
+    
   },
 }
 </script>
