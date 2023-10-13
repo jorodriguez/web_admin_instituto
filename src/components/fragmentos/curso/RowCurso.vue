@@ -12,7 +12,7 @@
       />
       <div v-else class="card border border-gray" style="width: 140px;">
         <div class="card-body">
-          <button class="btn btn-link">
+          <button class="btn btn-link" @click="() => this.cargarFoto()">
             <i class="fa fa-plus"></i>
           </button>
         </div>

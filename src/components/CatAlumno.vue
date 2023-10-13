@@ -128,7 +128,7 @@
             v-for="row in lista"
             :key="row.id"            
           >
-            <div class="card border-light move-on-hover " style="min-height: 244px;">            
+            <div class="card border-light move-on-hover " style="min-height: 244px;">                          
               <div class="d-flex justify-content-end ">                                                               
                 <div class="btn-group" role="group">
                   <button
@@ -154,9 +154,13 @@
                     >
                       <i class="fas fa-camera text-gray"></i> Actualizar foto
                     </button>   
-                  </div>                  
-                               
+                  </div>                 
                 </div>                
+              </div>
+              <div class="pl-1 pr-1  d-flex justify-content-start ">
+                <small v-if="row.total_adeudo > 0" class="text-red">${{ formatPrice(row.total_adeudo)}}  </small>
+                <small v-else class="text-success"> <i class="fa fa-check " /> Al corriente </small>
+                <!--<small> {{row.esquema_pago}}</small>-->
               </div>
 
               <img
@@ -187,7 +191,7 @@
                 </small>                                                    
                 </div>                
                 <p class="font-weight-normal small m-0">{{row.dia}} {{ row.horario }}</p>                
-              </div>
+              </div>              
                <div class="card-footer p-0 text-muted d-flex justify-content-start">
                     <small style="font-size:10px"><i class="fa fa-user-check text-gray pl-1"></i></small>
                     <small style="font-size:10px" class="text-gray col-12 text-truncate">                      

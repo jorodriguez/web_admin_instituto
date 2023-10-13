@@ -8,6 +8,7 @@ import { getUsuarioSesion } from '../helpers/Sesion';
 import Loader from '../components_utils/Loader';
 import moment from 'moment'
 import PopupPagoPendiente from "../components/PopupPagoPendiente";
+import {formatPrice} from '../helpers/Utils';
 
 export default {
     name: "Alumno",
@@ -34,6 +35,7 @@ export default {
             es: es,
             fechaBaja: new Date(),
             observacionesBaja: "",
+            formatPrice:formatPrice,
             loader: false
         };
     },

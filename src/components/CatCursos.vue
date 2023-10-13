@@ -273,7 +273,7 @@
         <span v-for="item in lista" :key="item.id">         
 
           <RowCurso :curso="item" :clickHeader="()=>{seleccionar(item,'DETALLE')}" />         
-           public_id_foto{{item.public_id_foto }}
+           
 
           <div class="row bg-secondary mt-2 border-top">
 
