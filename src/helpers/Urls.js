@@ -1,9 +1,9 @@
 import configEnv from '../../config/configEnv';
 
 
-//const BASE = configEnv.BASE || "http://localhost:5000";
-const BASE = process.env.URL_API || 'https://api-admin-instituto-dev-ce61d87de44a.herokuapp.com'
-    //const BASE = process.env.URL_API || 'https://api-softlineas-demo.herokuapp.com' //demo
+const BASE = configEnv.BASE || "http://localhost:5000";
+//const BASE = process.env.URL_API || 'https://api-admin-instituto-dev-ce61d87de44a.herokuapp.com'
+//const BASE = process.env.URL_API || 'https://api-softlineas-demo.herokuapp.com' //demo
 
 //const BASE = process.env.URL_API || 'https://api-admin-paris.herokuapp.com';
 export const BRANCH = "2310-impresion-credencial";
@@ -89,6 +89,7 @@ const CAT_DESCUENTOS = BASE + '/descuento';
 const REPORTE_CONBRANZA = BASE + '/reporte_cobranza';
 const GENERO_ALUMNO = BASE + '/genero_alumno';
 const IMAGEN_PERFIL = BASE + '/foto_perfil';
+const IMAGEN_CURSO = BASE + '/foto_curso';
 const ESTADO_CUENTA = BASE + '/estado_cuenta/'; // /estado_cuenta/:id_alumno
 const ESTADO_CUENTA_PREVIEW = BASE + '/estado_cuenta/preview/'; // /estado_cuenta/preview/:id_alumno
 const ESTADO_CUENTA_ENVIAR = BASE + '/estado_cuenta/enviar/'; // /estado_cuenta/preview/:id_alumno
@@ -198,6 +199,7 @@ const URL = {
     USUARIO_ROL,
     FACTURACION_SUCURSAL,
     IMPRESION_BASE,
+    IMAGEN_CURSO
 
 
 }

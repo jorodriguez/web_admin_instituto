@@ -18,11 +18,11 @@
               }`"
             >
               <div
-                :class="`col-6 text-left  d-flex justify-start align-content-start `"
+                :class="`col-6 text-center align-self-center`"
               >
-                <h1>
+                <h2>
                   {{ alumno.total_adeudo > 0 ? 'ADEUDO' : ' AL CORRIENTE' }}
-                </h1>
+                </h2>
               </div>
               <div
                 :class="`col-6 ${
@@ -55,7 +55,7 @@
                 <div class="col-sm-12 col-md-2 col-lg-2 col-xl-2 text-left d-none d-xl-block bg-light">
                   <strong>Fecha</strong>
                 </div>
-                <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6 text-left d-none d-xl-block bg-light text-center">
+                <div class="col-sm-12 col-md-5 col-lg-5 col-xl-5 text-left d-none d-xl-block bg-light text-center">
                   <strong>Cargo</strong>
                 </div>
                 <div class="col-sm-12 col-md-1 col-lg-1 col-xl-1 d-none d-xl-block bg-light">
@@ -64,7 +64,7 @@
                 <div class="col-sm-12 col-md-1 col-lg-1 col-xl-1 d-none d-xl-block bg-light">
                   <strong>Pagado</strong>
                 </div>
-                <div class="col-sm-12 col-md-1 col-lg-1 col-xl-1 d-none d-xl-block bg-light">
+                <div class="col-sm-12 col-md-2 col-lg-2 col-xl-2 d-none d-xl-block bg-light">
                   <strong>Adeuda</strong>
                 </div>
           </div>
@@ -82,7 +82,7 @@
                 <div class="col-sm-12 col-md-2 col-lg-2 col-xl-2">
                   <strong class="d-block d-sm-none">Fecha</strong> {{ item.fecha_format }}
                 </div>
-                <div class="col-sm-12 col-md-6 col-lg-6 col-xl-6 ">
+                <div class="col-sm-12 col-md-5 col-lg-5 col-xl-5 ">
                   <strong class="d-block d-sm-none ">Cargo</strong>
                   {{ item.nombre_cargo }} {{ item.texto_ayuda }} -
                   {{ item.especialidad }}
@@ -93,7 +93,7 @@
                 <div class="col-sm-12 col-md-1 col-lg-1 col-xl-1">
                   <strong class="d-block d-sm-none">Pagado</strong> ${{ formatPrice(item.total_pagado) }}
                 </div>
-                <div class="col-sm-12 col-md-1 col-lg-1 col-xl-1">
+                <div class="col-sm-12 col-md-2 col-lg-2 col-xl-2">
                   <strong class="d-block d-sm-none">Adeuda</strong> <strong>${{ formatPrice(item.total) }}</strong>
                 </div>
               </div>

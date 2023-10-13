@@ -160,7 +160,7 @@
                                 </button>
                                 </div>
                                 <div class="col">
-                                <button class="btn btn-link btn-block" :disabled="!alumno.public_id_foto" @click="consultaEstado()">
+                                <button class="btn btn-link btn-block"  @click="consultaEstado()">
                                     <i class="fa fa-money-bill"></i>
                                     Checar estado de cuenta
                                 </button>

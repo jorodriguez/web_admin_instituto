@@ -4,21 +4,23 @@ import Login from '@/components/Login'
 import Principal from '@/components/Principal'
 import CatAlumno from '@/components/CatAlumno'
 import PerfilAlumno from '@/components/PerfilAlumno'
-import RegistroActividad from '@/actividad/RegistroActividad'
+/*import RegistroActividad from '@/actividad/RegistroActividad'
 import ReporteDeudas from '@/components_admin/ReporteDeudas'
 import CrecimientoGlobal from '@/components_admin/CrecimientoGlobal'
-import ReporteGastos from '@/components_admin/ReporteGastos'
+import ReporteGastos from '@/components_admin/ReporteGastos'*/
 import Gastos from '@/components/Gastos'
 import CambiarSucursal from '@/components/CambiarSucursal'
-import ReporteAsistencia from '@/components/ReporteAsistencia'
+/*import ReporteAsistencia from '@/components/ReporteAsistencia'
 import ReporteAsistenciasFaltasSucursalMes from '@/components/ReporteAsistenciasFaltasSucursalMes'
 import AsistenciasUsuarios from '@/components/AsistenciaUsuarios'
 import ReporteAsistenciaRangoFechasSuc from '@/asistencia_usuario/ReporteAsistenciaRangoFechasSuc'
+*/
 import Bienvenido from '@/components/Bienvenido'
 import CatUsuario from '../administracion/usuarios/CatUsuario'
 import Administracion from '../administracion/Administracion'
 import { getUsuarioSesion, getSesion, getToken } from '../helpers/Sesion';
 import SubirFotoAlumno from '@/components/SubirFotoAlumno'
+import SubirFotoCurso from '@/components/SubirFotoCurso'
 import InscripcionAlumno from '@/components/InscripcionAlumno';
 import CatCursos from '@/components/CatCursos';
 import DetalleCurso from '@/components/DetalleCurso';
@@ -32,8 +34,6 @@ import CatEspecialidad from '../administracion/especialidades/CatEspecialidad';
 import CuentaSucursal from '@/components/CuentaSucursal/CuentaSucursal'
 import ImprimirCredencial from '@/components/fragmentos/imprimir/credencial'
 import ConsultarEstadoAlumno from '@/components/fragmentos/consulta/consultarEstadoAlumno'
-
-
 import VueSession from 'vue-session'
 
 Vue.use(Router);
@@ -70,6 +70,7 @@ const router = new Router({
                 { path: '/ReciboPago/:id_pago', name: 'ReciboPago', component: ReciboPago, meta: { requiresAuth: true, validar: false } },
                 { path: '/Corte', name: 'Corte', component: CorteDia, meta: { requiresAuth: true, validar: false } },
                 { path: '/SubirFotoAlumno/:uid', name: 'SubirFotoAlumno', component: SubirFotoAlumno, meta: { requiresAuth: true, validar: false } },
+                { path: '/SubirFotoCurso/:uid', name: 'SubirFotoCurso', component: SubirFotoCurso, meta: { requiresAuth: true, validar: false } },
                 { path: '/Gastos', name: 'Gastos', component: Gastos, meta: { requiresAuth: true, validar: false } },
                 { path: '/Cobranza', name: 'Cobranza', component: Cobranza, meta: { requiresAuth: true, validar: true } },
                 { path: '/Venta', name: 'Venta', component: Venta, meta: { requiresAuth: true, validar: false } },
