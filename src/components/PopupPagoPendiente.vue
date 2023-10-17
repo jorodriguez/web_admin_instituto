@@ -11,6 +11,7 @@
       <div class="modal-body">
         <img v-if="imagen == ''" 
               src="https://img.freepik.com/vector-gratis/lindo-gato-jugando-ilustracion-icono-vector-dibujos-animados-bola-hilo-concepto-icono-naturaleza-animal-aislado-vector-premium-estilo-dibujos-animados-plana_138676-3568.jpg"/>
+              
         <img v-else :src="imagen" />
       </div>
       <div class="modal-footer">

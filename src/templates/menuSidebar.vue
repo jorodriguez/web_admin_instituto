@@ -178,7 +178,8 @@
         <!-- Divider -->
         <hr class="my-3" />
         <!-- Heading -->
-        <h6 class="navbar-heading" v-if="pagoPendiente">
+     
+        <!--<h6 class="navbar-heading" v-if="pagoPendiente">
           <img v-if="imagen == ''" 
               style="width:100px;"  
               src="https://img.freepik.com/vector-gratis/lindo-gato-jugando-ilustracion-icono-vector-dibujos-animados-bola-hilo-concepto-icono-naturaleza-animal-aislado-vector-premium-estilo-dibujos-animados-plana_138676-3568.jpg"/>
@@ -192,7 +193,7 @@
         </h5>
         <h5 class="text-red" v-if="pagoPendiente">
           Fecha de pago: del 1 al 9 de cada mes.
-        </h5>
+        </h5>-->
         
 <!--
         <ul class="navbar-nav mb-md-3">          
