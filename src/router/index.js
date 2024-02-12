@@ -34,6 +34,7 @@ import CatEspecialidad from '../administracion/especialidades/CatEspecialidad';
 import CuentaSucursal from '@/components/CuentaSucursal/CuentaSucursal'
 import ImprimirCredencial from '@/components/fragmentos/imprimir/credencial'
 import ConsultarEstadoAlumno from '@/components/fragmentos/consulta/consultarEstadoAlumno'
+import ReportesSucursal from '@/components/reportes/ReportesSucursal'
 import VueSession from 'vue-session'
 
 Vue.use(Router);
@@ -83,6 +84,7 @@ const router = new Router({
                 { path: '/Cuenta', name: 'Cuenta', component: CuentaSucursal, meta: { requiresAuth: true, validar: false } },
                 { path: '/ImprimirCredencial/:uid', name: 'ImprimirCredencial', component: ImprimirCredencial, meta: { requiresAuth: true, validar: false } },
                 { path: '/ConsultarEstadoAlumno/:uid', name: 'ConsultarEstadoAlumno', component: ConsultarEstadoAlumno, meta: { requiresAuth: true, validar: false } },
+                { path: '/Reportes', name: 'Reportes', component: ReportesSucursal, meta: { requiresAuth: true, validar: false } },
 
             ]
         },
