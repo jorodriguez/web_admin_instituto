@@ -12,26 +12,32 @@
             <span class="sr-only">Cargando...</span>
           </div>
         </div>
-
-        <div class="form-inline">
-          <div class="form-group ml-2 mb-2">
-            <label for="reporte-id" class="sr-only">Reporte</label>
-            <select
-              v-model="reporteSeleccionado"
-              @change="onChangeReporte()"
-              class="form-control"
-              placeholder="Reporte"
-              required
-            >
-              <option
-                v-for="(reporte, index) in listaReportes"
-                v-bind:value="reporte"
-                :key="index"
+        
+          <div class="form-group row d-flex justify-content-left align-items-center">
+            <label for="reporte-id"
+              >Seleccione <span class="text-danger">*</span>
+            </label>
+            <div class="col-md-10">
+              <select
+                v-model="reporteSeleccionado"
+                @change="onChangeReporte()"
+                class="form-control"
+                placeholder="Reporte"
+                required
               >
-                {{ reporte.nombre }}
-              </option>
-            </select>
+                <option
+                  v-for="(reporte, index) in listaReportes"
+                  v-bind:value="reporte"
+                  :key="index"
+                >
+                  {{ reporte.nombre }}
+                </option>
+              </select>
+            </div>
           </div>
+        
+
+        <div class="row">
           <div class="form-group ml-2 mb-2" v-if="reporteSeleccionado.rango_fecha">
             <label for="f-inicio" class="sr-only">Fecha inicio</label>
             <datepicker
@@ -61,33 +67,32 @@
             @click="ejecutarReporte()"
             class="btn btn-outline-primary ml-2 mb-2"
           >
-            <i class="fas fa-print"></i> Cargar
+            <i class="fas fa-search"></i> Cargar
           </button>
         </div>
-        
+
         <vue-good-table
           :columns="columnas"
           :rows="lista"
           :line-numbers="true"
           @on-row-click="onRowClick"
           @on-search="onSearch"
-          :search-options="TABLE_CONFIG.SEARCH_OPTIONS"          
+          :search-options="TABLE_CONFIG.SEARCH_OPTIONS"
           :selectOptions="TABLE_CONFIG.NO_SELECT_OPTIONS"
           @on-select-all="selectAll"
           class="table-striped"
           :groupOptions="{
-  	          enabled: false,               
+            enabled: false,
           }"
         >
           <template slot="table-header-row" slot-scope="props">
             <span class="font-weight-bold text-info h5">{{ props.row.label }}</span>
           </template>
 
-          <template slot="table-row" slot-scope="props">                                  
-            <span >{{props.formattedRow[props.column.field]}}</span>
+          <template slot="table-row" slot-scope="props">
+            <span>{{ props.formattedRow[props.column.field] }}</span>
           </template>
-        </vue-good-table>   
-        
+        </vue-good-table>
       </div>
     </div>
   </span>
@@ -126,7 +131,7 @@ export default {
       listaGastos: [],
       corte: undefined,
       corteGasto: undefined,
-      reporteSeleccionado: { id:-1,nombre:"",columnas:[] },
+      reporteSeleccionado: { id: -1, nombre: "", columnas: [] },
       columnas: [],
       TABLE_CONFIG: TABLE_CONFIG,
       es: es,
@@ -172,11 +177,11 @@ export default {
     },
     async ejecutarReporte() {
       this.loading = true;
-      this.lista = await this.putAsync(URL.REPORTES_BASE + "/ejecucion-reporte",{
-        id_reporte:this.reporteSeleccionado.id,
-        fecha_inicio:this.fechaInicio,
-        fecha_fin:this.fechaFin,
-        id_sucursal:this.usuarioSesion.co_sucursal
+      this.lista = await this.putAsync(URL.REPORTES_BASE + "/ejecucion-reporte", {
+        id_reporte: this.reporteSeleccionado.id,
+        fecha_inicio: this.fechaInicio,
+        fecha_fin: this.fechaFin,
+        id_sucursal: this.usuarioSesion.co_sucursal,
       });
       this.loading = false;
     },
@@ -226,7 +231,7 @@ export default {
       console.log("Seleccion");
     },
     async onChangeReporte(event) {
-      console.log("@onChangeReporte " +event);
+      console.log("@onChangeReporte " + event);
       this.columnas = JSON.parse(this.reporteSeleccionado.columnas);
     },
   },
