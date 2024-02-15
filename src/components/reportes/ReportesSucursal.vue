@@ -12,11 +12,10 @@
             <span class="sr-only">Cargando...</span>
           </div>
         </div>
-        
-          <div class="form-group row d-flex justify-content-left align-items-center">
-            <label for="reporte-id"
-              >Seleccione <span class="text-danger">*</span>
-            </label>
+                
+        <div class="row ">
+          <div class=" d-flex justify-content-left align-items-center">
+            <label for="reporte-id">Reporte </label>
             <div class="col-md-10">
               <select
                 v-model="reporteSeleccionado"
@@ -35,10 +34,7 @@
               </select>
             </div>
           </div>
-        
-
-        <div class="row">
-          <div class="form-group ml-2 mb-2" v-if="reporteSeleccionado.rango_fecha">
+          <div class="form-group ml-4 mb-2" v-if="reporteSeleccionado.rango_fecha">
             <label for="f-inicio" class="sr-only">Fecha inicio</label>
             <datepicker
               name="fecha"
@@ -47,6 +43,7 @@
               :bootstrap-styling="true"
               :language="es"
               @selected="cambiarFecha"
+              style="width: 150px"
               format="yyyy-MM-dd"
             ></datepicker>
           </div>
@@ -59,6 +56,7 @@
               :bootstrap-styling="true"
               :language="es"
               @selected="cambiarFecha"
+              style="width: 150px"
               format="yyyy-MM-dd"
             ></datepicker>
           </div>
@@ -69,6 +67,16 @@
           >
             <i class="fas fa-search"></i> Cargar
           </button>
+          <download-excel
+                v-if="lista != []"
+                class="btn btn-outline-success ml-2 mb-2"
+                :data="lista"
+                :fields="columnsExport"
+                :worksheet="reporteSeleccionado.nombre"
+                :name="reporteSeleccionado.nombre+'.xls'"
+              >
+                <i class="fas fa-download" /> XLS
+          </download-excel>
         </div>
 
         <vue-good-table
@@ -141,17 +149,7 @@ export default {
       nombre_reporte: "corte.xls",
       nombre_libro: "libro1",
       columnasFiltradas: {},
-      columnsExport: {
-        folio: "folio",
-        alumno: "alumno",
-        apellidos: "apellidos",
-        numero_semana_curso: "sem",
-        horario: "horario",
-        fecha: "fecha",
-        nombre_cargo: "concepto",
-        pago: "pago",
-        total_adeuda: "total_adeuda",
-      },
+      columnsExport: { },
     };
   },
   mounted() {
@@ -233,7 +231,16 @@ export default {
     async onChangeReporte(event) {
       console.log("@onChangeReporte " + event);
       this.columnas = JSON.parse(this.reporteSeleccionado.columnas);
+      this.lista = [];
+      //let cols = this.columnas.map(a => a.field);      
+      this.columnsExport = {};
+      for(let i in this.columnas){
+        let row = this.columnas[i];
+        this.columnsExport[row.field] = row.label;   
+      }
+      //this.columnsExport = {...cols};
     },
+   
   },
 };
 </script>
