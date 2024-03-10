@@ -11,18 +11,37 @@
         <button type="button" class="btn btn-primary btn-lg" v-on:click="nuevo()">
           <i class="fa fa-plus"></i> Nueva Especialidad
         </button>
-               
+
         <div class="btn-group" role="group" aria-label="Basic example">
-          <label :class="`btn btn-outline-light ${tipoVista == 'LIST' ? 'active ':''}`">
-            <input type="radio" id="id-list-view" name="id-list-view"  value="LIST" v-model="tipoVista" :checked="tipoVista == 'LIST'" />            
-            <i for="id-list-view"  :class="`fa fa-th-list ${tipoVista == 'LIST' ? 'text-white':''}`"/>
+          <label :class="`btn btn-outline-light ${tipoVista == 'LIST' ? 'active ' : ''}`">
+            <input
+              type="radio"
+              id="id-list-view"
+              name="id-list-view"
+              value="LIST"
+              v-model="tipoVista"
+              :checked="tipoVista == 'LIST'"
+            />
+            <i
+              for="id-list-view"
+              :class="`fa fa-th-list ${tipoVista == 'LIST' ? 'text-white' : ''}`"
+            />
           </label>
-          <label :class="`btn btn-outline-light ${tipoVista == 'CARD' ? 'active ':''}`">            
-            <input type="radio"  id="id-card-view" name="id-card-view" value="CARD" v-model="tipoVista" :checked="tipoVista == 'CARD'"/>
-            <i for="id-card-view"  :class="`fa fa-th-large ${tipoVista == 'CARD' ? 'text-white ':''}`"/>
-          </label>          
+          <label :class="`btn btn-outline-light ${tipoVista == 'CARD' ? 'active ' : ''}`">
+            <input
+              type="radio"
+              id="id-card-view"
+              name="id-card-view"
+              value="CARD"
+              v-model="tipoVista"
+              :checked="tipoVista == 'CARD'"
+            />
+            <i
+              for="id-card-view"
+              :class="`fa fa-th-large ${tipoVista == 'CARD' ? 'text-white ' : ''}`"
+            />
+          </label>
         </div>
-        
       </div>
     </div>
     <br />
@@ -62,7 +81,6 @@
             required
           />
         </div>
-   
 
         <div class="form-row">
           <div class="form-group col-sm-6 col-md-6 col-lg-6 col-xl-6">
@@ -225,57 +243,59 @@
           <Loader :loading="loader" :mini="true" />
         </div>
 
-        <span v-if="tipoVista == 'LIST' || tipoVista == ''">       
-        <span v-for="item in lista" :key="item.id">
-          
-          <RowCurso
-            :curso="item"
-            :clickHeader="
-              () => {
-                seleccionar(item, 'DETALLE');
-              }
-            "
-          />
+        <span v-if="tipoVista == 'LIST' || tipoVista == ''">
+          <span v-for="item in lista" :key="item.id">
+            <RowCurso
+              :curso="item"
+              :clickHeader="
+                () => {
+                  seleccionar(item, 'DETALLE');
+                }
+              "
+            />
 
-          <div class="row bg-secondary mt-2 border-top">
-            <div class="col-md-8 offset-md-4 text-right">
-              <button class="btn btn-link text-sm" @click="seleccionar(item, 'DETALLE')">
-                <i class="fa fa-eye"></i>
-              </button>
-              <button
-                v-if="item.inscripciones == 0"
-                class="btn btn-link text-sm"
-                @click="seleccionar(item, 'UPDATE')"
-              >
-                <i class="fa fa-edit"></i> Modificar
-              </button>
-              <button
-                v-if="item.inscripciones == 0"
-                class="btn btn-link text-danger text-sm"
-                @click="seleccionar(item, 'DELETE')"
-              >
-                <i class="fa fa-trash"></i> Eliminar
-              </button>
-              <button
-                :class="`btn btn-link text-sm ${
-                  item.inscripciones_cerradas ? '' : 'text-red'
-                }`"
-                @click="seleccionar(item, 'CERRAR_INSCRIPCIONES')"
-              >
-                <i
-                  :class="`${
-                    item.inscripciones_cerradas ? 'fa fa-unlock' : 'fa fa-lock'
+            <div class="row bg-secondary mt-2 border-top">
+              <div class="col-md-8 offset-md-4 text-right">
+                <button
+                  class="btn btn-link text-sm"
+                  @click="seleccionar(item, 'DETALLE')"
+                >
+                  <i class="fa fa-eye"></i>
+                </button>
+                <button
+                  v-if="item.inscripciones == 0"
+                  class="btn btn-link text-sm"
+                  @click="seleccionar(item, 'UPDATE')"
+                >
+                  <i class="fa fa-edit"></i> Modificar
+                </button>
+                <button
+                  v-if="item.inscripciones == 0"
+                  class="btn btn-link text-danger text-sm"
+                  @click="seleccionar(item, 'DELETE')"
+                >
+                  <i class="fa fa-trash"></i> Eliminar
+                </button>
+                <button
+                  :class="`btn btn-link text-sm ${
+                    item.inscripciones_cerradas ? '' : 'text-red'
                   }`"
-                />
-                {{ item.inscripciones_cerradas ? "" : "" }}
-              </button>
-              <ImprimirListaAlumnos :uuidCurso="item.uid" />
+                  @click="seleccionar(item, 'CERRAR_INSCRIPCIONES')"
+                >
+                  <i
+                    :class="`${
+                      item.inscripciones_cerradas ? 'fa fa-unlock' : 'fa fa-lock'
+                    }`"
+                  />
+                  {{ item.inscripciones_cerradas ? "" : "" }}
+                </button>
+                <ImprimirListaAlumnos :uuidCurso="item.uid" />
+              </div>
             </div>
-          </div>
+          </span>
         </span>
-      </span>
-      <span v-else>  
-        <!--<div class="card" >           
+        <!--<span v-else>
+          <div class="card" >           
            <div class="table-responsive">
             <div>                  
               <table class="table align-items-center">
@@ -314,67 +334,76 @@
           </div>
         </div>       
          </div> -->
-        <div class="card" v-for="(grupoItem,index) in listaCursosAgrupados" :key="index">
-           <div class="row p-2 text-sm text-uppercase bg-secondary text-gray d-flex justify-content-end" >{{grupoItem}}</div>
-           <div class="table-responsive">
-            <div>    
-              
-              <table class="table ">
-              <!--<thead class="thead-light">
-            <tr>
-                <th scope="col" class="sort" data-sort="name"></th>
-                <th scope="col" class="sort" data-sort="budget">Budget</th>
-                <th scope="col" class="sort" data-sort="status">Status</th>
-                <th scope="col">Users</th>
-                <th scope="col" class="sort" data-sort="completion">Completion</th>
-                <th scope="col"></th>
-            </tr>
-        </thead>-->
-              <tbody class="list" v-for="item in  especialidadAgrupos[grupoItem]" :key="item.id" >
-                <tr>
-                <th class="p-1" scope="row">
-                  <div class="media align-items-center">                        
+        <!--<div
+            class="card"
+            v-for="(grupoItem, index) in listaCursosAgrupados"
+            :key="index"
+          >
+            <div
+              class="row p-2 text-sm text-uppercase bg-secondary text-gray d-flex justify-content-end"
+            >
+              {{ grupoItem }}
+            </div>
+            <div class="table-responsive">
+              <div>
+                <table class="table">
+                  <tbody
+                    class="list"
+                    v-for="item in especialidadAgrupos[grupoItem]"
+                    :key="item.id"
+                  >
+                    <tr>
+                      <th class="p-1" scope="row">
+                        <div class="media align-items-center">
                           <img
                             v-if="item.foto_curso"
                             class="mr-3 img-fluid rounded border pointer"
                             :style="`opacity:${item.inscripciones_cerradas ? 0.5 : 1}`"
                             width="100"
                             :src="item.foto_curso"
-                            alt="Especialidad"                          
-                          />                            
-                        
-                        <div class="media-body text-left">
-                            <p class="name mb-0 text-sm ">{{item.especialidad}}</p>
-                            <span class="name mb-0 text-sm">{{item.dia}} de {{ item.horario }}</span>                            
+                            alt="Especialidad"
+                          />
+
+                          <div class="media-body text-left">
+                            <p class="name mb-0 text-sm">{{ item.especialidad }}</p>
+                            <span class="name mb-0 text-sm"
+                              >{{ item.dia }} de {{ item.horario }}</span
+                            >
+                          </div>
                         </div>
-                    </div>
-                </th>
-                </tr>
-              </tbody>
-              </table>
+                      </th>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
           </div>
-        </div>       
-         </div>
-      </span>
-      <!--<span v-else>   solo hay que dar formato ya agrupa
-        <div class="card" v-for="(grupoItem,index) in listaCursosAgrupados" :key="index">
-           <div class="row bg-gray text-white">{{grupoItem}}</div>
-           <div class="row ">
-            <div v-for="item in  especialidadAgrupos[grupoItem]" :key="item.id" 
-                class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-6 mt-2 p-1">              
-              <RowCursoCard
+        </span>-->
+        <span v-else>
+          <div
+            class="card"
+            v-for="(grupoItem, index) in listaCursosAgrupados"
+            :key="index"
+          >
+            <div class="row bg-gray text-white">{{ grupoItem }}</div>
+            <div class="row">
+              <div
+                v-for="item in especialidadAgrupos[grupoItem]"
+                :key="item.id"
+                class="col-12 col-sm-12 col-md-12 col-lg-12 col-xl-6 mt-2 p-1 "
+              >                      
+             <RowCursoCard
                 :curso="item"
                 :clickHeader="
                     () => {
                     seleccionar(item, 'DETALLE');
                   }
-                "
-              /> 
+                "/> 
+             
+              </div>
+            </div>
           </div>
-        </div>       
-         </div>
-      </span>-->
-
+        </span>
       </div>
     </div>
 
@@ -532,7 +561,7 @@ import { validacionDatosAlumno } from "../helpers/AlumnoValidacion";
 import { en, es } from "vuejs-datepicker/dist/locale";
 import Loader from "../components_utils/Loader";
 import moment from "moment";
-import _ from 'lodash';
+import _ from "lodash";
 import Popup from "../controller/Popup";
 import InscripcionAlumno from "./InscripcionAlumno.vue";
 import RowCurso from "./fragmentos/curso/RowCurso";
@@ -583,8 +612,8 @@ export default {
       },
       rangoHora: [7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20],
       lista: [],
-      especialidadAgrupos:[],
-      listaCursosAgrupados:[],
+      especialidadAgrupos: [],
+      listaCursosAgrupados: [],
       listaRespaldo: [],
       listaEspecialidades: [],
       listaDias: [],
@@ -594,7 +623,7 @@ export default {
       loader: false,
       isModificacion: false,
       filtroDia: "",
-      tipoVista: 'LIST'
+      tipoVista: "LIST",
     };
   },
   mounted() {
@@ -617,14 +646,12 @@ export default {
 
       //agrupar para vista agrupada
       console.log(" = = = = =Agrupando  = = =");
-      this.especialidadAgrupos = _.groupBy(this.lista, 'especialidad');
+      this.especialidadAgrupos = _.groupBy(this.lista, "dia");
       //console.log(especialidadAgrupada);
       this.listaCursosAgrupados = Object.keys(this.especialidadAgrupos);
       //console.log(this.listaCursosAgrupados);
-      
-      console.log(" = = = = =Agrupando  = = =");
 
-      
+      console.log(" = = = = =Agrupando  = = =");
     },
     async seleccionar(row, ope) {
       console.log("====" + JSON.stringify(row));
@@ -895,9 +922,11 @@ export default {
 </script>
 
 <style scoped>
-/*  sin este hack se mostrarian*/ 
-input[type=radio]{
+/*  sin este hack se mostrarian*/
+input[type="radio"] {
   display: none;
   /*position: fixed;*/
 }
+
+
 </style>
